@@ -1,0 +1,19 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+.humble-lms-searchable-input {
+  margin-bottom: .375em;
+}
+
+.ms-container .ms-selection li.ms-elem-selection,
+.ms-container .ms-selectable li.ms-elem-selectable {
+  padding: 10px;
+  margin: 0;
+}
+
+.ms-container .ms-selectable li.ms-hover,
+.ms-container .ms-selection li.ms-hover {
+  border-bottom: 1px solid #08c;
+}

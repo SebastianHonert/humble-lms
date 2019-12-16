@@ -51,7 +51,7 @@
   line-height: 1.2;
   position: absolute;
   bottom: 1em;
-  text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+  text-shadow: 1px 1px 0 rgba(0,0,0,.4);
 }
 
 .humble-lms-course-tile-meta {
@@ -81,7 +81,6 @@
   display: block;
   background: #1a4195;
   color: #fff;
-  font-size: 1em;
   font-weight: 400;
   padding: .75em;
   cursor: pointer;
@@ -137,22 +136,27 @@
 
 /* Buttons */
 
-.humble-lms-btn {
+.humble-lms-btn,
+input[type='submit'].humble-lms-btn {
   border-radius: .4rem;
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.125rem !important;
   font-weight: 700;
-  height: 3.5rem;
+  height: 3.25rem;
   letter-spacing: 1px;
-  line-height: 3.5rem;
+  line-height: 3.25rem;
   padding: 0 1.25rem;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
   background: #2b54ac;
   transition: all .3s ease-in-out;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.4);
 }
 
 .humble-lms-btn,
@@ -170,13 +174,17 @@
   box-shadow: 0 .25rem .75rem rgba(0,0,0,.35);
 }
 
-.humble-lms-btn--success {
+.humble-lms-btn--success,
+input[type='submit'].humble-lms-btn--success {
   background-color: #1b8d8d;
 }
 
 .humble-lms-btn--success:hover,
 .humble-lms-btn--success:focus,
-.humble-lms-btn--success:active {
+.humble-lms-btn--success:active,
+input[type='submit'].humble-lms-btn--success:hover,
+input[type='submit'].humble-lms-btn--success:focus,
+input[type='submit'].humble-lms-btn--success:active {
   background-color: #177a7a;
 }
 

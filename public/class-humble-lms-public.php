@@ -226,9 +226,7 @@ class Humble_LMS_Public {
       
       $html .= '</ul>';
 
-      $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . (int)$id . '">';
-      $html .= '<span class="humble-lms-syllabus-title">' . __('Start the course now', 'humble-lms') . '</span>';
-      $html .= '</a>';
+      $html .= '<span class="humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . (int)$id . '">' . __('Start the course now', 'humble-lms') . '</span>';
     $html .= '</nav>';
 
     return $html;

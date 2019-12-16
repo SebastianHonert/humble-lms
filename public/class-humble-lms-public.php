@@ -201,15 +201,15 @@ class Humble_LMS_Public {
 
     if( ! is_array( $lessons ) )
       return;
-
+    
     $lessons = get_posts( array(
       'post_type' => 'humble_lms_lesson',
       'post_status' => 'publish',
       'posts_per_page' => -1,
-      'orderby' => 'title',
+      'orderby' => 'post__in',
       'order' => 'ASC',
-      'include' => $lessons
-    ) );
+      'post__in' => $lessons
+    ));
 
     $html = '<nav>';
       $html = '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
@@ -218,17 +218,15 @@ class Humble_LMS_Public {
       foreach( $lessons as $key => $lesson ) {
         $description = get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true );
 
-        $html .= '<li class="humble-lms-syllabus-lesson">';
-        $html .= '<a href="' . esc_url( get_permalink( $lesson->ID ) )  . '?course=' . (int)$id .'">';
+        $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . (int)$id . '">';
         $html .= '<span class="humble-lms-syllabus-title">' . $lesson->post_title . '</span>';
         $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
-        $html .= '</a>';
         $html .= '</li>';
       }
       
       $html .= '</ul>';
 
-      $html .= '<a class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_permalink( $lessons[0]->ID ) )  . '?course=' . (int)$id . '">';
+      $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . (int)$id . '">';
       $html .= '<span class="humble-lms-syllabus-title">' . __('Start the course now', 'humble-lms') . '</span>';
       $html .= '</a>';
     $html .= '</nav>';
@@ -244,7 +242,7 @@ class Humble_LMS_Public {
   public function humble_lms_mark_complete( $atts = null ) {
     global $post;
 
-    $course_id = isset( $_GET['course'] ) ? (int)$_GET['course'] : null;
+    $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
 
     if( ! $course_id )
       return;
@@ -281,8 +279,19 @@ class Humble_LMS_Public {
     $html .= '</form>';
 
     $html .= '<div class="humble-lms-next-prev-lesson">';
-      $html .= $is_first ? '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course', 'humble-lms') . '</a>' : '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $prev_lesson->ID ) ) . '?course=' . $course_id . '">' . __('Previous lesson', 'humble-lms') . '</a>';
-      $html .= ! $is_last ? '<a class="humble-lms-next-lesson-link" href="' . esc_url( get_permalink( $next_lesson->ID ) ) . '?course=' . $course_id . '">' . __('Next lesson', 'humble-lms') . '</a>' : '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course', 'humble-lms') . '</a>';
+
+    if( $is_first ) {
+      $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course syllabus', 'humble-lms') . '</a>';
+    } else {
+      $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" data-course-id="' . $course_id . '" data-lesson-id="' . $prev_lesson->ID . '">' . __('Previous lesson', 'humble-lms') . '</a>';
+    }
+
+    if( $is_last ) {
+      $html .= '<a class="humble-lms-next-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course syllabus', 'humble-lms') . '</a>';
+    } else {
+      $html .= '<a class="humble-lms-next-lesson-link humble-lms-open-lesson" data-course-id="' . $course_id . '" data-lesson-id="' . $next_lesson->ID . '">' . __('Next lesson', 'humble-lms') . '</a>';
+    }
+    
     $html .= '</div>';
 
     return $html;

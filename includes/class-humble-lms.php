@@ -207,6 +207,7 @@ class Humble_LMS {
      * AJAX
      */
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );
+
     $this->loader->add_action( 'wp_ajax_nopriv_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
     $this->loader->add_action( 'wp_ajax_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
 

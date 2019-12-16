@@ -83,21 +83,12 @@
   color: #fff;
   font-size: 1em;
   font-weight: 400;
+  padding: .75em;
+  cursor: pointer;
 }
 
 .humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .5em;
-}
-
-.humble-lms-syllabus-lesson a,
-.humble-lms-syllabus-lesson a:hover,
-.humble-lms-syllabus-lesson a:focus,
-.humble-lms-syllabus-lesson a:active,
-.humble-lms-syllabus-lesson a:visited {
-  color: #fff;
-  text-decoration: none;
-  display: block;
-  padding: .75em;
 }
 
 .humble-lms-syllabus-lesson span {

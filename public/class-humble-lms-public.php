@@ -285,7 +285,7 @@ class Humble_LMS_Public {
     }
 
     if( $is_last ) {
-      $html .= '<a class="humble-lms-next-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course syllabus', 'humble-lms') . '</a>';
+      $html .= '<a class="humble-lms-next-lesson-link humble-lms-open-lesson" data-course-id="' . $course_id . '" data-lesson-id="' . $lessons[0] . '">' . __('Back to first lesson', 'humble-lms') . '</a>';
     } else {
       $html .= '<a class="humble-lms-next-lesson-link humble-lms-open-lesson" data-course-id="' . $course_id . '" data-lesson-id="' . $next_lesson->ID . '">' . __('Next lesson', 'humble-lms') . '</a>';
     }

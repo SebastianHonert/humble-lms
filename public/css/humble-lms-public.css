@@ -70,14 +70,14 @@
 
 /* Syllabus */
 
-.humble-lms-syllabus {
+ul.humble-lms-syllabus {
   display: block;
   list-style: none;
   margin: 0 0 1em;
   padding: 0 0;
 }
 
-.humble-lms-syllabus-lesson {
+li.humble-lms-syllabus-lesson {
   display: block;
   background: #1a4195;
   color: #fff;
@@ -86,11 +86,11 @@
   cursor: pointer;
 }
 
-.humble-lms-syllabus-lesson:not(:first-child) {
+li.humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .5em;
 }
 
-.humble-lms-syllabus-lesson span {
+li.humble-lms-syllabus-lesson span {
   display: block;
 }
 
@@ -205,6 +205,10 @@ input[type='submit'].humble-lms-btn--success:active {
 
 .humble-lms-flex-column {
   margin-bottom: 1em;
+}
+
+.humble-lms-flex-column--full {
+  width: 100%;
 }
 
 .humble-lms-flex-column--half {

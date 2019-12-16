@@ -11,7 +11,7 @@
 
  .humble-lms-course-tile {
   position: relative;
-  background: #1244af;
+  background: #1a4195;
   color: #fff;
   padding: 1em 1em 0 1em;
   background-size: cover;
@@ -33,7 +33,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: #1244af;
+  background: #1a4195;
   opacity: .7;
 }
 
@@ -66,6 +66,127 @@
 
 .humble-lms-course-tile-meta span {
   display: block;
+}
+
+/* Syllabus */
+
+.humble-lms-syllabus {
+  display: block;
+  list-style: none;
+  margin: 0 0 1em;
+  padding: 0 0;
+}
+
+.humble-lms-syllabus-lesson {
+  display: block;
+  background: #1a4195;
+  color: #fff;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.humble-lms-syllabus-lesson:not(:first-child) {
+  margin-top: .5em;
+}
+
+.humble-lms-syllabus-lesson a,
+.humble-lms-syllabus-lesson a:hover,
+.humble-lms-syllabus-lesson a:focus,
+.humble-lms-syllabus-lesson a:active,
+.humble-lms-syllabus-lesson a:visited {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: .75em;
+}
+
+.humble-lms-syllabus-lesson span {
+  display: block;
+}
+
+.humble-lms-syllabus-title {
+  font-weight: 600;
+  font-size: 1.25em;
+}
+
+.humble-lms-syllabus-description {
+  font-weight: 400;
+  font-size: .93875em;
+  margin-top: .5em;
+}
+
+/* Single lesson */
+
+.humble-lms-mark-complete {
+  margin-top: 1em;
+}
+
+.humble-lms-next-prev-lesson {
+  display: block;
+  margin-top: 2em;
+  font-size: .875em;
+}
+
+.humble-lms-next-prev-lesson a,
+.humble-lms-next-prev-lesson a:visited {
+  transition: color .2s linear;
+  display: inline-block;
+  color: #999;
+}
+
+.humble-lms-next-prev-lesson a:hover,
+.humble-lms-next-prev-lesson a:focus,
+.humble-lms-next-prev-lesson a:active {
+  color: #555;
+}
+
+.humble-lms-prev-lesson-link {
+  margin-right: 1em;
+}
+
+/* Buttons */
+
+.humble-lms-btn {
+  border-radius: .4rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 3.5rem;
+  letter-spacing: 1px;
+  line-height: 3.5rem;
+  padding: 0 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #2b54ac;
+  transition: all .3s ease-in-out;
+}
+
+.humble-lms-btn,
+.humble-lms-btn:hover,
+.humble-lms-btn:focus,
+.humble-lms-btn:active,
+.humble-lms-btn:visited {
+  color: #fff;
+}
+
+.humble-lms-btn:hover,
+.humble-lms-btn:focus,
+.humble-lms-btn:active {
+  background: #264995;
+  box-shadow: 0 .25rem .75rem rgba(0,0,0,.35);
+}
+
+.humble-lms-btn--success {
+  background-color: #1b8d8d;
+}
+
+.humble-lms-btn--success:hover,
+.humble-lms-btn--success:focus,
+.humble-lms-btn--success:active {
+  background-color: #177a7a;
 }
 
 /* Flex columns */

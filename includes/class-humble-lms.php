@@ -121,7 +121,12 @@ class Humble_LMS {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-public.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-public.php';
+    
+    /**
+		 * The class responsible for handling public ajax requests
+		 */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-ajax.php';
 
 		$this->loader = new Humble_LMS_Loader();
 
@@ -191,8 +196,19 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_post_types' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_taxonomies' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_custom_templates' );
+    $this->loader->add_filter( 'display_post_states', $plugin_public, 'humble_lms_add_post_states' );
+    $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_shortcode( 'course_archive', $plugin_public, 'humble_lms_course_archive' );
     $this->loader->add_shortcode( 'course_tile', $plugin_public, 'humble_lms_course_tile' );
+    $this->loader->add_shortcode( 'syllabus', $plugin_public, 'humble_lms_syllabus' );
+    $this->loader->add_shortcode( 'mark_complete', $plugin_public, 'humble_lms_mark_complete' );
+
+    /**
+     * AJAX
+     */
+    $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );
+    $this->loader->add_action( 'wp_ajax_nopriv_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
+    $this->loader->add_action( 'wp_ajax_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
 
 	}
 

@@ -1,32 +1,33 @@
 (function( $ ) {
-	'use strict';
+	'use strict'
 
 	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
+	 * AJAX
+	 * 
+	 * Calls an AJAX callback for the site front-end.
+	 * Add a button with class ".ajax" to test.
 	 */
+	$(document).on('submit', '#humble-lms-mark-complete', function (e) {
+    e.preventDefault();
 
+		$.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'mark_lesson_complete',
+        nonce: humble_lms.nonce
+      },
+      dataType: 'json',
+			error: function(MLHttpRequest, textStatus, errorThrown) {
+				console.error(errorThrown);
+			},
+			success: function(response, textStatus, XMLHttpRequest) {
+				console.log( response )
+			},
+			complete: function(reply, textStatus) {
+				console.log( textStatus )
+			}
+		})
+  })
+  
 })( jQuery );

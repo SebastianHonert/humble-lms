@@ -61,3 +61,82 @@ $args = array(
 );
 
 register_post_type( 'humble_lms_lesson', $args );
+
+// Course meta boxes
+
+function humble_lms_lesson_add_meta_boxes()
+{
+  add_meta_box( 'humble_lms_lesson_description_mb', __('Lesson description', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
+}
+
+add_action( 'add_meta_boxes', 'humble_lms_lesson_add_meta_boxes' );
+
+// Description meta box
+
+function humble_lms_lesson_description_mb()
+{
+  global $post;
+
+  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
+
+  $description = get_post_meta( $post->ID, 'humble_lms_lesson_description', true );
+
+  echo '<p>' . __('Describe the content of this lesson in a few words. Allowed HTML-tags: strong, em, b, i.', 'humble-lms') . '</p>';
+  echo '<textarea rows="5" class="widefat" name="humble_lms_lesson_description" id="humble_lms_lesson_description">' . $description . '</textarea>';
+  
+}
+
+// Save metabox data
+
+function humble_lms_save_lesson_meta_boxes( $post_id, $post )
+{
+  $nonce = ! empty( $_POST['humble_lms_meta_nonce'] ) ? $_POST['humble_lms_meta_nonce'] : '';
+
+  if( ! wp_verify_nonce( $nonce, 'humble_lms_meta_nonce' ) ) {
+    return $post_id;
+  }
+  
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+    return $post_id;
+  }
+
+  if( ! is_admin() ) {
+    return false;
+  }
+  
+  if ( ! current_user_can( 'edit_post', $post_id ) ) {
+    return $post_id;
+  }
+  
+  if ( ( ! $post_id ) || get_post_type( $post_id ) !== 'humble_lms_lesson' ) {
+    return false;
+  }
+
+  // Let's save some data!
+  $allowed_tags = array(
+    'strong' => array(),
+    'em' => array(),
+    'b' => array(),
+    'i' => array()
+  );
+
+  $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
+
+  if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )
+  {
+    foreach ($lesson_meta as $key => $value)
+    {
+      if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+
+      if( get_post_meta( $post->ID, $key, FALSE ) ) {
+        update_post_meta( $post->ID, $key, $value );
+      } else {
+        add_post_meta( $post->ID, $key, $value );
+      }
+
+      if( ! $value ) delete_post_meta( $post->ID, $key ); // Delete if blank
+    }
+  }
+}
+
+add_action('save_post', 'humble_lms_save_lesson_meta_boxes', 1, 2);

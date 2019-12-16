@@ -98,6 +98,10 @@ class Humble_LMS_Public {
 
 		wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, false );
 
+    wp_localize_script( $this->humble_lms, 'humble_lms', array(
+      'ajax_url' => admin_url( 'admin-ajax.php' ),
+      'nonce' => wp_create_nonce( 'humble_lms' )
+    ) );
   }
   
   /**
@@ -152,6 +156,8 @@ class Humble_LMS_Public {
   public function humble_lms_course_archive( $atts = null ) {
     extract( shortcode_atts( array (
       'tile_width' => 'half',
+      'style' => '',
+      'class' => '',
     ), $atts ) );
 
     $args = array(
@@ -165,7 +171,7 @@ class Humble_LMS_Public {
     $courses = get_posts( $args );
 
     $html = '';
-    $html .= '<div class="humble-lms-flex-columns">';
+    $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
     foreach( $courses as $course ) {
       $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" id="' . $course->ID . '"]');
@@ -177,6 +183,153 @@ class Humble_LMS_Public {
   }
 
   /**
+	 * Shortcode: syllabus
+	 *
+	 * @since    0.0.1
+	 */
+  public function humble_lms_syllabus( $atts = null ) {
+    global $post;
+
+    extract( shortcode_atts( array (
+      'id' => $post->ID,
+      'style' => '',
+      'class' => '',
+    ), $atts ) );
+
+    $lessons = get_post_meta( $id, 'humble_lms_course_lessons', true );
+    $lessons = explode( ',', $lessons );
+
+    if( ! is_array( $lessons ) )
+      return;
+
+    $lessons = get_posts( array(
+      'post_type' => 'humble_lms_lesson',
+      'post_status' => 'publish',
+      'posts_per_page' => -1,
+      'orderby' => 'title',
+      'order' => 'ASC',
+      'include' => $lessons
+    ) );
+
+    $html = '<nav>';
+      $html = '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
+      $html .= '<ul class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
+      
+      foreach( $lessons as $key => $lesson ) {
+        $description = get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true );
+
+        $html .= '<li class="humble-lms-syllabus-lesson">';
+        $html .= '<a href="' . esc_url( get_permalink( $lesson->ID ) )  . '?course=' . (int)$id .'">';
+        $html .= '<span class="humble-lms-syllabus-title">' . $lesson->post_title . '</span>';
+        $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
+        $html .= '</a>';
+        $html .= '</li>';
+      }
+      
+      $html .= '</ul>';
+
+      $html .= '<a class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_permalink( $lessons[0]->ID ) )  . '?course=' . (int)$id . '">';
+      $html .= '<span class="humble-lms-syllabus-title">' . __('Start the course now', 'humble-lms') . '</span>';
+      $html .= '</a>';
+    $html .= '</nav>';
+
+    return $html;
+  }
+
+  /**
+	 * Shortcode: mark lesson complete
+	 *
+	 * @since    0.0.1
+	 */
+  public function humble_lms_mark_complete( $atts = null ) {
+    global $post;
+
+    $course_id = isset( $_GET['course'] ) ? (int)$_GET['course'] : null;
+
+    if( ! $course_id )
+      return;
+
+    $course = get_post( $course_id );
+
+    if( ! $course )
+      return;
+
+    extract( shortcode_atts( array (
+      'style' => '',
+      'class' => '',
+    ), $atts ) );
+
+    $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+    $lessons = explode(',', $lessons);
+
+    $key = array_search( $post->ID, $lessons );
+    $is_first = $key === array_key_first( $lessons );
+    $is_last = $key === array_key_last( $lessons );
+
+    if( ! $is_last) {
+      $next_lesson = get_post( $lessons[$key+1] );
+    }
+
+    if( ! $is_first ) {
+      $prev_lesson = get_post( $lessons[$key-1] );
+    }
+
+    $html = '<form method="post" id="humble-lms-mark-complete">';
+      $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
+      $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
+      $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark complete and continue', 'humble-lms') . '">';
+    $html .= '</form>';
+
+    $html .= '<div class="humble-lms-next-prev-lesson">';
+      $html .= $is_first ? '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course', 'humble-lms') . '</a>' : '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $prev_lesson->ID ) ) . '?course=' . $course_id . '">' . __('Previous lesson', 'humble-lms') . '</a>';
+      $html .= ! $is_last ? '<a class="humble-lms-next-lesson-link" href="' . esc_url( get_permalink( $next_lesson->ID ) ) . '?course=' . $course_id . '">' . __('Next lesson', 'humble-lms') . '</a>' : '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course', 'humble-lms') . '</a>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+  /**
+	 * Add syllabus to single course page
+	 *
+	 * @since    0.0.1
+	 */
+  function humble_lms_add_content_to_pages( $content ) {
+    global $post;
+
+    // Single course
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' )
+    {
+        $content .= do_shortcode('[syllabus]');
+    }
+    
+    // Single lesson
+    elseif ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' )
+    {
+      $content .= do_shortcode('[mark_complete]');
+    }
+
+    return $content;
+  }
+
+  /**
+	 * Add post states for default plugin posts/pages
+	 *
+	 * @since    0.0.1
+	 */
+  public function humble_lms_add_post_states( $post_states ) {
+    global $post;
+
+    if( ! $post )
+      return $post_states;
+
+    if( $post->post_name === 'courses' ) {
+      $post_states[] = 'Humble LMS course archive';
+    }
+  
+    return $post_states;
+  }
+
+  /**
 	 * Shortcode: course tile
 	 *
 	 * @since    0.0.1
@@ -184,7 +337,7 @@ class Humble_LMS_Public {
   public function humble_lms_course_tile( $atts = null ) {
     extract( shortcode_atts( array (
       'id' => '',
-      'tile_width' => 'third'
+      'tile_width' => 'half'
     ), $atts ) );
 
     $course = get_post( $id );

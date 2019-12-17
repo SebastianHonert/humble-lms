@@ -174,7 +174,7 @@ class Humble_LMS_Public {
     $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
     foreach( $courses as $course ) {
-      $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" id="' . $course->ID . '"]');
+      $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" course_id="' . $course->ID . '"]');
     }
 
     $html .= '</div>';
@@ -191,16 +191,24 @@ class Humble_LMS_Public {
     global $post;
 
     extract( shortcode_atts( array (
-      'id' => $post->ID,
+      'course_id' => $post->ID,
+      'context' => 'course',
       'style' => '',
       'class' => '',
     ), $atts ) );
 
-    $lessons = get_post_meta( $id, 'humble_lms_course_lessons', true );
-    $lessons = explode( ',', $lessons );
+    if( $context === 'lesson' ) {
+      $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+      $lesson_id = $post->ID;
+    } else {
+      $lesson_id = null;
+    }
 
-    if( ! is_array( $lessons ) )
-      return;
+    $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
+
+    if( is_single() && get_post_type() === 'humble_lms_course' && empty( $lessons ) ) {
+      return '<p>' . __('There are no lessons attached to this course', 'humble-lms') . '</p>';
+    }
     
     $lessons = get_posts( array(
       'post_type' => 'humble_lms_lesson',
@@ -211,23 +219,37 @@ class Humble_LMS_Public {
       'post__in' => $lessons
     ));
 
-    $html = '<nav>';
-      $html = '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
-      $html .= '<ul class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
-      
-      foreach( $lessons as $key => $lesson ) {
-        $description = get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true );
+    // Course Syllabus
+    $html = '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
+      $html .= '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
+      if( ! $course_id ) {
+        $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not attached to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';
+      } else {
+        $html .= '<ul class="humble-lms-syllabus-lessons">';
 
-        $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . (int)$id . '">';
-        $html .= '<span class="humble-lms-syllabus-title">' . $lesson->post_title . '</span>';
-        $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
-        $html .= '</li>';
+        foreach( $lessons as $key => $lesson ) {
+          $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
+          $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
+          $class_lesson_completed = $this->humble_lms_user_completed_lesson( $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
+          $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
+          $html .= '<span class="humble-lms-syllabus-title">' . $lesson->post_title . '</span>';
+          $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
+          $html .= '</li>';
+        }
+        
+        $html .= '</ul>';
       }
-      
-      $html .= '</ul>';
 
-      $html .= '<span class="humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . (int)$id . '">' . __('Start the course now', 'humble-lms') . '</span>';
     $html .= '</nav>';
+
+    // View course/lesson
+    if( $context === 'course' ) {
+      $html .= '<span class="humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+    } else {
+      if( $course_id ) {
+        $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course overview', 'humble-lms') . '</a>';
+      }
+    }
 
     return $html;
   }
@@ -255,9 +277,8 @@ class Humble_LMS_Public {
       'class' => '',
     ), $atts ) );
 
-    $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
-    $lessons = explode(',', $lessons);
-
+    $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
+    
     $key = array_search( $post->ID, $lessons );
     $is_first = $key === array_key_first( $lessons );
     $is_last = $key === array_key_last( $lessons );
@@ -273,13 +294,19 @@ class Humble_LMS_Public {
     $html = '<form method="post" id="humble-lms-mark-complete">';
       $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
       $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
-      $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark complete and continue', 'humble-lms') . '">';
+      $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->humble_lms_user_completed_lesson( $post->ID ) . '">';
+      
+      if( $this->humble_lms_user_completed_lesson( $post->ID ) ) {
+        $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
+      } else {
+        $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark complete and continue', 'humble-lms') . '">';
+      }
     $html .= '</form>';
 
     $html .= '<div class="humble-lms-next-prev-lesson">';
 
     if( $is_first ) {
-      $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course syllabus', 'humble-lms') . '</a>';
+      $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course overview', 'humble-lms') . '</a>';
     } else {
       $html .= '<a class="humble-lms-prev-lesson-link humble-lms-open-lesson" data-course-id="' . $course_id . '" data-lesson-id="' . $prev_lesson->ID . '">' . __('Previous lesson', 'humble-lms') . '</a>';
     }
@@ -303,19 +330,34 @@ class Humble_LMS_Public {
   function humble_lms_add_content_to_pages( $content ) {
     global $post;
 
+    $html = $content;
+
     // Single course
     if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' )
     {
-        $content .= do_shortcode('[syllabus]');
+        $html = $content . do_shortcode('[syllabus]');
     }
     
     // Single lesson
     elseif ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' )
     {
-      $content .= do_shortcode('[mark_complete]');
+      $html = '<div class="humble-lms-flex-columns">';
+        $html .= '<div class="humble-lms-flex-column--two-third">';
+
+        if( isset( $_POST['course_id'] ) ) {
+          $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">' . __('Course', 'humble-lms') . ': <a href="' . esc_url( get_permalink( (int)$_POST['course_id'] ) ) . '">' . get_the_title( (int)$_POST['course_id'] ) . '</a></p>';
+        }
+
+        $html .= $content;
+        $html .= do_shortcode('[mark_complete]');
+        $html .= '</div>';
+        $html .= '<div class="humble-lms-flex-column--third">';
+        $html .= do_shortcode('[syllabus context="lesson"]');
+        $html .= '</div>';
+      $html .= '</div>';
     }
 
-    return $content;
+    return $html;
   }
 
   /**
@@ -343,19 +385,19 @@ class Humble_LMS_Public {
 	 */
   public function humble_lms_course_tile( $atts = null ) {
     extract( shortcode_atts( array (
-      'id' => '',
+      'course_id' => '',
       'tile_width' => 'half'
     ), $atts ) );
 
-    $course = get_post( $id );
-    $featured_img_url = get_the_post_thumbnail_url( $id, 'humble-lms-course-tile'); 
-    $level = strip_tags( get_the_term_list( $id, 'humble_lms_course_level', '', ', ') );
+    $course = get_post( $course_id );
+    $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile'); 
+    $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_course_level', '', ', ') );
     $level = $level ? $level : __('not specified', 'humble-lms');
-    $duration = get_post_meta( $id, 'humble_lms_course_duration', true );
+    $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
     $duration = $duration ? $duration : __('not specified', 'humble-lms');
 
     $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . '">';
-      $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $id ) ) . '" class="humble-lms-course-tile">';
+      $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
         $html .= '<div class="humble-lms-course-tile-layer"></div>';
         $html .= '<div class="humble-lms-16-9">';
           $html .= '<div class="humble-lms-course-title">' . $course->post_title . '</div>';
@@ -368,6 +410,21 @@ class Humble_LMS_Public {
     $html .= '</div>';
 
     return $html;
+  }
+
+  /**
+	 * Shortcode: course tile
+	 *
+	 * @since    0.0.1
+	 */
+  public function humble_lms_user_completed_lesson( $lesson_id ) {
+    if( ! is_user_logged_in() || ! $lesson_id )
+      return;
+
+    $user_id = get_current_user_id();
+    $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
+    
+    return $lessons_completed ? in_array( $lesson_id, $lessons_completed ) : '';
   }
 
 }

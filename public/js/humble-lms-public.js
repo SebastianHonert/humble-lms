@@ -49,6 +49,7 @@
         action: 'mark_lesson_complete',
         courseId: $('#course-id').val(),
         lessonId: $('#lesson-id').val(),
+        lessonCompleted:  $(this).data('lesson-completed'),
         nonce: humble_lms.nonce,
         markComplete: true
       },

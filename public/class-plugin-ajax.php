@@ -29,6 +29,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       // Mark lesson complete and continue to the next lesson
       $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
+      $lesson_completed = isset( $_POST['lessonCompleted'] ) && $_POST['lessonCompleted'] === 'true' ? true : false;
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
 
       if( ! $course_id ) {
@@ -61,8 +62,32 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       if( ! $course )
         return;
 
-      $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
-      $lessons = explode(',', $lessons);
+      if( is_user_logged_in() ) {
+        $user_id = get_current_user_id();
+        $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
+        
+        if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
+        
+        // Marked as complete => add lesson ID to user meta, else remove
+        if( $lesson_id && ! in_array( $lesson_id, $lessons_completed ) ) {
+          $lessons_completed[] = $lesson_id;
+        } else {
+          if( ( $key = array_search( $lesson_id, $lessons_completed ) ) !== false ) {
+            unset( $lessons_completed[$key] );
+          }
+        }
+
+        update_user_meta( $user_id, 'humble_lms_lessons_completed', $lessons_completed );
+        
+        // Clear data (testing)
+        // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
+      }
+
+      $updated = update_user_meta( $user_id, 'some_meta_key', $new_value );
+
+      // Redirect to the next lesson
+
+      $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
 
       $key = array_search( $lesson_id, $lessons );
       $is_last = $key === array_key_last( $lessons );

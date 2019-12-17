@@ -70,20 +70,45 @@
 
 /* Syllabus */
 
-ul.humble-lms-syllabus {
+nav.humble-lms-syllabus {
+  display: block;
+  margin-bottom: 1em;
+}
+
+ul.humble-lms-syllabus-lessons {
   display: block;
   list-style: none;
-  margin: 0 0 1em;
+  margin: 0 0;
   padding: 0 0;
+}
+
+body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
+  font-size: .75em;
 }
 
 li.humble-lms-syllabus-lesson {
   display: block;
-  background: #1a4195;
+  background: #2b54ac;
   color: #fff;
   font-weight: 400;
   padding: .75em;
   cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+li.humble-lms-syllabus-lesson:hover,
+li.humble-lms-syllabus-lesson--current {
+  background: #1a4195;
+}
+
+li.humble-lms-syllabus-lesson--completed {
+  background: #1b8d8d;
+}
+
+li.humble-lms-syllabus-lesson--completed:hover,
+li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed,
+li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed:hover {
+  background: #177a7a;
 }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
@@ -105,7 +130,19 @@ li.humble-lms-syllabus-lesson span {
   margin-top: .5em;
 }
 
+.single-humble_lms_lesson .humble-lms-syllabus h2 {
+  font-size: 1.125em;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: .4125em;
+  font-weight: 400;
+}
+
 /* Single lesson */
+
+.humble-lms-course-meta {
+  font-size: .75em;
+}
 
 .humble-lms-mark-complete {
   margin-top: 1em;
@@ -121,13 +158,13 @@ li.humble-lms-syllabus-lesson span {
 .humble-lms-next-prev-lesson a:visited {
   transition: color .2s linear;
   display: inline-block;
-  color: #999;
+  /* color: #777; */
 }
 
 .humble-lms-next-prev-lesson a:hover,
 .humble-lms-next-prev-lesson a:focus,
 .humble-lms-next-prev-lesson a:active {
-  color: #555;
+  /* color: #333; */
 }
 
 .humble-lms-prev-lesson-link {
@@ -186,6 +223,20 @@ input[type='submit'].humble-lms-btn--success:hover,
 input[type='submit'].humble-lms-btn--success:focus,
 input[type='submit'].humble-lms-btn--success:active {
   background-color: #177a7a;
+}
+
+.humble-lms-btn--error,
+input[type='submit'].humble-lms-btn--error {
+  background-color: #8d1b24;
+}
+
+.humble-lms-btn--error:hover,
+.humble-lms-btn--error:focus,
+.humble-lms-btn--error:active,
+input[type='submit'].humble-lms-btn--error:hover,
+input[type='submit'].humble-lms-btn--error:focus,
+input[type='submit'].humble-lms-btn--error:active {
+  background-color: #72151d;
 }
 
 /* Flex columns */

@@ -42,7 +42,7 @@
             return $(item).data('id')
           })
 
-          $('#humble_lms_course_lessons').val(selectedItemIds.join())
+          $('#humble_lms_course_lessons').val(JSON.stringify(selectedItemIds))
         }
       })
     },

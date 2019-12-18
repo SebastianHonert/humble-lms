@@ -50,7 +50,8 @@ class Humble_LMS_Public {
 	public function __construct( $humble_lms, $version ) {
 
 		$this->humble_lms = $humble_lms;
-		$this->version = $version;
+    $this->version = $version;
+    $this->user = new Humble_LMS_Public_User;
 
 	}
 
@@ -230,7 +231,7 @@ class Humble_LMS_Public {
         foreach( $lessons as $key => $lesson ) {
           $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
           $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
-          $class_lesson_completed = $this->humble_lms_user_completed_lesson( $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
+          $class_lesson_completed = $this->user->humble_lms_user_completed_lesson( $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
           $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
           $html .= '<span class="humble-lms-syllabus-title">' . $lesson->post_title . '</span>';
           $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
@@ -294,9 +295,9 @@ class Humble_LMS_Public {
     $html = '<form method="post" id="humble-lms-mark-complete">';
       $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
       $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
-      $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->humble_lms_user_completed_lesson( $post->ID ) . '">';
+      $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->user->humble_lms_user_completed_lesson( $post->ID ) . '">';
       
-      if( $this->humble_lms_user_completed_lesson( $post->ID ) ) {
+      if( $this->user->humble_lms_user_completed_lesson( $post->ID ) ) {
         $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
       } else {
         $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark complete and continue', 'humble-lms') . '">';
@@ -361,24 +362,6 @@ class Humble_LMS_Public {
   }
 
   /**
-	 * Add post states for default plugin posts/pages
-	 *
-	 * @since    0.0.1
-	 */
-  public function humble_lms_add_post_states( $post_states ) {
-    global $post;
-
-    if( ! $post )
-      return $post_states;
-
-    if( $post->post_name === 'courses' ) {
-      $post_states[] = 'Humble LMS course archive';
-    }
-  
-    return $post_states;
-  }
-
-  /**
 	 * Shortcode: course tile
 	 *
 	 * @since    0.0.1
@@ -410,21 +393,6 @@ class Humble_LMS_Public {
     $html .= '</div>';
 
     return $html;
-  }
-
-  /**
-	 * Shortcode: course tile
-	 *
-	 * @since    0.0.1
-	 */
-  public function humble_lms_user_completed_lesson( $lesson_id ) {
-    if( ! is_user_logged_in() || ! $lesson_id )
-      return;
-
-    $user_id = get_current_user_id();
-    $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
-    
-    return $lessons_completed ? in_array( $lesson_id, $lessons_completed ) : '';
   }
 
 }

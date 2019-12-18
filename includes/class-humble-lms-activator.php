@@ -37,7 +37,7 @@ class Humble_LMS_Activator {
         'post_type' => 'page',
         'post_title' => 'Courses',
         'post_name' => 'courses',
-        'post_content' => '[course_archive]',
+        'post_content' => '[course_archive tile_width="half"]',
         'post_status' => 'publish',
         'post_author' => 1
       );

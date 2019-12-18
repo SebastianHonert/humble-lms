@@ -126,7 +126,12 @@ class Humble_LMS {
     /**
 		 * The class responsible for handling public ajax requests
 		 */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-ajax.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-ajax.php';
+
+    /**
+		 * The class responsible for handling user data
+		 */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-user.php';
 
 		$this->loader = new Humble_LMS_Loader();
 
@@ -176,7 +181,8 @@ class Humble_LMS {
 		$plugin_admin = new Humble_LMS_Admin( $this->get_humble_lms(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+    $this->loader->add_filter( 'display_post_states', $plugin_admin, 'humble_lms_add_post_states' );
 
 	}
 
@@ -196,7 +202,6 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_post_types' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_taxonomies' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_custom_templates' );
-    $this->loader->add_filter( 'display_post_states', $plugin_public, 'humble_lms_add_post_states' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_shortcode( 'course_archive', $plugin_public, 'humble_lms_course_archive' );
     $this->loader->add_shortcode( 'course_tile', $plugin_public, 'humble_lms_course_tile' );
@@ -210,6 +215,11 @@ class Humble_LMS {
 
     $this->loader->add_action( 'wp_ajax_nopriv_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
     $this->loader->add_action( 'wp_ajax_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
+
+    /**
+     * User
+     */
+    $plugin_user = new Humble_LMS_Public_User( $plugin_public );
 
 	}
 

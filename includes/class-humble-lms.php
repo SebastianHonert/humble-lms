@@ -124,6 +124,11 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-public.php';
     
     /**
+		 * The class provides the plugin shortcodes
+		 */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-shortcodes.php';
+
+    /**
 		 * The class responsible for handling public ajax requests
 		 */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-ajax.php';
@@ -203,10 +208,16 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_taxonomies' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_custom_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
-    $this->loader->add_shortcode( 'course_archive', $plugin_public, 'humble_lms_course_archive' );
-    $this->loader->add_shortcode( 'course_tile', $plugin_public, 'humble_lms_course_tile' );
-    $this->loader->add_shortcode( 'syllabus', $plugin_public, 'humble_lms_syllabus' );
-    $this->loader->add_shortcode( 'mark_complete', $plugin_public, 'humble_lms_mark_complete' );
+
+    /**
+     * Shortcodes
+     */
+    $plugin_shortcodes = new Humble_LMS_Public_Shortcodes( $plugin_public );
+
+    $this->loader->add_shortcode( 'course_archive', $plugin_shortcodes, 'humble_lms_course_archive' );
+    $this->loader->add_shortcode( 'course_tile', $plugin_shortcodes, 'humble_lms_course_tile' );
+    $this->loader->add_shortcode( 'syllabus', $plugin_shortcodes, 'humble_lms_syllabus' );
+    $this->loader->add_shortcode( 'mark_complete', $plugin_shortcodes, 'humble_lms_mark_complete' );
 
     /**
      * AJAX

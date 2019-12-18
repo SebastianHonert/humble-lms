@@ -157,18 +157,34 @@ class Humble_LMS_Public {
   function humble_lms_add_content_to_pages( $content ) {
     global $post;
 
-    $html = $content;
+    $html = '';
+    $course_id = null;
+    $lesson_id = null;
+
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
+      $course_id = $post->ID;
+    } elseif( isset( $_POST['course_id'] ) ) {
+      $course_id = (int)$_POST['course_id'];
+    }
+
+    // Success message: User completed course
+    if( $this->user->completed_course( $course_id ) ) {
+      $html .= '<div class="humble-lms-message humble-lms-message--success">
+        <span class="humble-lms-message-title">Congratulations!</span>
+        <span class="humble-lms-message-content">You successfully completed the course "' . get_the_title( $course_id ) . '".</span> 
+      </div>';
+    }
 
     // Single course
     if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' )
     {
-        $html = $content . do_shortcode('[syllabus]');
+        $html .= $content . do_shortcode('[syllabus]');
     }
     
     // Single lesson
     elseif ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' )
     {
-      $html = '<div class="humble-lms-flex-columns">';
+      $html .= '<div class="humble-lms-flex-columns">';
         $html .= '<div class="humble-lms-flex-column--two-third">';
 
         if( isset( $_POST['course_id'] ) ) {

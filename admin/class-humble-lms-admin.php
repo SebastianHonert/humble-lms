@@ -103,23 +103,5 @@ class Humble_LMS_Admin {
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-admin.js', array( 'jquery' ), $this->version, true );
 
   }
-  
-  /**
-	 * Add post states for default plugin posts/pages
-	 *
-	 * @since    0.0.1
-	 */
-  public function humble_lms_add_post_states( $post_states ) {
-    global $post;
-
-    if( ! $post )
-      return $post_states;
-
-    if( $post->post_name === 'courses' ) {
-      $post_states[] = 'Humble LMS course archive';
-    }
-  
-    return $post_states;
-  }
 
 }

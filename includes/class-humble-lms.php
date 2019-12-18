@@ -187,7 +187,6 @@ class Humble_LMS {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-    $this->loader->add_filter( 'display_post_states', $plugin_admin, 'humble_lms_add_post_states' );
 
 	}
 

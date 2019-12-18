@@ -238,6 +238,32 @@ input[type='submit'].humble-lms-btn--error:active {
   background-color: #72151d;
 }
 
+/* Messages */
+.humble-lms-message {
+  display: block;
+  margin-bottom: 1.5em;
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  padding: 1em;
+}
+
+.humble-lms-message-title {
+  display: block;
+  font-size: 1.125em;
+  font-weight: 600;
+}
+
+.humble-lms-message-content {
+  display: block;
+  padding-top: 1em;
+}
+
+.humble-lms-message--success {
+  color: #0f5050;
+  border: 1px solid #b0d6d6;
+  background: #ecf9f9;
+}
+
 /* Flex columns */
 
 .humble-lms-flex-columns,

@@ -39,4 +39,4 @@ $args = array(
   'rewrite'                    => $rewrite,
 );
 
-register_taxonomy( 'humble_lms_course_level', array( 'humble_lms_course', 'humble_lms_lesson' ), $args );
+register_taxonomy( 'humble_lms_course_level', array( 'humble_lms_track', 'humble_lms_course', 'humble_lms_lesson' ), $args );

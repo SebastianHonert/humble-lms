@@ -30,20 +30,7 @@ class Humble_LMS_Activator {
 	 * @since    0.0.1
 	 */
 	public static function activate() {
-    $has_archive_page = get_page_by_path('courses');
-
-    if( ! $has_archive_page ) {
-      $post = array(
-        'post_type' => 'page',
-        'post_title' => 'Courses',
-        'post_name' => 'courses',
-        'post_content' => '[course_archive tile_width="half"]',
-        'post_status' => 'publish',
-        'post_author' => 1
-      );
-
-      $post_id = wp_insert_post( $post );
-    }
+    // ...
   }
 
 }

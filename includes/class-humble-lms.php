@@ -205,7 +205,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_post_types' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_taxonomies' );
-    $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_custom_templates' );
+    $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_archive_templates' );
+    $this->loader->add_filter( 'single_template', $plugin_public, 'humble_lms_single_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
 
     /**
@@ -213,6 +214,8 @@ class Humble_LMS {
      */
     $plugin_shortcodes = new Humble_LMS_Public_Shortcodes( $plugin_public );
 
+    $this->loader->add_shortcode( 'track_archive', $plugin_shortcodes, 'humble_lms_track_archive' );
+    $this->loader->add_shortcode( 'track_tile', $plugin_shortcodes, 'humble_lms_track_tile' );
     $this->loader->add_shortcode( 'course_archive', $plugin_shortcodes, 'humble_lms_course_archive' );
     $this->loader->add_shortcode( 'course_tile', $plugin_shortcodes, 'humble_lms_course_tile' );
     $this->loader->add_shortcode( 'syllabus', $plugin_shortcodes, 'humble_lms_syllabus' );

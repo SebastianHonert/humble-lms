@@ -80,7 +80,8 @@ function humble_lms_course_lessons_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $course_lessons = json_decode( get_post_meta($post->ID, 'humble_lms_course_lessons', true)[0] );
+  $course_lessons = get_post_meta($post->ID, 'humble_lms_course_lessons', true);
+  $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
 
   $args = array(
     'post_type' => 'humble_lms_lesson',
@@ -159,7 +160,6 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   // Let's save some data!
   $course_meta['humble_lms_course_lessons'] = isset( $_POST['humble_lms_course_lessons'] ) ? (array) $_POST['humble_lms_course_lessons'] : array();
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
-
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )

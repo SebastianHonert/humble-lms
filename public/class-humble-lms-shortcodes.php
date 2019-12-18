@@ -23,12 +23,83 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     }
 
     /**
+     * Shortcode: track archive
+     *
+     * @since    0.0.1
+     */
+    public function humble_lms_track_archive( $atts = null ) {
+      extract( shortcode_atts( array (
+        'tile_width' => 'half',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
+
+      $args = array(
+        'post_type' => 'humble_lms_track',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+      );
+
+      $tracks = get_posts( $args );
+
+      $html = '';
+      $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
+
+      foreach( $tracks as $track ) {
+        $html .= do_shortcode('[track_tile tile_width="' . $tile_width . '" track_id="' . $track->ID . '"]');
+      }
+
+      $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
+     * Shortcode: track tile
+     *
+     * @since    0.0.1
+     */
+    public function humble_lms_track_tile( $atts = null ) {
+      extract( shortcode_atts( array (
+        'track_id' => '',
+        'tile_width' => 'half'
+      ), $atts ) );
+
+      $track = get_post( $track_id );
+      $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile'); 
+      $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_course_level', '', ', ') );
+      $level = $level ? $level : __('not specified', 'humble-lms');
+      $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
+      $duration = $duration ? $duration : __('not specified', 'humble-lms');
+
+      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . '">';
+        $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
+          $html .= '<div class="humble-lms-course-tile-layer"></div>';
+          $html .= '<div class="humble-lms-16-9">';
+            $html .= '<div class="humble-lms-course-title">' . $track->post_title . '</div>';
+          $html .= '</div>';
+        $html .= '</a>';
+        $html .= '<div class="humble-lms-course-tile-meta">';
+          $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
+          $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
+        $html .= '</div>';
+      $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
      * Shortcode: course archive
      *
      * @since    0.0.1
      */
     public function humble_lms_course_archive( $atts = null ) {
+      global $post;
+
       extract( shortcode_atts( array (
+        'track_id' => '',
         'tile_width' => 'half',
         'style' => '',
         'class' => '',
@@ -41,6 +112,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'orderby' => 'title',
         'order' => 'ASC',
       );
+
+      if( ! empty( $track_id ) && ( is_single() && $post->post_type == 'humble_lms_track' ) ) {
+        $track_courses = get_post_meta($track_id, 'humble_lms_track_courses', true);
+        $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+        
+        if( ! empty( $track_courses ) ) {
+          $args['include'] = $track_courses;
+        } else {
+          return '<p>' . __('This track does not include any courses.', 'humble-lms') . '</p>';
+        }
+      }
 
       $courses = get_posts( $args );
 

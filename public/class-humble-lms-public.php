@@ -111,6 +111,7 @@ class Humble_LMS_Public {
 	 * @since    0.0.1
 	 */
 	public function register_custom_post_types() {
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
   }
@@ -125,24 +126,42 @@ class Humble_LMS_Public {
   }
 
   /**
-	 * Register custom templates
+	 * Register archive templates
 	 *
 	 * @since    0.0.1
 	 */
-  public function humble_lms_custom_templates( $template ) {
+  public function humble_lms_archive_templates( $template ) {
     global $wp_query, $post;
 
-    // Course archive template
+    // Track archive
+    if ( is_archive() && $post->post_type == 'humble_lms_track' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-archive.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-archive.php';
+      }
+    }
+
+    // Course archive
     if ( is_archive() && $post->post_type == 'humble_lms_course' ) {
       if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php';
       }
     }
 
-    // Course single template
-    if ( is_single() && $post->post_type == 'humble_lms_course' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php' ) ) {
-          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php';
+    return $template;
+  }
+
+  /**
+	 * Register single templates
+	 *
+	 * @since    0.0.1
+	 */
+  public function humble_lms_single_templates( $template ) {
+    global $wp_query, $post;
+
+    // Track single
+    if ( is_single() && $post->post_type == 'humble_lms_track' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-single.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-single.php';
       }
     }
 

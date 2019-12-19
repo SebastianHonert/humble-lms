@@ -68,6 +68,7 @@ function humble_lms_course_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_course_lessons_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_lessons_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
@@ -131,6 +132,18 @@ function humble_lms_course_duration_mb()
   
 }
 
+// Featured image meta box
+
+function humble_lms_course_show_featured_image_mb() {
+  global $post;
+  global $wp_roles;
+
+  $show = get_post_meta($post->ID, 'humble_lms_course_show_featured_image', true);
+  $checked = $show ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_course_show_featured_image" id="humble_lms_course_show_featured_image" value="1" ' . $checked . '>' . __('Yes, display the featured image on the course page.', 'humble-lms') . '</p>';
+}
+
 // Save metabox data
 
 function humble_lms_save_course_meta_boxes( $post_id, $post )
@@ -161,6 +174,7 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_course_lessons'] = isset( $_POST['humble_lms_course_lessons'] ) ? (array) $_POST['humble_lms_course_lessons'] : array();
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
+  $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

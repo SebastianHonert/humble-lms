@@ -8,7 +8,10 @@ if (have_posts()):
 
     echo '<section id="humble-lms-course-content">';
 
-      the_post_thumbnail('post-thumbnail', ['class' => 'humble-lms-featured-image', 'title' => 'Featured image']);
+      $show_featured_image = get_post_meta( $post->ID, 'humble_lms_course_show_featured_image', true );
+
+      if( $show_featured_image === '1' )
+        the_post_thumbnail('post-thumbnail', ['class' => 'humble-lms-featured-image', 'title' => 'Featured image']);
 
       echo '<h1>' . get_the_title() . '</h1>';
 

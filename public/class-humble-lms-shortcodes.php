@@ -212,17 +212,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // Course Syllabus
       $html = '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
-        $html .= '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
-
-        // Meta information
-        if( $lesson_id ) {
-          $level = strip_tags( get_the_term_list( $lesson_id, 'humble_lms_course_level', '', ', ') );
-          $level = $level ? ' | ' . $level : '';
-          $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
-          $html .= '<a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a>';
-          $html .= $level;
-          $html .= '</p>';
-        }
+        $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
         if( ! $course_id ) {
           $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not attached to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';
@@ -244,6 +234,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
 
       $html .= '</nav>';
+
+      // Meta information
+      if( $lesson_id ) {
+        $level = strip_tags( get_the_term_list( $lesson_id, 'humble_lms_course_level', '', ', ') );
+        $level = $level ? '<br><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level : '';
+        $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
+        $duration = $duration ? '<br><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration : '';
+
+        $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
+          $html .= '<strong>' . __('Course', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a>';
+          $html .= $level;
+          $html .= $duration;
+        $html .= '</p>';
+      }
 
       // View course/lesson
       if( $context === 'course' ) {

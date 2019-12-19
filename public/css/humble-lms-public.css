@@ -32,7 +32,7 @@
   right: 0;
   z-index: 2;
   color: gold;
-  font-size: 2.5em;
+  font-size: 2em;
   text-shadow: 1px 1px 0 rgba(0,0,0,.4);
 }
 
@@ -164,7 +164,7 @@ li.humble-lms-syllabus-lesson span {
 /* Single lesson */
 
 .humble-lms-course-meta {
-  font-size: .75em;
+  font-size: .875em;
 }
 
 .humble-lms-mark-complete {

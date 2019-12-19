@@ -1,6 +1,6 @@
 <?php
 /**
- * This class provides user data functionality
+ * This class provides front-end user data functionality.
  *
  * Creates the various functions used for user data management via front-end and AJAX interactions
  *
@@ -49,6 +49,31 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       sort( $lessons_completed );
 
       return array_intersect( $course_lessons, $lessons_completed ) === $course_lessons;
+    }
+
+    /**
+     * Checks user privileges when accessing course contents.
+     *
+     * @since    0.0.1
+     */
+    public function can_access_lesson( $lesson_id ) {
+      // Administrators can access all content
+      if( current_user_can('manage_options') )
+        return true;
+
+      $levels = get_post_meta( $lesson_id, 'humble_lms_lesson_access_levels', false );
+      $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
+
+      // Public lesson
+      if( empty( $levels ) )
+        return true;
+
+      if( ! is_user_logged_in() )
+        return;
+
+      $user = wp_get_current_user();
+
+      return ! empty( array_intersect( $user->roles, $levels ) );
     }
     
   }

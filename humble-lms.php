@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Humble LMS
  * Plugin URI:        https://minimalwordpress.com/humble-lms
- * Description:       Humble LMS is a very simple learning management system for WordPress with a focus on simplicity.
+ * Description:       Humble LMS is a learning management system plugin for WordPress with a focus on simplicity.
  * Version:           0.0.1
  * Author:            Sebastian Honert
  * Author URI:        https://sebastianhonert.com/
@@ -33,7 +33,6 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  * Start at version 0.0.1 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
 define( 'HUMBLE_LMS_VERSION', '0.0.1' );
 

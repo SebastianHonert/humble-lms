@@ -75,6 +75,7 @@ class Humble_LMS_Public {
 		 */
 
 		wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/humble-lms-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'themify-icons', plugin_dir_url( __FILE__ ) . 'font/themify-icons/themify-icons.css', array(), $this->version, 'all' );
 
 	}
 
@@ -177,6 +178,15 @@ class Humble_LMS_Public {
     global $post;
 
     $html = '';
+
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) ) {
+      $html .= '<div class="humble-lms-message humble-lms-message--error">';
+      $html .= '<span class="humble-lms-message-title"><i class="ti-lock"></i>' . __('Access denied', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-message-content">' . sprintf( __('You need to be <a href="%s">logged in</a> and have the required permissions in order to access the requested content.', 'humble-lms' ), wp_login_url() ) . '</span>';
+      $html .= '</div>';
+    }
+
+
     $course_id = null;
     $lesson_id = null;
 
@@ -189,8 +199,8 @@ class Humble_LMS_Public {
     // Success message: User completed course
     if( $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
-        <span class="humble-lms-message-title">Congratulations!</span>
-        <span class="humble-lms-message-content">You successfully completed the course "' . get_the_title( $course_id ) . '".</span> 
+        <span class="humble-lms-message-title"><i class="ti-medall"></i>' . __('Congratulations', 'humble-lms') . '</span>
+        <span class="humble-lms-message-content">' . sprintf( __('You successfully completed the course "%s".', 'humble-lms'), get_the_title( $course_id ) ) . '</span> 
       </div>';
     }
 
@@ -220,6 +230,26 @@ class Humble_LMS_Public {
     }
 
     return $html;
+  }
+
+  /**
+	 * Template redirect
+	 *
+   * This function checks user access levels and redirects accordingly. 
+	 * @since    0.0.1
+	 */
+  function humble_lms_template_redirect() {
+    global $post;
+
+    if ( is_single() && $post->post_type == 'humble_lms_lesson' && ! $this->user->can_access_lesson( $post->ID ) ) {
+      if( ! empty( $_POST['course_id'] ) ) {
+        wp_redirect( esc_url( get_permalink( (int)$_POST['course_id'] ) . '?access=denied' ) );
+      } else {
+        wp_redirect( esc_url( get_post_type_archive_link( 'humble_lms_course') ) . '?access=denied' );
+      }
+
+      die;
+    }
   }
 
 }

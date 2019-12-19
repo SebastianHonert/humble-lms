@@ -64,17 +64,16 @@ register_post_type( 'humble_lms_lesson', $args );
 
 // Course meta boxes
 
-function humble_lms_lesson_add_meta_boxes()
-{
-  add_meta_box( 'humble_lms_lesson_description_mb', __('Lesson description', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
+function humble_lms_lesson_add_meta_boxes() {
+  add_meta_box( 'humble_lms_lesson_description_mb', __('What is this lesson about?', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
+  add_meta_box( 'humble_lms_lesson_access_levels_mb', __('Who can access this lesson?', 'humble-lms'), 'humble_lms_lesson_access_levels_mb', 'humble_lms_lesson', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_lesson_add_meta_boxes' );
 
 // Description meta box
 
-function humble_lms_lesson_description_mb()
-{
+function humble_lms_lesson_description_mb() {
   global $post;
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
@@ -83,7 +82,26 @@ function humble_lms_lesson_description_mb()
 
   echo '<p>' . __('Describe the content of this lesson in a few words. Allowed HTML-tags: strong, em, b, i.', 'humble-lms') . '</p>';
   echo '<textarea rows="5" class="widefat" name="humble_lms_lesson_description" id="humble_lms_lesson_description">' . $description . '</textarea>';
-  
+}
+
+// Access level meta box
+
+function humble_lms_lesson_access_levels_mb() {
+  global $post;
+  global $wp_roles;
+
+  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
+
+  $roles = $wp_roles->roles;
+  $levels = get_post_meta( $post->ID, 'humble_lms_lesson_access_levels', false );
+  $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
+
+  echo '<p>' . __('Select the user roles that can access this lesson. If you do not select any specific role(s), the lesson will be publicly available.', 'humble-lms') . '</p>';
+  foreach( $roles as $key => $role ) {
+    $checked = in_array( $key, $levels ) || $key === 'administrator' ? 'checked' : '';
+    $disabled = $key === 'administrator' ? 'disabled' : '';
+    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" id="humble_lms_lesson_access_levels" value="' . $key . '" ' . $checked . ' ' . $disabled . '> ' . $role['name'] . '<br>';
+  }
 }
 
 // Save metabox data
@@ -121,6 +139,8 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   );
 
   $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
+  $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? (array) $_POST['humble_lms_lesson_access_levels'] : array();
+  $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );
 
   if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )
   {

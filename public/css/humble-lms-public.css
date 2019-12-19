@@ -24,6 +24,18 @@
   display: block;
 }
 
+.humble-lms-course-completed .humble-lms-course-tile::before {
+  font-family: 'themify';
+  content: '\e623';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: gold;
+  font-size: 2.5em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.4);
+}
+
 .humble-lms-course-tile,
 .humble-lms-course-tile:hover,
 .humble-lms-course-tile:focus,
@@ -48,7 +60,12 @@
   height: 0;
   padding: 0 0 56.25%;
   overflow: hidden;
-}   
+}
+
+#humble-lms-course-content {
+  display: block;
+  margin-bottom: 1em;
+}
 
 .humble-lms-course-tile .humble-lms-course-title {
   font-weight: 600;
@@ -160,19 +177,6 @@ li.humble-lms-syllabus-lesson span {
   font-size: .875em;
 }
 
-.humble-lms-next-prev-lesson a,
-.humble-lms-next-prev-lesson a:visited {
-  transition: color .2s linear;
-  display: inline-block;
-  /* color: #777; */
-}
-
-.humble-lms-next-prev-lesson a:hover,
-.humble-lms-next-prev-lesson a:focus,
-.humble-lms-next-prev-lesson a:active {
-  /* color: #333; */
-}
-
 .humble-lms-prev-lesson-link {
   margin-right: 1em;
 }
@@ -185,7 +189,7 @@ input[type='submit'].humble-lms-btn {
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.125rem !important;
+  font-size: 1em;
   font-weight: 700;
   height: 3.25rem;
   letter-spacing: 1px;
@@ -302,6 +306,14 @@ input[type='submit'].humble-lms-btn--error:active {
   background: linear-gradient(180deg, rgba(255,255,255,0) 67%, #e69fa6 72%);
 }
 
+/* Media */
+
+.humble-lms-featured-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.5em;
+}
+
 /* Flex columns */
 
 .humble-lms-flex-columns,
@@ -374,6 +386,10 @@ input[type='submit'].humble-lms-btn--error:active {
 
   .humble-lms-course-tile .humble-lms-course-title {
     font-size: 2em;
+  }
+
+  .humble-lms-next-prev-lesson {
+    margin-top: 1em;
   }
 }
 

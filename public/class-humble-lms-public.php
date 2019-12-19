@@ -166,6 +166,20 @@ class Humble_LMS_Public {
       }
     }
 
+    // Course single
+    if ( is_single() && $post->post_type == 'humble_lms_course' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-single.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-single.php';
+      }
+    }
+
+    // Lesson single
+    if ( is_single() && $post->post_type == 'humble_lms_lesson' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php';
+      }
+    }
+
     return $template;
   }
 
@@ -178,6 +192,16 @@ class Humble_LMS_Public {
     global $post;
 
     $html = '';
+    $course_id = null;
+    $lesson_id = null;
+
+    // Success message: User completed course
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
+      $html = $content;
+      $course_id = $post->ID;
+    } elseif( isset( $_POST['course_id'] ) ) {
+      $course_id = (int)$_POST['course_id'];
+    }
 
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--error">';
@@ -186,17 +210,6 @@ class Humble_LMS_Public {
       $html .= '</div>';
     }
 
-
-    $course_id = null;
-    $lesson_id = null;
-
-    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
-      $course_id = $post->ID;
-    } elseif( isset( $_POST['course_id'] ) ) {
-      $course_id = (int)$_POST['course_id'];
-    }
-
-    // Success message: User completed course
     if( $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title"><i class="ti-medall"></i>' . __('Congratulations', 'humble-lms') . '</span>
@@ -204,29 +217,8 @@ class Humble_LMS_Public {
       </div>';
     }
 
-    // Single course
-    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' )
-    {
-        $html .= $content . do_shortcode('[syllabus]');
-    }
-    
-    // Single lesson
-    elseif ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' )
-    {
-      $html .= '<div class="humble-lms-flex-columns">';
-        $html .= '<div class="humble-lms-flex-column--two-third">';
-
-        if( isset( $_POST['course_id'] ) ) {
-          $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">' . __('Course', 'humble-lms') . ': <a href="' . esc_url( get_permalink( (int)$_POST['course_id'] ) ) . '">' . get_the_title( (int)$_POST['course_id'] ) . '</a></p>';
-        }
-
-        $html .= $content;
-        $html .= do_shortcode('[mark_complete]');
-        $html .= '</div>';
-        $html .= '<div class="humble-lms-flex-column--third">';
-        $html .= do_shortcode('[syllabus context="lesson"]');
-        $html .= '</div>';
-      $html .= '</div>';
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' ) {
+      $html .= $content;
     }
 
     return $html;

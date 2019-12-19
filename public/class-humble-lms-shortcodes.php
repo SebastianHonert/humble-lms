@@ -70,9 +70,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $track = get_post( $track_id );
       $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_course_level', '', ', ') );
-      $level = $level ? $level : __('not specified', 'humble-lms');
+      $level = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
-      $duration = $duration ? $duration : __('not specified', 'humble-lms');
+      $duration = $duration ? $duration : __('Not specified', 'humble-lms');
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . '">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
@@ -150,13 +150,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       ), $atts ) );
 
       $course = get_post( $course_id );
+      $completed = $this->user->completed_course( $course_id ) ? 'humble-lms-course-completed' : '';
       $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_course_level', '', ', ') );
-      $level = $level ? $level : __('not specified', 'humble-lms');
+      $level = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
-      $duration = $duration ? $duration : __('not specified', 'humble-lms');
+      $duration = $duration ? $duration : __('Not specified', 'humble-lms');
 
-      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . '">';
+      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed .'">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
           $html .= '<div class="humble-lms-course-tile-layer"></div>';
           $html .= '<div class="humble-lms-16-9">';
@@ -212,6 +213,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       // Course Syllabus
       $html = '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
         $html .= '<h2>' . __('Course Syllabus', 'humble-lms') . '</h2>';
+
+        // Meta information
+        if( $lesson_id ) {
+          $level = strip_tags( get_the_term_list( $lesson_id, 'humble_lms_course_level', '', ', ') );
+          $level = $level ? ' | ' . $level : '';
+          $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
+          $html .= '<a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a>';
+          $html .= $level;
+          $html .= '</p>';
+        }
+
         if( ! $course_id ) {
           $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not attached to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';
         } else {
@@ -236,10 +248,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       // View course/lesson
       if( $context === 'course' ) {
         $html .= '<span class="humble-lms-open-lesson humble-lms-btn humble-lms-btn--success" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
-      } else {
-        if( $course_id ) {
-          $html .= '<a class="humble-lms-prev-lesson-link" href="' . esc_url( get_permalink( $course_id ) ) . '">' . __('Back to course overview', 'humble-lms') . '</a>';
-        }
       }
 
       return $html;

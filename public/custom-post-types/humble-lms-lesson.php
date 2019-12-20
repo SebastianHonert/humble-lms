@@ -97,10 +97,11 @@ function humble_lms_lesson_access_levels_mb() {
   $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
 
   echo '<p>' . __('Select the user roles that can access this lesson. If you do not select any specific role(s), the lesson will be publicly available.', 'humble-lms') . '</p>';
+  echo '<input type="checkbox" checked disabled>Administrator<br>';
   foreach( $roles as $key => $role ) {
-    $checked = in_array( $key, $levels ) || $key === 'administrator' ? 'checked' : '';
-    $disabled = $key === 'administrator' ? 'disabled' : '';
-    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" id="humble_lms_lesson_access_levels" value="' . $key . '" ' . $checked . ' ' . $disabled . '> ' . $role['name'] . '<br>';
+    if( $key === 'administrator' ) continue;
+    $checked = in_array( $key, $levels ) ? 'checked' : '';
+    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" id="humble_lms_lesson_access_levels" value="' . $key . '" ' . $checked . '> ' . $role['name'] . '<br>';
   }
 }
 

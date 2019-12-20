@@ -187,6 +187,7 @@ class Humble_LMS {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+    $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
 
 	}
 
@@ -205,6 +206,7 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_post_types' );
     $this->loader->add_action( 'init', $plugin_public, 'register_custom_taxonomies' );
+    $this->loader->add_action( 'set_current_user', $plugin_public, 'hide_admin_bar' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_archive_templates' );
     $this->loader->add_filter( 'single_template', $plugin_public, 'humble_lms_single_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );

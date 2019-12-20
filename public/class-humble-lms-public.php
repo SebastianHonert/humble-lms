@@ -244,4 +244,15 @@ class Humble_LMS_Public {
     }
   }
 
+  /**
+	 * Hide admin bar for registered users / students
+   * 
+	 * @since    0.0.1
+	 */
+  function hide_admin_bar() {
+    if ( ! current_user_can('edit_posts') ) {
+      show_admin_bar(false);
+    }
+  }
+
 }

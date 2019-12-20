@@ -2,7 +2,11 @@
   'use strict'
 
   // This dynamic form is used for redirecting purposes by diferent AJAX functions
-  function redirectForm(response) {
+  function redirectForm( response ) {
+    if (!response.redirect_url) {
+      return
+    }
+
     let form = $('<form style="display:none" action="' + response.redirect_url + '" method="post">' +
         '<input type="hidden" name="course_id" value="' + response.course_id + '" />' +
         '<input type="hidden" name="lesson_id" value="' + response.lesson_id + '" />' +
@@ -49,7 +53,7 @@
         action: 'mark_lesson_complete',
         courseId: $('#course-id').val(),
         lessonId: $('#lesson-id').val(),
-        lessonCompleted:  $(this).data('lesson-completed'),
+        lessonCompleted: $(this).data('lesson-completed'),
         nonce: humble_lms.nonce,
         markComplete: true
       },

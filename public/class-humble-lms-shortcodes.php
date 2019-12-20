@@ -286,7 +286,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $is_first = $key === array_key_first( $lessons );
       $is_last = $key === array_key_last( $lessons );
 
-      if( ! $is_last) {
+      if( ! $is_last ) {
         $next_lesson = get_post( $lessons[$key+1] );
       }
 

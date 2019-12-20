@@ -69,7 +69,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return true;
 
       if( ! is_user_logged_in() )
-        return;
+        return false;
 
       $user = wp_get_current_user();
 

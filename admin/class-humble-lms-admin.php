@@ -103,5 +103,20 @@ class Humble_LMS_Admin {
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-admin.js', array( 'jquery' ), $this->version, true );
 
   }
+	/**
+	 * Block users / students from dashboard access and redirect
+   * to front page instead.
+	 *
+	 * @since    0.0.1
+	 */
+	public function block_dashboard_access( $url ) {
+    if( wp_doing_ajax() )
+      return;
+
+    if( is_user_logged_in() && is_admin() && ! current_user_can('manage_options') ) {
+      wp_safe_redirect( home_url() );
+      die;
+    }
+  }
 
 }

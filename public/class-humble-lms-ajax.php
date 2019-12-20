@@ -11,6 +11,19 @@
 if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
 	class Humble_LMS_Public_Ajax {
+
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.0.1
+     * @param      string    $humble_lms       The name of the plugin.
+     * @param      string    $version    The version of this plugin.
+     */
+    public function __construct() {
+
+      $this->user = new Humble_LMS_Public_User;
+
+    }
     
     /**
 		 * Mark lessons complete / open lesson
@@ -19,9 +32,13 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 		 * @return void
 		 */
 		public function mark_lesson_complete() {
-			// Check the nonce for permission.
-			if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
-				die( 'Permission Denied' );
+
+      // Clear user data (testing)
+      // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
+
+      // Check the nonce for permission.
+      if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
+        die( 'Permission Denied' );
       }
 
       $redirect_url = home_url();
@@ -29,7 +46,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       // Mark lesson complete and continue to the next lesson
       $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
-      $lesson_completed = isset( $_POST['lessonCompleted'] ) && $_POST['lessonCompleted'] === 'true' ? true : false;
+      $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
 
       if( ! $course_id ) {
@@ -78,21 +95,19 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         }
 
         update_user_meta( $user_id, 'humble_lms_lessons_completed', $lessons_completed );
-        
-        // Clear data (testing)
-        // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
       }
 
       $updated = update_user_meta( $user_id, 'some_meta_key', $new_value );
 
       // Redirect to the next lesson
 
-      $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
+      $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+      $lessons = ! empty( $lessons[0] ) ? json_decode( $lessons[0] ) : [];
 
       $key = array_search( $lesson_id, $lessons );
       $is_last = $key === array_key_last( $lessons );
 
-      if( ! $is_last) {
+      if( ! $is_last ) {
         $next_lesson = get_post( $lessons[$key+1] );
         $redirect_url = esc_url( get_permalink( $next_lesson->ID ) );
       } else {

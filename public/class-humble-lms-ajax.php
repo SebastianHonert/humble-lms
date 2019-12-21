@@ -36,26 +36,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       // Clear user data (testing)
       // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
 
-      // Check the nonce for permission.
-      if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
-        die( 'Permission Denied' );
-      }
-
-      $redirect_url = home_url();
-
-      // Mark lesson complete and continue to the next lesson
-      $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
-      $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
-      $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
-      $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
-
-      if( ! $course_id ) {
-        if( ! $lesson_id ) {
-          $redirect_url = esc_url( home_url() );
-        } else {
-          $redirect_url = esc_url( get_permalink( $lesson_id ) );
-        }
-
+      // Dry this function a little bit.
+      function default_redirect( $redirect_url, $course_id, $lesson_id ) {
         wp_die( json_encode( array(
           'status' => 200,
           'redirect_url' => $redirect_url,
@@ -64,20 +46,39 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         ) ) );
       }
 
-      if( ! $mark_complete ) {
-        wp_die( json_encode( array(
-          'status' => 200,
-          'redirect_url' =>  esc_url( get_permalink( $lesson_id ) ),
-          'course_id' => $course_id,
-          'lesson_id' => $lesson_id
-        ) ) );
+      // Check the nonce for permission.
+      if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
+        die( 'Permission Denied' );
       }
 
-      // Mark complete
+      // Mark lesson complete and continue to the next lesson
+      $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
+      $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
+      $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
+      $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
+
+      // If neither course ID not lesson ID are set, redirect accordingly.
+      if( ! $course_id ) {
+        if( ! $lesson_id ) {
+          $redirect_url = esc_url( home_url() );
+        } else {
+          $redirect_url = esc_url( get_permalink( $lesson_id ) );
+        }
+
+        default_redirect( $redirect_url, $course_id, $lesson_id );
+      }
+
+      // Mark complete is not set => redirect to lessin with course ID set.
+      if( ! $mark_complete ) {
+        default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
+      }
+
+      // Check if course exists
       $course = get_post( $course_id );
 
-      if( ! $course )
-        return;
+      if( ! $course ) {
+        default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
+      }
 
       if( is_user_logged_in() ) {
         $user_id = get_current_user_id();
@@ -114,13 +115,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         // TODO: Check if all lessons complete => redirect accordingly
         $redirect_url = esc_url( get_permalink( $lessons[0] ) );
       }
-      
-			wp_die( json_encode( array(
-				'status'  => 200,
-        'redirect_url' => $redirect_url,
-        'course_id' => $course_id,
-        'lesson_id' => $next_lesson->ID
-      ) ) );
+
+      default_redirect( $redirect_url, $course_id, $next_lesson->ID );
     }
     
   }

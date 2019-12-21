@@ -115,6 +115,8 @@ class Humble_LMS_Public {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
   }
 
   /**
@@ -245,7 +247,7 @@ class Humble_LMS_Public {
   }
 
   /**
-	 * Hide admin bar for registered users / students
+	 * Hide admin bar for registered users/students
    * 
 	 * @since    0.0.1
 	 */

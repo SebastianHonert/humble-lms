@@ -41,9 +41,9 @@ $args = array(
   'label'                 => __( 'Activity', 'humble_lms' ),
   'description'           => __( 'Activity', 'humble_lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'post-formats' ),
+  'supports'              => array( 'title' ),
   'show_in_rest'          => true,
-  'taxonomies'            => array( 'category', 'post_tag' ),
+  'taxonomies'            => array(),
   'hierarchical'          => false,
   'public'                => true,
   'show_ui'               => true,
@@ -66,7 +66,7 @@ register_post_type( 'humble_lms_activity', $args );
 
 function humble_lms_activity_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_activity_type_mb', __('Activity type', 'humble-lms'), 'humble_lms_activity_type_mb', 'humble_lms_activity', 'normal', 'default' );
+  add_meta_box( 'humble_lms_activity_trigger_mb', __('Activity type', 'humble-lms'), 'humble_lms_activity_trigger_mb', 'humble_lms_activity', 'normal', 'default' );
   add_meta_box( 'humble_lms_activity_action_mb', __('Action following the activity', 'humble-lms'), 'humble_lms_activity_action_mb', 'humble_lms_activity', 'normal', 'default' );
 }
 
@@ -74,22 +74,73 @@ add_action( 'add_meta_boxes', 'humble_lms_activity_add_meta_boxes' );
 
 // Type meta box
 
-function humble_lms_activity_type_mb()
+function humble_lms_activity_trigger_mb()
 {
   global $post;
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $type = get_post_meta($post->ID, 'humble_lms_activity_type', true);
+  $type = get_post_meta($post->ID, 'humble_lms_activity_trigger', true);
+  $type_track = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_track', true);
+  $type_course = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_course', true);
+  $type_lesson = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_lesson', true);
 
-  echo '<select class="widefat" name="humble_lms_activity_type" id="humble_lms_activity_type">';
-    echo '<option disabled selected>' . __('Please select an activity type', 'humble-lms') . '&hellip;</option>';
+  $tracks = get_posts( array(
+    'post_type' => 'humble_lms_track',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+  ) );
+
+  $courses = get_posts( array(
+    'post_type' => 'humble_lms_course',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+  ) );
+
+  $lessons = get_posts( array(
+    'post_type' => 'humble_lms_lesson',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+  ) );
+
+  echo '<select class="widefat" name="humble_lms_activity_trigger" id="humble_lms_activity_trigger">';
+    echo '<option disabled selected>' . __('Please select an activity trigger', 'humble-lms') . '&hellip;</option>';
     $selected = $type === 'user_completes_track' ? 'selected' : '';
-    echo '<option value="user_completes_track" ' . $selected . '>' . __('Student completes a track', 'humble-lms') . '</option>';
+    echo '<option value="user_completes_track" data-select="humble_lms_activity_trigger_track" ' . $selected . '>' . __('Student completes a track', 'humble-lms') . '</option>';
     $selected = $type === 'user_completes_course' ? 'selected' : '';
-    echo '<option value="user_completes_course" ' . $selected . '>' . __('Student completes a course', 'humble-lms') . '</option>';
+    echo '<option value="user_completes_course" data-select="humble_lms_activity_trigger_course" ' . $selected . '>' . __('Student completes a course', 'humble-lms') . '</option>';
     $selected = $type === 'user_completes_lesson' ? 'selected' : '';
-    echo '<option value="user_completes_lesson" ' . $selected . '>' . __('Student completes a lesson', 'humble-lms') . '</option>';
+    echo '<option value="user_completes_lesson" data-select="humble_lms_activity_trigger_lesson" ' . $selected . '>' . __('Student completes a lesson', 'humble-lms') . '</option>';
+  echo '</select>';
+
+  echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_track" id="humble_lms_activity_trigger_track">';
+    echo '<option disabled selected>' . __('Select a track', 'humble-lms') . '&hellip;</option>';
+    foreach( $tracks as $track ) {
+      $selected = $type_track === $track->ID ? 'selected' : '';
+      echo '<option value="' . $track->ID . '" ' . $selected . '>' . $track->post_title . '</option>';
+    }
+  echo '</select>';
+
+  echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_course" id="humble_lms_activity_trigger_course">';
+    echo '<option disabled selected>' . __('Select a course', 'humble-lms') . '&hellip;</option>';
+    foreach( $courses as $course ) {
+      $selected = $type_course === $course->ID ? 'selected' : '';
+      echo '<option value="' . $course->ID . '" ' . $selected . '>' . $course->post_title . '</option>';
+    }
+  echo '</select>';
+
+  echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_lesson" id="humble_lms_activity_trigger_lesson">';
+    echo '<option disabled selected>' . __('Select a lesson', 'humble-lms') . '&hellip;</option>';
+    foreach( $lessons as $lesson ) {
+      $selected = $type_lesson === $lesson->ID ? 'selected' : '';
+      echo '<option value="' . $lesson->ID . '" ' . $selected . '>' . $lesson->post_title . '</option>';
+    }
   echo '</select>';
 }
 
@@ -100,11 +151,28 @@ function humble_lms_activity_action_mb()
   global $post;
 
   $action = get_post_meta($post->ID, 'humble_lms_activity_action', true);
+  $action_award = (int)get_post_meta($post->ID, 'humble_lms_activity_action_award', true);
 
   echo '<select class="widefat" name="humble_lms_activity_action" id="humble_lms_activity_action">';
     echo '<option disabled selected>' . __('Select an action following the activity', 'humble-lms') . '&hellip;</option>';
     $selected = $action === 'award' ? 'selected' : '';
-    echo '<option value="award" ' . $selected . '>' . __('Award', 'humble-lms') . '&hellip;</option>';
+    echo '<option value="award" data-select="humble_lms_activity_action_award" ' . $selected . '>' . __('Grant an award', 'humble-lms') . '</option>';
+  echo '</select>';
+
+  $awards = get_posts( array(
+    'post_type' => 'humble_lms_award',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+  ) );
+
+  echo '<select class="widefat humble-lms-activity-action-select" name="humble_lms_activity_action_award" id="humble_lms_activity_action_award">';
+    echo '<option disabled selected>' . __('Select an award', 'humble-lms') . '&hellip;</option>';
+    foreach( $awards as $award ) {
+      $selected = $action_award === $award->ID ? 'selected' : '';
+      echo '<option value="' . $award->ID . '" ' . $selected . '>' . $award->post_title . '</option>';
+    }
   echo '</select>';
 }
 
@@ -135,8 +203,13 @@ function humble_lms_save_activity_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
-  $activity_meta['humble_lms_activity_type'] = isset( $_POST['humble_lms_activity_type'] ) ? sanitize_text_field( $_POST['humble_lms_activity_type'] ) : '';
+  $activity_meta['humble_lms_activity_trigger'] = isset( $_POST['humble_lms_activity_trigger'] ) ? sanitize_text_field( $_POST['humble_lms_activity_trigger'] ) : '';
+  $activity_meta['humble_lms_activity_trigger_track'] = isset( $_POST['humble_lms_activity_trigger_track'] ) ? (int)$_POST['humble_lms_activity_trigger_track'] : '';
+  $activity_meta['humble_lms_activity_trigger_course'] = isset( $_POST['humble_lms_activity_trigger_course'] ) ? (int)$_POST['humble_lms_activity_trigger_course'] : '';
+  $activity_meta['humble_lms_activity_trigger_lesson'] = isset( $_POST['humble_lms_activity_trigger_lesson'] ) ? (int)$_POST['humble_lms_activity_trigger_lesson'] : '';
+
   $activity_meta['humble_lms_activity_action'] = isset( $_POST['humble_lms_activity_action'] ) ? sanitize_text_field( $_POST['humble_lms_activity_action'] ) : '';
+  $activity_meta['humble_lms_activity_action_award'] = isset( $_POST['humble_lms_activity_action_award'] ) ? (int)$_POST['humble_lms_activity_action_award'] : '';
 
   if( ! empty( $activity_meta ) && sizeOf( $activity_meta ) > 0 )
   {

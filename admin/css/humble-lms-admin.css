@@ -17,3 +17,9 @@
 .ms-container .ms-selection li.ms-hover {
   border-bottom: 1px solid #08c;
 }
+
+.humble-lms-activity-trigger-select,
+.humble-lms-activity-action-select {
+  display: none;
+  margin-top: .5em;
+}

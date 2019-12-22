@@ -43,7 +43,7 @@ $args = array(
   'labels'                => $labels,
   'supports'              => array( 'title', 'thumbnail', 'revisions' ),
   'show_in_rest'          => true,
-  'taxonomies'            => array( 'category', 'post_tag' ),
+  'taxonomies'            => array(),
   'hierarchical'          => false,
   'public'                => false,
   'show_ui'               => true,
@@ -61,3 +61,11 @@ $args = array(
 );
 
 register_post_type( 'humble_lms_award', $args );
+
+function humble_lms_award_add_meta_boxes()
+{
+  remove_meta_box( 'postimagediv', 'post_type', 'side' );
+  add_meta_box('postimagediv', __('Award image (300x300)'), 'post_thumbnail_meta_box', 'humble_lms_award', 'normal', 'high');
+}
+
+add_action( 'add_meta_boxes', 'humble_lms_award_add_meta_boxes' );

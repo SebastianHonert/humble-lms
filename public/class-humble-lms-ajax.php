@@ -33,16 +33,24 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 		 */
 		public function mark_lesson_complete() {
 
+      $user_id = get_current_user_id();
+
       // Clear user data (testing)
       // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
+      // delete_user_meta( $user_id, 'humble_lms_courses_completed' );
+      // delete_user_meta( $user_id, 'humble_lms_tracks_completed' );
 
       // Dry this function a little bit.
-      function default_redirect( $redirect_url, $course_id, $lesson_id ) {
+      function default_redirect( $redirect_url, $course_id, $lesson_id, $lesson_completed = null, $course_completed = null, $track_completed = null ) {
         wp_die( json_encode( array(
           'status' => 200,
           'redirect_url' => $redirect_url,
           'course_id' => $course_id,
-          'lesson_id' => $lesson_id
+          'lesson_id' => $lesson_id,
+          'track_id' => $track_id,
+          'lesson_completed' => $lesson_completed,
+          'course_completed' => $course_completed,
+          'track_completed' => $track_completed,
         ) ) );
       }
 
@@ -56,8 +64,11 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
       $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
+      $lesson_completed = null;
+      $course_completed = null;
+      $track_completed = null;
 
-      // If neither course ID not lesson ID are set, redirect accordingly.
+      // Neither course nor lesson ID is set: redirect accordingly.
       if( ! $course_id ) {
         if( ! $lesson_id ) {
           $redirect_url = esc_url( home_url() );
@@ -68,7 +79,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         default_redirect( $redirect_url, $course_id, $lesson_id );
       }
 
-      // Mark complete is not set => redirect to lessin with course ID set.
+      // Mark complete is not set: redirect to lessin with course ID set.
       if( ! $mark_complete ) {
         default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
       }
@@ -81,12 +92,15 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       if( is_user_logged_in() ) {
-        $user_id = get_current_user_id();
         $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
+        $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
+        $tracks_completed = get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
         
         if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
+        if( ! is_array( $courses_completed ) ) $courses_completed = array();
+        if( ! is_array( $tracks_completed ) ) $tracks_completed = array();
         
-        // Marked as complete => add lesson ID to user meta, else remove
+        // Marked as complete: add lesson ID to user meta, else remove
         if( $lesson_id && ! in_array( $lesson_id, $lessons_completed ) ) {
           $lessons_completed[] = $lesson_id;
         } else {
@@ -94,14 +108,40 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
             unset( $lessons_completed[$key] );
           }
         }
-
+        
         update_user_meta( $user_id, 'humble_lms_lessons_completed', $lessons_completed );
+        $lesson_completed = $lesson_id;
+
+        // Course completed
+        if( $this->user->completed_course( $course_id ) ) {
+          if( $course_id && ! in_array( $course_id, $courses_completed ) ) {
+            $courses_completed[] = $course_id;
+          } else {
+            if( ( $key = array_search( $course_id, $courses_completed ) ) !== false ) {
+              unset( $courses_completed[$key] );
+            }
+          }
+          
+          update_user_meta( $user_id, 'humble_lms_courses_completed', $courses_completed );
+          $course_completed = $course_id;
+        }
+
+        // Track completed
+        if( $this->user->completed_track( $track_id ) ) {
+          if( $track_id && ! in_array( $track_id, $tracks_completed ) ) {
+            $tracks_completed[] = $track_id;
+          } else {
+            if( ( $key = array_search( $track_id, $tracks_completed ) ) !== false ) {
+              unset( $tracks_completed[$key] );
+            }
+          }
+          
+          update_user_meta( $user_id, 'humble_lms_tracks_completed', $tracks_completed );
+          $track_completed = $track_id;
+        }
       }
 
-      $updated = update_user_meta( $user_id, 'some_meta_key', $new_value );
-
       // Redirect to the next lesson
-
       $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
       $lessons = ! empty( $lessons[0] ) ? json_decode( $lessons[0] ) : [];
 
@@ -116,7 +156,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $redirect_url = esc_url( get_permalink( $lessons[0] ) );
       }
 
-      default_redirect( $redirect_url, $course_id, $next_lesson->ID );
+      default_redirect( $redirect_url, $course_id, $next_lesson->ID, $lesson_completed, $course_completed, $track_completed );
     }
     
   }

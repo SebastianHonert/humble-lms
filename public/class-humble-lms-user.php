@@ -48,7 +48,33 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       sort( $course_lessons );
       sort( $lessons_completed );
 
-      return array_intersect( $course_lessons, $lessons_completed ) === $course_lessons;
+      return ! array_diff( $course_lessons, $lessons_completed );
+    }
+
+    /**
+     * Checks if a user has completed a track.
+     *
+     * @since    0.0.1
+     */
+    public function completed_track( $track_id ) {
+      // TODO: This is not working => check all courses in tracks for completion
+      // Why? Contect track_id not available!
+      if( ! is_user_logged_in() || ! $track_id )
+        return;
+
+      $user_id = get_current_user_id();
+
+      $track_courses = json_decode( get_post_meta($track_id, 'humble_lms_track_courses', true)[0] );
+      $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
+
+      if( ! $track_courses || ! $courses_completed ) {
+        return;
+      }
+
+      sort( $track_courses );
+      sort( $courses_completed );
+
+      return ! array_diff( $track_courses, $courses_completed );
     }
 
     /**

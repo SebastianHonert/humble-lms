@@ -1,4 +1,4 @@
-(function( $ ) {
+jQuery(document).ready(function($) {
   'use strict'
 
   // This dynamic form is used for redirecting purposes by diferent AJAX functions
@@ -10,6 +10,9 @@
     let form = $('<form style="display:none" action="' + response.redirect_url + '" method="post">' +
         '<input type="hidden" name="course_id" value="' + response.course_id + '" />' +
         '<input type="hidden" name="lesson_id" value="' + response.lesson_id + '" />' +
+        '<input type="hidden" name="lesson_completed" value="' + response.lesson_completed + '" />' +
+        '<input type="hidden" name="course_completed" value="' + response.course_completed + '" />' +
+        '<input type="hidden" name="track_completed" value="' + response.track_completed + '" />' +
         '</form>');
     $('body').append(form);
     form.submit();
@@ -70,5 +73,10 @@
 			}
 		})
   })
+
+  // Award messages
+  $('.humble-lms-award-message-close').on('click touch', function() {
+    $('.humble-lms-award-message').fadeOut(500)
+  })
   
-})( jQuery );
+})

@@ -24,7 +24,8 @@
   display: block;
 }
 
-.humble-lms-course-completed .humble-lms-course-tile::before {
+.humble-lms-course-completed .humble-lms-course-tile::before,
+.humble-lms-track-completed .humble-lms-track-tile::before {
   font-family: 'themify';
   content: '\e623';
   position: absolute;
@@ -311,6 +312,41 @@ input[type='submit'].humble-lms-btn--error:active {
   max-width: 100%;
   height: auto;
   margin-bottom: 1.5em;
+}
+
+/* Award messages */
+
+.humble-lms-award-message {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.5);
+  z-index: 999;
+  overflow: auto;
+}
+
+.humble-lms-award-message-inner {
+  position: relative;
+  display: block;
+  width: 480px;
+  height: 480px;
+  background: #fff;
+  box-shadow: 0 .125em 1em rgba(0,0,0,.4);
+}
+
+.humble-lms-award-message-close {
+  position: absolute;
+  right: -1em;
+  top: -1em;
+  width: 2em;
+  height: 2em;
+  background: red;
+  cursor: pointer;
 }
 
 /* Flex columns */

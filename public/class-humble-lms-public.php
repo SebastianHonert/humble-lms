@@ -223,6 +223,17 @@ class Humble_LMS_Public {
       $html .= $content;
     }
 
+    // Completed lesson/course/track
+    if( isset( $_POST['track_completed'] ) && $_POST['track_completed'] !== 'null' ) {
+      $html .= '<div class="humble-lms-award-message">
+        <div class="humble-lms-award-message-inner">
+          <div class="humble-lms-award-message-close"></div>
+          <div class=humble-lms-award-message-title">Completed</div>
+          <div class=humble-lms-award-message-image">IMAGE</div>
+        </div>
+      </div>';
+    }
+
     return $html;
   }
 

@@ -27,31 +27,36 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_track_archive( $atts = null ) {
+    public function humble_lms_track_archive( $atts = null ) {  
       extract( shortcode_atts( array (
         'tile_width' => 'half',
         'style' => '',
         'class' => '',
       ), $atts ) );
 
-      $args = array(
+      $tracks = new WP_Query( array(
         'post_type' => 'humble_lms_track',
         'post_status' => 'publish',
-        'posts_per_page' => -1,
+        'posts_per_page' => get_option( 'posts_per_page' ),
         'orderby' => 'title',
         'order' => 'ASC',
-      );
+        'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+      ) );
 
-      $tracks = get_posts( $args );
+      $html = '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
-      $html = '';
-      $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
-
-      foreach( $tracks as $track ) {
-        $html .= do_shortcode('[track_tile tile_width="' . $tile_width . '" track_id="' . $track->ID . '"]');
+      if ( $tracks->have_posts() ) {
+        while ( $tracks->have_posts() ) {
+          $tracks->the_post();
+          $html .= do_shortcode('[track_tile tile_width="' . $tile_width . '" track_id="' . get_the_ID() . '"]');
+        }
       }
 
       $html .= '</div>';
+
+      $html .= $this->humble_lms_paginate_links( $tracks );
+
+      wp_reset_postdata();
 
       return $html;
     }
@@ -106,15 +111,18 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
+      $is_track = ! empty( $track_id ) && ( is_single() && $post->post_type === 'humble_lms_track' );
+
       $args = array(
         'post_type' => 'humble_lms_course',
         'post_status' => 'publish',
-        'posts_per_page' => -1,
+        'posts_per_page' => $is_track ? -1 : get_option( 'posts_per_page' ),
         'orderby' => 'title',
         'order' => 'ASC',
+        'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
       );
 
-      if( ! empty( $track_id ) && ( is_single() && $post->post_type == 'humble_lms_track' ) ) {
+      if( $is_track) {
         $track_courses = get_post_meta($track_id, 'humble_lms_track_courses', true);
         $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
         
@@ -125,16 +133,23 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      $courses = get_posts( $args );
+      $courses = new WP_Query( $args );
 
       $html = '';
       $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
-      foreach( $courses as $course ) {
-        $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" course_id="' . $course->ID . '"]');
+      if ( $courses->have_posts() ) {
+        while ( $courses->have_posts() ) {
+          $courses->the_post();
+            $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
+        }
       }
 
       $html .= '</div>';
+
+      $html .= $this->humble_lms_paginate_links( $courses );
+
+      wp_reset_postdata();
 
       return $html;
     }
@@ -322,6 +337,28 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
       
       $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
+     * Pagination
+     * 
+     * @since   0.0.1
+     */
+    function humble_lms_paginate_links( $query ) {
+      global $wp_query; if( ! $query ) $query = $wp_query;
+  
+      $big = 999999999;
+      $html = paginate_links( array(
+          'base' => str_replace( $big, '%#%', get_pagenum_link( $big ) ),
+          'format' => '?paged=%#%',
+          'current' => max( 1, get_query_var('paged') ),
+          'total' => $query->max_num_pages,
+          'mid_size' => 5,
+          'prev_text' => '&laquo;',
+          'next_text' => '&raquo;'
+      ) );
 
       return $html;
     }

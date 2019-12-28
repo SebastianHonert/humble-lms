@@ -58,7 +58,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      */
     public function completed_track( $track_id ) {
       // TODO: This is not working => check all courses in tracks for completion
-      // Why? Contect track_id not available!
+      // Why? track_id not available!
       if( ! is_user_logged_in() || ! $track_id )
         return;
 

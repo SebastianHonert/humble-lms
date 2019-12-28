@@ -10,7 +10,7 @@
  */
 if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
-	class Humble_LMS_Public_User {
+  class Humble_LMS_Public_User {
 
     /**
      * Checks if a user has completed a single lesson.

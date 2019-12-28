@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
   }
 
   // Mark lesson complete and continue to the next lesson
-	$(document).on('click', '.humble-lms-open-lesson', function (e) {
+  $(document).on('click', '.humble-lms-open-lesson', function (e) {
 
     $.ajax({
       url: humble_lms.ajax_url,
@@ -32,24 +32,24 @@ jQuery(document).ready(function($) {
         markComplete: false
       },
       dataType: 'json',
-			error: function(MLHttpRequest, textStatus, errorThrown) {
-				console.error(errorThrown);
-			},
-			success: function(response, textStatus, XMLHttpRequest) {
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown);
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
         console.log(response)
         redirectForm(response)
-			},
-			complete: function(reply, textStatus) {
-				console.log(textStatus)
-			}
-		})
+      },
+      complete: function(reply, textStatus) {
+        console.log(textStatus)
+      }
+    })
   })
 
   // Mark lesson complete and continue to the next lesson
-	$(document).on('submit', '#humble-lms-mark-complete', function (e) {
+  $(document).on('submit', '#humble-lms-mark-complete', function (e) {
     e.preventDefault();
 
-		$.ajax({
+    $.ajax({
       url: humble_lms.ajax_url,
       type: 'POST',
       data: {
@@ -61,17 +61,17 @@ jQuery(document).ready(function($) {
         markComplete: true
       },
       dataType: 'json',
-			error: function(MLHttpRequest, textStatus, errorThrown) {
-				console.error(errorThrown);
-			},
-			success: function(response, textStatus, XMLHttpRequest) {
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown);
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
         console.log(response)
         redirectForm(response)
-			},
-			complete: function(reply, textStatus) {
-				console.log(textStatus)
-			}
-		})
+      },
+      complete: function(reply, textStatus) {
+        console.log(textStatus)
+      }
+    })
   })
 
   // Award messages

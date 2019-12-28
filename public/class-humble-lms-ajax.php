@@ -10,7 +10,7 @@
  */
 if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
-	class Humble_LMS_Public_Ajax {
+  class Humble_LMS_Public_Ajax {
 
     /**
      * Initialize the class and set its properties.
@@ -26,12 +26,12 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
     
     /**
-		 * Mark lessons complete / open lesson
-		 *
-		 * @since 1.0.0
-		 * @return void
-		 */
-		public function mark_lesson_complete() {
+     * Mark lessons complete / open lesson
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function mark_lesson_complete() {
 
       $user_id = get_current_user_id();
 

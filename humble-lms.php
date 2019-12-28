@@ -27,7 +27,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+  die;
 }
 
 /**
@@ -41,8 +41,8 @@ define( 'HUMBLE_LMS_VERSION', '0.0.1' );
  * This action is documented in includes/class-humble-lms-activator.php
  */
 function activate_humble_lms() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-activator.php';
-	Humble_LMS_Activator::activate();
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-activator.php';
+  Humble_LMS_Activator::activate();
 }
 
 /**
@@ -50,8 +50,8 @@ function activate_humble_lms() {
  * This action is documented in includes/class-humble-lms-deactivator.php
  */
 function deactivate_humble_lms() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-deactivator.php';
-	Humble_LMS_Deactivator::deactivate();
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-deactivator.php';
+  Humble_LMS_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_humble_lms' );
@@ -74,8 +74,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms.php';
  */
 function run_humble_lms() {
 
-	$plugin = new Humble_LMS();
-	$plugin->run();
+  $plugin = new Humble_LMS();
+  $plugin->run();
 
 }
 run_humble_lms();

@@ -8,7 +8,7 @@
  */
 if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
-	class Humble_LMS_Public_Shortcodes {
+  class Humble_LMS_Public_Shortcodes {
 
     /**
      * Initialize the class and set its properties.

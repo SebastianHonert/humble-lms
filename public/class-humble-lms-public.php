@@ -203,8 +203,6 @@ class Humble_LMS_Public {
       return $content;
     }
 
-    if( get_post_type( $post->ID ) !== 'humble_lms_course')
-
     $html = '';
     $course_id = null;
     $lesson_id = null;

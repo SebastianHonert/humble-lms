@@ -1,17 +1,19 @@
 === Humble LMS ===
 Contributors: shonert
-Tags: las, learning management system, online courses
+Tags: lms, learning management system, online courses
 Requires at least: 3.0.1
 Tested up to: 3.4
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Humble LMS is a very simple learning management system for WordPress with a focus on simplicity.
+Humble LMS is a very simple learning management plugin for WordPress with a focus on simplicity.
 
 == Description ==
 
-Humble LMS is a very simple learning management system for WordPress with a focus on simplicity.
+PLEASE NOTE: this plugin is work in progress!
+
+Humble LMS is a very simple learning management plugin for WordPress with a focus on simplicity.
 
 == Installation ==
 
@@ -21,4 +23,4 @@ Humble LMS is a very simple learning management system for WordPress with a focu
 == Changelog ==
 
 = 0.1 =
-* Initial release
+* Initial commit

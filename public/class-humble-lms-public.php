@@ -193,6 +193,18 @@ class Humble_LMS_Public {
   function humble_lms_add_content_to_pages( $content ) {
     global $post;
 
+    $allowed_post_types = [
+      'humble_lms_track',
+      'humble_lms_course',
+      'humble_lms_lesson',
+    ];
+
+    if( ! in_array( get_post_type( $post->ID ), $allowed_post_types ) ) {
+      return $content;
+    }
+
+    if( get_post_type( $post->ID ) !== 'humble_lms_course')
+
     $html = '';
     $course_id = null;
     $lesson_id = null;

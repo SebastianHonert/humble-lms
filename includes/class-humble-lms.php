@@ -188,6 +188,7 @@ class Humble_LMS {
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
+    $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );
 
   }
 

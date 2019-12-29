@@ -97,8 +97,10 @@ function humble_lms_course_lessons_mb()
 
   $selected_lessons = [];
   foreach( $course_lessons as $id ) {
-    $lesson = get_post( $id );
-    array_push( $selected_lessons, $lesson );
+    if( get_post_status( $id ) ) {
+      $lesson = get_post( $id );
+      array_push( $selected_lessons, $lesson );
+    }
   }
 
   if( $lessons || $selected_lessons ):
@@ -116,6 +118,10 @@ function humble_lms_course_lessons_mb()
       }
     echo '</select>';
     echo '<input id="humble_lms_course_lessons" name="humble_lms_course_lessons" type="hidden" value="' . implode(',', $course_lessons) . '">';
+  
+  else:
+
+    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
 
   endif;
 }

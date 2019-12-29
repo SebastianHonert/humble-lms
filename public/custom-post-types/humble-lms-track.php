@@ -68,6 +68,7 @@ function humble_lms_track_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_track_courses_mb', __('Courses in this track', 'humble-lms'), 'humble_lms_track_courses_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
+  add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_track_add_meta_boxes' );
@@ -95,9 +96,12 @@ function humble_lms_track_courses_mb()
   $courses = get_posts( $args );
 
   $selected_courses = [];
-  foreach( $track_courses as $id ) {
-    $course = get_post( $id );
-    array_push( $selected_courses, $course );
+
+  foreach( $track_courses as $key => $id ) {
+    if( get_post_status( $id ) ) {
+      $course = get_post( $id );
+      array_push( $selected_courses, $course );
+    }
   }
 
   if( $courses || $selected_courses ):
@@ -116,6 +120,10 @@ function humble_lms_track_courses_mb()
     echo '</select>';
     echo '<input id="humble_lms_track_courses" name="humble_lms_track_courses" type="hidden" value="' . implode(',', $track_courses) . '">';
 
+  else:
+
+      echo '<p>' . sprintf( __('No courses found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more courses</a>' ) . '</p>';
+
   endif;
 }
 
@@ -126,8 +134,22 @@ function humble_lms_track_duration_mb()
   global $post;
 
   $duration = get_post_meta($post->ID, 'humble_lms_track_duration', true);
+  $duration = $duration ? $duration : '';
 
-  echo '<input type="text" class="widefat" name="humble_lms_track_duration" id="humble_lms_track_duration" value="">';
+  echo '<input type="text" class="" name="humble_lms_track_duration" id="humble_lms_track_duration" value="' . $duration . '">';
+  
+}
+
+// Position meta box
+
+function humble_lms_track_position_mb()
+{
+  global $post;
+
+  $position = get_post_meta($post->ID, 'humble_lms_track_position', true);
+  $position = ! $position ? '1' : $position;
+
+  echo '<input type="text" class="" name="humble_lms_track_position" id="humble_lms_track_position" value="' . $position . '">';
   
 }
 
@@ -161,6 +183,7 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_courses'] = isset( $_POST['humble_lms_track_courses'] ) ? (array) $_POST['humble_lms_track_courses'] : array();
   $track_meta['humble_lms_track_courses'] = array_map( 'esc_attr', $track_meta['humble_lms_track_courses'] );
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
+  $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

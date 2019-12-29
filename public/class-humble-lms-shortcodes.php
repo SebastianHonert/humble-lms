@@ -38,7 +38,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'post_type' => 'humble_lms_track',
         'post_status' => 'publish',
         'posts_per_page' => get_option( 'posts_per_page' ),
-        'orderby' => 'title',
+        'meta_key' => 'humble_lms_track_position',
+        'orderby' => 'meta_value_num',
         'order' => 'ASC',
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
       ) );

@@ -363,6 +363,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       return $html;
     }
+
+    /**
+     * Display user data for testing
+    */
+    function display_user_data() {
+      echo '<h3>Tracks</h3>';
+      print_r( get_user_meta( get_current_user_id(), 'humble_lms_tracks_completed', false ) );
+
+      echo '<h3>Courses</h3>';
+      print_r( get_user_meta( get_current_user_id(), 'humble_lms_courses_completed', false ) );
+
+      echo '<h3>Lessons</h3>';
+      print_r( get_user_meta( get_current_user_id(), 'humble_lms_lessons_completed', false ) );
+    }
     
   }
   

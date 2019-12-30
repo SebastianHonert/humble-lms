@@ -10,9 +10,7 @@ jQuery(document).ready(function($) {
     let form = $('<form style="display:none" action="' + response.redirect_url + '" method="post">' +
         '<input type="hidden" name="course_id" value="' + response.course_id + '" />' +
         '<input type="hidden" name="lesson_id" value="' + response.lesson_id + '" />' +
-        '<input type="hidden" name="lesson_completed" value="' + response.lesson_completed + '" />' +
-        '<input type="hidden" name="course_completed" value="' + response.course_completed + '" />' +
-        '<input type="hidden" name="track_completed" value="' + response.track_completed + '" />' +
+        '<input type="hidden" name="completed" value="' + response.completed + '" />' +
         '</form>');
     $('body').append(form);
     form.submit();
@@ -36,7 +34,7 @@ jQuery(document).ready(function($) {
         console.error(errorThrown);
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        console.log(response)
+        // console.log(response)
         redirectForm(response)
       },
       complete: function(reply, textStatus) {

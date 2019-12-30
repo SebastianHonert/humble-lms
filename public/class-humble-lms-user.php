@@ -38,43 +38,104 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $course_lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
+      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
 
-      if( ! $course_lessons || ! $lessons_completed ) {
+      if( ( ! $course_lessons ) || ( ! $lessons_completed ) ) {
         return;
       }
 
       sort( $course_lessons );
       sort( $lessons_completed );
 
-      return ! array_diff( $course_lessons, $lessons_completed );
+      return empty( array_diff( $course_lessons, $lessons_completed ) );
     }
 
     /**
      * Checks if a user has completed a track.
      *
-     * @since    0.0.1
+     * @return  array
+     * @param   int
+     * @since   0.0.1
      */
     public function completed_track( $track_id ) {
-      // TODO: This is not working => check all courses in tracks for completion
-      // Why? track_id not available!
       if( ! is_user_logged_in() || ! $track_id )
         return;
 
       $user_id = get_current_user_id();
 
-      $track_courses = json_decode( get_post_meta($track_id, 'humble_lms_track_courses', true)[0] );
-      $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
+      $completed_tracks = get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
 
-      if( ! $track_courses || ! $courses_completed ) {
-        return;
+      return is_array( $completed_tracks ) ? in_array( $track_id, $completed_tracks ) : [];
+    }
+
+    /**
+     * Returns an array of completed track IDs including the course ID or an empty array.
+     *
+     * @return  array
+     * @param   int
+     * @since   0.0.1
+     */
+    public function completed_tracks() {
+      if( ! is_user_logged_in() )
+        return [];
+
+      $user_id = get_current_user_id();
+
+      return get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
+    }
+
+    /**
+     * Updates the tracks completed by current user based on completed courses.
+     * Returns an array of completed track IDs including the course ID or an empty array.
+     *
+     * @return  array
+     * @param   int
+     * @since   0.0.1
+     */
+    public function mark_lesson_complete( $lesson_id ) {
+      if( ! is_user_logged_in() )
+        return [];
+
+      $user_id = get_current_user_id();
+
+      $completed = array( [], [], [] ); // lesson, courses, tracks
+      
+      $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
+      if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
+
+      if( $lesson_id && ! in_array( $lesson_id, $lessons_completed ) ) {
+        $lessons_completed[] = $lesson_id;
+        array_push($completed[0], $lesson_id);
+      } else {
+        if( ( $key = array_search( $lesson_id, $lessons_completed ) ) !== false ) {
+          unset( $lessons_completed[$key] );
+        }
       }
+      
+      update_user_meta( $user_id, 'humble_lms_lessons_completed', $lessons_completed );
 
-      sort( $track_courses );
-      sort( $courses_completed );
+      // Course completed
+      // if( $this->user->completed_course( $course_id ) ) {
+      //   if( $course_id && ! in_array( $course_id, $courses_completed ) ) {
+      //     $courses_completed[] = $course_id;
+      //   } else {
+      //     if( ( $key = array_search( $course_id, $courses_completed ) ) !== false ) {
+      //       unset( $courses_completed[$key] );
+      //     }
+      //   }
+        
+      //   update_user_meta( $user_id, 'humble_lms_courses_completed', $courses_completed );
+      //   $course_completed = $course_id;
+      // }
 
-      return ! array_diff( $track_courses, $courses_completed );
+      // // Tracks completed
+      // $tracks_completed_new = $this->user->update_completed_tracks();
+      // $tracks_completed = array_unique( array_diff( $tracks_completed_new, $tracks_completed ) );
+
+      return json_encode( $completed );
     }
 
     /**

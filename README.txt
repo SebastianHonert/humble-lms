@@ -23,4 +23,5 @@ Humble LMS is a very simple learning management plugin for WordPress with a focu
 == Changelog ==
 
 = 0.1 =
+
 * Initial commit

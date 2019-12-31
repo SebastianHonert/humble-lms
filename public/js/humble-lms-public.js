@@ -76,5 +76,5 @@ jQuery(document).ready(function($) {
   $('.humble-lms-award-message-close').on('click touch', function() {
     $('.humble-lms-award-message').fadeOut(500)
   })
-  
+
 })

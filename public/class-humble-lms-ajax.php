@@ -85,7 +85,13 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
       }
 
-      // User logged in
+      /**
+       * Mark lesson complete
+       * 
+       * This returns an array with the completed lesson, courses, and track:
+       * 
+       * array([lesson_id], [course_id1, course_id2, ...], [track_id1, track_id2, ...])
+      */
       if( is_user_logged_in() ) {
         $completed = $this->user->mark_lesson_complete( $lesson_id );
       }

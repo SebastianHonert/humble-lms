@@ -143,6 +143,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             $courses_completed[] = $course->ID;
             array_push($completed[1], $course->ID);
           }
+        } else {
+          if( ( $key = array_search( $course->ID, $courses_completed ) ) !== false ) {
+            unset( $courses_completed[$key] );
+          }
         }
 
         update_user_meta( $user_id, 'humble_lms_courses_completed', $courses_completed );
@@ -164,6 +168,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             if( ! in_array( $track->ID, $tracks_completed ) ) {
               $tracks_completed[] = $track->ID;
               array_push($completed[2], $track->ID);
+            }
+          } else {
+            if( ( $key = array_search( $track->ID, $tracks_completed ) ) !== false ) {
+              unset( $tracks_completed[$key] );
             }
           }
 

@@ -25,7 +25,7 @@
 }
 
 .humble-lms-course-completed .humble-lms-course-tile::before,
-.humble-lms-track-completed .humble-lms-track-tile::before {
+.humble-lms-track-completed .humble-lms-course-tile::before {
   font-family: 'themify';
   content: '\e623';
   position: absolute;

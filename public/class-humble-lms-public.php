@@ -234,23 +234,29 @@ class Humble_LMS_Public {
     }
 
     // Completed lesson/course/track
-    // if( isset( $_POST['completed'] ) ) {
-    //   $completed = json_decode( $_POST['completed'] );
-    //   print_r( $completed );
-    //   $completed_lesson = ! empty( $completed[0][0] ) ? $completed[0][0] : '';
-    //   $completed_courses = ! empty( $completed[0][1] ) ? implode(', ', $completed[0][1]) : '';
-    //   $completed_tracks = ! empty( $completed[0][2] ) ? implode(', ', $completed[0][2]) : '';
-    //   $html .= '<div class="humble-lms-award-message">
-    //     <div class="humble-lms-award-message-inner">
-    //       <div class="humble-lms-award-message-close"></div>
-    //       <div class=humble-lms-award-message-title">Title</div>
-    //       Lesson completed: ' . $completed_lesson . '<br>
-    //       Courses completed: ' . $completed_courses . '<br>
-    //       Tracks completed: ' . $completed_tracks . '<br>
-    //       <div class=humble-lms-award-message-image">Image...</div>
-    //     </div>
-    //   </div>';
-    // }
+    if( isset( $_POST['completed'] ) ) {
+      $completed = json_decode( $_POST['completed'] );
+      if( ! empty( $completed[0] ) ) {
+        // Show array contents (testing)
+        // echo '<pre>';
+        // print_r( $completed );
+        // echo '</pre>';
+        $completed_lesson = ! empty( $completed[0] ) ? implode(', ', $completed[0]) : '';
+        $completed_courses = ! empty( $completed[1] ) ? implode(', ', $completed[1]) : '';
+        $completed_tracks = ! empty( $completed[2] ) ? implode(', ', $completed[2]) : '';
+
+        $html .= '<div class="humble-lms-award-message">
+          <div class="humble-lms-award-message-inner">
+            <div class="humble-lms-award-message-close"></div>
+            <div class=humble-lms-award-message-title">Title</div>
+            Lesson completed: ' . $completed_lesson . '<br>
+            Courses completed: ' . $completed_courses . '<br>
+            Tracks completed: ' . $completed_tracks . '<br>
+            <div class=humble-lms-award-message-image">Image...</div>
+          </div>
+        </div>';
+      }
+    }
 
     return $html;
   }

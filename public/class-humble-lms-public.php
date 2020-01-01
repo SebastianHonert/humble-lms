@@ -52,6 +52,7 @@ class Humble_LMS_Public {
     $this->humble_lms = $humble_lms;
     $this->version = $version;
     $this->user = new Humble_LMS_Public_User;
+    $this->access_handler = new Humble_LMS_Public_Access_Handler;
 
   }
 
@@ -270,7 +271,7 @@ class Humble_LMS_Public {
   function humble_lms_template_redirect() {
     global $post;
 
-    if ( is_single() && $post->post_type == 'humble_lms_lesson' && ! $this->user->can_access_lesson( $post->ID ) ) {
+    if ( is_single() && $post->post_type == 'humble_lms_lesson' && ! $this->access_handler->can_access_lesson( $post->ID ) ) {
       if( ! empty( $_POST['course_id'] ) ) {
         wp_redirect( esc_url( get_permalink( (int)$_POST['course_id'] ) . '?access=denied' ) );
       } else {

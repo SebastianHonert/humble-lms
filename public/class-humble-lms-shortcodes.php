@@ -19,6 +19,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function __construct() {
 
       $this->user = new Humble_LMS_Public_User;
+      $this->access_handler = new Humble_LMS_Public_Access_Handler;
 
     }
 
@@ -240,7 +241,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
             $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
             $class_lesson_completed = $this->user->completed_lesson( $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
-            $locked = $this->user->can_access_lesson( $lesson->ID ) ? '' : '<i class="ti-lock"></i>';
+            $locked = $this->access_handler->can_access_lesson( $lesson->ID ) ? '' : '<i class="ti-lock"></i>';
             $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
             $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson->post_title . '</span>';
             $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';

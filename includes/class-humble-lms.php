@@ -138,6 +138,11 @@ class Humble_LMS {
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-user.php';
 
+    /**
+     * The class responsible for handling user access.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-access-handler.php';
+
     $this->loader = new Humble_LMS_Loader();
 
   }

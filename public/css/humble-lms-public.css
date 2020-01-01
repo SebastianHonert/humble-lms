@@ -337,16 +337,16 @@ input[type='submit'].humble-lms-btn--error:active {
   height: 480px;
   background: #fff;
   box-shadow: 0 .125em 1em rgba(0,0,0,.4);
+  padding: .5em;
 }
 
 .humble-lms-award-message-close {
   position: absolute;
-  right: -1em;
-  top: -1em;
-  width: 2em;
-  height: 2em;
-  background: red;
+  right: 4px;
+  top: 4px;
+  overflow: hidden;
   cursor: pointer;
+  font-size: 1.5em;
 }
 
 /* Flex columns */

@@ -248,7 +248,9 @@ class Humble_LMS_Public {
 
         $html .= '<div class="humble-lms-award-message">
           <div class="humble-lms-award-message-inner">
-            <div class="humble-lms-award-message-close"></div>
+            <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+              <i class="ti-close"></i>
+            </div>
             <div class=humble-lms-award-message-title">Title</div>
             Lesson completed: ' . $completed_lesson . '<br>
             Courses completed: ' . $completed_courses . '<br>

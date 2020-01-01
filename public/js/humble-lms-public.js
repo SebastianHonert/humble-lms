@@ -73,8 +73,21 @@ jQuery(document).ready(function($) {
   })
 
   // Award messages
-  $('.humble-lms-award-message-close').on('click touch', function() {
+  function closeAwardMessage () {
     $('.humble-lms-award-message').fadeOut(500)
+  }
+
+  $('.humble-lms-award-message-close').on('click touch', function() {
+    closeAwardMessage()
   })
+
+  // Keyboard interaction
+  $(document).keyup( function(e) {
+    if (e.key === "Escape") { // escape key maps to keycode `27`
+      if ($('.humble-lms-award-message').is(':visible')) { 
+        closeAwardMessage()
+      }
+    }
+  });
 
 })

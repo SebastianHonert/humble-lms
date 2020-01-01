@@ -7,13 +7,13 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Humble LMS is a very simple learning management plugin for WordPress with a focus on simplicity.
+Humble LMS is a very simple learning management plugin for WordPress.
 
 == Description ==
 
 PLEASE NOTE: this plugin is work in progress!
 
-Humble LMS is a very simple learning management plugin for WordPress with a focus on simplicity.
+Humble LMS is a very simple learning management plugin for WordPress.
 
 == Installation ==
 

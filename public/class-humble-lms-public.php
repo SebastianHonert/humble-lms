@@ -238,26 +238,38 @@ class Humble_LMS_Public {
     if( isset( $_POST['completed'] ) ) {
       $completed = json_decode( $_POST['completed'] );
       if( ! empty( $completed[0] ) ) {
-        // Show array contents (testing)
+        // Display array content (testing)
         // echo '<pre>';
         // print_r( $completed );
         // echo '</pre>';
-        $completed_lesson = ! empty( $completed[0] ) ? implode(', ', $completed[0]) : '';
-        $completed_courses = ! empty( $completed[1] ) ? implode(', ', $completed[1]) : '';
-        $completed_tracks = ! empty( $completed[2] ) ? implode(', ', $completed[2]) : '';
 
-        $html .= '<div class="humble-lms-award-message">
-          <div class="humble-lms-award-message-inner">
-            <div class="humble-lms-award-message-close" aria-label="Close award overlay">
-              <i class="ti-close"></i>
-            </div>
-            <div class=humble-lms-award-message-title">Title</div>
-            Lesson completed: ' . $completed_lesson . '<br>
-            Courses completed: ' . $completed_courses . '<br>
-            Tracks completed: ' . $completed_tracks . '<br>
-            <div class=humble-lms-award-message-image">Image...</div>
-          </div>
-        </div>';
+        $html .= '<div class="humble-lms-award-message"><div>';
+
+        foreach( $completed as $key => $ids ) {
+          foreach( $ids as $id ) {
+            if( $key === 0 ) $title = __('Lesson completed', 'humble-lms');
+            if( $key === 1 ) $title = __('Course completed', 'humble-lms');
+            if( $key === 2 ) $title = __('Track completed', 'humble-lms');
+
+            $html .= '<div class="humble-lms-award-message-inner">
+                <div>
+                  <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+                    <i class="ti-close"></i>
+                  </div>
+                  <h3 class=humble-lms-award-message-title">' . $title . '</h3>
+                  <p class="humble-lms-award-message-content-name">' . get_the_title( $id ) . '</p>
+                  <div class="humble-lms-award-message-image humble-lms-bounce-in">
+                    <i class="ti-medall"></i>
+                  </div>
+                  <a class="humble-lms-award-message-close-text">
+                    <i class="ti-close"></i>' . __('close message', 'humble-lms') . '
+                  </a>
+                </div>
+              </div>';
+          }
+        }
+
+        $html .= '</div></div>';
       }
     }
 

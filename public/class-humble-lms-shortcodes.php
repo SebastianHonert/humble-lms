@@ -233,7 +233,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
         if( ! $course_id ) {
-          $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not attached to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';
+          $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not related to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';
         } else {
           $html .= '<ul class="humble-lms-syllabus-lessons">';
 
@@ -256,12 +256,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       // Meta information
       if( $lesson_id ) {
         $level = strip_tags( get_the_term_list( $lesson_id, 'humble_lms_course_level', '', ', ') );
-        $level = $level ? '<br><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level : '';
+        $level = $level ? '<strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level : '';
         $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
         $duration = $duration ? '<br><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration : '';
 
         $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
-          $html .= '<strong>' . __('Course', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a>';
+          $html .= ! $course_id ? '<strong>' . __('Course', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Course', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a><br>';
           $html .= $level;
           $html .= $duration;
         $html .= '</p>';

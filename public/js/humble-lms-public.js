@@ -73,13 +73,25 @@ jQuery(document).ready(function($) {
   })
 
   // Award messages
-  function closeAwardMessage () {
-    $('.humble-lms-award-message').fadeOut(500)
+  function closeAwardMessage (msg = null) {
+    let messages = $('.humble-lms-award-message-inner')
+    console.log(messages.length)
+    if (msg && messages.length > 1) {
+      $(msg).fadeOut(500, function() {
+        $(this).remove()
+      })
+    } else {
+      $('.humble-lms-award-message').fadeOut(500)
+    }
   }
 
-  $('.humble-lms-award-message-close').on('click touch', function() {
-    closeAwardMessage()
+  $('.humble-lms-award-message-close, .humble-lms-award-message-close-text').on('click touch', function() {
+    let msg = $(this).parent('div').parent('.humble-lms-award-message-inner')
+    closeAwardMessage(msg)
   })
+
+  $('.humble-lms-award-message').fadeIn(1250)
+  $('.humble-lms-award-message-inner').fadeIn(1250)
 
   // Keyboard interaction
   $(document).keyup( function(e) {

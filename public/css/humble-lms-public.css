@@ -325,19 +325,48 @@ input[type='submit'].humble-lms-btn--error:active {
   top: 0;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,.5);
+  background: rgba(26, 65, 149,.95);
   z-index: 999;
   overflow: auto;
+  color: #fff;
+  font-size: 1.125em;
+  display: none;
+}
+
+.humble-lms-award-message > div {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .humble-lms-award-message-inner {
   position: relative;
-  display: block;
-  width: 480px;
-  height: 480px;
-  background: #fff;
+  display: flex;
+  width: 100%;
+  height: 100%;
   box-shadow: 0 .125em 1em rgba(0,0,0,.4);
   padding: .5em;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.humble-lms-award-message-inner h3 {
+  margin: 0 0;
+  padding: 0 0 .5em;
+  color: #fff;
+}
+
+.humble-lms-award-message-content-name {
+  font-style: italic;
+}  
+
+.humble-lms-award-message-image {
+  font-size: 6em;
+  color: gold;
+  text-shadow: 2px 2px 6px rgba(0,0,0,.2);
 }
 
 .humble-lms-award-message-close {
@@ -347,7 +376,71 @@ input[type='submit'].humble-lms-btn--error:active {
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
+  color: #fff;
 }
+
+.humble-lms-award-message-close-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75em;
+  color: #fff;
+  cursor: pointer;
+  opacity: .7;
+  padding: 1em;
+  transition: opacity .2s linear;
+}
+
+.humble-lms-award-message-close-text:hover,
+.humble-lms-award-message-close-text:focus,
+.humble-lms-award-message-close-text:active,
+.humble-lms-award-message-close-text:visited {
+  color: #fff;
+  opacity: 1;
+}
+
+.humble-lms-award-message-close-text:hover,
+.humble-lms-award-message-close-text:focus,
+.humble-lms-award-message-close-text:active {
+  opacity: 1;
+}
+
+.humble-lms-award-message-close-text i {
+  margin-right: .25em;
+}
+
+/* Bounce-In animation */
+.humble-lms-bounce-in {
+  opacity: 0;
+  animation-name: bounce-in;
+  animation-duration: 450ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.humble-lms-bounce-in {
+  animation-delay: 1s;
+}
+
+@keyframes bounce-in{
+  0%{
+    opacity: 0;
+    transform: scale(0.3) translate3d(0,0,0);
+  }
+  50%{
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  80%{
+    opacity: 1;
+    transform: scale(0.89);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translate3d(0,0,0);
+  }
+}
+
 
 /* Flex columns */
 

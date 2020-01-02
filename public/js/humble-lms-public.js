@@ -75,26 +75,30 @@ jQuery(document).ready(function($) {
   // Award messages
   function closeAwardMessage (msg = null) {
     let messages = $('.humble-lms-award-message-inner')
-    console.log(messages.length)
     if (msg && messages.length > 1) {
-      $(msg).fadeOut(500, function() {
+      $(msg).fadeOut(500, function () {
         $(this).remove()
+        $('.humble-lms-award-message').fadeOut(0).fadeIn(500)
       })
     } else {
       $('.humble-lms-award-message').fadeOut(500)
+      $(messages).fadeOut(500)
     }
   }
 
-  $('.humble-lms-award-message-close, .humble-lms-award-message-close-text').on('click touch', function() {
+  $('.humble-lms-award-message-close').on('click touch', function () {
     let msg = $(this).parent('div').parent('.humble-lms-award-message-inner')
     closeAwardMessage(msg)
   })
 
-  $('.humble-lms-award-message').fadeIn(1250)
-  $('.humble-lms-award-message-inner').fadeIn(1250)
+  $('.humble-lms-award-message-inner').on('click touch', function () {
+    closeAwardMessage($(this))
+  })
+
+  $('.humble-lms-award-message').fadeIn(1000)
 
   // Keyboard interaction
-  $(document).keyup( function(e) {
+  $(document).keyup( function (e) {
     if (e.key === "Escape") { // escape key maps to keycode `27`
       if ($('.humble-lms-award-message').is(':visible')) { 
         closeAwardMessage()

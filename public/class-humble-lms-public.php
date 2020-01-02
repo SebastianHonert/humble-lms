@@ -247,9 +247,9 @@ class Humble_LMS_Public {
 
         foreach( $completed as $key => $ids ) {
           foreach( $ids as $id ) {
-            if( $key === 0 ) $title = __('Lesson completed', 'humble-lms');
-            if( $key === 1 ) $title = __('Course completed', 'humble-lms');
-            if( $key === 2 ) $title = __('Track completed', 'humble-lms');
+            if( $key === 0 ) { $title = __('Lesson completed', 'humble-lms'); $icon = 'ti-thumb-up'; }
+            if( $key === 1 ) { $title = __('Course completed', 'humble-lms'); $icon = 'ti-medall'; }
+            if( $key === 2 ) { $title = __('Track completed', 'humble-lms'); $icon = 'ti-crown'; }
 
             $html .= '<div class="humble-lms-award-message-inner">
                 <div>
@@ -259,11 +259,8 @@ class Humble_LMS_Public {
                   <h3 class=humble-lms-award-message-title">' . $title . '</h3>
                   <p class="humble-lms-award-message-content-name">' . get_the_title( $id ) . '</p>
                   <div class="humble-lms-award-message-image humble-lms-bounce-in">
-                    <i class="ti-medall"></i>
+                    <i class="' . $icon .'"></i>
                   </div>
-                  <a class="humble-lms-award-message-close-text">
-                    <i class="ti-close"></i>' . __('close message', 'humble-lms') . '
-                  </a>
                 </div>
               </div>';
           }

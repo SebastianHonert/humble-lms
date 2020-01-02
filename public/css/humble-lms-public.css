@@ -30,11 +30,16 @@
   content: '\e623';
   position: absolute;
   top: 0;
-  right: 0;
+  right: .125em;
   z-index: 2;
   color: gold;
   font-size: 2em;
   text-shadow: 1px 1px 0 rgba(0,0,0,.4);
+}
+
+.humble-lms-track-completed .humble-lms-course-tile::before {
+  content: '\e642';
+  right: .375em;
 }
 
 .humble-lms-course-tile,
@@ -317,15 +322,16 @@ input[type='submit'].humble-lms-btn--error:active {
 /* Award messages */
 
 .humble-lms-award-message {
+  box-sizing: border-box;
+  padding: 1em;
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 110%;
+  height: 110%;
   position: fixed;
-  left: 0;
-  top: 0;
+  left: -5%;
+  top: -5%;
   align-items: center;
   justify-content: center;
-  background: rgba(26, 65, 149,.95);
   z-index: 999;
   overflow: auto;
   color: #fff;
@@ -351,12 +357,15 @@ input[type='submit'].humble-lms-btn--error:active {
   text-align: center;
   align-items: center;
   justify-content: center;
+  background: rgba(26, 65, 149,.95);
 }
 
 .humble-lms-award-message-inner h3 {
   margin: 0 0;
   padding: 0 0 .5em;
   color: #fff;
+  text-shadow: 2px 2px 6px rgba(0,0,0,.2);
+  font-size: 2em;
 }
 
 .humble-lms-award-message-content-name {
@@ -371,24 +380,12 @@ input[type='submit'].humble-lms-btn--error:active {
 
 .humble-lms-award-message-close {
   position: absolute;
-  right: 4px;
-  top: 4px;
+  right: .25em;
+  top: .75em;
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
   color: #fff;
-}
-
-.humble-lms-award-message-close-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: .75em;
-  color: #fff;
-  cursor: pointer;
-  opacity: .7;
-  padding: 1em;
-  transition: opacity .2s linear;
 }
 
 .humble-lms-award-message-close-text:hover,
@@ -413,13 +410,13 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-bounce-in {
   opacity: 0;
   animation-name: bounce-in;
-  animation-duration: 450ms;
+  animation-duration: .45s;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
 .humble-lms-bounce-in {
-  animation-delay: 1s;
+  animation-delay: .5s;
 }
 
 @keyframes bounce-in{

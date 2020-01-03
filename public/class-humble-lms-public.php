@@ -250,6 +250,7 @@ class Humble_LMS_Public {
             if( $key === 0 ) { $title = __('Lesson completed', 'humble-lms'); $icon = 'ti-thumb-up'; }
             if( $key === 1 ) { $title = __('Course completed', 'humble-lms'); $icon = 'ti-medall'; }
             if( $key === 2 ) { $title = __('Track completed', 'humble-lms'); $icon = 'ti-crown'; }
+            if( $key === 3 ) { $title = __('You received an award', 'humble-lms'); $icon = 'ti-medall'; }
 
             $html .= '<div class="humble-lms-award-message-inner">
                 <div>
@@ -257,11 +258,17 @@ class Humble_LMS_Public {
                     <i class="ti-close"></i>
                   </div>
                   <h3 class=humble-lms-award-message-title">' . $title . '</h3>
-                  <p class="humble-lms-award-message-content-name">' . get_the_title( $id ) . '</p>
-                  <div class="humble-lms-award-message-image humble-lms-bounce-in">
+                  <p class="humble-lms-award-message-content-name">' . get_the_title( $id ) . '</p>';
+
+                  if( $key !== 3 ) {
+                    $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
                     <i class="' . $icon .'"></i>
-                  </div>
-                </div>
+                  </div>';
+                  } else {
+                    $html .= '<img class="humble-lms-award-image humble-lms-bounce-in" src="' . get_the_post_thumbnail_url( $id ) . '" alt="" />';
+                  } 
+
+                $html .= '</div>
               </div>';
           }
         }

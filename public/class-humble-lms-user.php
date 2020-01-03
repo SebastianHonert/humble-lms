@@ -109,7 +109,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $completed = array( [], [], [] ); // lesson, courses, tracks
+      $completed = array( [], [], [], [] ); // lesson, courses, tracks, awards
       
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
       if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
@@ -179,7 +179,73 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         }
       }
 
+      // Perform acvtivities attached to completed content
+      // and add them to the completed array
+      $completed = $this->perform_activities( $completed );
+
       return json_encode( $completed );
+    }
+
+    /**
+     * Perform activities based on the completed content.
+     * 
+     * humble_lms_activity_trigger = lesson, course, track
+     * humble_lms_activity_trigger_lesson = lesson ID
+     * humble_lms_activity_trigger_course = course ID
+     * humble_lms_activity_trigger_track = track ID
+     * 
+     * humble_lms_activity_action = award
+     * humble_lms_activity_action_award = award ID
+     *
+     * @return  array
+     * @param   int
+     * @since   0.0.1
+     */
+    public function perform_activities( $completed ) {
+      if( ! is_user_logged_in() )
+        return [];
+
+      $user_id = get_current_user_id();
+
+      foreach( $completed as $key => $ids ) {
+        foreach( $ids as $id ) {
+          if( $key === 0 ) { $humble_lms_activity_trigger = 'user_completes_lesson'; $content_type = 'lesson'; }
+          if( $key === 1 ) { $humble_lms_activity_trigger = 'user_completes_course'; $content_type = 'course'; }
+          if( $key === 2 ) { $humble_lms_activity_trigger = 'user_completes_track'; $content_type = 'track'; }
+
+          $args = array(
+            'post_type' => 'humble_lms_activity',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'meta_query' => array(
+              'relation' => 'AND',
+              array(
+                'key' => 'humble_lms_activity_trigger',
+                'value' => $humble_lms_activity_trigger,
+              ),
+              array(
+                'key' => 'humble_lms_activity_trigger_' . $content_type,
+                'value' => $id,
+              )
+            )
+          );
+    
+          $activities = get_posts( $args );
+
+          foreach( $activities as $activity ) {
+            $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);
+            $action_award = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
+            
+            switch( $action ) {
+              case 'award':
+                array_push( $completed[3], $action_award );
+                // $this->grant_award( $user_id, $action_award );
+            }
+          }
+        }
+      }
+
+      return $completed;
     }
 
   }

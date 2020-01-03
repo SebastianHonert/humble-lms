@@ -262,7 +262,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $award_id )
         return;
 
-      $awards = get_user_meta( $user_id, 'humble_lms_awards', false);
+      // update_user_meta( $user_id, 'humble_lms_awards', [] );
+
+      $awards = get_user_meta( $user_id, 'humble_lms_awards', false );
+      $awards = is_array( $awards ) && ! empty( $awards[0] ) ? $awards[0] : [];
       
       if( ! in_array( $award_id, $awards ) ) {
         array_push( $awards, $award_id );

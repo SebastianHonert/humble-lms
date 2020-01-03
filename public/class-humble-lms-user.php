@@ -234,18 +234,43 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
           foreach( $activities as $activity ) {
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);
-            $action_award = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
             
             switch( $action ) {
               case 'award':
-                array_push( $completed[3], $action_award );
-                // $this->grant_award( $user_id, $action_award );
+                $award_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
+                array_push( $completed[3], $award_id );
+                $this->grant_award( $user_id, $award_id );
             }
           }
         }
       }
 
       return $completed;
+    }
+
+    /**
+     * Grant award to user.
+     *
+     * @return  false
+     * @param   int
+     * @since   0.0.1
+     */
+    public function grant_award( $user_id, $award_id ) {
+      if( ! $user_id )
+        return;
+
+      if( ! $award_id )
+        return;
+
+      $awards = get_user_meta( $user_id, 'humble_lms_awards', false);
+      
+      if( ! in_array( $award_id, $awards ) ) {
+        array_push( $awards, $award_id );
+      }
+
+      update_user_meta( $user_id, 'humble_lms_awards', $awards );
+
+      return;
     }
 
   }

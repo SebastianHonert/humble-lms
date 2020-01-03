@@ -377,6 +377,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       echo '<h3>Lessons</h3>';
       print_r( get_user_meta( get_current_user_id(), 'humble_lms_lessons_completed', false ) );
+
+      echo '<h3>Awards</h3>';
+      print_r( get_user_meta( get_current_user_id(), 'humble_lms_awards', false ) );
     }
     
   }

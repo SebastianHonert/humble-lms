@@ -229,7 +229,8 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'course_tile', $plugin_shortcodes, 'humble_lms_course_tile' );
     $this->loader->add_shortcode( 'syllabus', $plugin_shortcodes, 'humble_lms_syllabus' );
     $this->loader->add_shortcode( 'mark_complete', $plugin_shortcodes, 'humble_lms_mark_complete' );
-    $this->loader->add_shortcode( 'user_data', $plugin_shortcodes, 'display_user_data' );
+    $this->loader->add_shortcode( 'user_progress', $plugin_shortcodes, 'user_progress' );
+    $this->loader->add_shortcode( 'user_awards', $plugin_shortcodes, 'user_awards' );
 
     /**
      * AJAX

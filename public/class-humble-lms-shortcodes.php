@@ -366,20 +366,100 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     }
 
     /**
-     * Display user data for testing
-    */
-    function display_user_data() {
-      echo '<h3>Tracks</h3>';
-      print_r( get_user_meta( get_current_user_id(), 'humble_lms_tracks_completed', false ) );
+     * Display user progress (tracks and courses).
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function user_progress() {
+      if( ! is_user_logged_in() )
+        return;
 
-      echo '<h3>Courses</h3>';
-      print_r( get_user_meta( get_current_user_id(), 'humble_lms_courses_completed', false ) );
+      $html = '';
+      $tracks_completed = get_user_meta( get_current_user_id(), 'humble_lms_tracks_completed', false );
+      $courses_completed = get_user_meta( get_current_user_id(), 'humble_lms_courses_completed', false );
 
-      echo '<h3>Lessons</h3>';
-      print_r( get_user_meta( get_current_user_id(), 'humble_lms_lessons_completed', false ) );
+      $args = array(
+        'post_type' => 'humble_lms_track',
+        'posts_per_page' => -1,
+        'post_status' => 'publish'
+      );
 
-      echo '<h3>Awards</h3>';
-      print_r( get_user_meta( get_current_user_id(), 'humble_lms_awards', false ) );
+      $tracks = get_posts( $args );
+
+      if( ! $tracks ) {
+        $html .= '<p>' . __('No tracks available.', 'humble-lms') . '</p>';
+      }
+
+      foreach( $tracks as $key => $track ) {
+        $counter = 0;
+        $class_completed = $this->user->completed_track( $track->ID ) ? 'humble-lms-track-progress-track--completed' : '';
+        $html .= '<h2 class="' . $class_completed . '">' . get_the_title( $track->ID ) . '</h2>';
+
+        $track_courses = get_post_meta( $track->ID, 'humble_lms_track_courses', true );
+        $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+
+        if( empty( $track_courses) )
+          continue;
+
+        $html .= '<div class="humble-lms-track-progress">';
+
+        foreach( $track_courses as $key => $course ) {
+          if( get_post_status( $course ) !== 'publish' )
+            continue;
+
+          $counter++;
+          $class_completed = $this->user->completed_course( $course ) ? 'humble-lms-track-progress-course--completed' : '';
+          $html .= '<a href="' . esc_url( get_permalink( $course ) ) . '" class="humble-lms-track-progress-course ' . $class_completed . '" title="' . get_the_title( $course ) . '">';
+          $html .= $counter;
+          $html .= '</a>';
+          $html .= $key !== array_key_last( $track_courses ) ? '<i class="ti-angle-right humble-lms-track-progress-course-separator"></i>' : '';
+        }
+
+        $html .= '</div>';
+      }
+
+      // $html .= '<hr>';
+      // $html .= '<h2>Testing</h2>';
+      // $html .= '<h5>' . __('Tracks', 'humble-lms') . '</h5>';
+      // $html .= implode( ', ', $tracks_completed[0] );
+      // $html .= '<h5>' . __('Courses', 'humble-lms') . '</h5>';
+      // $html .= implode( ', ', $courses_completed[0] );
+      // $html .= '<h5>' . __('Lessons', 'humble-lms') . '</h5>';
+      // $html .= implode( ', ', $lessons_completed[0] );
+      // $html .= '<h5>' . __('Awards', 'humble-lms') . '</h5>';
+      // $html .= implode( ', ', $awards[0] );
+
+      return $html;
+    }
+
+    /**
+     * Display user awards.
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function user_awards() {
+      if( ! is_user_logged_in() )
+        return;
+      
+      $html = '<h2>' . __('Awards', 'humble-lms') . '</h2>';
+      $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
+
+      if( ! $awards ) {
+        $html .= '<p>' . __('No have not received any awards yet.', 'humble-lms') . '</p>';
+      } else {
+        $html .= '<div class="humble-lms-awards-list">';
+        foreach( $awards[0] as $award ) {
+          $html .= '<div class="humble-lms-awards-list-item">';
+          $html .= '<img src="' . get_the_post_thumbnail_url( $award ) . '" title="' . get_the_title( $award ) . '" alt="' . get_the_title( $award ) . '" />';
+          $html .= '</div>';
+        }
+        $html .= '</div>';
+      }
+
+      return $html;
+      
     }
     
   }

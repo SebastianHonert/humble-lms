@@ -442,9 +442,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     function user_awards() {
       if( ! is_user_logged_in() )
         return;
-      
-      $html = '<h2>' . __('Awards', 'humble-lms') . '</h2>';
+
       $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
+      $html = '';
 
       if( ! $awards ) {
         $html .= '<p>' . __('No have not received any awards yet.', 'humble-lms') . '</p>';

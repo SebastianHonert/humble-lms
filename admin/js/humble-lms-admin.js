@@ -3,8 +3,6 @@ jQuery(document).ready(function($) {
 
   'use strict'
 
-  let sortable = null
-
   // Searchable multi select
   $('.humble-lms-searchable').multiSelect({
     selectableHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
@@ -32,8 +30,10 @@ jQuery(document).ready(function($) {
         }
       })
 
-      let sortableList = $('.ms-selection .ms-list')[0]
-      sortable = Sortable.create(sortableList, {
+      let content = that.$element.data('content')
+      let sortableList = that.$element.parent().parent().find('.ms-selection .ms-list')[0]
+      
+      that.sortable = Sortable.create(sortableList, {
         animation: 100,
         onEnd: function () { 
           let selectedItemIds = []
@@ -44,25 +44,23 @@ jQuery(document).ready(function($) {
             return $(item).data('id')
           })
 
-          if ($('#humble_lms_course_lessons').length) {
-            $('#humble_lms_course_lessons').val(JSON.stringify(selectedItemIds))
-          } else if ($('#humble_lms_track_courses').length) {
-            $('#humble_lms_track_courses').val(JSON.stringify(selectedItemIds))
+          if ($('#humble_lms_' + content).length) {
+            $('#humble_lms_' + content).val(JSON.stringify(selectedItemIds))
           }
         }
       })
 
-      sortable.options.onEnd()
+      this.sortable.options.onEnd()
     },
     afterSelect: function () {
       this.qs1.cache()
       this.qs2.cache()
-      sortable.options.onEnd()
+      this.sortable.options.onEnd()
     },
     afterDeselect: function () {
       this.qs1.cache()
       this.qs2.cache()
-      sortable.options.onEnd()
+      this.sortable.options.onEnd()
     }
   })
 

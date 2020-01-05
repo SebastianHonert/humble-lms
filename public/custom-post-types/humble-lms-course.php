@@ -105,19 +105,21 @@ function humble_lms_course_lessons_mb()
 
   if( $lessons || $selected_lessons ):
 
-    echo '<select class="humble-lms-searchable" multiple="multiple">';
-      foreach( $selected_lessons as $lesson ) {
-        echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-          if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
-        echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
-      }
-      foreach( $lessons as $lesson ) {
-        echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-          if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
-        echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
-      }
-    echo '</select>';
-    echo '<input id="humble_lms_course_lessons" name="humble_lms_course_lessons" type="hidden" value="' . implode(',', $course_lessons) . '">';
+    echo '<div id="humble-lms-admin-course-lessons">';
+      echo '<select class="humble-lms-searchable" data-content="course_lessons"  multiple="multiple">';
+        foreach( $selected_lessons as $lesson ) {
+          echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+            if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
+          echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+        }
+        foreach( $lessons as $lesson ) {
+          echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+            if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
+          echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons" name="humble_lms_course_lessons" type="hidden" value="' . implode(',', $course_lessons) . '">';
+    echo '</div>';
   
   else:
 

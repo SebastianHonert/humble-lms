@@ -103,6 +103,7 @@ class Humble_LMS_Admin {
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-admin.js', array( 'jquery' ), $this->version, true );
 
   }
+
   /**
    * Block users / students from dashboard access and redirect
    * to front page instead.
@@ -118,6 +119,34 @@ class Humble_LMS_Admin {
       die;
     }
   }
+
+  
+  /**
+   * Add user meta field for course instructors
+   *
+   * @since    0.0.1
+   */
+  public function add_user_profile_fields( $user ) {
+    $checked = ( isset( $user->humble_lms_is_instructor ) && $user->humble_lms_is_instructor ) ? 'checked="checked"' : '';
+    echo '<h3>Humble LMS</h3>';
+    echo '<label for="humble_lms_is_instructor">';
+    echo '<input name="humble_lms_is_instructor" type="checkbox" id="humble_lms_is_instructor" value="1" ' . $checked . '>';
+    echo __('This user is a course instructor.', 'humble-lms');
+    echo '</label>';
+  }
+
+  /**
+   * Update user profile
+   *
+   * @since    0.0.1
+   */
+  public function update_user_profile( $user_id ) {
+    if( current_user_can('edit_user', $user_id) ) {
+      update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
+    }
+  }
+
+
 
   /**
    * Remove trashed courses/lessons from track/course meta

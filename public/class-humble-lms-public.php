@@ -210,7 +210,6 @@ class Humble_LMS_Public {
 
     // Success message: User completed course
     if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
-      $html = $content;
       $course_id = $post->ID;
     } elseif( isset( $_POST['course_id'] ) ) {
       $course_id = (int)$_POST['course_id'];
@@ -230,7 +229,7 @@ class Humble_LMS_Public {
       </div>';
     }
 
-    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' ) {
+    if ( is_single() && ( get_post_type( $post->ID ) === 'humble_lms_course' || get_post_type( $post->ID ) === 'humble_lms_lesson' ) ) {
       $html .= $content;
     }
 

@@ -194,7 +194,10 @@ class Humble_LMS {
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
     $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );
-
+    $this->loader->add_action( 'edit_user_profile', $plugin_admin, 'add_user_profile_fields' );
+    $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
+    $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
+    $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
   }
 
   /**

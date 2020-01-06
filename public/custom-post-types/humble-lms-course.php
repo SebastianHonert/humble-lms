@@ -68,6 +68,7 @@ function humble_lms_course_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_course_lessons_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_lessons_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
 }
 

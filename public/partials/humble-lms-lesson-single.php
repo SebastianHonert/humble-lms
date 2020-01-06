@@ -16,7 +16,7 @@ if (have_posts()):
       <?php
         the_content();
 
-        echo do_shortcode('[humble_lms_mark_complete]');
+        echo do_shortcode('[humble_lms_mark_complete_button]');
       ?>
     </div>
     <div class="humble-lms-flex-column--third">

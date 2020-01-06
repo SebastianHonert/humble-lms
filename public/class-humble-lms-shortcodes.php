@@ -28,7 +28,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_track_archive( $atts = null ) {  
+    public function track_archive( $atts = null ) {  
       extract( shortcode_atts( array (
         'tile_width' => 'half',
         'style' => '',
@@ -68,7 +68,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_track_tile( $atts = null ) {
+    public function track_tile( $atts = null ) {
       extract( shortcode_atts( array (
         'track_id' => '',
         'tile_width' => 'half'
@@ -103,8 +103,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_course_archive( $atts = null ) {
+    public function course_archive( $atts = null ) {
       global $post;
+
+      $html = '';
 
       extract( shortcode_atts( array (
         'track_id' => '',
@@ -127,9 +129,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( $is_track) {
         $track_courses = get_post_meta($track_id, 'humble_lms_track_courses', true);
         $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
-        
+
         if( ! empty( $track_courses ) ) {
-          $args['include'] = $track_courses;
+          $args['post__in'] = $track_courses;
         } else {
           return '<p>' . __('This track does not include any courses.', 'humble-lms') . '</p>';
         }
@@ -137,7 +139,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $courses = new WP_Query( $args );
 
-      $html = '';
       $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
       if ( $courses->have_posts() ) {
@@ -161,7 +162,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_course_tile( $atts = null ) {
+    public function course_tile( $atts = null ) {
       extract( shortcode_atts( array (
         'course_id' => '',
         'tile_width' => 'half'
@@ -196,7 +197,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function humble_lms_syllabus( $atts = null ) {
+    public function syllabus( $atts = null ) {
       global $post;
 
       extract( shortcode_atts( array (
@@ -276,11 +277,53 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     }
 
     /**
-     * Shortcode: mark lesson complete
+     * Display track/course/lesson instructor(s).
+     * Lesson > Course > Track
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function course_instructors() {
+      global $post;
+      
+      $html = '';
+
+      if( is_single() && $post->post_type === 'humble_lms_lesson' ) {
+        $instructors = get_post_meta( $post->ID, 'humble_lms_lesson_instructors', true );
+        $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
+      }
+
+      if( empty( $instructors ) && isset( $_POST['course_id'] ) ) {
+        $instructors = get_post_meta( (int)$_POST['course_id'], 'humble_lms_course_instructors', true );
+        $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
+      }
+
+      if( empty( $instructors ) ) {
+        return $html;
+      }
+
+      $html .= '<div class="humble-lms-instructors">';
+      $html .= '<span class="humble-lms-instructors-title">' . __('Need help?', 'humble-lms') . '</span>';
+
+      foreach( $instructors as $user_id ) {
+        if( get_userdata( $user_id ) ) {
+          $user = get_user_by( 'id', $user_id );
+          $html .= '<a href="mailto:' . $user->user_email . '">' . $user->nickname . '</a>';
+        }
+      }
+
+      $html .= '</div>';
+
+      return $html;
+      
+    }
+
+    /**
+     * Shortcode: mark lesson complete button
      *
      * @since    0.0.1
      */
-    public function humble_lms_mark_complete( $atts = null ) {
+    public function mark_complete_button( $atts = null ) {
       global $post;
 
       $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;

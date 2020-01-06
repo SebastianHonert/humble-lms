@@ -528,6 +528,25 @@ input[type='submit'].humble-lms-btn--error:active {
   width: auto;
 }
 
+/* Course instructors */
+.humble-lms-instructors a {
+  display: flex;
+  align-items: center;
+}
+
+.humble-lms-instructors a::before {
+  font-family: 'themify';
+  content: '\e75a';
+  margin-right: .25em;
+}
+
+.humble-lms-instructors-title {
+  display: block;
+  font-size: 1.125em;
+  font-weight: 600;
+  padding-bottom: .25em;
+}
+
 /* Flex columns */
 
 .humble-lms-flex-columns,

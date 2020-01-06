@@ -270,7 +270,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // View course/lesson
       if( $context === 'course' ) {
-        $html .= '<span class="humble-lms-open-lesson humble-lms-btn" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+        $html .= '<span class="humble-lms-btn-start-course humble-lms-open-lesson humble-lms-btn" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
       }
 
       return $html;
@@ -288,13 +288,23 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
       $html = '';
 
-      if( is_single() && $post->post_type === 'humble_lms_lesson' ) {
+      $allowed_templates = array(
+        'humble_lms_lesson',
+        'humble_lms_course',
+      );
+
+      if( is_single() && in_array( $post->post_type, $allowed_templates ) ) {
         $instructors = get_post_meta( $post->ID, 'humble_lms_lesson_instructors', true );
         $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
       }
 
-      if( empty( $instructors ) && isset( $_POST['course_id'] ) ) {
-        $instructors = get_post_meta( (int)$_POST['course_id'], 'humble_lms_course_instructors', true );
+      $course_id = $post->post_type === 'humble_lms_course' ? $post->ID : null;
+      if( ! $course_id ) {
+        $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+      }
+
+      if( empty( $instructors ) && $course_id ) {
+        $instructors = get_post_meta( $course_id, 'humble_lms_course_instructors', true );
         $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
       }
 
@@ -303,7 +313,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $html .= '<div class="humble-lms-instructors">';
-      $html .= '<span class="humble-lms-instructors-title">' . __('Need help?', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-instructors-title">' . __('Course instructor(s)', 'humble-lms') . '</span>';
 
       foreach( $instructors as $user_id ) {
         if( get_userdata( $user_id ) ) {

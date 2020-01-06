@@ -16,11 +16,12 @@ if (have_posts()):
       <?php
         the_content();
 
-        echo do_shortcode('[mark_complete]');
+        echo do_shortcode('[humble_lms_mark_complete]');
       ?>
     </div>
     <div class="humble-lms-flex-column--third">
-      <?php echo do_shortcode('[syllabus context="lesson"]'); ?>
+      <?php echo do_shortcode('[humble_lms_syllabus context="lesson"]'); ?>
+      <?php echo do_shortcode('[humble_lms_course_instructors]'); ?>
     </div>
   </div>
 

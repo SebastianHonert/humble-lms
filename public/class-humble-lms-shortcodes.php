@@ -50,7 +50,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if ( $tracks->have_posts() ) {
         while ( $tracks->have_posts() ) {
           $tracks->the_post();
-          $html .= do_shortcode('[track_tile tile_width="' . $tile_width . '" track_id="' . get_the_ID() . '"]');
+          $html .= do_shortcode('[humble_lms_track_tile tile_width="' . $tile_width . '" track_id="' . get_the_ID() . '"]');
         }
       }
 
@@ -143,7 +143,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if ( $courses->have_posts() ) {
         while ( $courses->have_posts() ) {
           $courses->the_post();
-            $html .= do_shortcode('[course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
+            $html .= do_shortcode('[humble_lms_course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
         }
       }
 

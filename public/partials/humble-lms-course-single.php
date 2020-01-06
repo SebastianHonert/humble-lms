@@ -19,7 +19,7 @@ if (have_posts()):
 
     echo '</section>';
 
-    echo do_shortcode('[syllabus]');
+    echo do_shortcode('[humble_lms_syllabus]');
 
   endwhile;
 

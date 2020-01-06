@@ -226,14 +226,14 @@ class Humble_LMS {
      */
     $plugin_shortcodes = new Humble_LMS_Public_Shortcodes( $plugin_public );
 
-    $this->loader->add_shortcode( 'track_archive', $plugin_shortcodes, 'humble_lms_track_archive' );
-    $this->loader->add_shortcode( 'track_tile', $plugin_shortcodes, 'humble_lms_track_tile' );
-    $this->loader->add_shortcode( 'course_archive', $plugin_shortcodes, 'humble_lms_course_archive' );
-    $this->loader->add_shortcode( 'course_tile', $plugin_shortcodes, 'humble_lms_course_tile' );
-    $this->loader->add_shortcode( 'syllabus', $plugin_shortcodes, 'humble_lms_syllabus' );
-    $this->loader->add_shortcode( 'mark_complete', $plugin_shortcodes, 'humble_lms_mark_complete' );
-    $this->loader->add_shortcode( 'user_progress', $plugin_shortcodes, 'user_progress' );
-    $this->loader->add_shortcode( 'user_awards', $plugin_shortcodes, 'user_awards' );
+    $this->loader->add_shortcode( 'humble_lms_track_archive', $plugin_shortcodes, 'humble_lms_track_archive' );
+    $this->loader->add_shortcode( 'humble_lms_track_tile', $plugin_shortcodes, 'humble_lms_track_tile' );
+    $this->loader->add_shortcode( 'humble_lms_course_archive', $plugin_shortcodes, 'humble_lms_course_archive' );
+    $this->loader->add_shortcode( 'humble_lms_course_tile', $plugin_shortcodes, 'humble_lms_course_tile' );
+    $this->loader->add_shortcode( 'humble_lms_syllabus', $plugin_shortcodes, 'humble_lms_syllabus' );
+    $this->loader->add_shortcode( 'humble_lms_mark_complete', $plugin_shortcodes, 'humble_lms_mark_complete' );
+    $this->loader->add_shortcode( 'humble_lms_user_progress', $plugin_shortcodes, 'user_progress' );
+    $this->loader->add_shortcode( 'humble_lms_user_awards', $plugin_shortcodes, 'user_awards' );
 
     /**
      * AJAX

@@ -134,6 +134,15 @@ li.humble-lms-syllabus-lesson--current {
   background: darken($color-primary, 5%);
 }
 
+li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
+  display: inline-block;
+  margin-right: .25em;
+  font-family: 'themify';
+  content: '\e63d';
+  font-size: .875em;
+  font-weight: 400;
+}
+
 li.humble-lms-syllabus-lesson--completed {
   background: $color-success;
 }

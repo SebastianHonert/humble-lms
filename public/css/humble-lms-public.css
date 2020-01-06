@@ -110,6 +110,14 @@ li.humble-lms-syllabus-lesson:hover,
 li.humble-lms-syllabus-lesson--current {
   background: #213d76; }
 
+li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
+  display: inline-block;
+  margin-right: .25em;
+  font-family: 'themify';
+  content: '\e63d';
+  font-size: .875em;
+  font-weight: 400; }
+
 li.humble-lms-syllabus-lesson--completed {
   background: #277b8a; }
 

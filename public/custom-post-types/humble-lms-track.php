@@ -82,8 +82,6 @@ function humble_lms_track_courses_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  // update_post_meta( $post->ID, 'humble_lms_track_courses', [] );
-
   $track_courses = get_post_meta( $post->ID, 'humble_lms_track_courses', true );
   $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
 
@@ -162,8 +160,6 @@ function humble_lms_track_position_mb()
 function humble_lms_track_instructors_mb()
 {
   global $post;
-
-  // update_post_meta( $post->ID, 'humble_lms_track_instructors', [] );
 
   $track_instructors = get_post_meta( $post->ID, 'humble_lms_track_instructors', true );
   $track_instructors = ! empty( $track_instructors[0] ) ? json_decode( $track_instructors[0] ) : [];

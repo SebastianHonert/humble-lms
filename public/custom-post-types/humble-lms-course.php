@@ -68,7 +68,7 @@ function humble_lms_course_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_course_lessons_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_lessons_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
-  add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
@@ -152,6 +152,57 @@ function humble_lms_course_show_featured_image_mb() {
   echo '<p><input type="checkbox" name="humble_lms_course_show_featured_image" id="humble_lms_course_show_featured_image" value="1" ' . $checked . '>' . __('Yes, display the featured image on the course page.', 'humble-lms') . '</p>';
 }
 
+// Course Instructor
+
+function humble_lms_course_instructors_mb()
+{
+  global $post;
+
+  $course_instructors = get_post_meta( $post->ID, 'humble_lms_course_instructors', true );
+  $course_instructors = ! empty( $course_instructors[0] ) ? json_decode( $course_instructors[0] ) : [];
+
+  $args = array(
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+    'exclude' => $course_instructors
+  );
+
+  $instructors = get_users( $args );
+
+  $selected_instructors = [];
+
+  foreach( $course_instructors as $key => $user_id ) {
+    if( get_userdata( $user_id ) ) {
+      $instructor = get_user_by( 'id', $user_id );
+      array_push( $selected_instructors, $instructor );
+    }
+  }
+
+  if( $instructors || $selected_instructors ):
+
+    echo '<div id="humble-lms-admin-course-instructors humble_lms_multiselect_course_instructors">';
+      echo '<select class="humble-lms-searchable" data-content="course_instructors" multiple="multiple">';
+        foreach( $selected_instructors as $instructor ) {
+          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
+            if( is_array( $course_instructors ) && in_array( $instructor->ID, $course_instructors ) ) { echo 'selected'; }
+          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
+        }
+        foreach( $instructors as $instructor ) {
+          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
+            if( is_array( $course_instructors ) && in_array( $instructor->ID, $course_instructors ) ) { echo 'selected'; }
+          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_instructors" name="humble_lms_course_instructors" type="hidden" value="' . implode(',', $course_instructors) . '">';
+    echo '</div>';
+  else:
+
+    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more instructors</a>' ) . '</p>';
+
+  endif;
+}
+
 // Save metabox data
 
 function humble_lms_save_course_meta_boxes( $post_id, $post )
@@ -183,6 +234,8 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
+  $course_meta['humble_lms_course_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? (array) $_POST['humble_lms_course_instructors'] : array();
+  $course_meta['humble_lms_course_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_course_instructors'] );
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

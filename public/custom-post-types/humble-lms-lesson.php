@@ -62,11 +62,12 @@ $args = array(
 
 register_post_type( 'humble_lms_lesson', $args );
 
-// Course meta boxes
+// Lesson meta boxes
 
 function humble_lms_lesson_add_meta_boxes() {
   add_meta_box( 'humble_lms_lesson_description_mb', __('What is this lesson about?', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_access_levels_mb', __('Who can access this lesson?', 'humble-lms'), 'humble_lms_lesson_access_levels_mb', 'humble_lms_lesson', 'normal', 'default' );
+  add_meta_box( 'humble_lms_lesson_instructors_mb', __('Select instructor(s) for this lesson (optional)', 'humble-lms'), 'humble_lms_lesson_instructors_mb', 'humble_lms_lesson', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_lesson_add_meta_boxes' );
@@ -103,6 +104,57 @@ function humble_lms_lesson_access_levels_mb() {
     $checked = in_array( $key, $levels ) ? 'checked' : '';
     echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" id="humble_lms_lesson_access_levels" value="' . $key . '" ' . $checked . '> ' . $role['name'] . '<br>';
   }
+}
+
+// Lesson Instructor
+
+function humble_lms_lesson_instructors_mb()
+{
+  global $post;
+
+  $lesson_instructors = get_post_meta( $post->ID, 'humble_lms_lesson_instructors', true );
+  $lesson_instructors = ! empty( $lesson_instructors[0] ) ? json_decode( $lesson_instructors[0] ) : [];
+
+  $args = array(
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+    'exclude' => $lesson_instructors
+  );
+
+  $instructors = get_users( $args );
+
+  $selected_instructors = [];
+
+  foreach( $lesson_instructors as $key => $user_id ) {
+    if( get_userdata( $user_id ) ) {
+      $instructor = get_user_by( 'id', $user_id );
+      array_push( $selected_instructors, $instructor );
+    }
+  }
+
+  if( $instructors || $selected_instructors ):
+
+    echo '<div id="humble-lms-admin-lesson-instructors humble_lms_multiselect_lesson_instructors">';
+      echo '<select class="humble-lms-searchable" data-content="lesson_instructors" multiple="multiple">';
+        foreach( $selected_instructors as $instructor ) {
+          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
+            if( is_array( $lesson_instructors ) && in_array( $instructor->ID, $lesson_instructors ) ) { echo 'selected'; }
+          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
+        }
+        foreach( $instructors as $instructor ) {
+          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
+            if( is_array( $lesson_instructors ) && in_array( $instructor->ID, $lesson_instructors ) ) { echo 'selected'; }
+          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_lesson_instructors" name="humble_lms_lesson_instructors" type="hidden" value="' . implode(',', $lesson_instructors) . '">';
+    echo '</div>';
+  else:
+
+    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more instructors</a>' ) . '</p>';
+
+  endif;
 }
 
 // Save metabox data
@@ -142,6 +194,8 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
   $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? (array) $_POST['humble_lms_lesson_access_levels'] : array();
   $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );
+  $lesson_meta['humble_lms_lesson_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? (array) $_POST['humble_lms_lesson_instructors'] : array();
+  $lesson_meta['humble_lms_lesson_instructors'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_instructors'] );
 
   if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )
   {

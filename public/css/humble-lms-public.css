@@ -14,7 +14,7 @@
 
 .humble-lms-course-tile {
   position: relative;
-  background: #244894;
+  background: #27478a;
   color: #fff;
   padding: 1em 1em 0 1em;
   background-size: cover;
@@ -50,7 +50,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: #244894;
+  background: #27478a;
   opacity: .7; }
 
 .humble-lms-16-9 {
@@ -99,7 +99,7 @@ body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
 
 li.humble-lms-syllabus-lesson {
   display: block;
-  background: #244894;
+  background: #27478a;
   color: #fff;
   font-weight: 400;
   padding: .75em;
@@ -108,15 +108,15 @@ li.humble-lms-syllabus-lesson {
 
 li.humble-lms-syllabus-lesson:hover,
 li.humble-lms-syllabus-lesson--current {
-  background: #1f3e7f; }
+  background: #213d76; }
 
 li.humble-lms-syllabus-lesson--completed {
-  background: #248c94; }
+  background: #277b8a; }
 
 li.humble-lms-syllabus-lesson--completed:hover,
 li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed,
 li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed:hover {
-  background: #1f797f; }
+  background: #216976; }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .5em; }
@@ -173,16 +173,16 @@ input[type='submit'].humble-lms-btn {
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
-  background: #244894;
+  background: #27478a;
   transition: background-color .3s ease-in-out, box-shadow .3s ease-in-out;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
-  border-left: 1px solid #152a56;
-  border-right: 1px solid #152a56;
+  border-left: 1px solid #16284e;
+  border-right: 1px solid #16284e;
   border-bottom-width: .25em;
-  border-bottom-color: #152a56;
+  border-bottom-color: #16284e;
   border-bottom-style: solid; }
 
 .humble-lms-btn,
@@ -195,16 +195,16 @@ input[type='submit'].humble-lms-btn {
 .humble-lms-btn:hover,
 .humble-lms-btn:focus,
 .humble-lms-btn:active {
-  background: #1f3e7f;
+  background: #213d76;
   box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.35); }
 
 .humble-lms-btn--success,
 input[type='submit'].humble-lms-btn--success {
-  background-color: #248c94;
-  border-left: 1px solid #1a656b;
-  border-right: 1px solid #1a656b;
+  background-color: #277b8a;
+  border-left: 1px solid #1c5862;
+  border-right: 1px solid #1c5862;
   border-bottom-width: .25em;
-  border-bottom-color: #1a656b;
+  border-bottom-color: #1c5862;
   border-bottom-style: solid; }
 
 .humble-lms-btn--success:hover,
@@ -213,15 +213,15 @@ input[type='submit'].humble-lms-btn--success {
 input[type='submit'].humble-lms-btn--success:hover,
 input[type='submit'].humble-lms-btn--success:focus,
 input[type='submit'].humble-lms-btn--success:active {
-  background-color: #1f797f; }
+  background-color: #216976; }
 
 .humble-lms-btn--error,
 input[type='submit'].humble-lms-btn--error {
-  background-color: #8d1b24;
-  border-left: 1px solid #621319;
-  border-right: 1px solid #621319;
+  background-color: #8a2738;
+  border-left: 1px solid #621c28;
+  border-right: 1px solid #621c28;
   border-bottom-width: .25em;
-  border-bottom-color: #621319;
+  border-bottom-color: #621c28;
   border-bottom-style: solid; }
 
 .humble-lms-btn--error:hover,
@@ -230,7 +230,7 @@ input[type='submit'].humble-lms-btn--error {
 input[type='submit'].humble-lms-btn--error:hover,
 input[type='submit'].humble-lms-btn--error:focus,
 input[type='submit'].humble-lms-btn--error:active {
-  background-color: #78171f; }
+  background-color: #762130; }
 
 .humble-lms-btn:active,
 .humble-lms-btn--success:active,
@@ -262,33 +262,45 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-message a {
   font-weight: 600; }
 
+.humble-lms-message--success .humble-lms-message-title::before {
+  display: inline-block;
+  content: '\e64c';
+  font-family: 'themify';
+  margin-right: .15em; }
+
 .humble-lms-message--success {
-  color: #0b2b2d;
+  color: #0b2227;
   border: 1px solid white;
-  background: #def1f3; }
+  background: #daecef; }
 
 .humble-lms-message--success a,
 .humble-lms-message--success a:hover,
 .humble-lms-message--success a:focus,
 .humble-lms-message--success a:active,
 .humble-lms-message--success a:visited {
-  color: #0b2b2d;
+  color: #0b2227;
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #b9e2e5 72%); }
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #b6dae0 72%); }
 
 .humble-lms-message--error {
-  color: #8d1b24;
+  color: #8a2738;
   border: 1px solid white;
-  background: #f7e3e5; }
+  background: #f7ecee; }
 
 .humble-lms-message--error a,
 .humble-lms-message--error a:hover,
 .humble-lms-message--error a:focus,
 .humble-lms-message--error a:active,
 .humble-lms-message--error a:visited {
-  color: #8d1b24;
+  color: #8a2738;
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #eabdc0 72%); }
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #e8c8ce 72%); }
+
+.humble-lms-message--error .humble-lms-message-title::before {
+  display: inline-block;
+  content: '\e62b';
+  font-family: 'themify';
+  margin-right: .15em; }
 
 /* Media */
 .humble-lms-featured-image {
@@ -331,7 +343,7 @@ input[type='submit'].humble-lms-btn--error:active {
   text-align: center;
   align-items: center;
   justify-content: center;
-  background: rgba(26, 65, 149, 0.95); }
+  background: rgba(39, 71, 138, 0.96); }
 
 .humble-lms-award-message-inner h3 {
   margin: 0 0;
@@ -414,7 +426,7 @@ input[type='submit'].humble-lms-btn--error:active {
   display: inline-block;
   content: '\e64c';
   font-family: 'themify';
-  color: #248c94;
+  color: #277b8a;
   margin-left: .15em; }
 
 .humble-lms-track-progress-course {
@@ -427,7 +439,7 @@ input[type='submit'].humble-lms-btn--error:active {
   border: 2px dashed #d9d9d9;
   border-radius: 50%;
   font-size: 1.5em;
-  color: #244894;
+  color: #27478a;
   font-weight: 600;
   position: relative; }
 
@@ -435,10 +447,10 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-track-progress-course:active,
 .humble-lms-track-progress-course:focus,
 .humble-lms-track-progress-course:visited {
-  color: #244894; }
+  color: #27478a; }
 
 .humble-lms-track-progress-course--completed {
-  background: #244894;
+  background: #27478a;
   border: 0;
   color: #fff; }
 

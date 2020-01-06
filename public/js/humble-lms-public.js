@@ -82,7 +82,9 @@ jQuery(document).ready(function($) {
       })
     } else {
       $('.humble-lms-award-message').fadeOut(500)
-      $(messages).fadeOut(500)
+      $(messages).fadeOut(500, function() {
+        $(this).remove()
+      })
     }
   }
 
@@ -100,9 +102,7 @@ jQuery(document).ready(function($) {
   // Keyboard interaction
   $(document).keyup( function (e) {
     if (e.key === "Escape") { // escape key maps to keycode `27`
-      if ($('.humble-lms-award-message').is(':visible')) { 
-        closeAwardMessage()
-      }
+      closeAwardMessage()
     }
   });
 

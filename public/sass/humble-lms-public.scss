@@ -3,9 +3,9 @@
  * included in this file.
  */
 
- $color-primary: #244894;
- $color-success: #248c94;
- $color-error: #8d1b24;
+ $color-primary: #27478a;
+ $color-success: #277b8a;
+ $color-error: #8a2738;
  $color-light: #fff;
  $color-award: gold;
 
@@ -311,6 +311,13 @@ input[type='submit'].humble-lms-btn--error:active {
   font-weight: 600;
 }
 
+.humble-lms-message--success .humble-lms-message-title::before {
+  display: inline-block;
+  content: '\e64c';
+  font-family: 'themify';
+  margin-right: .15em;
+}
+
 .humble-lms-message--success {
   color: darken($color-success, 25%);
   border: 1px solid lighten($color-success, 90%);
@@ -341,6 +348,13 @@ input[type='submit'].humble-lms-btn--error:active {
   color: $color-error;
   text-decoration: none;
   background: linear-gradient(180deg, rgba(255,255,255,0) 67%, desaturate(lighten($color-error, 50%), 15%) 72%);
+}
+
+.humble-lms-message--error .humble-lms-message-title::before {
+  display: inline-block;
+  content: '\e62b';
+  font-family: 'themify';
+  margin-right: .15em;
 }
 
 /* Media */
@@ -389,7 +403,7 @@ input[type='submit'].humble-lms-btn--error:active {
   text-align: center;
   align-items: center;
   justify-content: center;
-  background: rgba(26, 65, 149,.95);
+  background: rgba($color-primary, .96);
 }
 
 .humble-lms-award-message-inner h3 {

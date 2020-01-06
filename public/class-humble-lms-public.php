@@ -217,14 +217,14 @@ class Humble_LMS_Public {
 
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--error">';
-      $html .= '<span class="humble-lms-message-title"><i class="ti-lock"></i>' . __('Access denied', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
       $html .= '<span class="humble-lms-message-content">' . sprintf( __('You need to be <a href="%s">logged in</a> and have the required permissions in order to access the requested content.', 'humble-lms' ), wp_login_url() ) . '</span>';
       $html .= '</div>';
     }
 
     if( $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
-        <span class="humble-lms-message-title"><i class="ti-medall"></i>' . __('Congratulations', 'humble-lms') . '</span>
+        <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
         <span class="humble-lms-message-content">' . sprintf( __('You successfully completed the course "%s".', 'humble-lms'), '<a href="#">' . get_the_title( $course_id ) ) . '</a></span> 
       </div>';
     }

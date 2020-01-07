@@ -20,6 +20,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $this->user = new Humble_LMS_Public_User;
       $this->access_handler = new Humble_LMS_Public_Access_Handler;
+      $this->options_manager = new Humble_LMS_Admin_Options_Manager;
 
     }
 
@@ -28,9 +29,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      *
      * @since    0.0.1
      */
-    public function track_archive( $atts = null ) {  
+    public function track_archive( $atts = null ) {
+      $options = $this->options_manager->options;
+      $tile_width = $options['tile_width_track'] ? $options['tile_width_track'] : 'half';
+
       extract( shortcode_atts( array (
-        'tile_width' => 'half',
+        'tile_width' => $tile_width,
         'style' => '',
         'class' => '',
       ), $atts ) );
@@ -106,11 +110,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function course_archive( $atts = null ) {
       global $post;
 
-      $html = '';
+      $options = $this->options_manager->options;
+      $tile_width = $options['tile_width_course'] ? $options['tile_width_course'] : 'half';
 
       extract( shortcode_atts( array (
         'track_id' => '',
-        'tile_width' => 'half',
+        'tile_width' => $tile_width,
         'style' => '',
         'class' => '',
       ), $atts ) );
@@ -139,7 +144,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $courses = new WP_Query( $args );
 
-      $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
+      $html = '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
 
       if ( $courses->have_posts() ) {
         while ( $courses->have_posts() ) {

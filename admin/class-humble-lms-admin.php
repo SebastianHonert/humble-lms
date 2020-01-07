@@ -120,7 +120,6 @@ class Humble_LMS_Admin {
     }
   }
 
-  
   /**
    * Add user meta field for course instructors
    *
@@ -145,8 +144,6 @@ class Humble_LMS_Admin {
       update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
     }
   }
-
-
 
   /**
    * Remove trashed courses/lessons from track/course meta

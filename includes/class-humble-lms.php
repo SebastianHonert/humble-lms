@@ -118,6 +118,11 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-admin.php';
 
     /**
+     * The class providing options management functionalities.-
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-options-manager.php';
+
+    /**
      * The class responsible for defining all actions that occur in the public-facing
      * side of the site.
      */
@@ -198,6 +203,14 @@ class Humble_LMS {
     $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
+
+    /**
+     * Options
+     */
+    $plugin_options_manager = new Humble_LMS_Admin_Options_Manager( $plugin_admin );
+
+    $this->loader->add_action( 'admin_menu', $plugin_options_manager, 'add_options_page' );
+    $this->loader->add_action( 'admin_init', $plugin_options_manager, 'humble_lms_options_admin_init' );
   }
 
   /**

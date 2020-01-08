@@ -10,7 +10,11 @@
 .humble-lms-course-tile-wrapper {
   position: relative;
   display: block;
-  margin-bottom: 2em; }
+  margin-bottom: 2em;
+  transition: box-shadow .3s linear; }
+
+.humble-lms-course-tile-wrapper:hover {
+  box-shadow: 0 0.125em 0.75em rgba(0, 0, 0, 0.2); }
 
 .humble-lms-course-tile {
   position: relative;

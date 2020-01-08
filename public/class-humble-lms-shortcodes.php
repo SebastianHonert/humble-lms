@@ -596,6 +596,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
     }
 
+    /**
+     * Default login link text.
+     * 
+     * @return string
+     * @since   0.0.1
+     */
     public function display_login_text() {
       return sprintf( __('Please %s first.', 'humble-lms'), '<a href="' . $this->options_manager->login_url . '">log in</a>');
     }

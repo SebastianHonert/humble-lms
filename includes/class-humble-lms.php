@@ -243,6 +243,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_track_tile', $plugin_shortcodes, 'track_tile' );
     $this->loader->add_shortcode( 'humble_lms_course_archive', $plugin_shortcodes, 'course_archive' );
     $this->loader->add_shortcode( 'humble_lms_course_tile', $plugin_shortcodes, 'course_tile' );
+    $this->loader->add_shortcode( 'humble_lms_progress_bar', $plugin_shortcodes, 'progress_bar' );
     $this->loader->add_shortcode( 'humble_lms_syllabus', $plugin_shortcodes, 'syllabus' );
     $this->loader->add_shortcode( 'humble_lms_course_instructors', $plugin_shortcodes, 'course_instructors' );
     $this->loader->add_shortcode( 'humble_lms_mark_complete_button', $plugin_shortcodes, 'mark_complete_button' );

@@ -85,6 +85,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $level = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
+      $progress = $this->track_progress( $track_id );
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . '">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
@@ -96,6 +97,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
+          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+          $html .= $this->progress_bar( $progress );
         $html .= '</div>';
       $html .= '</div>';
 
@@ -180,6 +183,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $level = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
+      $progress = $this->course_progress( $course_id );
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed .'">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
@@ -191,7 +195,61 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
+          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+          $html .= $this->progress_bar( $progress );
         $html .= '</div>';
+      $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
+     * Track progress in percent.
+     * 
+     * @return float
+     * @since   0.0.1
+     */
+    function track_progress( $track_id ) {
+      if( ! $track_id )
+        return;
+      
+      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
+      $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+      $courses_completed = get_user_meta( get_current_user_id(), 'humble_lms_courses_completed', true );
+      $completed_track_courses = array_intersect( $courses_completed, $track_courses );
+      $percent = count( $completed_track_courses ) * 100 / count( $track_courses );
+
+      return round( $percent, 1 );
+    }
+
+    /**
+     * Course progress in percent.
+     * 
+     * @return float
+     * @since   0.0.1
+     */
+    function course_progress( $course_id ) {
+      if( ! $course_id )
+        return;
+      
+      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+      $lessons_completed = get_user_meta( get_current_user_id(), 'humble_lms_lessons_completed', true );
+      $completed_course_lessons = array_intersect( $lessons_completed, $course_lessons );
+      $percent = count( $completed_course_lessons ) * 100 / count( $course_lessons );
+
+      return round( $percent, 1 );
+    }
+
+    /**
+     * Course progress in percent.
+     * 
+     * @return float
+     * @since   0.0.1
+     */
+    function progress_bar( $progress = 0 ) {
+      $html = '<div class="humble-lms-progress-bar">';
+      $html .= '<div class="humble-lms-progress-bar-inner" style="width:' . $progress . '%"></div>';
       $html .= '</div>';
 
       return $html;
@@ -234,8 +292,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'post__in' => $lessons
       ));
 
+      $html = '';
+
       // Course Syllabus
-      $html = '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
+      $html .= '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
         $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
         if( ! $course_id ) {

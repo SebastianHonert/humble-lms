@@ -73,6 +73,7 @@
 
 .humble-lms-course-tile-meta {
   position: relative;
+  font-size: .93875em;
   padding: 1em;
   left: 0;
   bottom: 0;
@@ -148,6 +149,10 @@ li.humble-lms-syllabus-lesson span {
   margin-top: 0;
   padding-top: 0;
   padding-bottom: .4125em; }
+
+.humble-lms-progress-syllabus {
+  display: block;
+  margin-bottom: 1em; }
 
 /* Single lesson */
 .humble-lms-course-meta {
@@ -511,6 +516,26 @@ input[type='submit'].humble-lms-btn--error:active {
   font-size: 1.125em;
   font-weight: 600;
   padding-bottom: .25em; }
+
+/* Progress bar */
+.humble-lms-progress {
+  display: block;
+  margin-bottom: .5em; }
+
+.humble-lms-progress-bar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: .6125em;
+  background: #f2f2f2; }
+
+.humble-lms-progress-bar-inner {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #277b8a; }
 
 /* Flex columns */
 .humble-lms-flex-columns,

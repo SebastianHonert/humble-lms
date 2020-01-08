@@ -118,6 +118,7 @@ class Humble_LMS_Public {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
   }
 
   /**
@@ -215,7 +216,7 @@ class Humble_LMS_Public {
       $course_id = (int)$_POST['course_id'];
     }
 
-    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) ) {
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) && ! current_user_can('manage_options' ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--error">';
       $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
       $html .= '<span class="humble-lms-message-content">' . sprintf( __('You need to be <a href="%s">logged in</a> and have the required permissions in order to access the requested content.', 'humble-lms' ), wp_login_url() ) . '</span>';

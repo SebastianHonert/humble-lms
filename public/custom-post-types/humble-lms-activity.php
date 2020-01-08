@@ -152,15 +152,26 @@ function humble_lms_activity_action_mb()
 
   $action = get_post_meta($post->ID, 'humble_lms_activity_action', true);
   $action_award = (int)get_post_meta($post->ID, 'humble_lms_activity_action_award', true);
+  $action_email = (int)get_post_meta($post->ID, 'humble_lms_activity_action_email', true);
 
   echo '<select class="widefat" name="humble_lms_activity_action" id="humble_lms_activity_action">';
     echo '<option disabled selected>' . __('Select an action following the activity', 'humble-lms') . '&hellip;</option>';
-    $selected = $action === 'award' ? 'selected' : '';
-    echo '<option value="award" data-select="humble_lms_activity_action_award" ' . $selected . '>' . __('Grant an award', 'humble-lms') . '</option>';
+    $selected_award = $action === 'award' ? 'selected' : '';
+    $selected_email = $action === 'email' ? 'selected' : '';
+    echo '<option value="award" data-select="humble_lms_activity_action_award" ' . $selected_award . '>' . __('Grant an award', 'humble-lms') . '</option>';
+    echo '<option value="email" data-select="humble_lms_activity_action_email" ' . $selected_email . '>' . __('Send an email', 'humble-lms') . '</option>';
   echo '</select>';
 
   $awards = get_posts( array(
     'post_type' => 'humble_lms_award',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+  ) );
+
+  $emails = get_posts( array(
+    'post_type' => 'humble_lms_email',
     'post_status' => 'publish',
     'posts_per_page' => -1,
     'orderby' => 'title',
@@ -172,6 +183,14 @@ function humble_lms_activity_action_mb()
     foreach( $awards as $award ) {
       $selected = $action_award === $award->ID ? 'selected' : '';
       echo '<option value="' . $award->ID . '" ' . $selected . '>' . $award->post_title . '</option>';
+    }
+  echo '</select>';
+
+  echo '<select class="widefat humble-lms-activity-action-select" name="humble_lms_activity_action_email" id="humble_lms_activity_action_email">';
+    echo '<option disabled selected>' . __('Select an email', 'humble-lms') . '&hellip;</option>';
+    foreach( $emails as $email ) {
+      $selected = $action_email === $email->ID ? 'selected' : '';
+      echo '<option value="' . $email->ID . '" ' . $selected . '>' . $email->post_title . '</option>';
     }
   echo '</select>';
 }
@@ -210,6 +229,7 @@ function humble_lms_save_activity_meta_boxes( $post_id, $post )
 
   $activity_meta['humble_lms_activity_action'] = isset( $_POST['humble_lms_activity_action'] ) ? sanitize_text_field( $_POST['humble_lms_activity_action'] ) : '';
   $activity_meta['humble_lms_activity_action_award'] = isset( $_POST['humble_lms_activity_action_award'] ) ? (int)$_POST['humble_lms_activity_action_award'] : '';
+  $activity_meta['humble_lms_activity_action_email'] = isset( $_POST['humble_lms_activity_action_email'] ) ? (int)$_POST['humble_lms_activity_action_email'] : '';
 
   if( ! empty( $activity_meta ) && sizeOf( $activity_meta ) > 0 )
   {

@@ -84,7 +84,6 @@ jQuery(document).ready(function($) {
     } else {
       let selected_option = $('#humble_lms_activity_action option[value="' + selected_value + '"]')
       let selected_data = selected_option.data('select')
-      console.log(selected_data)
       $('.humble-lms-activity-action-select').hide(0)
       $('#' + selected_data.toString()).show(0)
     }

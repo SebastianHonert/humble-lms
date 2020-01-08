@@ -179,8 +179,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         }
       }
 
-      // Perform acvtivities attached to completed content
-      // and add them to the completed array
+      // Perform acvtivities attached to completed content and add them to the completed array
       $completed = $this->perform_activities( $completed );
 
       return json_encode( $completed );
@@ -194,8 +193,9 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * humble_lms_activity_trigger_course = course ID
      * humble_lms_activity_trigger_track = track ID
      * 
-     * humble_lms_activity_action = award
+     * humble_lms_activity_action = award, email
      * humble_lms_activity_action_award = award ID
+     * humble_lms_activity_action_email = email ID
      *
      * @return  array
      * @param   int
@@ -205,7 +205,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! is_user_logged_in() )
         return [];
 
-      $user_id = get_current_user_id();
+      $user = wp_get_current_user();
 
       foreach( $completed as $key => $ids ) {
         foreach( $ids as $id ) {
@@ -235,11 +235,33 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
           foreach( $activities as $activity ) {
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);
             
-            switch( $action ) {
+            switch( $action ) 
+            {
               case 'award':
                 $award_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
                 array_push( $completed[3], $award_id );
-                $this->grant_award( $user_id, $award_id );
+                $this->grant_award( $user->ID, $award_id );
+              break;
+              
+              case 'email':
+                $email_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_email', true);
+
+                if( ! get_post_status( $email_id ) === 'publish' )
+                  break;
+
+                $to = $user->user_email;
+                $subject = 'Humble LMS';
+                $message = get_post_meta($email_id, 'humble_lms_email_message', true);
+                $message = str_replace('STUDENT_NAME', $user->nickname, $message);
+                $format = get_post_meta($email_id, 'humble_lms_email_format', true);
+                $headers = array('Content-Type: ' . $format . '; charset=UTF-8');
+
+                wp_mail( $to, $subject, $message, $headers );
+              break;
+
+              default:
+                // do nothing.
+              break;
             }
           }
         }

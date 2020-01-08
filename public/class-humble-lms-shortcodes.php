@@ -97,8 +97,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
-          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-          $html .= $this->progress_bar( $progress );
+          if( is_user_logged_in() ) {
+            $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+            $html .= $this->progress_bar( $progress );
+          }
         $html .= '</div>';
       $html .= '</div>';
 
@@ -195,8 +197,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
-          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-          $html .= $this->progress_bar( $progress );
+          if( is_user_logged_in() ) {
+            $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+            $html .= $this->progress_bar( $progress );
+          }
         $html .= '</div>';
       $html .= '</div>';
 
@@ -211,7 +215,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     function track_progress( $track_id ) {
       if( ! $track_id )
-        return;
+        return 0;
+
+      if( ! is_user_logged_in() ) {
+        return 0;
+      }
       
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
       $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
@@ -230,7 +238,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     function course_progress( $course_id ) {
       if( ! $course_id )
-        return;
+        return 0;
+
+      if( ! is_user_logged_in() ) {
+        return 0;
+      }
       
       $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
       $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
@@ -248,6 +260,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     function progress_bar( $progress = 0 ) {
+      if( ! is_user_logged_in() ) {
+        return '';
+      }
+
       $html = '<div class="humble-lms-progress-bar">';
       $html .= '<div class="humble-lms-progress-bar-inner" style="width:' . $progress . '%"></div>';
       $html .= '</div>';

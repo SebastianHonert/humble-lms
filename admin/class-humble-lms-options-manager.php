@@ -19,6 +19,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function __construct() {
 
       $this->options = get_option('humble_lms_options');
+      $this->login_url = wp_login_url();
 
     }
 

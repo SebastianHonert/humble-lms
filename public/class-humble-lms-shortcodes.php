@@ -261,7 +261,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     function progress_bar( $progress = 0 ) {
       if( ! is_user_logged_in() ) {
-        return '';
+        return;
       }
 
       $html = '<div class="humble-lms-progress-bar">';
@@ -507,7 +507,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     function user_progress() {
       if( ! is_user_logged_in() )
-        return;
+        return $this->display_login_text();
 
       $html = '';
       $tracks_completed = get_user_meta( get_current_user_id(), 'humble_lms_tracks_completed', false );
@@ -575,7 +575,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     function user_awards() {
       if( ! is_user_logged_in() )
-        return;
+        return $this->display_login_text();
 
       $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
       $html = '';
@@ -594,6 +594,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       return $html;
       
+    }
+
+    public function display_login_text() {
+      return sprintf( __('Please %s first.', 'humble-lms'), '<a href="' . $this->options_manager->login_url . '">log in</a>');
     }
     
   }

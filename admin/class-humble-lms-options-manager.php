@@ -19,6 +19,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function __construct() {
 
       $this->options = get_option('humble_lms_options');
+      $this->admin_url = admin_url() . '?page=humble_lms_options';
       $this->login_url = wp_login_url();
       $this->user = new Humble_LMS_Public_User;
 
@@ -44,8 +45,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         
         settings_errors();
 
-        $options_url = admin_url() . '?page=humble_lms_options';
-
         $active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
 
         $nav_tab_reporting_users = $active === 'reporting-users' ? 'nav-tab-active' : '';
@@ -53,9 +52,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
 
         echo '<h2 class="nav-tab-wrapper">
-          <a href="' . $options_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Reporting: Users', 'humble-lms') . '</a>
-          <a href="' . $options_url . '&active=reporting-courses" class="nav-tab ' . $nav_tab_reporting_courses . '">' . __('Reporting: Courses', 'humble-lms') . '</a>
-          <a href="' . $options_url . '&active=options" class="nav-tab ' . $nav_tab_options . '">' . __('Options', 'humble-lms') . '</a>
+          <a href="' . $this->admin_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Reporting: Users', 'humble-lms') . '</a>
+          <a href="' . $this->admin_url . '&active=reporting-courses" class="nav-tab ' . $nav_tab_reporting_courses . '">' . __('Reporting: Courses', 'humble-lms') . '</a>
+          <a href="' . $this->admin_url . '&active=options" class="nav-tab ' . $nav_tab_options . '">' . __('Options', 'humble-lms') . '</a>
         </h2>';
         
         switch( $active ) {
@@ -101,7 +100,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_section_reporting_users() {
-      $this->reporting_users_table();
+      $user_id = isset( $_GET['user_id'] ) ? (int) $_GET['user_id'] : false;
+      
+      if( ! $user_id ) {
+        $this->reporting_users_table();
+      } else {
+        $this->reporting_user_single( $user_id );
+      }
     }
 
     public function humble_lms_options_section_reporting_courses() {
@@ -184,7 +189,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           foreach( $users as $user ) {
             // TODO: link to single user reporting view
             echo '<tr>
-              <td>' . $user->nickname . ' (ID ' . $user->ID . ')</td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '">' . $user->nickname . '</a> (ID ' . $user->ID . ')</td>
               <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>
@@ -193,6 +198,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           }
         echo '</tbody>';
       echo '</table>';
+    }
+
+    /**
+     * Generate reporting table for all courses.
+     *
+     * @return  false
+     * @since   0.0.1
+     */
+    public function reporting_user_single( $user_id ) {
+      echo '<p>TODO: reporting_user_single( $user_id )</p>';
+      echo '<a class="button" href="' . $this->admin_url . '">' . __('Back', 'humble-lms') . '</a>';
     }
 
     /**

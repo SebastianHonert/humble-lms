@@ -38,16 +38,42 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_page() {
-      echo '<div>';
-        echo '<h1><span class="dashicons dashicons-admin-generic"></span> ' . __('Humble LMS', 'humble-lms') . '</h1>';
-        echo '<p>' . __('General options and reporting page for your learning management system.', 'humble-lms') . '</p>';
-        echo '<hr />';
+      echo '<div class="wrap">';
+        echo '<h1> ' . __('Humble LMS', 'humble-lms') . '</h1>';
+        
+        settings_errors();
 
-        echo '<form method="post" action="options.php">';
-          settings_fields('humble_lms_options');
-          do_settings_sections('main_options');
-          submit_button();
-        echo '</form>';
+        $options_url = admin_url() . '?page=humble_lms_options';
+
+        $active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
+
+        $nav_tab_reporting_users = $active === 'reporting-users' ? 'nav-tab-active' : '';
+        $nav_tab_reporting_courses = $active === 'reporting-courses' ? 'nav-tab-active' : '';
+        $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
+
+        echo '<h2 class="nav-tab-wrapper">
+          <a href="' . $options_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Reporting: Users', 'humble-lms') . '</a>
+          <a href="' . $options_url . '&active=reporting-courses" class="nav-tab ' . $nav_tab_reporting_courses . '">' . __('Reporting: Courses', 'humble-lms') . '</a>
+          <a href="' . $options_url . '&active=options" class="nav-tab ' . $nav_tab_options . '">' . __('Options', 'humble-lms') . '</a>
+        </h2>';
+        
+        switch( $active ) {
+          case 'reporting-users':
+            settings_fields('humble_lms_options_reporting_users');
+            do_settings_sections('humble_lms_options_reporting_users');
+            break;
+          case 'reporting-courses':
+            settings_fields('humble_lms_options_reporting_courses');
+            do_settings_sections('humble_lms_options_reporting_courses');
+            break;
+          case 'options':
+            echo '<form method="post" action="options.php">';
+              settings_fields('humble_lms_options');
+              do_settings_sections('humble_lms_options');
+              submit_button();
+            echo '</form>';
+            break;
+        }
 
       echo '</div>';
     }
@@ -59,18 +85,30 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     function humble_lms_options_admin_init() {
       register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
-      add_settings_section('humble_lms_options_main', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_main' ), 'main_options' );
-      add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'main_options', 'humble_lms_options_main');
-      add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'main_options', 'humble_lms_options_main');
-      }
+      
+      add_settings_section('humble_lms_options_section_reporting_users', __('Reporting: Users', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
+      add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
+      add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
+
+      add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
+    }
 
     /**
      * Main content section.
      *
      * @since    0.0.1
      */
-    function humble_lms_options_section_main() {
-      // echo '<p><em>' . __('Basic settings', 'humble-lms') . '</em></p>';
+    function humble_lms_options_section_reporting_users() {
+      echo '<p><em>' . __('Users', 'humble-lms') . '</em></p>';
+    }
+
+    function humble_lms_options_section_reporting_courses() {
+      echo '<p><em>' . __('Courses', 'humble-lms') . '</em></p>';
+    }
+
+    function humble_lms_options_section_options() {
+      echo '<p><em>' . __('Display options and general settings', 'humble-lms') . '</em></p>';
     }
 
     /**

@@ -116,8 +116,8 @@ class Humble_LMS_Public {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
   }
 

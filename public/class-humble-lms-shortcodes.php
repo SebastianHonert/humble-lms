@@ -14,7 +14,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * Initialize the class and set its properties.
      *
      * @since    0.0.1
-     * @param      class    $user       Public user class
      */
     public function __construct() {
 

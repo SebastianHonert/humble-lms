@@ -20,6 +20,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       $this->options = get_option('humble_lms_options');
       $this->login_url = wp_login_url();
+      $this->user = new Humble_LMS_Public_User;
 
     }
 
@@ -83,7 +84,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    function humble_lms_options_admin_init() {
+    public function humble_lms_options_admin_init() {
       register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
       
       add_settings_section('humble_lms_options_section_reporting_users', __('Reporting: Users', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
@@ -99,15 +100,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    function humble_lms_options_section_reporting_users() {
-      echo '<p><em>' . __('Users', 'humble-lms') . '</em></p>';
+    public function humble_lms_options_section_reporting_users() {
+      $this->reporting_users_table();
     }
 
-    function humble_lms_options_section_reporting_courses() {
-      echo '<p><em>' . __('Courses', 'humble-lms') . '</em></p>';
+    public function humble_lms_options_section_reporting_courses() {
+      $this->reporting_courses_table();
     }
 
-    function humble_lms_options_section_options() {
+    public function humble_lms_options_section_options() {
       echo '<p><em>' . __('Display options and general settings', 'humble-lms') . '</em></p>';
     }
 
@@ -116,7 +117,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    function tile_width_track() {
+    public function tile_width_track() {
       $values = array('full' => '1/1', 'half' => '1/2', 'third' => '1/3', 'fourth' => '1/4');
       $tile_width_track = isset( $this->options['tile_width_track'] ) ? sanitize_text_field( $this->options['tile_width_track'] ) : 'half';
 
@@ -133,7 +134,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    function tile_width_course() {
+    public function tile_width_course() {
       $values = array('full' => '1/1', 'half' => '1/2', 'third' => '1/3', 'fourth' => '1/4');
       $tile_width_course = isset( $this->options['tile_width_course'] ) ? sanitize_text_field( $this->options['tile_width_course'] ) : 'half';
 
@@ -148,13 +149,61 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     /**
      * Validate option data on save.
      *
-     * @since    0.0.1
+     * @param   array
+     * @return  array
+     * @since   0.0.1
      */
-    function humble_lms_options_validate( $options ) {
-      $validated['tile_width'] = sanitize_text_field( $options['tile_width'] );
+    public function humble_lms_options_validate( $options ) {
+      $validated['tile_width_track'] = sanitize_text_field( $options['tile_width_track'] );
+      $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
 
       return $validated;
-    } 
+    }
+
+    /**
+     * Generate reporting table for all users.
+     *
+     * @return  false
+     * @since   0.0.1
+     */
+    public function reporting_users_table() {
+      // TODO: pagination
+      $users = get_users();
+      
+      echo '<table class="widefat">';
+        echo '<thead>
+          <tr>
+            <th>Name</th>
+            <th>Tracks</th>
+            <th>Courses</th>
+            <th>Lessons</th>
+            <th>Awards</th>
+          </tr>
+        </thead>
+        <tbody>';
+          foreach( $users as $user ) {
+            // TODO: link to single user reporting view
+            echo '<tr>
+              <td>' . $user->nickname . ' (ID ' . $user->ID . ')</td>
+              <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
+              <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
+              <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>
+              <td>' . count( $this->user->granted_awards( $user->ID, true ) ) . '</td>
+            </tr>';
+          }
+        echo '</tbody>';
+      echo '</table>';
+    }
+
+    /**
+     * Generate reporting table for all courses.
+     *
+     * @return  false
+     * @since   0.0.1
+     */
+    public function reporting_courses_table() {
+      echo 'TODO: reporting_courses_table()';
+    }
     
   }
 

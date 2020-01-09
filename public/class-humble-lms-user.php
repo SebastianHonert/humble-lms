@@ -80,19 +80,84 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * Returns an array of completed track IDs including the course ID or an empty array.
+     * Returns an array of completed track IDs.
      *
+     * @param int|string
      * @return  array
-     * @param   int
      * @since   0.0.1
      */
-    public function completed_tracks() {
-      if( ! is_user_logged_in() )
+    public function completed_tracks( $user_id = null, $published = false ) {
+      if( ! $user_id )
         return [];
 
-      $user_id = get_current_user_id();
+      $completed_tracks = get_user_meta( $user_id, 'humble_lms_tracks_completed', false );
+      $completed_tracks = $completed_tracks[0];
+      
+      if( ! $published ) {
+        return $completed_tracks;
+      }
 
-      return get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
+      foreach( $completed_tracks as $key => $track ) {
+        if( get_post_status( $track ) !== 'publish' ) {
+          unset( $completed_tracks[$key] );
+        }
+      }
+
+      return $completed_tracks;
+    }
+
+    /**
+     * Returns an array of completed courses.
+     *
+     * @return  array
+     * @since   0.0.1
+     */
+    public function completed_courses( $user_id = null, $published = false ) {
+      if( ! $user_id )
+        return [];
+  
+      $completed_courses = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
+      $completed_courses = $completed_courses[0];
+
+      if( ! $published ) {
+        return $completed_courses;
+      }
+
+      foreach( $completed_courses as $key => $course ) {
+        if( get_post_status( $course ) !== 'publish' ) {
+          unset( $completed_courses[$key] );
+        }
+      }
+
+      
+      return $completed_courses;
+    }
+
+    /**
+     * Returns an array of completed lessons.
+     *
+     * @return  array
+     * @since   0.0.1
+     */
+    public function completed_lessons( $user_id = null, $published = false ) {
+      if( ! $user_id )
+        return [];
+  
+      $completed_lessons = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
+      $completed_lessons = $completed_lessons[0];
+
+      if( ! $published ) {
+        return $completed_lessons;
+      }
+
+      foreach( $completed_lessons as $key => $lesson ) {
+        if( get_post_status( $lesson ) !== 'publish' ) {
+          unset( $completed_lessons[$key] );
+        }
+      }
+
+      
+      return $completed_lessons;
     }
 
     /**
@@ -296,6 +361,33 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       update_user_meta( $user_id, 'humble_lms_awards', $awards );
 
       return;
+    }
+
+    /**
+     * Returns an array of granted awards
+     *
+     * @param int|string
+     * @return  array
+     * @since   0.0.1
+     */
+    public function granted_awards( $user_id = null, $published = false ) {
+      if( ! $user_id )
+        return [];
+
+      $awards = get_user_meta( $user_id, 'humble_lms_awards', false );
+      $awards = is_array( $awards ) && ! empty( $awards[0] ) ? $awards[0] : [];
+      
+      if( ! $published ) {
+        return $awards;
+      }
+
+      foreach( $awards as $key => $award ) {
+        if( get_post_status( $award ) !== 'publish' ) {
+          unset( $awards[$key] );
+        }
+      }
+
+      return $awards;
     }
 
   }

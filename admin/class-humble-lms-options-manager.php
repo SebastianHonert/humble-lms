@@ -86,7 +86,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_admin_init() {
       register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
       
-      add_settings_section('humble_lms_options_section_reporting_users', __('Reporting: Users', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
+      add_settings_section('humble_lms_options_section_reporting_users', __('Reporting: Users (' . count_users()['total_users'] . ')', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
 
@@ -173,7 +173,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function reporting_users_table() {
       // TODO: pagination
-      $users = get_users();
+      $args = array(
+        'count_total' => false
+      );
+
+      $users = get_users( $args );
       
       echo '<table class="widefat">';
         echo '<thead>

@@ -173,12 +173,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function reporting_users_table() {
       // TODO: pagination
+      $users_per_page = 50;
+      $paged = isset( $_GET['paged'] ) ? (int)$_GET['paged'] : 0;
+      $total_users = count_users()['total_users'];
+
       $args = array(
-        'count_total' => false
+        'count_total' => false,
+        'offset' => $paged ? ($paged - 1) * $users_per_page : 0,
+        'number' => $users_per_page,
       );
 
       $users = get_users( $args );
-      
+
       echo '<table class="widefat">';
         echo '<thead>
           <tr>
@@ -193,7 +199,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           foreach( $users as $user ) {
             // TODO: link to single user reporting view
             echo '<tr>
-              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '">' . $user->nickname . '</a> (ID ' . $user->ID . ')</td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a> (ID ' . $user->ID . ')</td>
               <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>
@@ -202,6 +208,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           }
         echo '</tbody>';
       echo '</table>';
+
+      if( $total_users > $users_per_page ) {
+        $args = array(
+           'base' => add_query_arg('paged', '%#%'),
+           'format' => '?paged=%#%',
+           'total' => ceil($total_users / $users_per_page),
+           'current' => max(1, $paged),
+        );
+
+        echo '<br>' . paginate_links( $args );
+      }
     }
 
     /**

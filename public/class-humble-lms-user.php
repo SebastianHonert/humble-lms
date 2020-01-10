@@ -91,7 +91,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return [];
 
       $completed_tracks = get_user_meta( $user_id, 'humble_lms_tracks_completed', false );
-      $completed_tracks = $completed_tracks[0];
+      $completed_tracks = isset( $completed_tracks[0] ) ? $completed_tracks[0] : [];
+      
+      if( empty( $completed_tracks ) )
+        return [];
       
       if( ! $published ) {
         return $completed_tracks;
@@ -117,7 +120,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return [];
   
       $completed_courses = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
-      $completed_courses = $completed_courses[0];
+      $completed_courses = isset( $completed_courses[0] ) ? $completed_courses[0] : [];
+      
+      if( empty( $completed_courses ) )
+        return [];
 
       if( ! $published ) {
         return $completed_courses;
@@ -144,7 +150,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return [];
   
       $completed_lessons = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
-      $completed_lessons = $completed_lessons[0];
+      $completed_lessons = isset( $completed_lessons[0] ) ? $completed_lessons[0] : [];
+      
+      if( empty( $completed_lessons ) )
+        return [];
 
       if( ! $published ) {
         return $completed_lessons;

@@ -181,6 +181,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'count_total' => false,
         'offset' => $paged ? ($paged - 1) * $users_per_page : 0,
         'number' => $users_per_page,
+        'meta_key' => 'nickname',
+        'orderby' => 'meta_value',
+        'order' => 'ASC'
       );
 
       $users = get_users( $args );
@@ -188,6 +191,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '<table class="widefat">';
         echo '<thead>
           <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Tracks (' . wp_count_posts('humble_lms_track')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_track') ) . ')</th>
             <th>Courses (' . wp_count_posts('humble_lms_course')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_course') ) . ')</th>
@@ -199,7 +203,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           foreach( $users as $user ) {
             // TODO: link to single user reporting view
             echo '<tr>
-              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a> (ID ' . $user->ID . ')</td>
+             <td>' . $user->ID . '</td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a></td>
               <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>

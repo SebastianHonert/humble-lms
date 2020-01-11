@@ -22,7 +22,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return;
 
       if( ! is_user_logged_in() ) {
-        if( ! get_usermeta( $user_id ) ) {
+        if( ! get_user_meta( $user_id ) ) {
           return 0;
         }
       } else {
@@ -448,7 +448,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return 0;
 
       if( ! is_user_logged_in() ) {
-        if( ! get_usermeta( $user_id ) ) {
+        if( ! get_user_meta( $user_id ) ) {
           return 0;
         }
       } else {
@@ -483,7 +483,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return 0;
 
       if( ! is_user_logged_in() ) {
-        if( ! get_usermeta( $user_id ) ) {
+        if( ! get_user_meta( $user_id ) ) {
           return 0;
         }
       } else {

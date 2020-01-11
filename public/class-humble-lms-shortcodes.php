@@ -477,7 +477,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       foreach( $tracks as $key => $track ) {
         $counter = 0;
         $class_completed = $this->user->completed_track( $track->ID ) ? 'humble-lms-track-progress-track--completed' : '';
-        $html .= '<h2 class="' . $class_completed . '">' . get_the_title( $track->ID ) . '</h2>';
+        $html .= '<h2 class="' . $class_completed . '"><a href="' . esc_url( get_permalink( $track->ID ) ) . '">' . get_the_title( $track->ID ) . '</a></h2>';
 
         $track_courses = get_post_meta( $track->ID, 'humble_lms_track_courses', true );
         $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];

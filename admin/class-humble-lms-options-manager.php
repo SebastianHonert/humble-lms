@@ -203,15 +203,32 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         <tbody>';
           foreach( $users as $user ) {
             $user_meta = get_userdata( $user->ID );
+
+            $tracks_total = wp_count_posts('humble_lms_track')->publish;
+            $completed_tracks = count( $this->user->completed_tracks( $user->ID, true ) );
+            $completed_tracks_percent = ( $completed_tracks / $tracks_total ) * 100;
+
+            $courses_total = wp_count_posts('humble_lms_course')->publish;
+            $completed_courses = count( $this->user->completed_courses( $user->ID, true ) );
+            $completed_courses_percent = ( $completed_courses / $courses_total ) * 100;
+
+            $lessons_total = wp_count_posts('humble_lms_lesson')->publish;
+            $completed_lessons = count( $this->user->completed_lessons( $user->ID, true ) );
+            $completed_lessons_percent = ( $completed_lessons / $lessons_total ) * 100;
+
+            $awards_total = wp_count_posts('humble_lms_award')->publish;
+            $completed_awards = count( $this->user->granted_awards( $user->ID, true ) );
+            $completed_awards_percent = ( $completed_awards / $awards_total ) * 100;
+
             // TODO: link to single user reporting view
             echo '<tr>
               <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
               <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a></td>
               <td>' . implode(',', $user_meta->roles ) . '</td>
-              <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
-              <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
-              <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>
-              <td>' . count( $this->user->granted_awards( $user->ID, true ) ) . '</td>
+              <td>' . $this->progress_bar( (int)$completed_tracks_percent, $completed_tracks ) . '</td>
+              <td>' . $this->progress_bar( (int)$completed_courses_percent, $completed_courses ) . '</td>
+              <td>' . $this->progress_bar( (int)$completed_lessons_percent, $completed_lessons ) . '</td>
+              <td>' . $this->progress_bar( (int)$completed_awards_percent, $completed_awards ) . '</td>
             </tr>';
           }
         echo '</tbody>';
@@ -353,13 +370,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @return  false
      * @since   0.0.1
      */
-    public function progress_bar( $percent = 0 ) {
+    public function progress_bar( $percent = 0, $total = 0 ) {
       $class = (int)$percent === 0 ? 'humble-lms-progress-none' : '';
+      $total = $total > 0 ? $total . ' / ' : '';
 
       $html = '';
       $html .= '<span class="humble-lms-admin-progress-bar">';
       $html .= '<span class="humble-lms-admin-progress-bar-inner" style="width: ' . $percent . '%">
-        <span class="humble-lms-admin-progress-bar-inner-text ' . $class . '">' . $percent . '%</span>
+        <span class="humble-lms-admin-progress-bar-inner-text ' . $class . '">' . $total . $percent . '%</span>
       </span>';
       $html .= '</span>';
       return $html;

@@ -9,6 +9,10 @@ if (have_posts()):
   
   while (have_posts()): the_post(); ?>
 
+  <div class="humble-lms-loading-layer">
+    <div class="humble-lms-loading"></div>
+  </div>
+
   <h1><?php echo get_the_title(); ?></h1>
 
   <div class="humble-lms-flex-columns">

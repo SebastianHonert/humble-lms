@@ -203,7 +203,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           foreach( $users as $user ) {
             // TODO: link to single user reporting view
             echo '<tr>
-             <td>' . $user->ID . '</td>
+             <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
               <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a></td>
               <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>

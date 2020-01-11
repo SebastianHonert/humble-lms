@@ -1,6 +1,16 @@
 jQuery(document).ready(function($) {
   'use strict'
 
+  // Show/hide loading layer/spinner
+  function loadingLayer(show = false) {
+    let loadingLayer = $('.humble-lms-loading-layer')
+    if (show) {
+      loadingLayer.css('display', 'flex')
+    } else {
+      loadingLayer.hide(0)
+    }
+  }
+
   // This dynamic form is used for redirecting purposes by diferent AJAX functions
   function redirectForm( response ) {
     if (!response.redirect_url) {
@@ -11,14 +21,13 @@ jQuery(document).ready(function($) {
         '<input type="hidden" name="course_id" value="' + response.course_id + '" />' +
         '<input type="hidden" name="lesson_id" value="' + response.lesson_id + '" />' +
         '<input type="hidden" name="completed" value="' + response.completed + '" />' +
-        '</form>');
-    $('body').append(form);
-    form.submit();
+        '</form>')
+    $('body').append(form)
+    form.submit()
   }
 
   // Mark lesson complete and continue to the next lesson
   $(document).on('click', '.humble-lms-open-lesson', function (e) {
-
     $.ajax({
       url: humble_lms.ajax_url,
       type: 'POST',
@@ -31,45 +40,48 @@ jQuery(document).ready(function($) {
       },
       dataType: 'json',
       error: function(MLHttpRequest, textStatus, errorThrown) {
-        console.error(errorThrown);
+        console.error(errorThrown)
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        // console.log(response)
         redirectForm(response)
       },
       complete: function(reply, textStatus) {
-        console.log(textStatus)
+        // ...
       }
     })
   })
 
   // Mark lesson complete and continue to the next lesson
   $(document).on('submit', '#humble-lms-mark-complete', function (e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    $.ajax({
-      url: humble_lms.ajax_url,
-      type: 'POST',
-      data: {
-        action: 'mark_lesson_complete',
-        courseId: $('#course-id').val(),
-        lessonId: $('#lesson-id').val(),
-        lessonCompleted: $(this).data('lesson-completed'),
-        nonce: humble_lms.nonce,
-        markComplete: true
-      },
-      dataType: 'json',
-      error: function(MLHttpRequest, textStatus, errorThrown) {
-        console.error(errorThrown);
-      },
-      success: function(response, textStatus, XMLHttpRequest) {
-        console.log(response)
-        redirectForm(response)
-      },
-      complete: function(reply, textStatus) {
-        console.log(textStatus)
-      }
-    })
+    loadingLayer(true)
+
+    setTimeout( function() {
+      $.ajax({
+        url: humble_lms.ajax_url,
+        type: 'POST',
+        data: {
+          action: 'mark_lesson_complete',
+          courseId: $('#course-id').val(),
+          lessonId: $('#lesson-id').val(),
+          lessonCompleted: $(this).data('lesson-completed'),
+          nonce: humble_lms.nonce,
+          markComplete: true
+        },
+        dataType: 'json',
+        error: function(MLHttpRequest, textStatus, errorThrown) {
+          loadingLayer(false)
+        },
+        success: function(response, textStatus, XMLHttpRequest) {
+          redirectForm(response)
+          loadingLayer(false)
+        },
+        complete: function(reply, textStatus) {
+          loadingLayer(false)
+        }
+      })
+    }, 500)
   })
 
   // Award messages
@@ -104,6 +116,6 @@ jQuery(document).ready(function($) {
     if (e.key === "Escape") { // escape key maps to keycode `27`
       closeAwardMessage()
     }
-  });
+  })
 
 })

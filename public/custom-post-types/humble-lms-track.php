@@ -168,6 +168,8 @@ function humble_lms_track_instructors_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'meta_key' => 'humble_lms_is_instructor',
+    'meta_value' => 1,
     'exclude' => $track_instructors
   );
 

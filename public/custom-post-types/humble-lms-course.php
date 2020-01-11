@@ -166,6 +166,8 @@ function humble_lms_course_instructors_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'meta_key' => 'humble_lms_is_instructor',
+    'meta_value' => 1,
     'exclude' => $course_instructors
   );
 

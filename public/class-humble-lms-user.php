@@ -447,13 +447,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $track_id )
         return 0;
 
-      if( ! is_user_logged_in() ) {
-        if( ! get_user_meta( $user_id ) ) {
-          return 0;
-        }
-      } else {
-        $user_id = get_current_user_id();
-      }
+      if( ! $user_id )
+        return 0;
       
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
       $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
@@ -482,13 +477,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $course_id )
         return 0;
 
-      if( ! is_user_logged_in() ) {
-        if( ! get_user_meta( $user_id ) ) {
-          return 0;
-        }
-      } else {
-        $user_id = get_current_user_id();
-      }
+      if( ! $user_id )
+        return 0;
       
       $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
       $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];

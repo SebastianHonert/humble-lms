@@ -324,7 +324,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
 
         foreach( $course_lessons as $lesson_id ) {
-          $completed = $this->user->completed_lesson( $lesson_id, $user->ID ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
+          $completed = $this->user->completed_lesson( $user->ID, $lesson_id ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
           echo '<tr class="humble-lms-reporting-lesson">
             <td><a href="' . get_edit_post_link( $lesson_id ) . '">' . get_the_title( $lesson_id ) . '</a></td>
             <td>'. $completed . '</td>  

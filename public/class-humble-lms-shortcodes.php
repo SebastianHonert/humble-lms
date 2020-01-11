@@ -271,7 +271,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           foreach( $lessons as $key => $lesson ) {
             $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
             $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
-            $class_lesson_completed = $this->user->completed_lesson( $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
+            $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
             $locked = $this->access_handler->can_access_lesson( $lesson->ID ) ? '' : '<i class="ti-lock"></i>';
             $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
             $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson->post_title . '</span>';
@@ -398,9 +398,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $html = '<form method="post" id="humble-lms-mark-complete">';
         $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
         $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
-        $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->user->completed_lesson( $post->ID ) . '">';
+        $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->user->completed_lesson( get_current_user_id(), $post->ID ) . '">';
         
-        if( $this->user->completed_lesson( $post->ID ) ) {
+        if( $this->user->completed_lesson( get_current_user_id(), $post->ID ) ) {
           $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
         } else {
           $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark complete and continue', 'humble-lms') . '">';

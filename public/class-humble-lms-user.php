@@ -17,19 +17,13 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      *
      * @since    0.0.1
      */
-    public function completed_lesson( $lesson_id, $user_id = null ) {
+    public function completed_lesson( $user_id = null, $lesson_id = null ) {
       if( ! $lesson_id )
         return;
 
-      if( ! is_user_logged_in() ) {
-        if( ! get_user_meta( $user_id ) ) {
-          return 0;
-        }
-      } else {
-        $user_id = get_current_user_id();
-      }
+      if( ! $user_id )
+        return;
 
-      $user_id = get_current_user_id();
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
       
       return $lessons_completed ? in_array( $lesson_id, $lessons_completed ) : '';

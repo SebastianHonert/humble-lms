@@ -388,8 +388,13 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since   0.0.1
      */
     public function granted_awards( $user_id = null, $published = false ) {
-      if( ! $user_id )
-        return [];
+      if( ! $user_id ) {
+        if( ! is_current_user_logged_in() ) {
+          return [];
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
 
       $awards = get_user_meta( $user_id, 'humble_lms_awards', false );
       $awards = is_array( $awards ) && ! empty( $awards[0] ) ? $awards[0] : [];
@@ -451,6 +456,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
       $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
+
+      if( ! isset( $courses_completed[0] ) || ! is_array( $courses_completed[0] ) )
+        return 0;
+
       $completed_track_courses = array_intersect( $courses_completed[0], $track_courses );
 
       if( ( empty( $track_courses ) ) || ( empty( $courses_completed[0] ) ) )
@@ -482,6 +491,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
       $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
+
+      if( ! isset( $lessons_completed[0] ) || ! is_array( $lessons_completed[0] ) )
+        return 0;
+
       $completed_course_lessons = array_intersect( $lessons_completed[0], $course_lessons );
 
       if( ( empty( $course_lessons ) ) || ( empty( $lessons_completed[0] ) ) )

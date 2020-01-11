@@ -250,6 +250,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $completed_tracks = $this->user->completed_tracks( $user->ID, true );
       $completed_courses = $this->user->completed_courses( $user->ID, true );
       $completed_lessons = $this->user->completed_lessons( $user->ID, true );
+      $granted_awards = $this->user->granted_awards( $user->ID, true );
 
       $tracks = get_posts( array(
           'post_type' => 'humble_lms_track',
@@ -265,6 +266,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       $lessons = get_posts( array(
         'post_type' => 'humble_lms_lesson',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+      ) );
+
+      $awards = get_posts( array(
+        'post_type' => 'humble_lms_award',
         'post_status' => 'publish',
         'posts_per_page' => -1,
       ) );
@@ -300,7 +307,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
 
         foreach( $course_lessons as $lesson_id ) {
-          $completed = $this->user->completed_lesson( $lesson_id, $user->ID ) ? '<span class="humble-lms-options-lessons-completed">&check;</span>' : '<span class="humble-lms-options-lessons-incompleted">&times;</span>';
+          $completed = $this->user->completed_lesson( $lesson_id, $user->ID ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
           echo '<tr class="humble-lms-reporting-lesson">
             <td><a href="' . get_edit_post_link( $lesson_id ) . '">' . get_the_title( $lesson_id ) . '</a></td>
             <td>'. $completed . '</td>  
@@ -309,6 +316,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
       
       echo '</table>';
+
+      // Awards
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="25%">' . __('Awards', 'humble-lms') . '</th>
+        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      foreach( $awards as $award ) {
+        $completed = in_array( $award->ID, $granted_awards ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
+
+        echo '<tr class="humble-lms-reporting-award">';
+          echo '<td><strong><a href="' . get_edit_post_link( $award->ID ) . '">' . get_the_title( $award->ID ) . '</a></strong></td>';
+          echo '<td>'. $completed . '</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
+  
       echo '<p><a class="button" href="' . $this->admin_url . '">' . __('Back', 'humble-lms') . '</a></p>';
     }
 

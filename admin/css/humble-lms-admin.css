@@ -67,10 +67,10 @@
   font-weight: 700;
 }
 
-.humble-lms-options-lessons-completed {
+.humble-lms-options-complete {
   color: #207a86;
 }
 
-.humble-lms-options-lessons-incompleted {
-  color: red;
+.humble-lms-options-incomplete {
+  color: rgb(189, 16, 16);
 }

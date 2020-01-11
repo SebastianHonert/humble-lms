@@ -85,8 +85,6 @@ function humble_lms_email_message_mb()
   echo '<p>You can use the following strings to include specific information in your emails:</p>';
   echo '<ul>';
     echo '<li>' . __('Student name', 'humble-lms') . ': <strong>STUDENT_NAME</strong></li>';
-    echo '<li>' . __('Course title', 'humble-lms') . ': <strong>COURSE_TITLE</strong></li>';
-    echo '<li>' . __('Lesson title', 'humble-lms') . ': <strong>LESSON_TITLE</strong></li>';
     echo '<li>' . __('Website title', 'humble-lms') . ': <strong>WEBSITE_TITLE</strong></li>';
     echo '<li>' . __('Website URL', 'humble-lms') . ': <strong>WEBSITE_URL</strong></li>';
   echo '</ul>';

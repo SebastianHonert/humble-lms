@@ -81,7 +81,7 @@ jQuery(document).ready(function($) {
           loadingLayer(false)
         }
       })
-    }, 500)
+    }, 250)
   })
 
   // Award messages

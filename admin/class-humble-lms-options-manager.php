@@ -46,7 +46,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         settings_errors();
 
         $active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
-
         $nav_tab_reporting_users = $active === 'reporting-users' ? 'nav-tab-active' : '';
         $nav_tab_reporting_courses = $active === 'reporting-courses' ? 'nav-tab-active' : '';
         $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
@@ -86,7 +85,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_admin_init() {
       register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
       
-      add_settings_section('humble_lms_options_section_reporting_users', __('Reporting: Users (' . count_users()['total_users'] . ')', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
+      add_settings_section('humble_lms_options_section_reporting_users', '', array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
 
@@ -103,6 +102,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $user_id = isset( $_GET['user_id'] ) ? (int) $_GET['user_id'] : false;
       
       if( ! $user_id ) {
+        echo '<h2>' . __('Registered users', 'humble-lms' ). ' (' . count_users()['total_users'] . ')' . '</h2>';
         $this->reporting_users_table();
       } else {
         $this->reporting_user_single( $user_id );
@@ -193,6 +193,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Role</th>
             <th>Tracks (' . wp_count_posts('humble_lms_track')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_track') ) . ')</th>
             <th>Courses (' . wp_count_posts('humble_lms_course')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_course') ) . ')</th>
             <th>Lessons (' . wp_count_posts('humble_lms_lesson')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_lesson') ) . ')</th>
@@ -201,10 +202,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         </thead>
         <tbody>';
           foreach( $users as $user ) {
+            $user_meta = get_userdata( $user->ID );
             // TODO: link to single user reporting view
             echo '<tr>
-             <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
+              <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
               <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a></td>
+              <td>' . implode(',', $user_meta->roles ) . '</td>
               <td>' . count( $this->user->completed_tracks( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_courses( $user->ID, true ) ) . '</td>
               <td>' . count( $this->user->completed_lessons( $user->ID, true ) ) . '</td>
@@ -232,9 +235,81 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @return  false
      * @since   0.0.1
      */
-    public function reporting_user_single( $user_id ) {
-      echo '<p>TODO: reporting_user_single( $user_id )</p>';
-      echo '<a class="button" href="' . $this->admin_url . '">' . __('Back', 'humble-lms') . '</a>';
+    public function reporting_user_single( $user_id = null ) {
+      if( ! get_userdata( (int)$user_id ) ) { 
+        echo __('Please provide a valid user ID.', 'humble-lms');
+        return;
+      }
+    
+      $user = get_user_by( 'id', (int)$user_id );
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th>' . $user->nickname . ' (ID <a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a>)</th></tr></thead>
+      <tr><td>' . __('Registered', 'humble-lms') . ': <strong>' . $this->user->registered_at( $user_id, true ) . '</strong></td>
+      </tr></table>';
+
+      $completed_tracks = $this->user->completed_tracks( $user->ID, true );
+      $completed_courses = $this->user->completed_courses( $user->ID, true );
+      $completed_lessons = $this->user->completed_lessons( $user->ID, true );
+
+      $tracks = get_posts( array(
+          'post_type' => 'humble_lms_track',
+          'post_status' => 'publish',
+          'posts_per_page' => -1,
+      ) );
+
+      $courses = get_posts( array(
+        'post_type' => 'humble_lms_course',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+      ) );
+
+      $lessons = get_posts( array(
+        'post_type' => 'humble_lms_lesson',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+      ) );
+
+      // Tracks
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="25%">' . __('Tracks', 'humble-lms') . '</th>
+        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      foreach( $tracks as $track ) {
+        echo '<tr class="humble-lms-reporting-track">';
+          echo '<td><strong><a href="' . get_edit_post_link( $track->ID ) . '">' . get_the_title( $track->ID ) . '</a></strong></td>';
+          echo '<td>'. $this->progress_bar( $this->user->track_progress( $track->ID, $user->ID ) ) . '</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
+
+      // Courses
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="25%">' . __('Courses and Lessons', 'humble-lms') . '</th>
+        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      foreach( $courses as $course ) {
+        echo '<tr class="humble-lms-reporting-course">
+          <td><strong><a href="' . get_edit_post_link( $course->ID ) . '">' . get_the_title( $course->ID ) . '</a></strong></td>
+          <td>'. $this->progress_bar( $this->user->course_progress( $course->ID, $user->ID ) ) . '</td>
+        </tr>';
+
+        $course_lessons = get_post_meta( $course->ID, 'humble_lms_course_lessons', true );
+        $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+
+        foreach( $course_lessons as $lesson_id ) {
+          $completed = $this->user->completed_lesson( $lesson_id, $user->ID ) ? '<span class="humble-lms-options-lessons-completed">&check;</span>' : '<span class="humble-lms-options-lessons-incompleted">&times;</span>';
+          echo '<tr class="humble-lms-reporting-lesson">
+            <td><a href="' . get_edit_post_link( $lesson_id ) . '">' . get_the_title( $lesson_id ) . '</a></td>
+            <td>'. $completed . '</td>  
+          </tr>';
+        }
+      }
+      
+      echo '</table>';
+      echo '<p><a class="button" href="' . $this->admin_url . '">' . __('Back', 'humble-lms') . '</a></p>';
     }
 
     /**
@@ -245,6 +320,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function reporting_courses_table() {
       echo 'TODO: reporting_courses_table()';
+    }
+
+    /**
+     * Generate progress bar.
+     *
+     * @return  false
+     * @since   0.0.1
+     */
+    public function progress_bar( $percent = 0 ) {
+      $class = (int)$percent === 0 ? 'humble-lms-progress-none' : '';
+
+      $html = '';
+      $html .= '<span class="humble-lms-admin-progress-bar">';
+      $html .= '<span class="humble-lms-admin-progress-bar-inner" style="width: ' . $percent . '%">
+        <span class="humble-lms-admin-progress-bar-inner-text ' . $class . '">' . $percent . '%</span>
+      </span>';
+      $html .= '</span>';
+      return $html;
     }
     
   }

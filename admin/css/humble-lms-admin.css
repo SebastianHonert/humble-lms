@@ -23,3 +23,54 @@
   display: none;
   margin-top: .5em;
 }
+
+.humble-lms-reporting-table {
+  margin-bottom: 1em;
+}
+
+.humble-lms-reporting-table:first-of-type {
+  margin-top: 1.375em;
+}
+
+.humble-lms-reporting-table th {
+  font-weight: 700;
+}
+
+.humble-lms-admin-progress-bar {
+  position: relative;
+  display: block;
+  background: #eee;
+}
+
+.humble-lms-admin-progress-bar-inner {
+  display: block;
+  position: relative;
+  background: #207a86;
+  color: #fff;
+}
+
+.humble-lms-admin-progress-bar-inner-text {
+  display: inline-block;
+  margin-left: .5em;
+}
+
+.humble-lms-progress-none {
+  color: #222 !important;
+}
+
+.humble-lms-reporting-lesson td:first-of-type {
+  padding-left: 2em;
+}
+
+.humble-lms-options-lessons-completed,
+.humble-lms-options-lessons-incompleted {
+  font-weight: 700;
+}
+
+.humble-lms-options-lessons-completed {
+  color: #207a86;
+}
+
+.humble-lms-options-lessons-incompleted {
+  color: red;
+}

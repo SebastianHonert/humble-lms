@@ -17,9 +17,17 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      *
      * @since    0.0.1
      */
-    public function completed_lesson( $lesson_id ) {
-      if( ! is_user_logged_in() || ! $lesson_id )
+    public function completed_lesson( $lesson_id, $user_id = null ) {
+      if( ! $lesson_id )
         return;
+
+      if( ! is_user_logged_in() ) {
+        if( ! get_usermeta( $user_id ) ) {
+          return 0;
+        }
+      } else {
+        $user_id = get_current_user_id();
+      }
 
       $user_id = get_current_user_id();
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
@@ -397,6 +405,91 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       }
 
       return $awards;
+    }
+
+    /**
+     * Get user registration date.
+     * 
+     * @param int|bool
+     * @return string
+     * @since   0.0.1
+     */
+    public function registered_at( $user_id = null, $formatted = false ) {
+      if( ! get_userdata( (int)$user_id ) ) { 
+        return;
+      }
+    
+      $user = get_user_by( 'id', (int)$user_id );
+
+      $registered = get_userdata( $user_id )->user_registered;
+
+      if( ! $formatted ) {
+        return $registered;
+      }
+
+      return $registered_formatted = date('F j, Y, g:i a', strtotime( $registered ) );
+    }
+
+    /**
+     * Track progress in percent.
+     * 
+     * @return float
+     * @since   0.0.1
+     */
+    function track_progress( $track_id, $user_id = null ) {
+      if( ! $track_id )
+        return 0;
+
+      if( ! is_user_logged_in() ) {
+        if( ! get_usermeta( $user_id ) ) {
+          return 0;
+        }
+      } else {
+        $user_id = get_current_user_id();
+      }
+      
+      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
+      $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+      $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
+      $completed_track_courses = array_intersect( $courses_completed[0], $track_courses );
+
+      if( ( empty( $track_courses ) ) || ( empty( $courses_completed[0] ) ) )
+        return 0;
+
+      $percent = count( $completed_track_courses ) * 100 / count( $track_courses );
+
+      return round( $percent, 1 );
+    }
+
+    /**
+     * Course progress in percent.
+     * 
+     * @return float
+     * @since   0.0.1
+     */
+    function course_progress( $course_id, $user_id = null ) {
+      if( ! $course_id )
+        return 0;
+
+      if( ! is_user_logged_in() ) {
+        if( ! get_usermeta( $user_id ) ) {
+          return 0;
+        }
+      } else {
+        $user_id = get_current_user_id();
+      }
+      
+      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+      $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
+      $completed_course_lessons = array_intersect( $lessons_completed[0], $course_lessons );
+
+      if( ( empty( $course_lessons ) ) || ( empty( $lessons_completed[0] ) ) )
+        return 0;
+
+      $percent = count( $completed_course_lessons ) * 100 / count( $course_lessons );
+
+      return round( $percent, 1 );
     }
 
   }

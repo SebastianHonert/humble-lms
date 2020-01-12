@@ -286,14 +286,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // Meta information
       if( $lesson_id ) {
-        $level = strip_tags( get_the_term_list( $lesson_id, 'humble_lms_course_level', '', ', ') );
-        $level = $level ? '<strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level : '';
         $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
-        $duration = $duration ? '<br><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration : '';
+        $duration = $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration . '</span>' : '';
 
         $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
           $html .= ! $course_id ? '<strong>' . __('Course', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Course', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a><br>';
-          $html .= $level;
           $html .= $duration;
         $html .= '</p>';
       }

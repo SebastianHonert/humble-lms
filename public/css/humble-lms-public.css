@@ -159,6 +159,11 @@ li.humble-lms-syllabus-lesson span {
   margin-bottom: 1em; }
 
 /* Single lesson */
+.humble-lms-lesson-level {
+  display: block;
+  padding-bottom: 1em;
+  font-size: .875em; }
+
 .humble-lms-course-meta {
   font-size: .875em; }
 

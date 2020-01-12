@@ -209,18 +209,19 @@ class Humble_LMS_Public {
     $course_id = null;
     $lesson_id = null;
 
-    // Success message: User completed course
-    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
-      $course_id = $post->ID;
-    } elseif( isset( $_POST['course_id'] ) ) {
-      $course_id = (int)$_POST['course_id'];
-    }
-
+    // Access denied
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) && ! current_user_can('manage_options' ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--error">';
       $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
       $html .= '<span class="humble-lms-message-content">' . sprintf( __('You need to be <a href="%s">logged in</a> and have the required permissions in order to access the requested content.', 'humble-lms' ), wp_login_url() ) . '</span>';
       $html .= '</div>';
+    }
+
+    // Success message: user completed course
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
+      $course_id = $post->ID;
+    } elseif( isset( $_POST['course_id'] ) ) {
+      $course_id = (int)$_POST['course_id'];
     }
 
     if( $this->user->completed_course( $course_id ) ) {
@@ -230,6 +231,14 @@ class Humble_LMS_Public {
       </div>';
     }
 
+    // Single lesson
+    if( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' ) {
+      $level = strip_tags( get_the_term_list( $post->ID, 'humble_lms_course_level', '', ', ') );
+      $level = $level ? '<span class="humble-lms-lesson-level"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>': '';
+      $html .= $level;
+    }
+
+    // Single course
     if ( is_single() && ( get_post_type( $post->ID ) === 'humble_lms_course' || get_post_type( $post->ID ) === 'humble_lms_lesson' ) ) {
       $html .= $content;
     }
@@ -238,11 +247,6 @@ class Humble_LMS_Public {
     if( isset( $_POST['completed'] ) ) {
       $completed = json_decode( $_POST['completed'] );
       if( ! empty( $completed[0] ) ) {
-        // Display array content (testing)
-        // echo '<pre>';
-        // print_r( $completed );
-        // echo '</pre>';
-
         $html .= '<div class="humble-lms-award-message"><div>';
 
         foreach( $completed as $key => $ids ) {

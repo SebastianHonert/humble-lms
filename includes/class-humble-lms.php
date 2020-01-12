@@ -118,7 +118,12 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-admin.php';
 
     /**
-     * The class providing options management functionalities.-
+     * The class providing widgets.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-syllabus.php';
+
+    /**
+     * The class providing options management functionalities.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-options-manager.php';
 
@@ -198,12 +203,20 @@ class Humble_LMS {
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
+    $this->loader->add_action( 'widgets_init', $plugin_admin, 'register_sidebars' );
     $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );
     $this->loader->add_action( 'edit_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
 
+    /**
+     * Widgets
+     */
+    $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
+
+    $this->loader->add_action( 'widgets_init', $plugin_widget_syllabus, 'register_widget_syllabus');
+    
     /**
      * Options
      */

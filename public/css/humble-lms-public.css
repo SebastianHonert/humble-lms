@@ -178,6 +178,12 @@ li.humble-lms-syllabus-lesson span {
 .humble-lms-prev-lesson-link {
   margin-right: 1em; }
 
+/* Sidebar */
+.humble-lms-widget h2 {
+  font-size: 1.125em;
+  padding-top: 0;
+  margin-top: 0; }
+
 /* Buttons */
 .humble-lms-btn,
 input[type='submit'].humble-lms-btn {

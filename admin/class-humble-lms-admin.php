@@ -121,6 +121,24 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Register sidebars.
+   * to front page instead.
+   *
+   * @since    0.0.1
+   */
+  public function register_sidebars( $url ) {
+    register_sidebar( array(
+      'name' => __( 'Humble LMS Sidebar', 'humble-lms' ),
+      'id' => 'humble-lms-sidebar',
+      'description' => __( 'Widgets in this area will be shown on Humble LMS single lesson pages.', 'humble-lms' ),
+      'before_widget' => '<div class="humble-lms-widget">',
+      'after_widget'  => '</div>',
+      'before_title'  => '<h2>',
+      'after_title'   => '</h2>',
+    ) );
+  }
+
+  /**
    * Add user meta field for course instructors
    *
    * @since    0.0.1

@@ -235,6 +235,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
+      if( is_single() && get_post_type() === 'humble_lms_lesson' )
+        $context = 'lesson';
+
       if( $context === 'lesson' ) {
         $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
         $lesson_id = $post->ID;

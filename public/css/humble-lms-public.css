@@ -669,7 +669,14 @@ input[type='submit'].humble-lms-btn--error:active {
     font-size: 2em; }
 
   .humble-lms-next-prev-lesson {
-    margin-top: 1em; } }
+    margin-top: 1em;
+    margin-bottom: 2em; }
+
+  .humble-lms-widget h2 {
+    padding-bottom: .5em; }
+
+  .humble-lms-widget:not(:first-of-type) {
+    margin-top: 1.5em; } }
 @media screen and (max-width: 480px) {
   .humble-lms-course-tile .humble-lms-course-title {
     font-size: 1.75em; } }

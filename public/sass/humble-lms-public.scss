@@ -806,6 +806,15 @@ input[type='submit'].humble-lms-btn--error:active {
 
   .humble-lms-next-prev-lesson {
     margin-top: 1em;
+    margin-bottom: 2em;
+  }
+
+  .humble-lms-widget h2 {
+    padding-bottom: .5em;
+  }
+
+  .humble-lms-widget:not(:first-of-type) {
+    margin-top: 1.5em;
   }
 }
 

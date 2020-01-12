@@ -173,7 +173,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function reporting_users_table() {
       // TODO: pagination
-      $users_per_page = 50;
+      $users_per_page = $this->users_per_page();
+
       $paged = isset( $_GET['paged'] ) ? (int)$_GET['paged'] : 0;
       $total_users = count_users()['total_users'];
 
@@ -223,7 +224,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             // TODO: link to single user reporting view
             echo '<tr>
               <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
-              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '"><strong>' . $user->nickname . '</strong></a></td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '&users-per-page=' . $users_per_page . '"><strong>' . $user->nickname . '</strong></a></td>
               <td>' . implode(',', $user_meta->roles ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_tracks_percent, $completed_tracks ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_courses_percent, $completed_courses ) . '</td>
@@ -234,10 +235,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '</tbody>';
       echo '</table>';
 
+      // Users per page
+      $users_per_page = $this->users_per_page();
+      $users_per_page_values = array(10, 25, 50, 100, 250, 500);
+
+      echo '<p><strong>' . __('Users per page', 'humble-lms') . '</strong><p>
+      <form method="post" action="' . $this->admin_url . '">
+        <select id="users-per-page" name="users-per-page">';
+        array_walk( $users_per_page_values, function( $value, $key, $users_per_page ) {
+          $selected = $value === $users_per_page ? 'selected' : '';
+          echo '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
+        }, $users_per_page);
+        echo '</select>
+        <input type="submit" value="' . __('Submit') . '" />
+      </form>';
+
       if( $total_users > $users_per_page ) {
         $args = array(
-           'base' => add_query_arg('paged', '%#%'),
-           'format' => '?paged=%#%',
+           'format' => '?paged=%#%&users-per-page=' . $users_per_page,
            'total' => ceil($total_users / $users_per_page),
            'current' => max(1, $paged),
         );
@@ -351,7 +366,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       echo '</table>';
   
-      echo '<p><a class="button" href="' . $this->admin_url . '">' . __('Back', 'humble-lms') . '</a></p>';
+      $users_per_page = $this->users_per_page();
+      $users_per_page = $users_per_page !== 50 ? '&users-per-page=' . $users_per_page : '';
+
+      echo '<p><a class="button" href="' . $this->admin_url . $users_per_page . '">' . __('Back', 'humble-lms') . '</a></p>';
     }
 
     /**
@@ -381,6 +399,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       </span>';
       $html .= '</span>';
       return $html;
+    }
+
+    /**
+     * Users per page.
+     *
+     * @return  int
+     * @since   0.0.1
+     */
+    public function users_per_page() {
+      if( isset( $_GET['users-per-page'] ) && $_GET['users-per-page'] !== '' ) {
+        $users_per_page = (int)$_GET['users-per-page'];
+      } else if( isset( $_POST['users-per-page'] ) ) {
+        $users_per_page = (int)$_POST['users-per-page'];
+      } else {
+        $users_per_page = 50;
+      }
+
+      return $users_per_page;
     }
     
   }

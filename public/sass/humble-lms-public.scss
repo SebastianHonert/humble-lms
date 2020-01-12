@@ -192,6 +192,10 @@ li.humble-lms-syllabus-lesson span {
   font-size: .875em;
 }
 
+.humble-lms-lesson-level span {
+  font-style: italic;
+}
+
 .humble-lms-course-meta {
   padding: 0 0;
   margin: 1em 0 0;
@@ -210,6 +214,22 @@ li.humble-lms-syllabus-lesson span {
 
 .humble-lms-prev-lesson-link {
   margin-right: 1em;
+}
+
+.humble-lms-next-lesson-link::after,
+.humble-lms-prev-lesson-link::before {
+  font-size: .6125em;
+  font-family: 'themify';
+}
+
+.humble-lms-next-lesson-link::after {
+  content: '\e628';
+  margin-left: .25em;
+}
+
+.humble-lms-prev-lesson-link::before {
+  content: '\e629';
+  margin-right: .25em;
 }
 
 /* Sidebar */

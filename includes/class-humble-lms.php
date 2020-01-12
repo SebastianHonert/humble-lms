@@ -121,6 +121,7 @@ class Humble_LMS {
      * The class providing widgets.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-syllabus.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-course-instructors.php';
 
     /**
      * The class providing options management functionalities.
@@ -214,8 +215,10 @@ class Humble_LMS {
      * Widgets
      */
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
+    $plugin_widget_course_instructors = new Humble_LMS_Widget_Course_Instructors( $plugin_admin );
 
     $this->loader->add_action( 'widgets_init', $plugin_widget_syllabus, 'register_widget_syllabus');
+    $this->loader->add_action( 'widgets_init', $plugin_widget_course_instructors, 'register_widget_course_instructors');
     
     /**
      * Options

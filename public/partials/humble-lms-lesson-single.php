@@ -16,7 +16,7 @@ if (have_posts()):
   <h1><?php echo get_the_title(); ?></h1>
 
   <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
-  <div class="humble-lms-flex-columns">
+  <div class="humble-lms-flex-columns humble-lms-sidebar">
     <div class="humble-lms-flex-column--two-third">
   <?php endif; ?>
 
@@ -31,7 +31,6 @@ if (have_posts()):
     <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
     <div class="humble-lms-flex-column--third">
       <?php dynamic_sidebar('humble-lms-sidebar'); ?>
-      <?php echo do_shortcode('[humble_lms_course_instructors]'); ?>
     </div>
   </div>
   <?php endif; ?>

@@ -343,7 +343,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $html .= '<div class="humble-lms-instructors">';
-      $html .= '<span class="humble-lms-instructors-title">' . __('Course instructor(s)', 'humble-lms') . '</span>';
 
       foreach( $instructors as $user_id ) {
         if( get_userdata( $user_id ) ) {

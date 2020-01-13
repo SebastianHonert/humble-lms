@@ -390,14 +390,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function progress_bar( $percent = 0, $total = 0 ) {
       $class = (int)$percent === 0 ? 'humble-lms-progress-none' : '';
-      $total = $total > 0 ? $total . ' / ' : '';
+      $total = $total > 0 ? $total . ' / ' : '';
 
       $html = '';
-      $html .= '<span class="humble-lms-admin-progress-bar">';
-      $html .= '<span class="humble-lms-admin-progress-bar-inner" style="width: ' . $percent . '%">
-        <span class="humble-lms-admin-progress-bar-inner-text ' . $class . '">' . $total . $percent . '%</span>
+      $html .= '<span class="humble-lms-admin-progress-bar">
+        <span class="humble-lms-admin-progress-bar-text ' . $class . '">' . $total . $percent . '%</span>
+        <span class="humble-lms-admin-progress-bar-inner" style="width: ' . $percent . '%"></span>
       </span>';
-      $html .= '</span>';
+
       return $html;
     }
 

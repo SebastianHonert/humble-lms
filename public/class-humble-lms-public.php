@@ -217,14 +217,14 @@ class Humble_LMS_Public {
       $html .= '</div>';
     }
 
-    // Success message: user completed course
+    // Message user completed course
     if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
       $course_id = $post->ID;
     } elseif( isset( $_POST['course_id'] ) ) {
       $course_id = (int)$_POST['course_id'];
     }
 
-    if( $this->user->completed_course( $course_id ) ) {
+    if( isset( $course_id ) && $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
         <span class="humble-lms-message-content">' . sprintf( __('You successfully completed the course "%s".', 'humble-lms'), '<a href="#">' . get_the_title( $course_id ) ) . '</a></span> 
@@ -238,7 +238,7 @@ class Humble_LMS_Public {
       $html .= $level;
     }
 
-    // Single course
+    // Content
     if ( is_single() && ( get_post_type( $post->ID ) === 'humble_lms_course' || get_post_type( $post->ID ) === 'humble_lms_lesson' ) ) {
       $html .= $content;
     }

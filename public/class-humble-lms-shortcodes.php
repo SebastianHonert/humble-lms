@@ -98,7 +98,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
           if( is_user_logged_in() ) {
             $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-            $html .= $this->progress_bar( $progress );
+            $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
           }
         $html .= '</div>';
       $html .= '</div>';
@@ -198,7 +198,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
           if( is_user_logged_in() ) {
             $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-            $html .= $this->progress_bar( $progress );
+            $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
           }
         $html .= '</div>';
       $html .= '</div>';
@@ -212,7 +212,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return float
      * @since   0.0.1
      */
-    function progress_bar( $progress = 0 ) {
+    function progress_bar( $atts = null ) {
+      extract( shortcode_atts( array (
+        'progress' => 0
+      ), $atts ) );
+
       $html = '<div class="humble-lms-progress-bar">';
       $html .= '<div class="humble-lms-progress-bar-inner" style="width:' . $progress . '%"></div>';
       $html .= '</div>';

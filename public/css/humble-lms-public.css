@@ -666,7 +666,7 @@ input[type='submit'].humble-lms-btn--error:active {
   padding-bottom: .4125em; }
 
 .humble-lms-widget:not(:first-of-type) {
-  margin-top: 1.125em; }
+  margin-top: 1.5em; }
 
 /* Responsive */
 @media screen and (max-width: 767px) {

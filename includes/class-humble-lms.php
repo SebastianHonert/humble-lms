@@ -122,6 +122,7 @@ class Humble_LMS {
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-syllabus.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-course-instructors.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-progress-bar.php';
 
     /**
      * The class providing options management functionalities.
@@ -216,9 +217,11 @@ class Humble_LMS {
      */
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
     $plugin_widget_course_instructors = new Humble_LMS_Widget_Course_Instructors( $plugin_admin );
+    $plugin_widget_progress_bar = new Humble_LMS_Widget_Progress_Bar( $plugin_admin );
 
     $this->loader->add_action( 'widgets_init', $plugin_widget_syllabus, 'register_widget_syllabus');
     $this->loader->add_action( 'widgets_init', $plugin_widget_course_instructors, 'register_widget_course_instructors');
+    $this->loader->add_action( 'widgets_init', $plugin_widget_progress_bar, 'register_widget_progress_bar');
     
     /**
      * Options

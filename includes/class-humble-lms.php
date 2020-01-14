@@ -253,6 +253,12 @@ class Humble_LMS {
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_filter( 'template_redirect', $plugin_public, 'humble_lms_template_redirect' );
 
+    // Registration form
+    $this->loader->add_action( 'login_head', $plugin_public, 'humble_lms_login_styles' );
+    $this->loader->add_action( 'register_form', $plugin_public, 'humble_lms_register_form' );
+    $this->loader->add_action( 'user_register', $plugin_public, 'humble_lms_user_register' );
+    $this->loader->add_filter( 'registration_errors', $plugin_public, 'humble_lms_registration_errors', 10, 3 );
+
     /**
      * Shortcodes
      */

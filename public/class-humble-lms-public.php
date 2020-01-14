@@ -200,7 +200,7 @@ class Humble_LMS_Public {
    *
    * @since    0.0.1
    */
-  function humble_lms_add_content_to_pages( $content ) {
+  public function humble_lms_add_content_to_pages( $content ) {
     global $post;
 
     $allowed_post_types = [
@@ -303,7 +303,7 @@ class Humble_LMS_Public {
    * This function checks user access levels and redirects accordingly. 
    * @since    0.0.1
    */
-  function humble_lms_template_redirect() {
+  public function humble_lms_template_redirect() {
     global $post;
 
     if ( is_single() && $post->post_type == 'humble_lms_lesson' && ! $this->access_handler->can_access_lesson( $post->ID ) ) {
@@ -322,9 +322,77 @@ class Humble_LMS_Public {
    * 
    * @since    0.0.1
    */
-  function hide_admin_bar() {
+  public function hide_admin_bar() {
     if ( ! current_user_can('edit_posts') ) {
       show_admin_bar(false);
+    }
+  }
+
+  /**
+   * Add login form styles
+   * 
+   * @since    0.0.1
+   */
+  public function humble_lms_login_styles() {
+    wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/login.css', array(), $this->version, 'all' );
+  }
+
+  /**
+   * Add first/last name fields to registration form.
+   * 
+   * @since    0.0.1
+   */
+  public function humble_lms_register_form() {
+    $first_name = ( ! empty( $_POST['first_name'] ) ) ? trim( $_POST['first_name'] ) : '';
+    $last_name = ( ! empty( $_POST['last_name'] ) ) ? trim( $_POST['last_name'] ) : ''; ?>
+
+    <p>
+      <label for="first_name"><?php _e( 'First Name', 'humble-lms' ) ?><br />
+      <input type="text" name="first_name" id="first_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $first_name ) ) ); ?>" maxlength="20" minlength="2" required="required" /></label>
+    </p>
+
+    <p>
+      <label for="last_name"><?php _e( 'Last Name', 'humble-lms' ) ?><br />
+      <input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $last_name ) ) ); ?>" maxlength="20" minlength="2" required="required" /></label>
+    </p>
+    
+    <?php
+  }
+
+  /**
+   * Registration form validation first/last name
+   * 
+   * @since    0.0.1
+   */
+  public function humble_lms_registration_errors( $errors, $sanitized_user_login, $user_email ) {
+    if( empty( $_POST['first_name'] ) || ! empty( $_POST['first_name'] ) && trim( $_POST['first_name'] ) === '' ) {
+      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: Please enter your first name.', 'humble-lms' ) );
+    } elseif( strlen( $_POST['first_name'] ) > 16 ) {
+      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: First name too long (max. 20 characters).', 'humble-lms' ) );
+    } elseif( strlen( $_POST['first_name'] ) < 2 ) {
+      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: First name too short (min. 2 characters).', 'humble-lms' ) );
+    }
+
+    if( empty( $_POST['last_name'] ) || ! empty( $_POST['last_name'] ) && trim( $_POST['last_name'] ) === '' ) {
+      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Please enter your last name.', 'humble-lms' ) );
+    } elseif( strlen( $_POST['last_name'] ) > 16 ) {
+      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Last name too long (max. 20 characters).', 'humble-lms' ) );
+    } elseif( strlen( $_POST['last_name'] ) < 2 ) {
+      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Last name too short (min. 2 characters).', 'humble-lms' ) );
+    }
+
+    return $errors;
+  }
+
+  /**
+   * Save first/last name field on registration.
+   * 
+   * @since    0.0.1
+   */
+  public function humble_lms_user_register( $user_id ) {
+    if ( ! empty( $_POST['first_name'] ) && ! empty( $_POST['last_name'] ) ) {
+        update_user_meta( $user_id, 'first_name', sanitize_text_field( trim( $_POST['first_name'] ) ) );
+        update_user_meta( $user_id, 'last_name',  sanitize_text_field( trim( $_POST['last_name'] ) ) );
     }
   }
 

@@ -1,0 +1,10 @@
+#login {
+  width: 400px;
+  max-width: 92%;
+  padding: 4em 0;
+}
+
+label[for='first_name'],
+label[for='last_name'] {
+  width: 100%;
+}

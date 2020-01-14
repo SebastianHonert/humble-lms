@@ -31,10 +31,9 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('activities', 'humble-lms'),
-  'with_front'            => true,
-  'pages'                 => true,
-  'feeds'                 => true,
+  'with_front'            => false,
+  'pages'                 => false,
+  'feeds'                 => false,
 );
 
 $args = array(

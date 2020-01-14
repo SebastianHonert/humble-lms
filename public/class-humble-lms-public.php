@@ -119,6 +119,7 @@ class Humble_LMS_Public {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
   }
 
   /**
@@ -181,6 +182,13 @@ class Humble_LMS_Public {
     if ( is_single() && $post->post_type == 'humble_lms_lesson' ) {
       if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php';
+      }
+    }
+
+    // Certificate single
+    if ( is_single() && $post->post_type == 'humble_lms_cert' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-certificate-single.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-certificate-single.php';
       }
     }
 

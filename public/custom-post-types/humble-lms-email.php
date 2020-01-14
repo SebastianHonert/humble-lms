@@ -31,10 +31,9 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('emails', 'humble-lms'),
-  'with_front'            => true,
-  'pages'                 => true,
-  'feeds'                 => true,
+  'with_front'            => false,
+  'pages'                 => false,
+  'feeds'                 => false,
 );
 
 $args = array(
@@ -85,7 +84,7 @@ function humble_lms_email_message_mb()
   echo '<p>You can use the following strings to include specific information in your emails:</p>';
   echo '<ul>';
     echo '<li>' . __('Student name', 'humble-lms') . ': <strong>STUDENT_NAME</strong></li>';
-    echo '<li>' . __('Website title', 'humble-lms') . ': <strong>WEBSITE_TITLE</strong></li>';
+    echo '<li>' . __('Website name', 'humble-lms') . ': <strong>WEBSITE_NAME</strong></li>';
     echo '<li>' . __('Website URL', 'humble-lms') . ': <strong>WEBSITE_URL</strong></li>';
   echo '</ul>';
 
@@ -102,10 +101,10 @@ function humble_lms_email_format_mb()
   $format = get_post_meta( $post->ID, 'humble_lms_email_format', true );
 
   echo '<select id="humble_lms_email_format" name="humble_lms_email_format">';
-  $selected_html = ( ( $format === 'text/html' ) || ( ! $format ) ) ? 'selected' : '';
-  $selected_text = $format === 'text/plain' ? 'selected' : '';
-  echo '<option value="text/html" ' . $selected_html . '>HTML</option>';
-  echo '<option value="text/plain" ' . $selected_text . '>Plain text</option>';
+    $selected_html = ( ( $format === 'text/html' ) || ( ! $format ) ) ? 'selected' : '';
+    $selected_text = $format === 'text/plain' ? 'selected' : '';
+    echo '<option value="text/html" ' . $selected_html . '>HTML</option>';
+    echo '<option value="text/plain" ' . $selected_text . '>Plain text</option>';
   echo '</select>';
 }
 

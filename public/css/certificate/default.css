@@ -1,0 +1,137 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  background: #ccc;
+  font-size: 1.125em;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  line-height: 1.33;
+  padding: 2em;
+}
+
+#certificate {
+  background-color: #fff;
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 10mm 25mm;
+  margin: 0 0 0 0;
+  box-shadow: 0 .25em 1.25em rgba(0,0,0,.4);
+  display: block;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: 600;
+  text-align: center;
+  padding: 1em 0 .5em;
+  margin-bottom: .5em;
+  border-bottom: .1cm double #000;
+}
+
+h2 {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25em;
+  padding: 1.125em;
+  text-align: center;
+}
+
+.content {
+  padding: 3em 0;
+}
+
+p {
+  padding: 0 0 1em;
+}
+
+em, i {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+@media print {
+
+  @page {
+    margin: 10mm 25mm 10mm 25mm;
+    height: auto;
+  }
+ 
+  body {
+    width: 210mm;
+    height: 296mm; /* TODO: 297mm adds page break */
+    margin: 0 0 0 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    background: none;
+  }
+
+  #certificate {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    box-shadow: 0 0;
+    page-break-after: auto;
+  }
+}

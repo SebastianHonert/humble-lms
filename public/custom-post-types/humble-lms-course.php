@@ -145,7 +145,6 @@ function humble_lms_course_duration_mb()
 
 function humble_lms_course_show_featured_image_mb() {
   global $post;
-  global $wp_roles;
 
   $show = get_post_meta($post->ID, 'humble_lms_course_show_featured_image', true);
   $checked = $show ? 'checked' : '';

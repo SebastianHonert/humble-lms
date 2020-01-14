@@ -192,13 +192,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '<table class="widefat">';
         echo '<thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Tracks (' . wp_count_posts('humble_lms_track')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_track') ) . ')</th>
-            <th>Courses (' . wp_count_posts('humble_lms_course')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_course') ) . ')</th>
-            <th>Lessons (' . wp_count_posts('humble_lms_lesson')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_lesson') ) . ')</th>
-            <th>Awards (' . wp_count_posts('humble_lms_award')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_award') ) . ')</th>
+            <th width="5%">ID</th>
+            <th width="10%">Name</th>
+            <th width="10%">Role</th>
+            <th width="15%">Tracks (' . wp_count_posts('humble_lms_track')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_track') ) . ')</th>
+            <th width="15%">Courses (' . wp_count_posts('humble_lms_course')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_course') ) . ')</th>
+            <th width="15%">Lessons (' . wp_count_posts('humble_lms_lesson')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_lesson') ) . ')</th>
+            <th width="15%">Awards (' . wp_count_posts('humble_lms_award')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_award') ) . ')</th>
+            <th width="15%">Certificates (' . wp_count_posts('humble_lms_cert')->publish . '/' . array_sum( (array)wp_count_posts('humble_lms_cert') ) . ')</th>
           </tr>
         </thead>
         <tbody>';
@@ -221,6 +222,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             $completed_awards = count( $this->user->granted_awards( $user->ID, true ) );
             $completed_awards_percent = ( $completed_awards / $awards_total ) * 100;
 
+            $certificates_total = wp_count_posts('humble_lms_cert')->publish;
+            $completed_certificates = count( $this->user->issued_certificates( $user->ID, true ) );
+            $completed_certificates_percent = ( $completed_certificates / $certificates_total ) * 100;
+
             // TODO: link to single user reporting view
             echo '<tr>
               <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
@@ -230,6 +235,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               <td>' . $this->progress_bar( (int)$completed_courses_percent, $completed_courses ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_lessons_percent, $completed_lessons ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_awards_percent, $completed_awards ) . '</td>
+              <td>' . $this->progress_bar( (int)$completed_certificates_percent, $completed_certificates ) . '</td>
             </tr>';
           }
         echo '</tbody>';
@@ -283,6 +289,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $completed_courses = $this->user->completed_courses( $user->ID, true );
       $completed_lessons = $this->user->completed_lessons( $user->ID, true );
       $granted_awards = $this->user->granted_awards( $user->ID, true );
+      $issued_certificates = $this->user->issued_certificates( $user->ID, true );
 
       $tracks = get_posts( array(
           'post_type' => 'humble_lms_track',
@@ -304,6 +311,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       $awards = get_posts( array(
         'post_type' => 'humble_lms_award',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+      ) );
+
+      $certificates = get_posts( array(
+        'post_type' => 'humble_lms_cert',
         'post_status' => 'publish',
         'posts_per_page' => -1,
       ) );
@@ -360,6 +373,23 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
         echo '<tr class="humble-lms-reporting-award">';
           echo '<td><strong><a href="' . get_edit_post_link( $award->ID ) . '">' . get_the_title( $award->ID ) . '</a></strong></td>';
+          echo '<td>'. $completed . '</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
+
+      // Certificates
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="25%">' . __('Certificates', 'humble-lms') . '</th>
+        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      foreach( $certificates as $certificate ) {
+        $completed = in_array( $certificate->ID, $issued_certificates ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
+
+        echo '<tr class="humble-lms-reporting-certificates">';
+          echo '<td><strong><a href="' . get_edit_post_link( $certificate->ID ) . '">' . get_the_title( $certificate->ID ) . '</a></strong></td>';
           echo '<td>'. $completed . '</td>';
         echo '</tr>';
       }

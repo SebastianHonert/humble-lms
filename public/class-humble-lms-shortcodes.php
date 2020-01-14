@@ -549,6 +549,35 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     }
 
     /**
+     * Display user certificates.
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function user_certificates() {
+      if( ! is_user_logged_in() )
+        return $this->display_login_text();
+
+      $certificates = get_user_meta( get_current_user_id(), 'humble_lms_certificates', false );
+      $html = '';
+
+      if( ! $certificates ) {
+        $html .= '<p>' . __('No have not been issued any certificates yet.', 'humble-lms') . '</p>';
+      } else {
+        $html .= '<div class="humble-lms-certificates-list">';
+        foreach( $certificates[0] as $certificate ) {
+          $html .= '<div class="humble-lms-certificates-list-item">';
+          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . plugins_url( 'humble-lms/public/assets/img/certificate.png' ) . '" alt="" title="" /></a>';
+          $html .= '</div>';
+        }
+        $html .= '</div>';
+      }
+
+      return $html;
+      
+    }
+
+    /**
      * Default login link text.
      * 
      * @return string

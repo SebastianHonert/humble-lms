@@ -293,7 +293,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $completed = array( [], [], [], [] ); // lesson, courses, tracks, awards
+      $completed = array( [], [], [], [], [] ); // lesson, courses, tracks, awards, certificates
       
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
       if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
@@ -469,6 +469,12 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                 array_push( $completed[3], $award_id );
                 $this->grant_award( $user->ID, $award_id );
               break;
+
+              case 'certificate':
+                $certificate_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_certificate', true);
+                array_push( $completed[4], $certificate_id );
+                $this->issue_certificate( $user->ID, $certificate_id );
+              break;
               
               case 'email':
                 $email_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_email', true);
@@ -528,7 +534,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * Returns an array of granted awards
+     * Get an array of granted awards.
      *
      * @param int|string
      * @return  array
@@ -557,6 +563,66 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       }
 
       return $awards;
+    }
+
+    /**
+     * Issue a certificate to a user.
+     *
+     * @return  false
+     * @param   int
+     * @since   0.0.1
+     */
+    public function issue_certificate( $user_id, $certificate_id ) {
+      if( ! $user_id )
+        return;
+
+      if( ! $certificate_id )
+        return;
+
+      // update_user_meta( $user_id, 'humble_lms_certificates', [] );
+
+      $certificates = get_user_meta( $user_id, 'humble_lms_certificates', false );
+      $certificates = is_array( $certificates ) && ! empty( $certificates[0] ) ? $certificates[0] : [];
+      
+      if( ! in_array( $certificate_id, $certificates ) ) {
+        array_push( $certificates, $certificate_id );
+      }
+
+      update_user_meta( $user_id, 'humble_lms_certificates', $certificates );
+
+      return;
+    }
+
+    /**
+     * Get an array of issued certificates.
+     *
+     * @param   int|string
+     * @return  array
+     * @since   0.0.1
+     */
+    public function issued_certificates( $user_id = null, $published = false ) {
+      if( ! $user_id ) {
+        if( ! is_current_user_logged_in() ) {
+          return [];
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      $certificates = get_user_meta( $user_id, 'humble_lms_certificates', false );
+      $certificates = is_array( $certificates ) && ! empty( $certificates[0] ) ? $certificates[0] : [];
+      
+      if( ! $published ) {
+        return $certificates;
+      }
+
+      foreach( $certificates as $key => $certificate ) {
+        if( get_post_status( $certificate ) !== 'publish' ) {
+          unset( $certificates[$key] );
+        }
+      }
+
+      return $certificates;
     }
 
     /**

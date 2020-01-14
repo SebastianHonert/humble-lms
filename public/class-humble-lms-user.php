@@ -485,7 +485,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                 $to = $user->user_email;
                 $subject = 'Humble LMS';
                 $message = get_post_meta($email_id, 'humble_lms_email_message', true);
-                $message = str_replace('STUDENT_NAME', $user->nickname, $message);
+                $message = str_replace('STUDENT_NAME', $user->display_name, $message);
                 $message = str_replace('WEBSITE_NAME', get_bloginfo('name'), $message);
                 $message = str_replace('WEBSITE_URL', get_bloginfo('url'), $message);
                 $format = get_post_meta($email_id, 'humble_lms_email_format', true);

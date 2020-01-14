@@ -45,7 +45,7 @@ if( ! in_array( $post->ID, $user_certificates ) ) {
   $date = current_time( $date_format );
   $content = isset( $meta['humble_lms_cert_content'][0] ) && ! empty( $meta['humble_lms_cert_content'][0] ) ? $meta['humble_lms_cert_content'][0] : '';
 
-  $content = str_replace( 'STUDENT_NAME', $user->nickname, $content );
+  $content = str_replace( 'STUDENT_NAME', $user->display_name, $content );
   $content = str_replace( 'STUDENT_FIRST_NAME', $first_name, $content );
   $content = str_replace( 'STUDENT_LAST_NAME', $last_name, $content );
   $content = str_replace( 'CURRENT_DATE', $date, $content );

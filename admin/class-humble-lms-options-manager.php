@@ -182,8 +182,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'count_total' => false,
         'offset' => $paged ? ($paged - 1) * $users_per_page : 0,
         'number' => $users_per_page,
-        'meta_key' => 'nickname',
-        'orderby' => 'meta_value',
+        'orderby' => 'login',
         'order' => 'ASC'
       );
 
@@ -229,7 +228,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             // TODO: link to single user reporting view
             echo '<tr>
               <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
-              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '&users-per-page=' . $users_per_page . '"><strong>' . $user->nickname . '</strong></a></td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '&users-per-page=' . $users_per_page . '"><strong>' . $user->user_login . '</strong></a></td>
               <td>' . implode(',', $user_meta->roles ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_tracks_percent, $completed_tracks ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_courses_percent, $completed_courses ) . '</td>
@@ -281,7 +280,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     
       $user = get_user_by( 'id', (int)$user_id );
       echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
-        <th>' . $user->nickname . ' (ID <a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a>)</th></tr></thead>
+        <th>' . $user->user_login . ' (ID <a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a>)</th></tr></thead>
       <tr><td>' . __('Registered', 'humble-lms') . ': <strong>' . $this->user->registered_at( $user_id, true ) . '</strong></td>
       </tr></table>';
 

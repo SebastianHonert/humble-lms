@@ -351,7 +351,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       foreach( $instructors as $user_id ) {
         if( get_userdata( $user_id ) ) {
           $user = get_user_by( 'id', $user_id );
-          $html .= '<a href="mailto:' . $user->user_email . '">' . $user->nickname . '</a>';
+          $html .= '<a href="mailto:' . $user->user_email . '">' . $user->display_name . '</a>';
         }
       }
 

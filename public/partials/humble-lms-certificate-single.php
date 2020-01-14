@@ -36,10 +36,10 @@ $content = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $content );
 
 echo '<div id="certificate">';
 
-  echo '<h1>' . $heading . '</h1>';
-  echo '<h2>' . $subheading . '</h2>';
+  echo $heading ? '<h1>' . $heading . '</h1>' : '';
+  echo $subheading ? '<h2>' . $subheading . '</h2>' : '';
 
-  echo '<div class="content">' . $content . '</div>';
+  echo $content ? '<div class="content">' . $content . '</div>' : '';
 
 echo '</div>';
 

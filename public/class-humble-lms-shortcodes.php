@@ -505,17 +505,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '</div>';
       }
 
-      // $html .= '<hr>';
-      // $html .= '<h2>Testing</h2>';
-      // $html .= '<h5>' . __('Tracks', 'humble-lms') . '</h5>';
-      // $html .= implode( ', ', $tracks_completed[0] );
-      // $html .= '<h5>' . __('Courses', 'humble-lms') . '</h5>';
-      // $html .= implode( ', ', $courses_completed[0] );
-      // $html .= '<h5>' . __('Lessons', 'humble-lms') . '</h5>';
-      // $html .= implode( ', ', $lessons_completed[0] );
-      // $html .= '<h5>' . __('Awards', 'humble-lms') . '</h5>';
-      // $html .= implode( ', ', $awards[0] );
-
       return $html;
     }
 
@@ -567,7 +556,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-certificates-list">';
         foreach( $certificates[0] as $certificate ) {
           $html .= '<div class="humble-lms-certificates-list-item">';
-          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . plugins_url( 'humble-lms/public/assets/img/certificate.png' ) . '" alt="" title="" /></a>';
+          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . plugins_url( 'humble-lms/public/assets/img/certificate.png' ) . '" alt="' . get_the_title( $certificate ) . '" title="' . get_the_title( $certificate ) . '" /></a>';
           $html .= '</div>';
         }
         $html .= '</div>';

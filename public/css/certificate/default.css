@@ -110,6 +110,19 @@ strong, b {
   font-weight: 700;
 }
 
+.back {
+  text-align: center;
+  margin-top: 2em;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 @media print {
 
   @page {

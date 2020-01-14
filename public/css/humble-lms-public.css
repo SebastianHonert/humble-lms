@@ -478,7 +478,7 @@ input[type='submit'].humble-lms-btn--error:active {
   margin: 0 0 .5em;
   width: 3em;
   height: 3em;
-  border: 2px dashed #d9d9d9;
+  border: 2px dashed #bfbfbf;
   border-radius: 50%;
   font-size: 1.5em;
   color: #204086;
@@ -514,7 +514,7 @@ input[type='submit'].humble-lms-btn--error:active {
 
 .humble-lms-track-progress-course-separator {
   font-size: 1.5em;
-  color: #aaa;
+  color: #bfbfbf;
   padding: 0 .375em;
   font-weight: 700; }
 

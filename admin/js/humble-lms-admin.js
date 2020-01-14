@@ -73,7 +73,9 @@ jQuery(document).ready(function($) {
       let selected_option = $('#humble_lms_activity_trigger option[value="' + selected_value + '"]')
       let selected_data = selected_option.data('select')
       $('.humble-lms-activity-trigger-select').hide(0)
-      $('#' + selected_data.toString()).show(0)
+      if (typeof selected_data !== 'undefined') {
+        $('#' + selected_data.toString()).show(0)
+      }
     }
   }
 
@@ -85,7 +87,9 @@ jQuery(document).ready(function($) {
       let selected_option = $('#humble_lms_activity_action option[value="' + selected_value + '"]')
       let selected_data = selected_option.data('select')
       $('.humble-lms-activity-action-select').hide(0)
-      $('#' + selected_data.toString()).show(0)
+      if (typeof selected_data !== 'undefined') {
+        $('#' + selected_data.toString()).show(0)
+      }
     }
   }
 

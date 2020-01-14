@@ -13,6 +13,62 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
   class Humble_LMS_Public_User {
 
     /**
+     * Get tracks (published / unpublished)
+     *
+     * @param   bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public function get_tracks( $published = false ) {
+      $args = array(
+        'post_type' => 'humble_lms_track',
+        'posts_per_page' => -1,
+        'post_status' => $published ? 'published' : 'any',
+      );
+  
+      $tracks = get_posts( $args );
+
+      return $tracks;
+    }
+
+    /**
+     * Get courses (published / unpublished)
+     *
+     * @param   bool
+     * @return  array
+     * @since   0.0.1
+     */
+    public function get_courses( $published = false ) {
+      $args = array(
+        'post_type' => 'humble_lms_course',
+        'posts_per_page' => -1,
+        'post_status' => $published ? 'published' : 'any',
+      );
+  
+      $courses = get_posts( $args );
+
+      return $courses;
+    }
+
+    /**
+     * Get course IDs (published / unpublished)
+     *
+     * @param   bool
+     * @return  array
+     * @since   0.0.1
+     */
+    public function get_course_ids( $published = false ) {
+      $courses = $this->get_courses( $published );
+      $course_ids = array();
+
+      foreach( $courses as $course ) {
+        array_push( $course_ids, $course->ID );
+      }
+
+      return $course_ids;
+    }
+
+    /**
      * Checks if a user has completed a single lesson.
      *
      * @since    0.0.1
@@ -142,6 +198,23 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Check if user completed all courses.
+     *
+     * @return  bool
+     * @since   0.0.1
+     */
+    public function completed_all_courses( $user_id = null ) {
+      if( ! $user_id )
+        return false;
+
+      $course_ids = $this->get_course_ids( true );
+      $completed_courses = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
+      $completed_courses = isset( $completed_courses[0] ) ? $completed_courses[0] : [];
+
+      return empty( array_diff( $course_ids, $completed_courses ) );
+    }
+
+    /**
      * Returns an array of completed lessons.
      *
      * @return  array
@@ -205,13 +278,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
       if( ! is_array( $courses_completed ) ) $courses_completed = array();
 
-      $args = array(
-        'post_type' => 'humble_lms_course',
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-      );
-
-      $courses = get_posts( $args );
+      $courses = $this->get_courses( true );
 
       foreach( $courses as $course ) {
         if( $this->completed_course( $course->ID ) ) {
@@ -231,13 +298,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         $tracks_completed = get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
         if( ! is_array( $tracks_completed ) ) $tracks_completed = array();
 
-        $args = array(
-          'post_type' => 'humble_lms_track',
-          'posts_per_page' => -1,
-          'post_status' => 'publish',
-        );
-
-        $tracks = get_posts( $args );
+        $tracks = $this->get_tracks( true );
 
         foreach( $tracks as $track ) {
           if( $this->completed_track( $track->ID ) ) {
@@ -282,12 +343,24 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return [];
 
       $user = wp_get_current_user();
+      $user_completed_all_courses = false;
 
       foreach( $completed as $key => $ids ) {
         foreach( $ids as $id ) {
-          if( $key === 0 ) { $humble_lms_activity_trigger = 'user_completes_lesson'; $content_type = 'lesson'; }
-          if( $key === 1 ) { $humble_lms_activity_trigger = 'user_completes_course'; $content_type = 'course'; }
-          if( $key === 2 ) { $humble_lms_activity_trigger = 'user_completes_track'; $content_type = 'track'; }
+          switch( $key ) {
+            case 0:
+              $humble_lms_activity_trigger = 'user_completed_lesson';
+              $content_type = 'lesson';
+              break;
+            case 1:
+              $humble_lms_activity_trigger = 'user_completed_course';
+              $content_type = 'course';
+              break;
+            case 2:
+              $humble_lms_activity_trigger = 'user_completed_track';
+              $content_type = 'track';
+              break;
+          }
 
           $args = array(
             'post_type' => 'humble_lms_activity',
@@ -307,6 +380,29 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
           );
     
           $activities = get_posts( $args );
+
+          // User completes a course – check if all courses completed
+          if( $humble_lms_activity_trigger === 'user_completed_course' && ! $user_completed_all_courses ) {
+            if( $this->completed_all_courses( $user->ID ) ) {
+              $user_completed_all_courses = true;
+              $args = array(
+                'post_type' => 'humble_lms_activity',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+                'meta_query' => array(
+                  array(
+                    'key' => 'humble_lms_activity_trigger',
+                    'value' => 'user_completed_all_courses',
+                  ),
+                )
+              );
+
+              $activities_completed_all_courses = get_posts( $args );
+              $activities = array_merge( $activities, $activities_completed_all_courses );
+            }
+          }
+
+          // array_merge()
 
           foreach( $activities as $activity ) {
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);

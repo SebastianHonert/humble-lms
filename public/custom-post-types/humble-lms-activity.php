@@ -111,12 +111,14 @@ function humble_lms_activity_trigger_mb()
 
   echo '<select class="widefat" name="humble_lms_activity_trigger" id="humble_lms_activity_trigger">';
     echo '<option disabled selected>' . __('Please select an activity trigger', 'humble-lms') . '&hellip;</option>';
-    $selected = $type === 'user_completes_track' ? 'selected' : '';
-    echo '<option value="user_completes_track" data-select="humble_lms_activity_trigger_track" ' . $selected . '>' . __('Student completes a track', 'humble-lms') . '</option>';
-    $selected = $type === 'user_completes_course' ? 'selected' : '';
-    echo '<option value="user_completes_course" data-select="humble_lms_activity_trigger_course" ' . $selected . '>' . __('Student completes a course', 'humble-lms') . '</option>';
-    $selected = $type === 'user_completes_lesson' ? 'selected' : '';
-    echo '<option value="user_completes_lesson" data-select="humble_lms_activity_trigger_lesson" ' . $selected . '>' . __('Student completes a lesson', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_track' ? 'selected' : '';
+    echo '<option value="user_completed_track" data-select="humble_lms_activity_trigger_track" ' . $selected . '>' . __('Student completed a track', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_course' ? 'selected' : '';
+    echo '<option value="user_completed_course" data-select="humble_lms_activity_trigger_course" ' . $selected . '>' . __('Student completed a course', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_lesson' ? 'selected' : '';
+    echo '<option value="user_completed_lesson" data-select="humble_lms_activity_trigger_lesson" ' . $selected . '>' . __('Student completed a lesson', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_all_courses' ? 'selected' : '';
+    echo '<option value="user_completed_all_courses" ' . $selected . '>' . __('Student completed all courses', 'humble-lms') . '</option>';
   echo '</select>';
 
   echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_track" id="humble_lms_activity_trigger_track">';

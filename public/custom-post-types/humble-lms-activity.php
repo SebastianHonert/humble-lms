@@ -117,6 +117,8 @@ function humble_lms_activity_trigger_mb()
     echo '<option value="user_completed_course" data-select="humble_lms_activity_trigger_course" ' . $selected . '>' . __('Student completed a course', 'humble-lms') . '</option>';
     $selected = $type === 'user_completed_lesson' ? 'selected' : '';
     echo '<option value="user_completed_lesson" data-select="humble_lms_activity_trigger_lesson" ' . $selected . '>' . __('Student completed a lesson', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_all_tracks' ? 'selected' : '';
+    echo '<option value="user_completed_all_tracks" ' . $selected . '>' . __('Student completed all tracks', 'humble-lms') . '</option>';
     $selected = $type === 'user_completed_all_courses' ? 'selected' : '';
     echo '<option value="user_completed_all_courses" ' . $selected . '>' . __('Student completed all courses', 'humble-lms') . '</option>';
   echo '</select>';

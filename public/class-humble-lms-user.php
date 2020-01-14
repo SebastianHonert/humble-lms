@@ -51,6 +51,24 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Get track IDs (published / unpublished)
+     *
+     * @param   bool
+     * @return  array
+     * @since   0.0.1
+     */
+    public function get_track_ids( $published = false ) {
+      $tracks = $this->get_tracks( $published );
+      $track_ids = array();
+
+      foreach( $tracks as $track ) {
+        array_push( $track_ids, $track->ID );
+      }
+
+      return $track_ids;
+    }
+
+    /**
      * Get course IDs (published / unpublished)
      *
      * @param   bool
@@ -195,6 +213,23 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       
       return $completed_courses;
+    }
+
+    /**
+     * Check if user completed all tracks.
+     *
+     * @return  bool
+     * @since   0.0.1
+     */
+    public function completed_all_tracks( $user_id = null ) {
+      if( ! $user_id )
+        return false;
+
+      $track_ids = $this->get_track_ids( true );
+      $completed_tracks = get_user_meta( $user_id, 'humble_lms_tracks_completed', false );
+      $completed_tracks = isset( $completed_tracks[0] ) ? $completed_tracks[0] : [];
+
+      return empty( array_diff( $track_ids, $completed_tracks ) );
     }
 
     /**
@@ -343,6 +378,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         return [];
 
       $user = wp_get_current_user();
+      $user_completed_all_tracks = false;
       $user_completed_all_courses = false;
 
       foreach( $completed as $key => $ids ) {
@@ -381,6 +417,27 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     
           $activities = get_posts( $args );
 
+          // User completes a track – check if all tracks completed
+          if( $humble_lms_activity_trigger === 'user_completed_track' && ! $user_completed_all_tracks ) {
+            if( $this->completed_all_tracks( $user->ID ) ) {
+              $user_completed_all_tracks = true;
+              $args = array(
+                'post_type' => 'humble_lms_activity',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+                'meta_query' => array(
+                  array(
+                    'key' => 'humble_lms_activity_trigger',
+                    'value' => 'user_completed_all_tracks',
+                  ),
+                )
+              );
+
+              $activities_completed_all_tracks = get_posts( $args );
+              $activities = array_merge( $activities, $activities_completed_all_tracks );
+            }
+          }
+
           // User completes a course – check if all courses completed
           if( $humble_lms_activity_trigger === 'user_completed_course' && ! $user_completed_all_courses ) {
             if( $this->completed_all_courses( $user->ID ) ) {
@@ -401,8 +458,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
               $activities = array_merge( $activities, $activities_completed_all_courses );
             }
           }
-
-          // array_merge()
 
           foreach( $activities as $activity ) {
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);

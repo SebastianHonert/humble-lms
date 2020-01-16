@@ -1,7 +1,7 @@
 <?php
 
 $labels = array(
-  'name'                       => _x( 'Levels of difficulty', 'Taxonomy General Name', 'humble_lms' ),
+  'name'                       => _x( 'Level of difficulty', 'Taxonomy General Name', 'humble_lms' ),
   'singular_name'              => _x( 'Level of difficulty', 'Taxonomy Singular Name', 'humble_lms' ),
   'menu_name'                  => __( 'Level of difficulty', 'humble_lms' ),
   'all_items'                  => __( 'All Items', 'humble_lms' ),
@@ -24,7 +24,7 @@ $labels = array(
 );
 $rewrite = array(
   'slug'                       => 'level',
-  'with_front'                 => true,
+  'with_front'                 => false,
   'hierarchical'               => false,
 );
 $args = array(
@@ -39,4 +39,12 @@ $args = array(
   'rewrite'                    => $rewrite,
 );
 
-register_taxonomy( 'humble_lms_course_level', array( 'humble_lms_track', 'humble_lms_course', 'humble_lms_lesson' ), $args );
+register_taxonomy(
+  'humble_lms_course_level',
+  array(
+    'humble_lms_track',
+    'humble_lms_course',
+    'humble_lms_lesson',
+    'humble_lms_quiz'
+  ), $args
+);

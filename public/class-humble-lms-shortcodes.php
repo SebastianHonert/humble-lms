@@ -555,8 +555,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       } else {
         $html .= '<div class="humble-lms-certificates-list">';
         foreach( $certificates[0] as $certificate ) {
+          $image = has_post_thumbnail( $certificate ) ? get_the_post_thumbnail_url( $certificate ) : plugins_url( 'humble-lms/public/assets/img/certificate.png' );
           $html .= '<div class="humble-lms-certificates-list-item">';
-          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . plugins_url( 'humble-lms/public/assets/img/certificate.png' ) . '" alt="' . get_the_title( $certificate ) . '" title="' . get_the_title( $certificate ) . '" /></a>';
+          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . $image . '" alt="' . get_the_title( $certificate ) . '" title="' . get_the_title( $certificate ) . '" /></a>';
           $html .= '</div>';
         }
         $html .= '</div>';

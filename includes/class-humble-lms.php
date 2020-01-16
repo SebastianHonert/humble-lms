@@ -155,6 +155,11 @@ class Humble_LMS {
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-access-handler.php';
 
+    /**
+     * The class responsible for handling quiz activities.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-quiz.php';
+
     $this->loader = new Humble_LMS_Loader();
 
   }
@@ -288,6 +293,11 @@ class Humble_LMS {
      * User
      */
     $plugin_user = new Humble_LMS_Public_User( $plugin_public );
+
+    /**
+     * Quiz
+     */
+    $plugin_quiz = new Humble_LMS_Quiz( $plugin_public );
 
   }
 

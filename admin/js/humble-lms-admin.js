@@ -105,4 +105,30 @@ jQuery(document).ready(function($) {
     activate_activity_action_select()
   })
 
+  // Repeater fields
+  $('.humble-lms-repeater').on('click', function(e) {
+    e.preventDefault()
+
+    var element = $($(this).data('element'))
+    var target = $($(this).data('target'))
+
+    if ((element.length === 0) || (target.length === 0)) {
+      console.log('No element and/or target selected.')
+      return
+    }
+    
+    element.clone(true).appendTo(target)
+  })
+
+  // Remove answer
+  $('.humble-lms-remove-answer').on('click', function(e) {
+    e.preventDefault()
+
+    let length = $('.humble-lms-answer').length
+    if (length < 2) {
+      return
+    }
+
+    $(this).closest('div').remove()
+  })
 })

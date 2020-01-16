@@ -79,3 +79,22 @@
 .humble-lms-options-incomplete {
   color: rgb(189, 16, 16);
 }
+
+/* Quizzes */
+.humble-lms-question-type {
+  margin-top: .25em;
+}
+.humble-lms-answer {
+  margin-top: 1em;
+  padding: 1em;
+  background: #f9f9f9;
+  border: 1px solid #ccd0d4;
+}
+
+.humble-lms-answer:not(:first-of-type) {
+  margin-top: 1em;
+}
+
+.humble-lms-answer-text {
+  margin-bottom: .5em;
+}

@@ -73,5 +73,9 @@ add_action( 'add_meta_boxes', 'humble_lms_quiz_add_meta_boxes' );
 
 // Meta box questions
 function humble_lms_quiz_questions_mb() {
-  echo 'coming soon.';
+  global $post;
+
+  $questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', false );
+
+  echo 'Coming soon...';
 }

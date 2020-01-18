@@ -349,13 +349,13 @@ class Humble_LMS_Public {
     $last_name = ( ! empty( $_POST['last_name'] ) ) ? trim( $_POST['last_name'] ) : ''; ?>
 
     <p>
-      <label for="first_name"><?php _e( 'First Name', 'humble-lms' ) ?><br />
-      <input type="text" name="first_name" id="first_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $first_name ) ) ); ?>" maxlength="20" minlength="2" required="required" /></label>
+      <label for="first_name"><?php _e( 'First Name', 'humble-lms' ) ?></label>
+      <input type="text" name="first_name" id="first_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $first_name ) ) ); ?>" maxlength="20" minlength="2" required="required" />
     </p>
 
     <p>
-      <label for="last_name"><?php _e( 'Last Name', 'humble-lms' ) ?><br />
-      <input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $last_name ) ) ); ?>" maxlength="20" minlength="2" required="required" /></label>
+      <label for="last_name"><?php _e( 'Last Name', 'humble-lms' ) ?></label>
+      <input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $last_name ) ) ); ?>" maxlength="20" minlength="2" required="required" />
     </p>
     
     <?php

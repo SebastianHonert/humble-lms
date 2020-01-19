@@ -134,6 +134,11 @@ class Humble_LMS {
      * side of the site.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-public.php';
+
+    /**
+     * The class provides track/course/lesson content functionalities.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-content-manager.php';
     
     /**
      * The class provides the plugin shortcodes

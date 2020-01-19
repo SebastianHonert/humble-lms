@@ -13,6 +13,17 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
   class Humble_LMS_Public_User {
 
     /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.0.1
+     */
+    public function __construct() {
+
+      $this->content_manager = new Humble_LMS_Content_Manager;
+
+    }
+
+    /**
      * Get tracks (published / unpublished)
      *
      * @param   bool
@@ -58,7 +69,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since   0.0.1
      */
     public function get_track_ids( $published = false ) {
-      $tracks = $this->get_tracks( $published );
+      $tracks = $this->content_manager->get_tracks( $published );
       $track_ids = array();
 
       foreach( $tracks as $track ) {
@@ -76,7 +87,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since   0.0.1
      */
     public function get_course_ids( $published = false ) {
-      $courses = $this->get_courses( $published );
+      $courses = $this->content_manager->get_courses( $published );
       $course_ids = array();
 
       foreach( $courses as $course ) {
@@ -225,7 +236,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $user_id )
         return false;
 
-      $track_ids = $this->get_track_ids( true );
+      $track_ids = $this->content_manager->get_track_ids( true );
       $completed_tracks = get_user_meta( $user_id, 'humble_lms_tracks_completed', false );
       $completed_tracks = isset( $completed_tracks[0] ) ? $completed_tracks[0] : [];
 
@@ -242,7 +253,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $user_id )
         return false;
 
-      $course_ids = $this->get_course_ids( true );
+      $course_ids = $this->content_manager->get_course_ids( true );
       $completed_courses = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
       $completed_courses = isset( $completed_courses[0] ) ? $completed_courses[0] : [];
 
@@ -313,7 +324,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
       if( ! is_array( $courses_completed ) ) $courses_completed = array();
 
-      $courses = $this->get_courses( true );
+      $courses = $this->content_manager->get_courses( true );
 
       foreach( $courses as $course ) {
         if( $this->completed_course( $course->ID ) ) {
@@ -333,7 +344,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         $tracks_completed = get_user_meta( $user_id, 'humble_lms_tracks_completed', true );
         if( ! is_array( $tracks_completed ) ) $tracks_completed = array();
 
-        $tracks = $this->get_tracks( true );
+        $tracks = $this->content_manager->get_tracks( true );
 
         foreach( $tracks as $track ) {
           if( $this->completed_track( $track->ID ) ) {

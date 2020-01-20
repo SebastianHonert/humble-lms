@@ -398,4 +398,55 @@ class Humble_LMS_Public {
     }
   }
 
+  /**
+   * Redirect to custom login page.
+   * 
+   * @since   0.0.1
+   */
+  function redirect_login_page() {
+    $login_page  = home_url( '/login/' );
+    $page_viewed = basename( $_SERVER['REQUEST_URI'] );
+  
+    if( $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $login_page );
+      exit;
+    }
+  }
+
+  /**
+   * Redirect on failed login.
+   * 
+   * @since   0.0.1
+   */
+  function custom_login_failed() {
+    $login_page = home_url('/login/');
+    wp_redirect( $login_page . '?login=failed' );
+    exit;
+  }
+
+  /**
+   * Redirect when custom login form fields are empty.
+   * 
+   * @since   0.0.1
+   */
+  function verify_user_pass($user, $username, $password) {
+    $login_page = home_url('/login/');
+
+    if( $username === '' || $password === '' ) {
+      wp_redirect( $login_page . '?login=empty' );
+      exit;
+    }
+  }
+
+  /**
+   * Redirect when custom login form fields are empty.
+   * 
+   * @since   0.0.1
+   */
+  function logout_redirect() {
+    $login_page  = home_url('/login/');
+    wp_redirect($login_page . "?login=false");
+    exit;
+  }
+
 }

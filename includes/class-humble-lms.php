@@ -263,6 +263,12 @@ class Humble_LMS {
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_filter( 'template_redirect', $plugin_public, 'humble_lms_template_redirect' );
 
+    // Login form
+    $this->loader->add_action( 'init', $plugin_public, 'redirect_login_page' );
+    $this->loader->add_action( 'wp_login_failed', $plugin_public, 'custom_login_failed' );
+    $this->loader->add_filter( 'authenticate', $plugin_public, 'verify_user_pass', 1, 3 );
+    $this->loader->add_action( 'wp_logout', $plugin_public, 'logout_redirect' );
+
     // Registration form
     $options = get_option('humble_lms_options');
     $replace_registration_form = isset( $options['replace_registration_form'] ) ? (int)$options['replace_registration_form'] : 0;
@@ -290,6 +296,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_user_progress', $plugin_shortcodes, 'user_progress' );
     $this->loader->add_shortcode( 'humble_lms_user_awards', $plugin_shortcodes, 'user_awards' );
     $this->loader->add_shortcode( 'humble_lms_user_certificates', $plugin_shortcodes, 'user_certificates' );
+    $this->loader->add_shortcode( 'humble_lms_login', $plugin_shortcodes, 'humble_lms_custom_login_form' );
 
     /**
      * AJAX

@@ -576,6 +576,42 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function display_login_text() {
       return sprintf( __('Please %s first.', 'humble-lms'), '<a href="' . $this->options_manager->login_url . '">log in</a>');
     }
+
+    /**
+     * Custom login form.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_custom_login_form() {
+      if( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match. ', 'humble-lms');
+        echo '</div>';
+      }
+
+      if( isset( $_GET['login'] ) && $_GET['login'] === 'empty' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          echo  '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Please enter your username and password.', 'humble-lms');
+        echo '</div>';
+      }
+      if ( ! is_user_logged_in() ) {
+        $args = array(
+            'redirect' => admin_url(), 
+            'form_id' => 'humble-lms-custom-login-form',
+            'label_username' => __( 'Username', 'humble-lms' ),
+            'label_password' => __( 'Password', 'humble-lms' ),
+            'label_remember' => __( 'Remember me', 'humble-lms' ),
+            'label_log_in' => __( 'Login' ),
+            'remember' => true
+        );
+        wp_login_form( $args );
+      } else {
+          wp_loginout( home_url() );
+          echo ' | ';
+          wp_register('', '');
+      }
+    }
     
   }
   

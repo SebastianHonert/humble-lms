@@ -588,13 +588,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
           echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match. ', 'humble-lms');
         echo '</div>';
-      }
-
-      if( isset( $_GET['login'] ) && $_GET['login'] === 'empty' ) {
+      } else if( isset( $_GET['login'] ) && $_GET['login'] === 'empty' ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
           echo  '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Please enter your username and password.', 'humble-lms');
         echo '</div>';
+      } else if( isset( $_GET['login'] ) && $_GET['login'] === 'false' ) {
+        echo '<div class="humble-lms-message humble-lms-message--success">';
+          echo  __('You have successfully been logged out.', 'humble-lms');
+        echo '</div>';
       }
+
       if ( ! is_user_logged_in() ) {
         $args = array(
             'redirect' => admin_url(), 
@@ -607,9 +610,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         );
         wp_login_form( $args );
       } else {
-          wp_loginout( home_url() );
-          echo ' | ';
-          wp_register('', '');
+          echo '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
       }
     }
     

@@ -613,6 +613,71 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           echo '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
       }
     }
+
+    /**
+     * Custom registration form.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_custom_registration_form() {
+      if( is_user_logged_in() ) {
+        return '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
+      }
+
+      ob_start();
+      
+      if( $codes = Humble_LMS_Public::humble_lms_errors()->get_error_codes() ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          foreach( $codes as $code ) {
+            $message = Humble_LMS_Public::humble_lms_errors()->get_error_message( $code );
+            echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
+          }
+        echo '</div>';
+      }
+
+      $post_user_login = isset( $_POST['humble-lms-user-login'] ) ? sanitize_text_field( $_POST['humble-lms-user-login'] ) : '';
+      $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
+      $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
+      $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
+
+      ?>
+      
+      <form id="humble-lms-registration-form" class="humble-lms-form" action="" method="POST">
+        <fieldset>
+          <p>
+            <label for="humble-lms-user-login" class="humble-lms-required"><?php _e('Username', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-first" class="humble-lms-required"><?php _e('First Name', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $post_user_first; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" />
+          </p>
+          <p>
+            <label for="password" class="humble-lms-required"><?php _e('Password'); ?></label>
+            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" />
+          </p>
+          <p>
+            <label for="password-again" class="humble-lms-required"><?php _e('Password Again', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" />
+          </p>
+          <p>
+            <input type="hidden" name="humble-lms-register-nonce" value="<?php echo wp_create_nonce('humble-lms-register-nonce'); ?>" />
+            <input type="submit" value="<?php _e('Register Your Account', 'humble-lms'); ?>"/>
+          </p>
+        </fieldset>
+      </form><?php 
+      
+      return ob_get_clean();
+    }
     
   }
   

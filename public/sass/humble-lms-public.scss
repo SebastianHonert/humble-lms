@@ -818,6 +818,14 @@ input[type='submit'].humble-lms-btn--error:active {
   margin-top: 1.5em;
 }
 
+/* Login and registration forms */
+#humble-lms-registration-form label.humble-lms-required::after {
+  display: inline-block;
+  content: '*';
+  margin-left: .125em;
+  color: $color-error;
+}
+
 /* Responsive */
 
 @media screen and (max-width: 767px) {

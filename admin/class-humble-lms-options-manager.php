@@ -89,7 +89,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
 
-      add_settings_field( 'replace_registration_form', __('WP registration form includes first and last name', 'humble-lms'), array( $this, 'replace_registration_form' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
     }
@@ -153,24 +152,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * Option to include first and last name in WP login form.
-     *
-     * @since    0.0.1
-     */
-    public function replace_registration_form() {
-      $values = array(0 => 'No', 1 => 'Yes');
-
-      $replace_registration_form = isset( $this->options['replace_registration_form'] ) ? (int)$this->options['replace_registration_form'] : 0;
-
-      echo '<select class="widefat" id="replace_registration_form" placeholder="' . __('Include first and last name', 'humble-lms') . '" name="humble_lms_options[replace_registration_form]">';
-      array_walk( $values, function( &$key, $value ) use ( $replace_registration_form ) {
-        $selected = $value === $replace_registration_form ? 'selected' : '';
-        echo '<option value="' . $value . '" ' . $selected . '>' . $key . '</option>';
-      });
-      echo '</select>';
-    }
-
-    /**
      * Validate option data on save.
      *
      * @param   array
@@ -178,7 +159,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_options_validate( $options ) {
-      $validated['replace_registration_form'] = (int)$options['replace_registration_form'];
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
 

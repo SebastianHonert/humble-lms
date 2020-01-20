@@ -678,6 +678,13 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-widget:not(:first-of-type) {
   margin-top: 1.5em; }
 
+/* Login and registration forms */
+#humble-lms-registration-form label.humble-lms-required::after {
+  display: inline-block;
+  content: '*';
+  margin-left: .125em;
+  color: #8a2738; }
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .humble-lms-flex-column--half:not(.dont-break),

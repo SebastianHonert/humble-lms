@@ -331,84 +331,22 @@ class Humble_LMS_Public {
   }
 
   /**
-   * Add login form styles
-   * 
-   * @since    0.0.1
-   */
-  public function humble_lms_login_styles() {
-    wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/login.css', array(), $this->version, 'all' );
-  }
-
-  /**
-   * Add first/last name fields to registration form.
-   * 
-   * @since    0.0.1
-   */
-  public function humble_lms_register_form() {
-    $first_name = ( ! empty( $_POST['first_name'] ) ) ? trim( $_POST['first_name'] ) : '';
-    $last_name = ( ! empty( $_POST['last_name'] ) ) ? trim( $_POST['last_name'] ) : ''; ?>
-
-    <p>
-      <label for="first_name"><?php _e( 'First Name', 'humble-lms' ) ?></label>
-      <input type="text" name="first_name" id="first_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $first_name ) ) ); ?>" maxlength="20" minlength="2" required="required" />
-    </p>
-
-    <p>
-      <label for="last_name"><?php _e( 'Last Name', 'humble-lms' ) ?></label>
-      <input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr( wp_unslash( sanitize_text_field( $last_name ) ) ); ?>" maxlength="20" minlength="2" required="required" />
-    </p>
-    
-    <?php
-  }
-
-  /**
-   * Registration form validation first/last name
-   * 
-   * @since    0.0.1
-   */
-  public function humble_lms_registration_errors( $errors, $sanitized_user_login, $user_email ) {
-    if( empty( $_POST['first_name'] ) || ! empty( $_POST['first_name'] ) && trim( $_POST['first_name'] ) === '' ) {
-      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: Please enter your first name.', 'humble-lms' ) );
-    } elseif( strlen( $_POST['first_name'] ) > 16 ) {
-      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: First name too long (max. 20 characters).', 'humble-lms' ) );
-    } elseif( strlen( $_POST['first_name'] ) < 2 ) {
-      $errors->add( 'first_name_error', __( '<strong>ERROR</strong>: First name too short (min. 2 characters).', 'humble-lms' ) );
-    }
-
-    if( empty( $_POST['last_name'] ) || ! empty( $_POST['last_name'] ) && trim( $_POST['last_name'] ) === '' ) {
-      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Please enter your last name.', 'humble-lms' ) );
-    } elseif( strlen( $_POST['last_name'] ) > 16 ) {
-      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Last name too long (max. 20 characters).', 'humble-lms' ) );
-    } elseif( strlen( $_POST['last_name'] ) < 2 ) {
-      $errors->add( 'last_name_error', __( '<strong>ERROR</strong>: Last name too short (min. 2 characters).', 'humble-lms' ) );
-    }
-
-    return $errors;
-  }
-
-  /**
-   * Save first/last name field on registration.
-   * 
-   * @since    0.0.1
-   */
-  public function humble_lms_user_register( $user_id ) {
-    if ( ! empty( $_POST['first_name'] ) && ! empty( $_POST['last_name'] ) ) {
-        update_user_meta( $user_id, 'first_name', sanitize_text_field( trim( $_POST['first_name'] ) ) );
-        update_user_meta( $user_id, 'last_name',  sanitize_text_field( trim( $_POST['last_name'] ) ) );
-    }
-  }
-
-  /**
    * Redirect to custom login page.
    * 
    * @since   0.0.1
    */
   function redirect_login_page() {
     $login_page  = home_url( '/login/' );
+    $registration_page  = home_url( '/register/' );
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
   
     if( $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       wp_redirect( $login_page );
+      exit;
+    }
+
+    if( $page_viewed === 'wp-login.php?action=register' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $registration_page );
       exit;
     }
   }
@@ -445,8 +383,100 @@ class Humble_LMS_Public {
    */
   function logout_redirect() {
     $login_page  = home_url('/login/');
-    wp_redirect($login_page . "?login=false");
+    wp_redirect($login_page . '?login=false');
     exit;
+  }
+
+  /**
+   * Validate and register new user with custom registration form.
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_register_user() {
+    if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
+      $user_login = $_POST['humble-lms-user-login'];	
+      $user_email	= $_POST['humble-lms-user-email'];
+      $user_first = $_POST['humble-lms-user-first'];
+      $user_last = $_POST['humble-lms-user-last'];
+      $user_pass = $_POST['humble-lms-user-pass'];
+      $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
+      
+      if( username_exists( $user_login ) ) {
+        $this->humble_lms_errors()->add('username_unavailable', __('Username already taken', 'humble-lms'));
+      }
+
+      if( ! validate_username( $user_login ) ) {
+        $this->humble_lms_errors()->add('username_invalid', __('Invalid username', 'humble-lms'));
+      }
+
+      if( $user_login === '' ) {
+        $this->humble_lms_errors()->add('username_empty', __('Please enter a username', 'humble-lms'));
+      }
+
+      if( $user_first === '' ) {
+        $this->humble_lms_errors()->add('first_name_empty', __('Please enter a first name', 'humble-lms'));
+      }
+
+      if( $user_last === '' ) {
+        $this->humble_lms_errors()->add('last_name_empty', __('Please enter a last name', 'humble-lms'));
+      }
+  
+      if( ! is_email( $user_email ) || ! filter_var( $_POST['humble-lms-user-email'], FILTER_VALIDATE_EMAIL ) ) {
+        $this->humble_lms_errors()->add('email_invalid', __('Please enter a valid email address', 'humble-lms'));
+      }
+  
+      if( email_exists( $user_email ) ) {
+        $this->humble_lms_errors()->add('email_used', __('Email address already registered', 'humble-lms'));
+      }
+
+      if( $user_pass === '') {
+        $this->humble_lms_errors()->add('password_empty', __('Please enter a password', 'humble-lms'));
+      }
+
+      if( $user_pass !== $user_pass_confirm ) {
+        $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match', 'humble-lms'));
+      }
+      
+      $errors = $this->humble_lms_errors()->get_error_messages();
+      
+      // No errors => create user
+      if( empty( $errors ) ) {
+        
+        $new_user_id = wp_insert_user( array(
+            'user_login' => $user_login,
+            'user_pass'	=> $user_pass,
+            'user_email' => $user_email,
+            'first_name' => $user_first,
+            'last_name'	=> $user_last,
+            'user_registered'	=> date('Y-m-d H:i:s'),
+            'role' => 'subscriber'
+        ) );
+
+        if( $new_user_id ) {
+          // Notify admin about new user
+          wp_new_user_notification( $new_user_id );
+          
+          // Log in new user
+          wp_setcookie( $user_login, $user_pass, true );
+          wp_set_current_user( $new_user_id, $user_login );	
+          do_action( 'wp_login', $user_login );
+          
+          // Redirect user
+          wp_redirect( home_url() );
+          exit;
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate and register new user with custom registration form.
+   * 
+   * @since   0.0.1
+   */
+  static function humble_lms_errors() {
+    static $wp_error;
+    return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
   }
 
 }

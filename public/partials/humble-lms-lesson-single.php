@@ -16,9 +16,11 @@ if (have_posts()):
   <h1><?php echo get_the_title(); ?></h1>
 
   <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
-  <div class="humble-lms-flex-columns humble-lms-sidebar">
+  <div class="humble-lms-flex-columns">
     <div class="humble-lms-flex-column--two-third">
   <?php endif; ?>
+
+  <div class="humble-lms-lesson-content">
 
       <?php
         the_content();
@@ -26,14 +28,14 @@ if (have_posts()):
         echo do_shortcode('[humble_lms_mark_complete_button]');
       ?>
 
-    </div>
+  </div>
 
     <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
-    <div class="humble-lms-flex-column--third">
-      <?php dynamic_sidebar('humble-lms-sidebar'); ?>
-    </div>
-  </div>
-  <?php endif; ?>
+      </div>
+      <div class="humble-lms-flex-column--third humble-lms-sidebar">
+        <?php dynamic_sidebar('humble-lms-sidebar'); ?>
+      </div>
+    <?php endif; ?>
 
   <?php
 

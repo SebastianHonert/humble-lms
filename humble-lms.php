@@ -33,24 +33,24 @@ if ( ! defined( 'WPINC' ) ) {
 
 // PHP 7.3 polyfills
 if( PHP_VERSION_ID < 70300 ) {
-  if( ! function_exists('is_countable') ) {
+  if( ! function_exists( 'is_countable' ) ) {
     function is_countable( $var ) {
-      return is_array($var) || $var instanceof Countable || $var instanceof ResourceBundle || $var instanceof SimpleXmlElement;
+      return is_array( $var ) || $var instanceof Countable || $var instanceof ResourceBundle || $var instanceof SimpleXmlElement;
     }
   }
 
-  if( ! function_exists('array_key_first') ) {
+  if( ! function_exists( 'array_key_first' ) ) {
     function array_key_first( array $array ) {
-      foreach ($array as $key => $value) {
+      foreach( $array as $key => $value ) {
         return $key;
       }
     }
   }
 
-  if( ! function_exists('array_key_last') ) {
+  if( ! function_exists( 'array_key_last' ) ) {
     function array_key_last( array $array ) {
-      end($array);
-      return key($array);
+      end( $array );
+      return key( $array );
     }
   }
 }

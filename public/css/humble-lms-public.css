@@ -114,16 +114,23 @@ li.humble-lms-syllabus-lesson:hover,
 li.humble-lms-syllabus-lesson--current {
   background: #1b3671; }
 
-li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
-  display: inline-block;
-  margin-right: .25em;
-  font-family: 'themify';
-  content: '\e63d';
-  font-size: .875em;
-  font-weight: 400; }
-
 li.humble-lms-syllabus-lesson--completed {
   background: #207a86; }
+  li.humble-lms-syllabus-lesson--completed .humble-lms-syllabus-title::before {
+    display: inline-block;
+    margin-right: 6px;
+    font-family: 'themify';
+    content: '\e64c';
+    font-size: .75em;
+    font-weight: 700; }
+
+li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
+  display: inline-block;
+  margin-right: 6px;
+  font-family: 'themify';
+  content: '\e63d';
+  font-size: .75em;
+  font-weight: 400; }
 
 li.humble-lms-syllabus-lesson--completed:hover,
 li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed,

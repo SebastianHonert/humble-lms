@@ -337,7 +337,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // View course/lesson
       if( $context === 'course' ) {
-        $html .= '<span class="humble-lms-btn-start-course humble-lms-open-lesson humble-lms-btn" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+        $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn-start-course humble-lms-open-lesson" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
       }
 
       return $html;

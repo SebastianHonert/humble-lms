@@ -288,8 +288,8 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_user_progress', $plugin_shortcodes, 'user_progress' );
     $this->loader->add_shortcode( 'humble_lms_user_awards', $plugin_shortcodes, 'user_awards' );
     $this->loader->add_shortcode( 'humble_lms_user_certificates', $plugin_shortcodes, 'user_certificates' );
-    $this->loader->add_shortcode( 'humble_lms_login', $plugin_shortcodes, 'humble_lms_custom_login_form' );
-    $this->loader->add_shortcode( 'humble_lms_registration', $plugin_shortcodes, 'humble_lms_custom_registration_form' );
+    $this->loader->add_shortcode( 'humble_lms_login_form', $plugin_shortcodes, 'humble_lms_custom_login_form' );
+    $this->loader->add_shortcode( 'humble_lms_registration_form', $plugin_shortcodes, 'humble_lms_custom_registration_form' );
 
     /**
      * AJAX

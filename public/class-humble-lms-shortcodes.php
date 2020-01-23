@@ -81,10 +81,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function track_tile( $atts = null ) {
       extract( shortcode_atts( array (
         'track_id' => '',
-        'tile_width' => 'half'
+        'tile_width' => 'half',
+        'class' => '',
+        'style' => '',
       ), $atts ) );
 
+      if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' )
+        return;
+
       $track = get_post( $track_id );
+
       $completed = $this->user->completed_track( $track_id ) ? 'humble-lms-track-completed' : '';
       $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_course_level', '', ', ') );
@@ -93,7 +99,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->track_progress( $track_id, get_current_user_id() );
 
-      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . '">';
+      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
           $html .= '<div class="humble-lms-course-tile-layer"></div>';
           $html .= '<div class="humble-lms-16-9">';
@@ -186,10 +192,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function course_tile( $atts = null ) {
       extract( shortcode_atts( array (
         'course_id' => '',
-        'tile_width' => 'half'
+        'tile_width' => 'half',
+        'class' => '',
+        'style' => '',
       ), $atts ) );
 
+      if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
+        return;
+
       $course = get_post( $course_id );
+
       $completed = $this->user->completed_course( $course_id ) ? 'humble-lms-course-completed' : '';
       $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_course_level', '', ', ') );
@@ -198,7 +210,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->course_progress( $course_id, get_current_user_id() );
 
-      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed .'">';
+      $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
           $html .= '<div class="humble-lms-course-tile-layer"></div>';
           $html .= '<div class="humble-lms-16-9">';

@@ -407,9 +407,7 @@ class Humble_LMS_Public {
 
       if( ! validate_username( $user_login ) ) {
         $this->humble_lms_errors()->add('username_invalid', __('Invalid username', 'humble-lms'));
-      }
-
-      if( $user_login === '' ) {
+      } else if( $user_login === '' ) {
         $this->humble_lms_errors()->add('username_empty', __('Please enter a username', 'humble-lms'));
       }
 

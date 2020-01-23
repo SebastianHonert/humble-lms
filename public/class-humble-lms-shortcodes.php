@@ -29,16 +29,18 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since    0.0.1
      */
     public function track_archive( $atts = null ) {
+      $html = '';
       $options = $this->options_manager->options;
       $tile_width = $options['tile_width_track'] ? $options['tile_width_track'] : 'half';
 
       extract( shortcode_atts( array (
+        'ids' => '',
         'tile_width' => $tile_width,
         'style' => '',
         'class' => '',
       ), $atts ) );
 
-      $tracks = new WP_Query( array(
+      $args = array(
         'post_type' => 'humble_lms_track',
         'post_status' => 'publish',
         'posts_per_page' => get_option( 'posts_per_page' ),
@@ -46,20 +48,25 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
-      ) );
+      );
 
-      $html = '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
+      if( ! empty( $ids ) ) {
+        $args['post__in'] = explode(',', str_replace(' ','', $ids));
+      }
+
+      $tracks = new WP_Query( $args );
 
       if ( $tracks->have_posts() ) {
+        $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
         while ( $tracks->have_posts() ) {
           $tracks->the_post();
           $html .= do_shortcode('[humble_lms_track_tile tile_width="' . $tile_width . '" track_id="' . get_the_ID() . '"]');
         }
+        $html .= '</div>';
+        $html .= $this->humble_lms_paginate_links( $tracks );
+      } else {
+        $html .= '<p>' . __('No tracks found.', 'humble-lms') . '</p>';
       }
-
-      $html .= '</div>';
-
-      $html .= $this->humble_lms_paginate_links( $tracks );
 
       wp_reset_postdata();
 
@@ -114,10 +121,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function course_archive( $atts = null ) {
       global $post;
 
+      $html = '';
       $options = $this->options_manager->options;
       $tile_width = $options['tile_width_course'] ? $options['tile_width_course'] : 'half';
 
       extract( shortcode_atts( array (
+        'ids' => '',
         'track_id' => '',
         'tile_width' => $tile_width,
         'style' => '',
@@ -135,6 +144,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
       );
 
+      if( ! empty( $ids ) ) {
+        $args['post__in'] = explode(',', str_replace(' ','', $ids));
+      }
+
       if( $is_track) {
         $track_courses = get_post_meta($track_id, 'humble_lms_track_courses', true);
         $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
@@ -148,18 +161,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $courses = new WP_Query( $args );
 
-      $html = '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
-
       if ( $courses->have_posts() ) {
+        $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
         while ( $courses->have_posts() ) {
           $courses->the_post();
             $html .= do_shortcode('[humble_lms_course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
         }
+        $html .= '</div>';
+        $html .= $this->humble_lms_paginate_links( $courses );
+      } else {
+        $html .= '<p>' . __('No courses found.', 'humble-lms') . '</p>';
       }
-
-      $html .= '</div>';
-
-      $html .= $this->humble_lms_paginate_links( $courses );
 
       wp_reset_postdata();
 
@@ -480,7 +492,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       foreach( $tracks as $key => $track ) {
         $counter = 0;
         $class_completed = $this->user->completed_track( $track->ID ) ? 'humble-lms-track-progress-track--completed' : '';
-        $html .= '<h2 class="' . $class_completed . '"><a href="' . esc_url( get_permalink( $track->ID ) ) . '">' . get_the_title( $track->ID ) . '</a></h2>';
+        $html .= '<p class="humble-lms-progress-track-title ' . $class_completed . '"><a href="' . esc_url( get_permalink( $track->ID ) ) . '">' . get_the_title( $track->ID ) . '</a></p>';
 
         $track_courses = get_post_meta( $track->ID, 'humble_lms_track_courses', true );
         $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
@@ -584,6 +596,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_custom_login_form() {
+      ob_start();
+  
       if( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
           echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match. ', 'humble-lms');
@@ -612,6 +626,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       } else {
           echo '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
       }
+
+      return ob_get_clean();
     }
 
     /**

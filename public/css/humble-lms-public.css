@@ -180,6 +180,11 @@ li.humble-lms-syllabus-lesson span {
   margin-top: 2em;
   font-size: .875em; }
 
+.humble-lms-next-prev-lesson a,
+.humble-lms-next-prev-lesson a:hover,
+.humble-lms-next-prev-lesson a:focus {
+  text-decoration: none; }
+
 .humble-lms-prev-lesson-link {
   margin-right: 1em; }
 
@@ -197,6 +202,9 @@ li.humble-lms-syllabus-lesson span {
   margin-right: .25em; }
 
 /* Sidebar */
+.humble-lms-sidebar {
+  margin-bottom: 2em; }
+
 .humble-lms-widget h2 {
   font-size: 1.125em;
   padding-top: 0;
@@ -466,6 +474,10 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-track-progress {
   padding-bottom: .5em; }
 
+.humble-lms-progress-track-title {
+  font-weight: 600;
+  font-size: 1.125em; }
+
 .humble-lms-track-progress-track--completed {
   display: flex;
   justify-content: flex-start;
@@ -550,7 +562,10 @@ input[type='submit'].humble-lms-btn--error:active {
 
 .humble-lms-instructors a {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  text-decoration: none; }
+  .humble-lms-instructors a:hover, .humble-lms-instructors a:focus {
+    text-decoration: none; }
 
 .humble-lms-instructors a::before {
   font-family: 'themify';

@@ -20,6 +20,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $this->user = new Humble_LMS_Public_User;
       $this->access_handler = new Humble_LMS_Public_Access_Handler;
       $this->options_manager = new Humble_LMS_Admin_Options_Manager;
+      $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
 
@@ -255,6 +256,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function syllabus( $atts = null ) {
       global $post;
+      $html = '';
 
       extract( shortcode_atts( array (
         'course_id' => $post->ID,
@@ -267,8 +269,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $context = 'lesson';
 
       if( $context === 'lesson' ) {
-        $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
         $lesson_id = $post->ID;
+        $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+        
+        // Try to get course_id by checking if this lesson is
+        // attached to only one course.
+        if( ! $course_id ) {
+          $course_ids = $this->content_manager->find_courses_by('lesson', $lesson_id );
+          if( is_array( $course_ids ) && sizeOf( $course_ids ) === 1 ) {
+              $course_id = $course_ids[0];
+          }
+        }
       } else {
         $lesson_id = null;
       }
@@ -287,8 +298,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'order' => 'ASC',
         'post__in' => $lessons
       ));
-
-      $html = '';
 
       // Course Syllabus
       $html .= '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';

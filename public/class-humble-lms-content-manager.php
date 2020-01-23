@@ -90,7 +90,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  array
      * @since   0.0.1
      */
-    public function get_courses_by( $by = null, $id = null ) {
+    public function find_courses_by( $by = null, $id = null ) {
       if( ( ! $by ) || ( ! $id ) ) {
         return [];
       }

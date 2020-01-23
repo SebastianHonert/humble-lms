@@ -331,6 +331,24 @@ class Humble_LMS_Public {
   }
 
   /**
+   * Check if login page exists and contains shortcode
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_login_page_exists() {
+    return false;
+  }
+
+  /**
+   * Check if registration page exists and contains shortcode
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_registration_page_exists() {
+    return false;
+  }
+
+  /**
    * Redirect to custom login page.
    * 
    * @since   0.0.1
@@ -340,12 +358,12 @@ class Humble_LMS_Public {
     $registration_page  = home_url( '/register/' );
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
   
-    if( $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+    if( $this->humble_lms_login_page_exists() && $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       wp_redirect( $login_page );
       exit;
     }
 
-    if( $page_viewed === 'wp-login.php?action=register' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+    if( $this->humble_lms_registration_page_exists() && $page_viewed === 'wp-login.php?action=register' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       wp_redirect( $registration_page );
       exit;
     }
@@ -354,9 +372,15 @@ class Humble_LMS_Public {
   /**
    * Redirect on failed login.
    * 
+   * TODO: Get login page from options
+   * TODO: Check if login page exist and contains login shortcode
+   * 
    * @since   0.0.1
    */
   function custom_login_failed() {
+    if( ! $this->humble_lms_login_page_exists() )
+      return;
+
     $login_page = home_url('/login/');
     wp_redirect( $login_page . '?login=failed' );
     exit;
@@ -365,9 +389,15 @@ class Humble_LMS_Public {
   /**
    * Redirect when custom login form fields are empty.
    * 
+   * TODO: Get login page from options
+   * TODO: Check if login page exist and contains login shortcode
+   * 
    * @since   0.0.1
    */
   function verify_user_pass($user, $username, $password) {
+    if( ! $this->humble_lms_login_page_exists() )
+      return;
+
     $login_page = home_url('/login/');
 
     if( $username === '' || $password === '' ) {
@@ -379,9 +409,15 @@ class Humble_LMS_Public {
   /**
    * Redirect when custom login form fields are empty.
    * 
+   * TODO: Get login page from options
+   * TODO: Check if login page exist and contains login shortcode
+   * 
    * @since   0.0.1
    */
   function logout_redirect() {
+    if( ! $this->humble_lms_login_page_exists() )
+      return;
+
     $login_page  = home_url('/login/');
     wp_redirect($login_page . '?login=false');
     exit;

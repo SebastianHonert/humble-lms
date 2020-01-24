@@ -321,8 +321,8 @@ class Humble_LMS_Admin {
         ) );
 
         if( $new_user_id ) {
-          // Notify admin about new user
-          wp_new_user_notification( $new_user_id );
+          // Notify admin and user ('both')
+          wp_new_user_notification( $new_user_id, null, 'both' );
           
           // Log in new user
           wp_setcookie( $user_login, $user_pass, true );
@@ -400,14 +400,25 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Check if registration page exists and contains shortcode
+   * 
+   * @since   0.0.1
+   */
+  public static function humble_lms_reset_password_page_exists() {
+    $custom_page_reset_password = get_page_by_title('Humble LMS Reset Password', OBJECT, 'page');
+    return $custom_page_reset_password && has_shortcode( $custom_page_reset_password->post_content, 'humble_lms_reset_password_form' ) && get_post_status( $custom_page_reset_password->ID ) === 'publish';
+  }
+
+  /**
    * Redirect to custom login page.
    * 
    * @since   0.0.1
    */
-  function redirect_login_registration_lost_password() {
+  public function redirect_login_registration_lost_password() {
     $login_page  = home_url( '/login/' );
     $registration_page = home_url( '/registration/' );
     $lost_password_page = home_url( '/lost-password/' );
+    $reset_password_page = home_url( '/reset-password/' );
 
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
   
@@ -430,6 +441,11 @@ class Humble_LMS_Admin {
       wp_redirect( $lost_password_page );
       exit;
     }
+
+    elseif( Humble_LMS_Admin::humble_lms_lost_password_page_exists() && $page_viewed === 'wp-login.php?action=rp' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $reset_password_page );
+      exit;
+    }
   }
 
   /**
@@ -440,7 +456,7 @@ class Humble_LMS_Admin {
    * 
    * @since   0.0.1
    */
-  function custom_login_failed() {
+  public function custom_login_failed() {
     if( ! Humble_LMS_Admin::humble_lms_login_page_exists() )
       return;
 
@@ -457,7 +473,7 @@ class Humble_LMS_Admin {
    * 
    * @since   0.0.1
    */
-  function verify_user_pass($user, $username, $password) {
+  public function verify_user_pass($user, $username, $password) {
     if( ! Humble_LMS_Admin::humble_lms_login_page_exists() )
       return;
 
@@ -472,18 +488,72 @@ class Humble_LMS_Admin {
   /**
    * Redirect when custom login form fields are empty.
    * 
-   * TODO: Get login page from options
-   * TODO: Check if login page exist and contains login shortcode
-   * 
    * @since   0.0.1
    */
-  function logout_redirect() {
+  public function logout_redirect() {
     if( ! Humble_LMS_Admin::humble_lms_login_page_exists() )
       return;
 
     $login_page = home_url('/login/');
     wp_redirect($login_page . '?login=false');
     exit;
+  }
+
+  /**
+   * Redirect when custom login form fields are empty.
+   * 
+   * @since   0.0.1
+   */
+  public function do_password_reset() {
+    if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
+        $rp_key = $_REQUEST['rp_key'];
+        $rp_login = $_REQUEST['rp_login'];
+ 
+        $user = check_password_reset_key( $rp_key, $rp_login );
+ 
+        if ( ! $user || is_wp_error( $user ) ) {
+            if ( $user && $user->get_error_code() === 'expired_key' ) {
+                wp_redirect( home_url( 'login?login=expiredkey' ) );
+            } else {
+                wp_redirect( home_url( 'login?login=invalidkey' ) );
+            }
+            exit;
+        }
+ 
+        if ( isset( $_POST['pass1'] ) ) {
+            if ( $_POST['pass1'] != $_POST['pass2'] ) {
+                // Passwords don't match
+                $redirect_url = home_url( 'member-password-reset' );
+ 
+                $redirect_url = add_query_arg( 'key', $rp_key, $redirect_url );
+                $redirect_url = add_query_arg( 'login', $rp_login, $redirect_url );
+                $redirect_url = add_query_arg( 'error', 'password_reset_mismatch', $redirect_url );
+ 
+                wp_redirect( $redirect_url );
+                exit;
+            }
+ 
+            if ( empty( $_POST['pass1'] ) ) {
+                // Password is empty
+                $redirect_url = home_url( 'member-password-reset' );
+ 
+                $redirect_url = add_query_arg( 'key', $rp_key, $redirect_url );
+                $redirect_url = add_query_arg( 'login', $rp_login, $redirect_url );
+                $redirect_url = add_query_arg( 'error', 'password_reset_empty', $redirect_url );
+ 
+                wp_redirect( $redirect_url );
+                exit;
+            }
+ 
+            // Parameter checks OK, reset password
+            reset_password( $user, $_POST['pass1'] );
+            wp_redirect( home_url( 'login?password=changed' ) );
+        } else {
+            echo __('Invalid request.', 'humble-lms');
+        }
+ 
+        exit;
+    }
   }
 
 }

@@ -639,6 +639,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '<div class="humble-lms-message humble-lms-message--success">';
           echo  __('You have successfully been logged out.', 'humble-lms');
         echo '</div>';
+      } else if( isset( $_GET['login'] ) && $_GET['login'] === 'invalidkey' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          echo sprintf( __('Invalid key. Please try to %s again.', 'humble-lms'), '<a href="' . home_url( 'lost-password' ) . '">' . __('reset your password', 'humble-lms') . '</a>' );
+        echo '</div>';
       }
 
       if ( ! is_user_logged_in() ) {
@@ -767,7 +771,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     
         <form id="humble-lms-lost-password-form" action="<?php echo wp_lostpassword_url(); ?>" method="post">
           <p>
-            <label for="user_login"><?php _e( 'Your email address', 'personalize-login' ); ?>
+            <label for="user_login"><?php _e( 'Your email address', 'humble-lms' ); ?>
             <input type="text" name="user_login" id="user_login">
           </p>
     
@@ -776,6 +780,57 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           </p>
         </form>
       </div><?php
+    }
+
+    /**
+     * Custom reset password form.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_custom_reset_password_form() {
+      // if( is_user_logged_in() ) {
+      //   return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
+      // }
+      
+      ob_start();
+      
+      ?>
+
+      <form name="resetpassform" id="resetpassform" action="<?php echo site_url( 'wp-login.php?action=resetpass' ); ?>" method="post" autocomplete="off">
+        <input type="hidden" id="user_login" name="rp_login" value="<?php echo esc_attr( $attributes['login'] ); ?>" autocomplete="off" />
+        <input type="hidden" name="rp_key" value="<?php echo esc_attr( $attributes['key'] ); ?>" />
+         
+        <?php
+
+        if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
+          echo '<div class="humble-lms-message humble-lms-message--error">';
+            foreach( $codes as $code ) {
+              $message = Humble_LMS_Admin::humble_lms_errors()->get_error_message( $code );
+              echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
+            }
+          echo '</div>';
+        }
+
+        ?>
+ 
+        <p>
+          <label for="pass1"><?php _e( 'New password', 'humble-lms' ) ?></label>
+          <input type="password" name="pass1" id="pass1" class="input" size="20" value="" autocomplete="off" />
+        </p>
+        <p>
+          <label for="pass2"><?php _e( 'Repeat new password', 'humble-lms' ) ?></label>
+          <input type="password" name="pass2" id="pass2" class="input" size="20" value="" autocomplete="off" />
+        </p>
+         
+        <p class="description"><?php echo wp_get_password_hint(); ?></p>
+         
+        <p class="resetpass-submit">
+            <input type="submit" name="submit" id="resetpass-button" class="humble-lms-btn" value="<?php _e( 'Reset Password', 'humble-lms' ); ?>" />
+        </p>
+      </form><?php
+
+      return ob_get_clean();
     }
     
   }

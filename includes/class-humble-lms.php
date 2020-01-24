@@ -246,6 +246,8 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_register_user' );
     $this->loader->add_action( 'validate_password_reset', $plugin_admin, 'validate_lost_password_form' );
     $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'redirect_login_registration_lost_password' );
+    $this->loader->add_action( 'login_form_rp', $plugin_admin, 'do_password_reset' );
+    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'do_password_reset' );
   }
 
   /**
@@ -286,6 +288,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_login_form', $plugin_shortcodes, 'humble_lms_custom_login_form' );
     $this->loader->add_shortcode( 'humble_lms_registration_form', $plugin_shortcodes, 'humble_lms_custom_registration_form' );
     $this->loader->add_shortcode( 'humble_lms_lost_password_form', $plugin_shortcodes, 'humble_lms_custom_lost_password_form' );
+    $this->loader->add_shortcode( 'humble_lms_reset_password_form', $plugin_shortcodes, 'humble_lms_custom_reset_password_form' );
 
     // AJAX
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );

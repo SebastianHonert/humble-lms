@@ -29,3 +29,12 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
   exit;
 }
+
+// Remove custom posts and pages
+$custom_page_login = get_page_by_title('Humble LMS Login', OBJECT, 'page');
+$custom_page_registration = get_page_by_title('Humble LMS Registration', OBJECT, 'page');
+$custom_page_lost_password = get_page_by_title('Humble LMS Lost Password', OBJECT, 'page');
+
+if( $custom_page_login ) { wp_delete_post( $custom_page_login->ID ); }
+if( $custom_page_registration ) { wp_delete_post( $custom_page_registration->ID ); }
+if( $custom_page_lost_password ) { wp_delete_post( $custom_page_lost_password->ID ); } 

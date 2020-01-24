@@ -66,7 +66,8 @@ define( 'HUMBLE_LMS_VERSION', '0.0.1' );
  */
 function activate_humble_lms() {
   require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-activator.php';
-  Humble_LMS_Activator::activate();
+  $activator = new Humble_LMS_Activator;
+  $activator->activate();
 }
 
 /**
@@ -75,7 +76,8 @@ function activate_humble_lms() {
  */
 function deactivate_humble_lms() {
   require_once plugin_dir_path( __FILE__ ) . 'includes/class-humble-lms-deactivator.php';
-  Humble_LMS_Deactivator::deactivate();
+  $deactivator = new Humble_LMS_Deactivator;
+  $deactivator->deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_humble_lms' );

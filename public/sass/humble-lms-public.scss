@@ -261,7 +261,8 @@ li.humble-lms-syllabus-lesson span {
 /* Buttons */
 
 .humble-lms-btn,
-input[type='submit'].humble-lms-btn {
+input[type='submit'].humble-lms-btn,
+#humble-lms-custom-login-form input[type='submit'] {
   position: relative;
   border-radius: .4rem;
   color: $color-light;
@@ -293,13 +294,20 @@ input[type='submit'].humble-lms-btn {
 .humble-lms-btn:hover,
 .humble-lms-btn:focus,
 .humble-lms-btn:active,
-.humble-lms-btn:visited {
+.humble-lms-btn:visited,
+#humble-lms-custom-login-form input[type='submit'],
+#humble-lms-custom-login-form input[type='submit']:hover,
+#humble-lms-custom-login-form input[type='submit']:active,
+#humble-lms-custom-login-form input[type='submit']:visited {
   color: $color-light;
 }
 
 .humble-lms-btn:hover,
 .humble-lms-btn:focus,
-.humble-lms-btn:active {
+.humble-lms-btn:active,
+#humble-lms-custom-login-form input[type='submit']:hover,
+#humble-lms-custom-login-form input[type='submit']:focus,
+#humble-lms-custom-login-form input[type='submit']:active {
   background: darken($color-primary, 5%);
   box-shadow: 0 .25rem .75rem rgba(0,0,0,.35);
 }
@@ -347,7 +355,8 @@ input[type='submit'].humble-lms-btn--error:active {
 .humble-lms-btn--error:active,
 input[type='submit'].humble-lms-btn:active,
 input[type='submit'].humble-lms-btn--success:active,
-input[type='submit'].humble-lms-btn--error:active {
+input[type='submit'].humble-lms-btn--error:active,
+#humble-lms-custom-login-form input[type='submit']:active {
   border-bottom-width: 1px;
   top: 1px;
 }

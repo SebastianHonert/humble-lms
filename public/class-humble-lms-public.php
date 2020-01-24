@@ -205,6 +205,14 @@ class Humble_LMS_Public {
   public function humble_lms_add_content_to_pages( $content ) {
     global $post;
 
+    // Welcome message after successful registration
+    if( isset( $_GET['humble-lms-welcome'] ) && (int)$_GET['humble-lms-welcome'] === 1 ) {
+      echo '<div class="humble-lms-message humble-lms-message--success">
+        <span class="humble-lms-message-title">' . __('Registration successful', 'humble-lms') . '</span>
+        <span class="humble-lms-message-content">' . sprintf( __('Welcome on board! %s We just sent you a welcome email with further instructions. Please check your email account.', 'humble-lms'), '<i class="ti-face-smile"></i>' ) . '</span>
+      </div>';
+    }
+
     $allowed_post_types = [
       'humble_lms_track',
       'humble_lms_course',
@@ -328,189 +336,6 @@ class Humble_LMS_Public {
     if ( ! current_user_can('edit_posts') ) {
       show_admin_bar(false);
     }
-  }
-
-  /**
-   * Check if login page exists and contains shortcode
-   * 
-   * @since   0.0.1
-   */
-  public function humble_lms_login_page_exists() {
-    return false;
-  }
-
-  /**
-   * Check if registration page exists and contains shortcode
-   * 
-   * @since   0.0.1
-   */
-  public function humble_lms_registration_page_exists() {
-    return false;
-  }
-
-  /**
-   * Redirect to custom login page.
-   * 
-   * @since   0.0.1
-   */
-  function redirect_login_page() {
-    $login_page  = home_url( '/login/' );
-    $registration_page  = home_url( '/register/' );
-    $page_viewed = basename( $_SERVER['REQUEST_URI'] );
-  
-    if( $this->humble_lms_login_page_exists() && $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-      wp_redirect( $login_page );
-      exit;
-    }
-
-    if( $this->humble_lms_registration_page_exists() && $page_viewed === 'wp-login.php?action=register' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-      wp_redirect( $registration_page );
-      exit;
-    }
-  }
-
-  /**
-   * Redirect on failed login.
-   * 
-   * TODO: Get login page from options
-   * TODO: Check if login page exist and contains login shortcode
-   * 
-   * @since   0.0.1
-   */
-  function custom_login_failed() {
-    if( ! $this->humble_lms_login_page_exists() )
-      return;
-
-    $login_page = home_url('/login/');
-    wp_redirect( $login_page . '?login=failed' );
-    exit;
-  }
-
-  /**
-   * Redirect when custom login form fields are empty.
-   * 
-   * TODO: Get login page from options
-   * TODO: Check if login page exist and contains login shortcode
-   * 
-   * @since   0.0.1
-   */
-  function verify_user_pass($user, $username, $password) {
-    if( ! $this->humble_lms_login_page_exists() )
-      return;
-
-    $login_page = home_url('/login/');
-
-    if( $username === '' || $password === '' ) {
-      wp_redirect( $login_page . '?login=empty' );
-      exit;
-    }
-  }
-
-  /**
-   * Redirect when custom login form fields are empty.
-   * 
-   * TODO: Get login page from options
-   * TODO: Check if login page exist and contains login shortcode
-   * 
-   * @since   0.0.1
-   */
-  function logout_redirect() {
-    if( ! $this->humble_lms_login_page_exists() )
-      return;
-
-    $login_page  = home_url('/login/');
-    wp_redirect($login_page . '?login=false');
-    exit;
-  }
-
-  /**
-   * Validate and register new user with custom registration form.
-   * 
-   * @since   0.0.1
-   */
-  public function humble_lms_register_user() {
-    if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
-      $user_login = $_POST['humble-lms-user-login'];	
-      $user_email	= $_POST['humble-lms-user-email'];
-      $user_first = $_POST['humble-lms-user-first'];
-      $user_last = $_POST['humble-lms-user-last'];
-      $user_pass = $_POST['humble-lms-user-pass'];
-      $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
-      
-      if( username_exists( $user_login ) ) {
-        $this->humble_lms_errors()->add('username_unavailable', __('Username already taken', 'humble-lms'));
-      }
-
-      if( ! validate_username( $user_login ) ) {
-        $this->humble_lms_errors()->add('username_invalid', __('Invalid username', 'humble-lms'));
-      } else if( $user_login === '' ) {
-        $this->humble_lms_errors()->add('username_empty', __('Please enter a username', 'humble-lms'));
-      }
-
-      if( $user_first === '' ) {
-        $this->humble_lms_errors()->add('first_name_empty', __('Please enter a first name', 'humble-lms'));
-      }
-
-      if( $user_last === '' ) {
-        $this->humble_lms_errors()->add('last_name_empty', __('Please enter a last name', 'humble-lms'));
-      }
-  
-      if( ! is_email( $user_email ) || ! filter_var( $_POST['humble-lms-user-email'], FILTER_VALIDATE_EMAIL ) ) {
-        $this->humble_lms_errors()->add('email_invalid', __('Please enter a valid email address', 'humble-lms'));
-      }
-  
-      if( email_exists( $user_email ) ) {
-        $this->humble_lms_errors()->add('email_used', __('Email address already registered', 'humble-lms'));
-      }
-
-      if( $user_pass === '') {
-        $this->humble_lms_errors()->add('password_empty', __('Please enter a password', 'humble-lms'));
-      }
-
-      if( $user_pass !== $user_pass_confirm ) {
-        $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match', 'humble-lms'));
-      }
-      
-      $errors = $this->humble_lms_errors()->get_error_messages();
-      
-      // No errors => create user
-      if( empty( $errors ) ) {
-        
-        $new_user_id = wp_insert_user( array(
-            'user_login' => $user_login,
-            'user_pass'	=> $user_pass,
-            'user_email' => $user_email,
-            'first_name' => $user_first,
-            'last_name'	=> $user_last,
-            'user_registered'	=> date('Y-m-d H:i:s'),
-            'role' => 'subscriber'
-        ) );
-
-        if( $new_user_id ) {
-          // Notify admin about new user
-          wp_new_user_notification( $new_user_id );
-          
-          // Log in new user
-          wp_setcookie( $user_login, $user_pass, true );
-          wp_set_current_user( $new_user_id, $user_login );	
-          do_action( 'wp_login', $user_login );
-          
-          // Redirect user
-          wp_redirect( home_url() );
-          exit;
-        }
-      }
-    }
-  }
-
-  /**
-   * Validate and register new user with custom registration form.
-   * 
-   * @since   0.0.1
-   */
-  static function humble_lms_errors() {
-    static $wp_error;
-    return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
   }
 
 }

@@ -29,8 +29,8 @@ class Humble_LMS_Deactivator {
    *
    * @since    0.0.1
    */
-  public static function deactivate() {
-
+  public function deactivate() {
+    // ...
   }
 
 }

@@ -652,8 +652,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             'remember' => true
         );
         wp_login_form( $args );
+        echo '<p><a href="' . home_url('lost-password') . '">' . __('Lost your password?', 'humble-lms') . '</p>';
       } else {
-          echo '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
+          echo '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
 
       return ob_get_clean();
@@ -667,15 +668,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function humble_lms_custom_registration_form() {
       if( is_user_logged_in() ) {
-        return '<p>' . __('You are already logged in.', 'humble-lms') . '</p>';
+        return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
 
       ob_start();
       
-      if( $codes = Humble_LMS_Public::humble_lms_errors()->get_error_codes() ) {
+      if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
           foreach( $codes as $code ) {
-            $message = Humble_LMS_Public::humble_lms_errors()->get_error_message( $code );
+            $message = Humble_LMS_Admin::humble_lms_errors()->get_error_message( $code );
             echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
           }
         echo '</div>';
@@ -685,21 +686,29 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
       $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
+      $post_user_pass = isset( $_POST['humble-lms-user-pass'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass'] ) : '';
+      $post_user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
 
       ?>
       
-      <form id="humble-lms-registration-form" class="humble-lms-form" action="" method="POST">
+      <form id="humble-lms-registration-form" class="humble-lms-form" action="" method="post">
         <fieldset>
           <p>
             <label for="humble-lms-user-login" class="humble-lms-required"><?php _e('Username', 'humble-lms'); ?></label>
             <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" />
           </p>
           <p>
-            <label for="humble-lms-user-first" class="humble-lms-required"><?php _e('First Name', 'humble-lms'); ?></label>
+            <label for="humble-lms-user-first" class="humble-lms-required">
+              <?php _e('First Name', 'humble-lms'); ?><br>
+              <small><?php _e('Required for certification.', 'humble-lms'); ?></small>
+            </label>
             <input name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $post_user_first; ?>" />
           </p>
           <p>
-            <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?></label>
+            <label for="humble-lms-user-last" class="humble-lms-required">
+              <?php _e('Last Name', 'humble-lms'); ?><br>
+              <small><?php _e('Required for certification.', 'humble-lms'); ?></small>
+            </label>
             <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" />
           </p>
           <p>
@@ -707,21 +716,66 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" />
           </p>
           <p>
-            <label for="password" class="humble-lms-required"><?php _e('Password'); ?></label>
-            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" />
+            <label for="password" class="humble-lms-required">
+              <?php _e('Password'); ?><br>
+              <small><?php _e('Min. 8 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
+            </label>
+            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="<?php echo $post_user_pass; ?>" />
           </p>
           <p>
             <label for="password-again" class="humble-lms-required"><?php _e('Password Again', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" />
+            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="<?php echo $post_user_pass_confirm; ?>" />
           </p>
           <p>
             <input type="hidden" name="humble-lms-register-nonce" value="<?php echo wp_create_nonce('humble-lms-register-nonce'); ?>" />
-            <input type="submit" value="<?php _e('Register Your Account', 'humble-lms'); ?>"/>
+            <input type="submit" class="humble-lms-btn" value="<?php _e('Register Your Account', 'humble-lms'); ?>"/>
           </p>
         </fieldset>
       </form><?php 
       
       return ob_get_clean();
+    }
+
+    /**
+     * Custom lost password form.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_custom_lost_password_form() {
+      if( is_user_logged_in() ) {
+        return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
+      }
+      
+      if( isset( $_GET['checkemail'] ) && sanitize_text_field( $_GET['checkemail'] ) === 'confirm' ) {
+        echo 'CONFIRM';
+      }
+
+      if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          foreach( $codes as $code ) {
+            $message = Humble_LMS_Admin::humble_lms_errors()->get_error_message( $code );
+            echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
+          }
+        echo '</div>';
+      }
+      
+      ?>
+
+      <div id="lostpasswordform" class="humble-lms-lost-password">
+        <p><?php _e('Please enter your email address and we will send you a link you can use to pick a new password.', 'humble-lms'); ?></p>
+    
+        <form id="humble-lms-lost-password-form" action="<?php echo wp_lostpassword_url(); ?>" method="post">
+          <p>
+            <label for="user_login"><?php _e( 'Your email address', 'personalize-login' ); ?>
+            <input type="text" name="user_login" id="user_login">
+          </p>
+    
+          <p class="humble-lms-lost-password-submit">
+            <input type="submit" name="submit" class="humble-lms-btn" value="<?php _e( 'Reset Password', 'humble-lms' ); ?>" />
+          </p>
+        </form>
+      </div><?php
     }
     
   }

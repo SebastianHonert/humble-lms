@@ -215,6 +215,7 @@ class Humble_LMS {
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
+    $this->loader->add_action( 'admin_init', $plugin_admin, 'add_user_roles' );
     $this->loader->add_action( 'widgets_init', $plugin_admin, 'register_sidebars' );
     $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );
     $this->loader->add_action( 'edit_user_profile', $plugin_admin, 'add_user_profile_fields' );
@@ -222,9 +223,7 @@ class Humble_LMS {
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
 
-    /**
-     * Widgets
-     */
+    // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
     $plugin_widget_course_instructors = new Humble_LMS_Widget_Course_Instructors( $plugin_admin );
     $plugin_widget_progress_bar = new Humble_LMS_Widget_Progress_Bar( $plugin_admin );
@@ -233,13 +232,20 @@ class Humble_LMS {
     $this->loader->add_action( 'widgets_init', $plugin_widget_course_instructors, 'register_widget_course_instructors');
     $this->loader->add_action( 'widgets_init', $plugin_widget_progress_bar, 'register_widget_progress_bar');
     
-    /**
-     * Options
-     */
+    // Options
     $plugin_options_manager = new Humble_LMS_Admin_Options_Manager( $plugin_admin );
 
     $this->loader->add_action( 'admin_menu', $plugin_options_manager, 'add_options_page' );
     $this->loader->add_action( 'admin_init', $plugin_options_manager, 'humble_lms_options_admin_init' );
+
+    // Login, registration, lost password
+    $this->loader->add_action( 'init', $plugin_admin, 'redirect_login_registration_lost_password' );
+    $this->loader->add_action( 'wp_login_failed', $plugin_admin, 'custom_login_failed' );
+    $this->loader->add_filter( 'authenticate', $plugin_admin, 'verify_user_pass', 1, 3 );
+    $this->loader->add_action( 'wp_logout', $plugin_admin, 'logout_redirect' );
+    $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_register_user' );
+    $this->loader->add_action( 'validate_password_reset', $plugin_admin, 'validate_lost_password_form' );
+    $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'redirect_login_registration_lost_password' );
   }
 
   /**
@@ -263,18 +269,7 @@ class Humble_LMS {
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_filter( 'template_redirect', $plugin_public, 'humble_lms_template_redirect' );
 
-    // Login form
-    $this->loader->add_action( 'init', $plugin_public, 'redirect_login_page' );
-    $this->loader->add_action( 'wp_login_failed', $plugin_public, 'custom_login_failed' );
-    $this->loader->add_filter( 'authenticate', $plugin_public, 'verify_user_pass', 1, 3 );
-    $this->loader->add_action( 'wp_logout', $plugin_public, 'logout_redirect' );
-
-    // Registration form
-    $this->loader->add_action( 'init', $plugin_public, 'humble_lms_register_user' );
-
-    /**
-     * Shortcodes
-     */
+    // Shortcodes
     $plugin_shortcodes = new Humble_LMS_Public_Shortcodes( $plugin_public );
 
     $this->loader->add_shortcode( 'humble_lms_track_archive', $plugin_shortcodes, 'track_archive' );
@@ -290,24 +285,13 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_user_certificates', $plugin_shortcodes, 'user_certificates' );
     $this->loader->add_shortcode( 'humble_lms_login_form', $plugin_shortcodes, 'humble_lms_custom_login_form' );
     $this->loader->add_shortcode( 'humble_lms_registration_form', $plugin_shortcodes, 'humble_lms_custom_registration_form' );
+    $this->loader->add_shortcode( 'humble_lms_lost_password_form', $plugin_shortcodes, 'humble_lms_custom_lost_password_form' );
 
-    /**
-     * AJAX
-     */
+    // AJAX
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );
 
     $this->loader->add_action( 'wp_ajax_nopriv_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
     $this->loader->add_action( 'wp_ajax_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
-
-    /**
-     * User
-     */
-    $plugin_user = new Humble_LMS_Public_User( $plugin_public );
-
-    /**
-     * Quiz
-     */
-    $plugin_quiz = new Humble_LMS_Quiz( $plugin_public );
 
   }
 

@@ -376,7 +376,7 @@ class Humble_LMS_Admin {
    */
   public static function humble_lms_login_page_exists() {
     $custom_page_login = get_page_by_title('Humble LMS Login', OBJECT, 'page');
-    return $custom_page_login && get_post_status( $custom_page_login->ID ) === 'publish';
+    return $custom_page_login && has_shortcode( $custom_page_login->post_content, 'humble_lms_login_form' ) && get_post_status( $custom_page_login->ID ) === 'publish';
   }
 
   /**
@@ -386,7 +386,7 @@ class Humble_LMS_Admin {
    */
   public static function humble_lms_registration_page_exists() {
     $custom_page_registration = get_page_by_title('Humble LMS Registration', OBJECT, 'page');
-    return $custom_page_registration && get_post_status( $custom_page_registration->ID ) === 'publish';
+    return $custom_page_registration && has_shortcode( $custom_page_registration->post_content, 'humble_lms_registration_form' ) && get_post_status( $custom_page_registration->ID ) === 'publish';
   }
 
   /**
@@ -396,7 +396,7 @@ class Humble_LMS_Admin {
    */
   public static function humble_lms_lost_password_page_exists() {
     $custom_page_lost_password = get_page_by_title('Humble LMS Lost Password', OBJECT, 'page');
-    return $custom_page_lost_password && get_post_status( $custom_page_lost_password->ID ) === 'publish';
+    return $custom_page_lost_password && has_shortcode( $custom_page_lost_password->post_content, 'humble_lms_lost_password_form' ) && get_post_status( $custom_page_lost_password->ID ) === 'publish';
   }
 
   /**

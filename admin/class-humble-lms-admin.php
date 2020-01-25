@@ -254,7 +254,7 @@ class Humble_LMS_Admin {
     $options_manager = new Humble_LMS_Admin_Options_Manager;
     $countries = $options_manager->countries;
     $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === '1';
-
+    
     if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
       $user_login = $_POST['humble-lms-user-login'];	
       $user_email	= $_POST['humble-lms-user-email'];
@@ -282,8 +282,10 @@ class Humble_LMS_Admin {
         $this->humble_lms_errors()->add('last_name_empty', __('Please enter your last name', 'humble-lms'));
       }
 
-      if( $registration_has_country && ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
-        $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
+      if( $registration_has_country ) {
+        if( ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
+          $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
+        }
       }
   
       if( ! is_email( $user_email ) || ! filter_var( $_POST['humble-lms-user-email'], FILTER_VALIDATE_EMAIL ) ) {

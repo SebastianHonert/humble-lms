@@ -237,7 +237,7 @@ class Humble_LMS {
 
     $this->loader->add_action( 'admin_menu', $plugin_options_manager, 'add_options_page' );
     $this->loader->add_action( 'admin_init', $plugin_options_manager, 'humble_lms_options_admin_init' );
-
+    
     // Login, registration, lost password
     $this->loader->add_action( 'init', $plugin_admin, 'redirect_login_registration_lost_password' );
     $this->loader->add_action( 'wp_login_failed', $plugin_admin, 'custom_login_failed' );

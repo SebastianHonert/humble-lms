@@ -251,42 +251,51 @@ class Humble_LMS_Admin {
   public function humble_lms_register_user() {
     global $wp;
 
+    $options_manager = new Humble_LMS_Admin_Options_Manager;
+    $countries = $options_manager->countries;
+    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === '1';
+
     if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
       $user_login = $_POST['humble-lms-user-login'];	
       $user_email	= $_POST['humble-lms-user-email'];
       $user_first = $_POST['humble-lms-user-first'];
       $user_last = $_POST['humble-lms-user-last'];
+      $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $user_pass = $_POST['humble-lms-user-pass'];
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
       
       if( username_exists( $user_login ) ) {
-        $this->humble_lms_errors()->add('username_unavailable', __('Username already taken', 'humble-lms'));
+        $this->humble_lms_errors()->add('username_unavailable', __('Username already taken.', 'humble-lms'));
       }
 
       if( ! validate_username( $user_login ) ) {
-        $this->humble_lms_errors()->add('username_invalid', __('Invalid username', 'humble-lms'));
+        $this->humble_lms_errors()->add('username_invalid', __('Invalid username.', 'humble-lms'));
       } else if( $user_login === '' ) {
-        $this->humble_lms_errors()->add('username_empty', __('Please enter a username', 'humble-lms'));
+        $this->humble_lms_errors()->add('username_empty', __('Please enter a username.', 'humble-lms'));
       }
 
       if( $user_first === '' ) {
-        $this->humble_lms_errors()->add('first_name_empty', __('Please enter a first name', 'humble-lms'));
+        $this->humble_lms_errors()->add('first_name_empty', __('Please enter your first name.', 'humble-lms'));
       }
 
       if( $user_last === '' ) {
-        $this->humble_lms_errors()->add('last_name_empty', __('Please enter a last name', 'humble-lms'));
+        $this->humble_lms_errors()->add('last_name_empty', __('Please enter your last name', 'humble-lms'));
+      }
+
+      if( $registration_has_country && ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
+        $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
       }
   
       if( ! is_email( $user_email ) || ! filter_var( $_POST['humble-lms-user-email'], FILTER_VALIDATE_EMAIL ) ) {
-        $this->humble_lms_errors()->add('email_invalid', __('Please enter a valid email address', 'humble-lms'));
+        $this->humble_lms_errors()->add('email_invalid', __('Please enter a valid email address.', 'humble-lms'));
       }
   
       if( email_exists( $user_email ) ) {
-        $this->humble_lms_errors()->add('email_used', __('Email address already registered', 'humble-lms'));
+        $this->humble_lms_errors()->add('email_used', __('Email address already registered.', 'humble-lms'));
       }
 
       if( $user_pass === '') {
-        $this->humble_lms_errors()->add('password_empty', __('Please enter a password', 'humble-lms'));
+        $this->humble_lms_errors()->add('password_empty', __('Please enter a password.', 'humble-lms'));
       }
 
       if( strlen( $user_pass ) < 8 ) {
@@ -302,7 +311,7 @@ class Humble_LMS_Admin {
       } 
 
       if( $user_pass !== $user_pass_confirm ) {
-        $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match', 'humble-lms'));
+        $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match.', 'humble-lms'));
       }
       
       $errors = $this->humble_lms_errors()->get_error_messages();
@@ -321,6 +330,11 @@ class Humble_LMS_Admin {
         ) );
 
         if( $new_user_id ) {
+          // Add country to user meta
+          if( $registration_has_country ) {
+            add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
+          }
+
           // Notify admin and user ('both')
           wp_new_user_notification( $new_user_id, null, 'both' );
           

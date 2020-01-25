@@ -686,9 +686,13 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '</div>';
       }
 
+      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === '1';
+      $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
+
       $post_user_login = isset( $_POST['humble-lms-user-login'] ) ? sanitize_text_field( $_POST['humble-lms-user-login'] ) : '';
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
+      $post_user_country = $registration_has_country && isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
       $post_user_pass = isset( $_POST['humble-lms-user-pass'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass'] ) : '';
       $post_user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
@@ -702,19 +706,29 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" />
           </p>
           <p>
-            <label for="humble-lms-user-first" class="humble-lms-required">
-              <?php _e('First Name', 'humble-lms'); ?><br>
-              <small><?php _e('Required for certification.', 'humble-lms'); ?></small>
-            </label>
+            <label for="humble-lms-user-first" class="humble-lms-required"><?php _e('First Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $post_user_first; ?>" />
           </p>
           <p>
-            <label for="humble-lms-user-last" class="humble-lms-required">
-              <?php _e('Last Name', 'humble-lms'); ?><br>
-              <small><?php _e('Required for certification.', 'humble-lms'); ?></small>
-            </label>
+            <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" />
           </p>
+          <?php if( $registration_has_country ): ?>
+            <p>
+              <label for="humble-lms-user-country" class="humble-lms-required"><?php _e('Country', 'humble-lms'); ?></label>
+              <select name="humble-lms-user-country" id="humble-lms-user-country">
+                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+
+                <?php 
+                foreach( $countries as $key => $country ) {
+                  $selected = $country === $post_user_country ? 'selected' : '';
+                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+                }
+                ?>
+
+              </select>
+            </p>
+          <?php endif; ?>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" />

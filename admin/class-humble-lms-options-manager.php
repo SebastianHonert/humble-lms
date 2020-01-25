@@ -22,6 +22,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->admin_url = admin_url() . '?page=humble_lms_options';
       $this->login_url = wp_login_url();
       $this->user = new Humble_LMS_Public_User;
+      $this->countries = array_map('trim', explode(',', 'Afghanistan, Albania, Algeria, Andorra, Angola, Antigua & Deps, Argentina, Armenia, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bhutan, Bolivia, Bosnia Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Central African Rep, Chad, Chile, China, Colombia, Comoros, Congo, Congo {Democratic Rep}, Costa Rica, Croatia, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon, Gambia, Georgia, Germany, Ghana, Greece, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland {Republic}, Israel, Italy, Ivory Coast, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea North, Korea South, Kosovo, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Mauritania, Mauritius, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, {Burma}, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russian Federation, Rwanda, St Kitts & Nevis, St Lucia, Saint Vincent & the Grenadines, Samoa, San Marino, Sao Tome & Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe'));
+      $this->page_sections = array();
 
     }
 
@@ -49,30 +51,37 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $nav_tab_reporting_users = $active === 'reporting-users' ? 'nav-tab-active' : '';
         $nav_tab_reporting_courses = $active === 'reporting-courses' ? 'nav-tab-active' : '';
         $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
+        $nav_tab_registration = $active === 'registration' ? 'nav-tab-active' : '';
 
         echo '<h2 class="nav-tab-wrapper">
           <a href="' . $this->admin_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Reporting: Users', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=reporting-courses" class="nav-tab ' . $nav_tab_reporting_courses . '">' . __('Reporting: Courses', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=options" class="nav-tab ' . $nav_tab_options . '">' . __('Options', 'humble-lms') . '</a>
+          <a href="' . $this->admin_url . '&active=registration" class="nav-tab ' . $nav_tab_registration . '">' . __('Registration', 'humble-lms') . '</a>
         </h2>';
         
-        switch( $active ) {
-          case 'reporting-users':
-            settings_fields('humble_lms_options_reporting_users');
-            do_settings_sections('humble_lms_options_reporting_users');
-            break;
-          case 'reporting-courses':
-            settings_fields('humble_lms_options_reporting_courses');
-            do_settings_sections('humble_lms_options_reporting_courses');
-            break;
-          case 'options':
-            echo '<form method="post" action="options.php">';
-              settings_fields('humble_lms_options');
-              do_settings_sections('humble_lms_options');
+        echo '<form method="post" action="options.php">';
+          switch( $active ) {
+            case 'reporting-users':
+              settings_fields('humble_lms_options_reporting_users');
+              do_settings_sections('humble_lms_options_reporting_users');
+              break;
+            case 'reporting-courses':
+              settings_fields('humble_lms_options_reporting_courses');
+              do_settings_sections('humble_lms_options_reporting_courses');
+              break;
+            case 'options':
+                settings_fields('humble_lms_options');
+                do_settings_sections('humble_lms_options');
+                submit_button();
+              break;
+            case 'registration':
+              settings_fields('humble_lms_options_registration');
+              do_settings_sections('humble_lms_options_registration');
               submit_button();
-            echo '</form>';
-            break;
-        }
+              break;
+          }
+        echo '</form>';
 
       echo '</div>';
     }
@@ -84,13 +93,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function humble_lms_options_admin_init() {
       register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
+      register_setting( 'humble_lms_options_registration', 'humble_lms_options', 'humble_lms_options_validate' );
       
       add_settings_section('humble_lms_options_section_reporting_users', '', array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
+      add_settings_section('humble_lms_options_section_registration', __('User Registration', 'humble-lms'), array( $this, 'humble_lms_options_section_registration' ), 'humble_lms_options_registration' );
 
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+      add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
     }
 
     /**
@@ -115,6 +128,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
     public function humble_lms_options_section_options() {
       echo '<p><em>' . __('Display options and general settings', 'humble-lms') . '</em></p>';
+    }
+
+    public function humble_lms_options_section_registration() {
+      // TODO: options
     }
 
     /**
@@ -152,6 +169,35 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for displaying country field in registration form.
+     *
+     * @since    0.0.1
+     */
+    public function registration_has_country() {
+      $registration_has_country = isset( $this->options['registration_has_country'] ) ? (int)$this->options['registration_has_country'] : 0;
+      $checked = $registration_has_country === 1 ? 'checked' : '';
+  
+      echo '<p><input id="registration_has_country" name="humble_lms_options[registration_has_country]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, include country in registration form.', 'humble-lms') . '</p>';
+    }
+
+    /**
+     * Option for selecting individual countries to be included in registration form.
+     *
+     * @since    0.0.1
+     */
+    public function registration_countries() {
+      $countries = $this->countries;
+      $registration_countries = isset( $this->options['registration_countries'] ) ? maybe_unserialize( $this->options['registration_countries'] ) : $this->countries;
+  
+      echo '<select multiple size="20" class="widefat" id="registration_countries" placeholder="' . __('Wich countries would you like to include?', 'humble-lms') . '" name="humble_lms_options[registration_countries][]">';
+        foreach( $countries as $key => $country ) {
+          $selected = in_array( $country, $registration_countries ) ? 'selected' : '';
+          echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+        }
+      echo '</select>';
+    }
+
+    /**
      * Validate option data on save.
      *
      * @param   array
@@ -161,6 +207,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_validate( $options ) {
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
+      $validated['registration_has_country'] = (int)$options['registration_has_country'] === 1 ? 1 : 0;
+      $validated['registration_countries'] = ! empty( $options['registration_countries'] ) ? serialize( $options['registration_countries'] ) : [];
 
       return $validated;
     }

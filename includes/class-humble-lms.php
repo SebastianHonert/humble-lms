@@ -239,15 +239,19 @@ class Humble_LMS {
     $this->loader->add_action( 'admin_init', $plugin_options_manager, 'humble_lms_options_admin_init' );
     
     // Login, registration, lost password
-    $this->loader->add_action( 'init', $plugin_admin, 'redirect_login_registration_lost_password' );
     $this->loader->add_action( 'wp_login_failed', $plugin_admin, 'custom_login_failed' );
-    $this->loader->add_filter( 'authenticate', $plugin_admin, 'verify_user_pass', 1, 3 );
     $this->loader->add_action( 'wp_logout', $plugin_admin, 'logout_redirect' );
     $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_register_user' );
-    $this->loader->add_action( 'validate_password_reset', $plugin_admin, 'validate_lost_password_form' );
-    $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'redirect_login_registration_lost_password' );
-    $this->loader->add_action( 'login_form_rp', $plugin_admin, 'do_password_reset' );
+    $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'do_password_lost' );
     $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'do_password_reset' );
+    $this->loader->add_action( 'login_form_rp', $plugin_admin, 'do_password_reset' );
+    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'redirect_custom_password_reset' );
+    $this->loader->add_action( 'login_form_rp', $plugin_admin, 'redirect_custom_password_reset' );
+    $this->loader->add_action( 'login_form_register', $plugin_admin, 'redirect_login_registration_lost_password' );
+    $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'redirect_login_registration_lost_password' );
+
+    // Retrieve password custom email
+    $this->loader->add_action( 'retrieve_password_message', $plugin_admin, 'replace_retrieve_password_message', 10, 4 );
   }
 
   /**

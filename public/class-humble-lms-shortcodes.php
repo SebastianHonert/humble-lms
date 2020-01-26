@@ -32,7 +32,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function track_archive( $atts = null ) {
       $html = '';
       $options = $this->options_manager->options;
-      $tile_width = $options['tile_width_track'] ? $options['tile_width_track'] : 'half';
+      $tile_width = isset( $options['tile_width_track'] ) ? $options['tile_width_track'] : 'half';
 
       extract( shortcode_atts( array (
         'ids' => '',
@@ -130,7 +130,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $html = '';
       $options = $this->options_manager->options;
-      $tile_width = $options['tile_width_course'] ? $options['tile_width_course'] : 'half';
+      $tile_width = isset( $options['tile_width_course'] ) ? $options['tile_width_course'] : 'half';
 
       extract( shortcode_atts( array (
         'ids' => '',
@@ -643,6 +643,18 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
           echo sprintf( __('Invalid key. Please try to %s again.', 'humble-lms'), '<a href="' . home_url( 'lost-password' ) . '">' . __('reset your password', 'humble-lms') . '</a>' );
         echo '</div>';
+      } else if( isset( $_GET['login'] ) && $_GET['login'] === 'expiredkey' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          echo sprintf( __('Expired key. Please try to %s again.', 'humble-lms'), '<a href="' . home_url( 'lost-password' ) . '">' . __('reset your password', 'humble-lms') . '</a>' );
+        echo '</div>';
+      } else if( isset( $_GET['password'] ) && $_GET['password'] === 'changed' ) {
+        echo '<div class="humble-lms-message humble-lms-message--success">';
+          _e('Password changed successfully. Please sign in below.', 'humble-lms');
+        echo '</div>';
+      }
+
+      if( isset( $_GET['checkemail'] ) && $_GET['checkemail'] === 'confirm' ) {
+        echo '<div class="humble-lms-message humble-lms-message--success">' . __('Please check your email inbox for a link to reset your password.', 'humble-lms') . '</div>';
       }
 
       if ( ! is_user_logged_in() ) {
@@ -656,7 +668,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             'remember' => true
         );
         wp_login_form( $args );
-        echo '<p><a href="' . home_url('lost-password') . '">' . __('Lost your password?', 'humble-lms') . '</p>';
+        echo '<p><a href="' . site_url('/wp-login.php?action=lostpassword') . '">' . __('Lost your password?', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php?action=register') . '">' . __('Register', 'humble-lms') . '</a></p>';
       } else {
           echo '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
@@ -673,6 +685,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function humble_lms_custom_registration_form() {
       if( is_user_logged_in() ) {
         return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
+      }
+
+      if( ! get_option( 'users_can_register' ) ) {
+        return '<div class="humble-lms-message humble-lms-message--error">' . __('This site is currently not open for registration.', 'humble-lms') . '</div>';
       }
 
       ob_start();
@@ -736,7 +752,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <p>
             <label for="password" class="humble-lms-required">
               <?php _e('Password'); ?><br>
-              <small><?php _e('Min. 8 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
+              <small><?php _e('Min. 12 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
             </label>
             <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="<?php echo $post_user_pass; ?>" />
           </p>
@@ -764,16 +780,25 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( is_user_logged_in() ) {
         return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
-      
-      if( isset( $_GET['checkemail'] ) && sanitize_text_field( $_GET['checkemail'] ) === 'confirm' ) {
-        echo 'CONFIRM';
-      }
 
-      if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
+      if( isset( $_GET['lost_password_sent'] ) ) {
+        echo '<p class="humble-lms-message humble-lms-message--success">' . __( 'Check your email for a link to reset your password.', 'personalize-login' ) . '</div>';
+      } elseif( isset( $_GET['errors'] ) ) {
+        switch( sanitize_text_field( $_GET['errors'] ) ) {
+          case 'empty_username':
+            $errors[] = __('Please enter a valid email address.', 'humble-lms');
+            break;
+          case 'invalid_email':
+          case 'invalidcombo':
+            $errors[] = __('There are no users registered with this email address.', 'humble-lms');
+            break;
+        }
+      } 
+  
+      if( ! empty( $errors ) ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
-          foreach( $codes as $code ) {
-            $message = Humble_LMS_Admin::humble_lms_errors()->get_error_message( $code );
-            echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
+          foreach( $errors as $error ) {
+            echo '<strong>' . __('Error') . ':</strong> ' . $error . '<br>';
           }
         echo '</div>';
       }
@@ -803,17 +828,25 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_custom_reset_password_form() {
-      // if( is_user_logged_in() ) {
-      //   return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
-      // }
+      if( is_user_logged_in() ) {
+        return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
+      }
       
       ob_start();
+
+      if( isset( $_REQUEST['error'] ) && $_REQUEST['error'] === 'password_reset_mismatch' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error"><strong>' . __('Error', 'humble-lms') . ':</strong> ' . __('The passwords you entered do not match.', 'humble-lms') . '</div>';
+      }
+
+      if( isset( $_REQUEST['error'] ) && $_REQUEST['error'] === 'password_reset_empty' ) {
+        echo '<div class="humble-lms-message humble-lms-message--error"><strong>' . __('Error', 'humble-lms') . ':</strong> ' . __('Your new password should be at least 12 characters long and contain min. 1 letter and 1 number.', 'humble-lms') . '</div>';
+      }
       
       ?>
 
       <form name="resetpassform" id="resetpassform" action="<?php echo site_url( 'wp-login.php?action=resetpass' ); ?>" method="post" autocomplete="off">
-        <input type="hidden" id="user_login" name="rp_login" value="<?php echo esc_attr( $attributes['login'] ); ?>" autocomplete="off" />
-        <input type="hidden" name="rp_key" value="<?php echo esc_attr( $attributes['key'] ); ?>" />
+        <input type="hidden" id="user_login" name="rp_login" value="<?php echo esc_attr( $_GET['login'] ); ?>" autocomplete="off" />
+        <input type="hidden" name="rp_key" value="<?php echo esc_attr( $_GET['key'] ); ?>" />
          
         <?php
 
@@ -837,7 +870,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <input type="password" name="pass2" id="pass2" class="input" size="20" value="" autocomplete="off" />
         </p>
          
-        <p class="description"><?php echo wp_get_password_hint(); ?></p>
+        <p class="description humble-lms-message"><?php echo wp_get_password_hint(); ?></p>
          
         <p class="resetpass-submit">
             <input type="submit" name="submit" id="resetpass-button" class="humble-lms-btn" value="<?php _e( 'Reset Password', 'humble-lms' ); ?>" />

@@ -767,6 +767,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         </fieldset>
       </form><?php 
       
+      echo '<p><a href="' . site_url('/wp-login.php?action=lostpassword') . '">' . __('Lost your password?', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a></p>';
+      
       return ob_get_clean();
     }
 
@@ -819,6 +821,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           </p>
         </form>
       </div><?php
+
+echo '<p><a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php?action=register') . '">' . __('Register', 'humble-lms') . '</a></p>';
     }
 
     /**

@@ -244,10 +244,10 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_logout', $plugin_admin, 'logout_redirect' );
     $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_register_user' );
     $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'do_password_lost' );
-    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'do_password_reset' );
     $this->loader->add_action( 'login_form_rp', $plugin_admin, 'do_password_reset' );
-    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'redirect_custom_password_reset' );
+    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'do_password_reset' );
     $this->loader->add_action( 'login_form_rp', $plugin_admin, 'redirect_custom_password_reset' );
+    $this->loader->add_action( 'login_form_resetpass', $plugin_admin, 'redirect_custom_password_reset' );
     $this->loader->add_action( 'login_form_register', $plugin_admin, 'redirect_login_registration_lost_password' );
     $this->loader->add_action( 'login_form_lostpassword', $plugin_admin, 'redirect_login_registration_lost_password' );
 

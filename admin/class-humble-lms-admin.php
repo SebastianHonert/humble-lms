@@ -262,6 +262,21 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Verify user name and password on login and redirect accordingly.
+   * 
+   * @since   0.0.1
+   */
+  public function verify_user_pass( $user, $username, $password ) {
+    $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
+    if( $username === '' || $password === '' ) {
+      wp_redirect( add_query_arg( 'login', 'empty', $login_page ) );
+      exit();
+    }
+
+    return $user;
+  }
+
+  /**
    * Validate and register new user with custom registration form.
    * 
    * @since   0.0.1

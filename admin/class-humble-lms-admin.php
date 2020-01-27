@@ -321,7 +321,8 @@ class Humble_LMS_Admin {
       return;
 
     if( $username === '' || $password === '' ) {
-      wp_redirect( add_query_arg( 'login', 'empty', $this->login_page ) );
+      wp_redirect( $this->login_page );
+      // wp_redirect( add_query_arg( 'login', 'empty', $this->login_page ) );
       exit();
     }
 
@@ -585,13 +586,14 @@ class Humble_LMS_Admin {
    */
   public function redirect_login_registration_lost_password() {
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
+    $request_uri = $_SERVER['REQUEST_URI'];
   
     if( $this->humble_lms_login_page_exists() && $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       wp_redirect( $this->login_page );
       exit;
     }
 
-    elseif( $this->humble_lms_registration_page_exists() && $page_viewed === 'wp-login.php?action=register' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+    elseif( $this->humble_lms_registration_page_exists() && strpos($request_uri, 'wp-login.php?action=register') !== false && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       wp_redirect( $this->registration_page );
       exit;
     }

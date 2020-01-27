@@ -709,9 +709,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
       $post_user_country = $registration_has_country && isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
-      $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
-      $post_user_pass = isset( $_POST['humble-lms-user-pass'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass'] ) : '';
-      $post_user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
+      $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
+      $post_user_email_confirm = isset( $_POST['humble-lms-user-email-confirm'] ) ? sanitize_email( $_POST['humble-lms-user-email-confirm'] ) : '';
 
       ?>
       
@@ -750,15 +749,19 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" />
           </p>
           <p>
+            <label for="humble-lms-user-email-confirm" class="humble-lms-required"><?php _e('Confirm email address', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-email-confirm" id="humble-lms-user-email-confirm" class="humble-lms-required" type="email" value="<?php echo $post_user_email_confirm; ?>" />
+          </p>
+          <p>
             <label for="password" class="humble-lms-required">
               <?php _e('Password'); ?><br>
               <small><?php _e('Min. 12 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
             </label>
-            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="<?php echo $post_user_pass; ?>" />
+            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="" />
           </p>
           <p>
             <label for="password-again" class="humble-lms-required"><?php _e('Password again', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="<?php echo $post_user_pass_confirm; ?>" />
+            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" />
           </p>
           <p>
             <input type="hidden" name="humble-lms-register-nonce" value="<?php echo wp_create_nonce('humble-lms-register-nonce'); ?>" />
@@ -923,7 +926,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $user_last = $userdata->last_name;
       $user_country = get_user_meta( $user_id, 'humble_lms_country', true );
       $user_email = $userdata->user_email;
-      $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
+      $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       
       ?>
       

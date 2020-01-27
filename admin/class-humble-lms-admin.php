@@ -349,6 +349,7 @@ class Humble_LMS_Admin {
     if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
       $user_login = $_POST['humble-lms-user-login'];	
       $user_email	= $_POST['humble-lms-user-email'];
+      $user_email_confirm	= isset( $_POST['humble-lms-user-email-confirm'] ) ? $_POST['humble-lms-user-email-confirm'] : '';
       $user_first = $_POST['humble-lms-user-first'];
       $user_last = $_POST['humble-lms-user-last'];
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
@@ -385,6 +386,10 @@ class Humble_LMS_Admin {
   
       if( email_exists( $user_email ) ) {
         $this->humble_lms_errors()->add('email_used', __('Email address already registered.', 'humble-lms'));
+      }
+
+      if( ! isset( $user_email_confirm ) || $user_email !== $user_email_confirm ) {
+        $this->humble_lms_errors()->add('emails_do_not_match', __('The email addresses you entered do not match.', 'humble-lms'));
       }
 
       if( $user_pass === '') {
@@ -714,6 +719,7 @@ class Humble_LMS_Admin {
    * @param string  $key        The activation key.
    * @param string  $user_login The username for the user.
    * @param WP_User $user_data  WP_User object.
+   * @since         0.0.1
    *
    * @return string   The mail message to send.
    */
@@ -724,6 +730,31 @@ class Humble_LMS_Admin {
     $msg .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
     $msg .= esc_url_raw( site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
     $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+
+    return $msg;
+  }
+
+  /**
+   * Custom user notification email – sent on registration.
+   * 
+   * @since   0.0.1
+   */
+  function custom_new_user_notification_email( $msg, $user, $blogname ) {
+    $user_login = stripslashes( $user->user_login );
+    $user_email = stripslashes( $user->user_email );
+    $login_url = wp_login_url();
+    $message = __( 'Hi there,' ) . "\r\n\r\n";
+    $message .= sprintf( __( "welcome to %s! Here's how to log in:" ), get_option('blogname') ) . "\r\n\r\n";
+    $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
+    $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
+    $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
+    $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
+    $message .= sprintf( __('If you have any problems, please contact us at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+    $message .= __( 'Bye!' );
+
+    $msg['subject'] = sprintf( '[%s] Your credentials.', $blogname );
+    $msg['headers'] = array('Content-Type: text/plain; charset=UTF-8');
+    $msg['message'] = $message;
 
     return $msg;
   }

@@ -37,6 +37,24 @@ class Humble_LMS_Activator {
    * Add custom pages for login, registration and password reset.
    */
   public function add_custom_pages() {
+    $custom_page_course_archive = array(
+      'post_title' => 'Humble LMS Course Archive',
+      'post_name' => 'courses',
+      'post_content' => '[humble_lms_course_archive]',
+      'post_status' => 'publish',
+      'post_author' => 1,
+      'post_type' => 'page',
+    );
+
+    $custom_page_track_archive = array(
+      'post_title' => 'Humble LMS Track Archive',
+      'post_name' => 'tracks',
+      'post_content' => '[humble_lms_track_archive]',
+      'post_status' => 'publish',
+      'post_author' => 1,
+      'post_type' => 'page',
+    );
+
     $custom_page_login = array(
       'post_title' => 'Humble LMS Login',
       'post_name' => 'login',
@@ -73,10 +91,35 @@ class Humble_LMS_Activator {
       'post_type' => 'page',
     );
 
-    wp_insert_post( $custom_page_login );
-    wp_insert_post( $custom_page_registration );
-    wp_insert_post( $custom_page_lost_password );
-    wp_insert_post( $custom_page_reset_password );
+    $custom_page_user_profile = array(
+      'post_title' => 'Humble LMS User Profile',
+      'post_name' => 'account',
+      'post_content' => '[humble_lms_user_profile]',
+      'post_status' => 'publish',
+      'post_author' => 1,
+      'post_type' => 'page',
+    );
+
+    if( ! get_page_by_title('Humble LMS Course Archive', OBJECT, 'page') )
+      wp_insert_post( $custom_page_course_archive );
+    
+    if( ! get_page_by_title('Humble LMS Track Archive', OBJECT, 'page') )
+      wp_insert_post( $custom_page_track_archive );
+
+    if( ! get_page_by_title('Humble LMS Login', OBJECT, 'page') )
+      wp_insert_post( $custom_page_login );
+    
+    if( ! get_page_by_title('Humble LMS Registration', OBJECT, 'page') )
+      wp_insert_post( $custom_page_registration );
+
+    if( ! get_page_by_title('Humble LMS Lost Password', OBJECT, 'page') )
+      wp_insert_post( $custom_page_lost_password );
+
+    if( ! get_page_by_title('Humble LMS Reset Password', OBJECT, 'page') )
+      wp_insert_post( $custom_page_reset_password );
+
+    if( ! get_page_by_title('Humble LMS User Profile', OBJECT, 'page') )
+      wp_insert_post( $custom_page_user_profile );
   }
 
 }

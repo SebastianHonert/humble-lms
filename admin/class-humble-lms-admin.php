@@ -726,9 +726,9 @@ class Humble_LMS_Admin {
   public function replace_retrieve_password_message( $message, $key, $user_login, $user_data ) {
     $msg  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
     $msg .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
-    $msg .= __( "If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.", 'personalize-login' ) . "\r\n\r\n";
+    $msg .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
     $msg .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
-    $msg .= esc_url_raw( site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
+    $msg .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=$key&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
     $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 
     return $msg;
@@ -744,7 +744,7 @@ class Humble_LMS_Admin {
     $user_email = stripslashes( $user->user_email );
     $login_url = wp_login_url();
     $message = __( 'Hi there,' ) . "\r\n\r\n";
-    $message .= sprintf( __( "welcome to %s! Here's how to log in:" ), get_option('blogname') ) . "\r\n\r\n";
+    $message .= sprintf( __( 'welcome to %s! Here\'s how to log in: ' ), get_option('blogname') ) . "\r\n\r\n";
     $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
     $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
     $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";

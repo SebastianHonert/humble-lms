@@ -320,7 +320,7 @@ class Humble_LMS_Public {
       if( ! empty( $_POST['course_id'] ) ) {
         wp_redirect( esc_url( get_permalink( (int)$_POST['course_id'] ) . '?access=denied' ) );
       } else {
-        wp_redirect( esc_url( get_post_type_archive_link( 'humble_lms_course') ) . '?access=denied' );
+        wp_redirect( esc_url( site_url('?access=denied') ) );
       }
 
       die;

@@ -932,15 +932,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
       <form id="humble-lms-user-profile-form" class="humble-lms-form" action="" method="post">
         <fieldset>
-          <label for="humble-lms-user-login"><?php _e('Username', 'humble-lms'); ?></label>
+          <label for="humble-lms-user-login"><?php _e('Username', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_login; ?></strong></p>
           <input type="hidden" name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $user_login; ?>" />
           
-          <label for="humble-lms-user-first"><?php _e('First Name', 'humble-lms'); ?></label>
+          <label for="humble-lms-user-first"><?php _e('First Name', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_first; ?></strong></p>
           <input type="hidden" name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $user_first; ?>" />
           
-          <label for="humble-lms-user-last"><?php _e('Last Name', 'humble-lms'); ?></label>
+          <label for="humble-lms-user-last"><?php _e('Last Name', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_last; ?></strong></p>
           <input type="hidden" name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $user_last; ?>" />
           <?php if( $registration_has_country ): ?>

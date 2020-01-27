@@ -30,13 +30,6 @@ $labels = array(
   'filter_items_list'     => __( 'Filter courses list', 'humble_lms' ),
 );
 
-$rewrite = array(
-  'slug'                  => __('courses', 'humble-lms'),
-  'with_front'            => true,
-  'pages'                 => true,
-  'feeds'                 => true,
-);
-
 $args = array(
   'label'                 => __( 'Course', 'humble_lms' ),
   'description'           => __( 'Course', 'humble_lms' ),
@@ -56,7 +49,7 @@ $args = array(
   'has_archive'           => true,
   'exclude_from_search'   => false,
   'publicly_queryable'    => true,
-  'rewrite'               => $rewrite,
+  'rewrite'               => false,
   'capability_type'       => 'page',
 );
 

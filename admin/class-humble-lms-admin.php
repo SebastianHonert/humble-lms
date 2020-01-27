@@ -609,6 +609,11 @@ class Humble_LMS_Admin {
     }
   }
 
+  /**
+   * Redirect password reset.
+   * 
+   * @since   0.0.1
+   */
   public function redirect_custom_password_reset() {
     if( $this->humble_lms_reset_password_page_exists() && 'GET' === $_SERVER['REQUEST_METHOD'] ) {
       $reset_password_page = $this->reset_password_page;
@@ -634,9 +639,6 @@ class Humble_LMS_Admin {
 
   /**
    * Redirect on failed login.
-   * 
-   * TODO: Get login page from options
-   * TODO: Check if login page exist and contains login shortcode
    * 
    * @since   0.0.1
    */
@@ -730,7 +732,7 @@ class Humble_LMS_Admin {
     $msg .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
     $msg .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
     $msg .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
-    $msg .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=$key&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
+    $msg .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
     $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 
     return $msg;

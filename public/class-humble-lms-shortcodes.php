@@ -632,9 +632,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match. ', 'humble-lms');
         echo '</div>';
       } else if( isset( $_GET['login'] ) && $_GET['login'] === 'empty' ) {
-        echo '<div class="humble-lms-message humble-lms-message--error">';
-          echo  '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Please enter your username and password.', 'humble-lms');
-        echo '</div>';
+        // echo '<div class="humble-lms-message humble-lms-message--error">';
+        //   echo  '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Please enter your username and password.', 'humble-lms');
+        // echo '</div>';
       } else if( isset( $_GET['login'] ) && $_GET['login'] === 'false' ) {
         echo '<div class="humble-lms-message humble-lms-message--success">';
           echo  __('You have successfully been logged out.', 'humble-lms');
@@ -757,7 +757,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="<?php echo $post_user_pass; ?>" />
           </p>
           <p>
-            <label for="password-again" class="humble-lms-required"><?php _e('Password Again', 'humble-lms'); ?></label>
+            <label for="password-again" class="humble-lms-required"><?php _e('Password again', 'humble-lms'); ?></label>
             <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="<?php echo $post_user_pass_confirm; ?>" />
           </p>
           <p>
@@ -765,6 +765,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input type="submit" class="humble-lms-btn" value="<?php _e('Register Your Account', 'humble-lms'); ?>"/>
           </p>
         </fieldset>
+
+        <input type="hidden" name="humble-lms-form" value="humble-lms-registration" />
       </form><?php 
       
       echo '<p><a href="' . site_url('/wp-login.php?action=lostpassword') . '">' . __('Lost your password?', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a></p>';
@@ -822,7 +824,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         </form>
       </div><?php
 
-echo '<p><a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php?action=register') . '">' . __('Register', 'humble-lms') . '</a></p>';
+      echo '<p><a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php?action=register') . '">' . __('Register', 'humble-lms') . '</a></p>';
     }
 
     /**
@@ -881,6 +883,107 @@ echo '<p><a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms
         </p>
       </form><?php
 
+      return ob_get_clean();
+    }
+
+    /**
+     * Custom user profile.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_custom_user_profile() {
+      if( ! is_user_logged_in() ) {
+        return sprintf( __('Please %s first.', 'humble-lms'), '<a href="' . $this->options_manager->login_url . '">log in</a>');
+      }
+
+      $user_id = get_current_user_ID();
+      $userdata = get_userdata( $user_id );
+      $usermeta = get_user_meta( $user_id );
+
+      ob_start();
+      
+      if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
+        echo '<div class="humble-lms-message humble-lms-message--error">';
+          foreach( $codes as $code ) {
+            $message = Humble_LMS_Admin::humble_lms_errors()->get_error_message( $code );
+            echo '<strong>' . __('Error') . ':</strong> ' . $message . '<br>';
+          }
+        echo '</div>';
+      } else {
+        if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+          echo '<div class="humble-lms-message humble-lms-message--success">' . __('Profile update successful.', 'humble-lms') . '</div>';
+        }
+      }
+
+      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === '1';
+      $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
+      $user_login = $userdata->user_login;
+      $user_first = $userdata->first_name;
+      $user_last = $userdata->last_name;
+      $user_country = get_user_meta( $user_id, 'humble_lms_country', true );
+      $user_email = $userdata->user_email;
+      $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_text_field( $_POST['humble-lms-user-email'] ) : '';
+      
+      ?>
+      
+      <form id="humble-lms-user-profile-form" class="humble-lms-form" action="" method="post">
+        <fieldset>
+          <label for="humble-lms-user-login"><?php _e('Username', 'humble-lms'); ?></label>
+          <p><strong><?php echo $user_login; ?></strong></p>
+          <input type="hidden" name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $user_login; ?>" />
+          
+          <label for="humble-lms-user-first"><?php _e('First Name', 'humble-lms'); ?></label>
+          <p><strong><?php echo $user_first; ?></strong></p>
+          <input type="hidden" name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $user_first; ?>" />
+          
+          <label for="humble-lms-user-last"><?php _e('Last Name', 'humble-lms'); ?></label>
+          <p><strong><?php echo $user_last; ?></strong></p>
+          <input type="hidden" name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $user_last; ?>" />
+          <?php if( $registration_has_country ): ?>
+            <p>
+              <label for="humble-lms-user-country" class="humble-lms-required"><?php _e('Country', 'humble-lms'); ?></label>
+              <select name="humble-lms-user-country" id="humble-lms-user-country">
+                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+
+                <?php 
+                foreach( $countries as $key => $country ) {
+                  $selected = $country === $user_country ? 'selected' : '';
+                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+                }
+                ?>
+
+              </select>
+            </p>
+          <?php endif; ?>
+          <p>
+            <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $user_email; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-email-confirm" class="humble-lms-required"><?php _e('Confirm email address', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-email-confirm" id="humble-lms-user-email-confirm" class="humble-lms-required" type="email" value="" />
+          </p>
+          <p>
+            <label for="password" class="humble-lms-required">
+              <?php _e('Password'); ?><br>
+              <small><?php _e('Min. 12 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
+            </label>
+            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="" />
+          </p>
+          <p>
+            <label for="password-again" class="humble-lms-required"><?php _e('Password again', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" />
+          </p>
+          <p>
+            <input type="hidden" name="humble-lms-update-user-nonce" value="<?php echo wp_create_nonce('humble-lms-update-user-nonce'); ?>" />
+            <input type="submit" class="humble-lms-btn" value="<?php _e('Save changes', 'humble-lms'); ?>"/>
+          </p>
+        </fieldset>
+
+        <input type="hidden" name="humble-lms-form" value="humble-lms-update-user" />
+      </form><?php 
+       
       return ob_get_clean();
     }
     

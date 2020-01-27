@@ -64,9 +64,19 @@ class Humble_LMS_Activator {
       'post_type' => 'page',
     );
 
+    $custom_page_reset_password = array(
+      'post_title' => 'Humble LMS Reset Password',
+      'post_name' => 'reset-password',
+      'post_content' => '[humble_lms_reset_password_form]',
+      'post_status' => 'publish',
+      'post_author' => 1,
+      'post_type' => 'page',
+    );
+
     wp_insert_post( $custom_page_login );
     wp_insert_post( $custom_page_registration );
     wp_insert_post( $custom_page_lost_password );
+    wp_insert_post( $custom_page_reset_password );
   }
 
 }

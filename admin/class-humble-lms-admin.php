@@ -302,6 +302,16 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Check if registration page exists and contains shortcode
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_user_profile_page_exists() {
+    $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
+    return $custom_page_user_profile && has_shortcode( $custom_page_user_profile->post_content, 'humble_lms_user_profile' ) && get_post_status( $custom_page_user_profile->ID ) === 'publish';
+  }
+
+  /**
    * Verify user name and password on login and redirect accordingly.
    * 
    * @since   0.0.1
@@ -325,6 +335,9 @@ class Humble_LMS_Admin {
    */
   public function humble_lms_register_user() {
     if( ! get_option( 'users_can_register' ) )
+      return;
+
+    if( ! isset( $_POST['humble-lms-form'] ) || $_POST['humble-lms-form'] !== 'humble-lms-registration' )
       return;
 
     global $wp;
@@ -426,6 +439,100 @@ class Humble_LMS_Admin {
           // Redirect user
           wp_redirect( add_query_arg( 'humble-lms-welcome', '1', home_url( $wp->request ) ) );
           exit;
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate and register new user with custom registration form.
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_update_user() {
+    if( ! is_user_logged_in() || ! isset( $_POST['humble-lms-form'] ) || $_POST['humble-lms-form'] !== 'humble-lms-update-user' )
+      return;
+
+    global $wp;
+
+    $user_id = get_current_user_ID();
+    $userdata = get_userdata( $user_id );
+    $options_manager = new Humble_LMS_Admin_Options_Manager;
+    $countries = $options_manager->countries;
+    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === '1';
+    
+    if( wp_verify_nonce( $_POST['humble-lms-update-user-nonce'], 'humble-lms-update-user-nonce' ) ) {
+      $user_email	= $_POST['humble-lms-user-email'];
+      $user_email_confirm	= $_POST['humble-lms-user-email-confirm'];
+      $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $user_pass = isset( $_POST['humble-lms-user-pass'] ) ? $_POST['humble-lms-user-pass'] : '';
+      $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
+
+      if( $registration_has_country ) {
+        if( ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
+          $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
+        }
+      }
+  
+      if( ! is_email( $user_email ) || ! filter_var( $_POST['humble-lms-user-email'], FILTER_VALIDATE_EMAIL ) ) {
+        $this->humble_lms_errors()->add('email_invalid', __('Please enter a valid email address.', 'humble-lms'));
+      }
+  
+      if( $user_email !== $userdata->user_email && email_exists( $user_email ) ) {
+        $this->humble_lms_errors()->add('email_used', __('Email address already registered.', 'humble-lms'));
+      }
+
+      if( ( ! empty( $user_email ) && ! empty( $user_email_confirm ) ) && $user_email !== $user_email_confirm ) {
+        $this->humble_lms_errors()->add('emails_do_not_match', __('The email addresses you entered do not match.', 'humble-lms'));
+      }
+
+      if( ( ! empty( $user_email ) && empty( $user_email_confirm ) ) && $user_email !== $userdata->user_email ) {
+        $this->humble_lms_errors()->add('confirm_email', __('Please fill in the email confirmation field.', 'humble-lms'));
+      }
+
+      if( ! empty( $user_pass ) ) {
+        if( $user_pass === '') {
+          $this->humble_lms_errors()->add('password_empty', __('Please enter a password.', 'humble-lms'));
+        }
+
+        if( strlen( $user_pass ) < 12 ) {
+          $this->humble_lms_errors()->add('password_too_short', __('Password should be at least 12 characters.', 'humble-lms'));
+        }
+
+        if( ! preg_match('#[0-9]+#', $user_pass ) ) {
+          $this->humble_lms_errors()->add('password_no_number', __('Password should include at least 1 number.', 'humble-lms'));
+        }
+
+        if( ! preg_match('#[a-zA-Z]+#', $user_pass) ) {
+          $this->humble_lms_errors()->add('password_no_letter', __('Password should include at least 1 letter.', 'humble-lms'));
+        } 
+
+        if( $user_pass !== $user_pass_confirm ) {
+          $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match.', 'humble-lms'));
+        }
+      }
+      
+      $errors = $this->humble_lms_errors()->get_error_messages();
+      
+      // No errors => create user
+      if( empty( $errors ) ) {
+        
+        $args = array(
+          'ID' => $user_id,
+          'user_email' => $user_email
+        );
+
+        if( ! empty( $user_pass ) ) {
+          $args['user_pass'] = $user_pass;
+        }
+
+        $updated_user_id = wp_update_user( $args );
+
+        if( $updated_user_id ) {
+          // Add country to user meta
+          if( $registration_has_country ) {
+            update_user_meta( $updated_user_id, 'humble_lms_country', $user_country );
+          }
         }
       }
     }

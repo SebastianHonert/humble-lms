@@ -67,6 +67,7 @@ register_post_type( 'humble_lms_quiz', $args );
 function humble_lms_quiz_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_quiz_questions_mb', __('Questions in this quiz', 'humble-lms'), 'humble_lms_quiz_questions_mb', 'humble_lms_quiz', 'normal', 'default' );
+  add_meta_box( 'humble_lms_quiz_passing_grade_mb', __('Passing grade in percent (%)', 'humble-lms'), 'humble_lms_quiz_passing_grade_mb', 'humble_lms_quiz', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_quiz_add_meta_boxes' );
@@ -75,7 +76,114 @@ add_action( 'add_meta_boxes', 'humble_lms_quiz_add_meta_boxes' );
 function humble_lms_quiz_questions_mb() {
   global $post;
 
-  $questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', false );
+  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  echo 'Coming soon...';
+  $quiz_questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', true );
+  $quiz_questions = ! empty( $quiz_questions[0] ) ? json_decode( $quiz_questions[0] ) : [];
+
+  $args = array(
+    'post_type' => 'humble_lms_question',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+    'exclude' => $quiz_questions
+  );
+
+  $questions = get_posts( $args );
+
+  $selected_questions = [];
+  foreach( $quiz_questions as $id ) {
+    if( get_post_status( $id ) ) {
+      $question = get_post( $id );
+      array_push( $selected_questions, $question );
+    }
+  }
+
+  if( $questions || $selected_questions ):
+
+    echo '<div id="humble-lms-admin-quiz-questions">';
+      echo '<select class="humble-lms-searchable" data-content="quiz_questions"  multiple="multiple">';
+        foreach( $selected_questions as $question ) {
+          echo '<option data-id="' . $question->ID . '" value="' . $question->ID . '" ';
+            if( is_array( $quiz_questions ) && in_array( $question->ID, $quiz_questions ) ) { echo 'selected'; }
+          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')</option>';
+        }
+        foreach( $questions as $question ) {
+          echo '<option data-id="' . $question->ID . '" value="' . $question->ID . '" ';
+            if( is_array( $quiz_questions ) && in_array( $question->ID, $quiz_questions ) ) { echo 'selected'; }
+          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_quiz_questions" name="humble_lms_quiz_questions" type="hidden" value="' . implode(',', $quiz_questions) . '">';
+    echo '</div>';
+  
+  else:
+
+    echo '<p>' . sprintf( __('No questions found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_question') . '">add one or more questions</a>' ) . '</p>';
+
+  endif;
 }
+
+// Meta box passing grade
+function humble_lms_quiz_passing_grade_mb()
+{
+  global $post;
+
+  $passing_grade = absint( get_post_meta( $post->ID, 'humble_lms_quiz_passing_grade', true ) );
+
+  echo '<input class="widefat" name="humble_lms_quiz_passing_grade" id="humble_lms_quiz_passing_grade" type="number" value="' . $passing_grade . '" min="0" max="100">';
+} 
+
+// Save metabox data
+
+function humble_lms_save_quiz_meta_boxes( $post_id, $post )
+{
+  $nonce = ! empty( $_POST['humble_lms_meta_nonce'] ) ? $_POST['humble_lms_meta_nonce'] : '';
+
+  if( ! wp_verify_nonce( $nonce, 'humble_lms_meta_nonce' ) ) {
+    return $post_id;
+  }
+  
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+    return $post_id;
+  }
+
+  if( ! is_admin() ) {
+    return false;
+  }
+  
+  if ( ! current_user_can( 'edit_post', $post_id ) ) {
+    return $post_id;
+  }
+  
+  if ( ( ! $post_id ) || get_post_type( $post_id ) !== 'humble_lms_quiz' ) {
+    return false;
+  }
+
+  // Let's save some data!
+  $quiz_meta['humble_lms_quiz_questions'] = isset( $_POST['humble_lms_quiz_questions'] ) ? (array) $_POST['humble_lms_quiz_questions'] : array();
+  $quiz_meta['humble_lms_quiz_questions'] = array_map( 'esc_attr', $quiz_meta['humble_lms_quiz_questions'] );
+  $quiz_meta['humble_lms_quiz_passing_grade'] = absint( $_POST['humble_lms_quiz_passing_grade'] );
+  
+  if( $quiz_meta['humble_lms_quiz_passing_grade'] > 100 )
+    $quiz_meta['humble_lms_quiz_passing_grade'] = 100;
+
+  if( ! empty( $quiz_meta ) && sizeOf( $quiz_meta ) > 0 )
+  {
+    foreach ($quiz_meta as $key => $value)
+    {
+      if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+
+      if( get_post_meta( $post->ID, $key, FALSE ) ) {
+        update_post_meta( $post->ID, $key, $value );
+      } else {
+        add_post_meta( $post->ID, $key, $value );
+      }
+
+      if( ! $value ) delete_post_meta( $post->ID, $key ); // Delete if blank
+    }
+  }
+}
+
+add_action('save_post', 'humble_lms_save_quiz_meta_boxes', 1, 2);

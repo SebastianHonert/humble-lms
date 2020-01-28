@@ -111,7 +111,7 @@ function humble_lms_answers_mb() {
 
   ?>
 
-  <p><?php _e('Select multiple correct answers for a multiple choice question, and only one correct answer for a single choice question.', 'humble-lms'); ?></p>
+  <p><?php _e('Select more than on correct answer for a <strong>multiple choice</strong> question, and only one correct answer for a <strong>single choice</strong> question.', 'humble-lms'); ?></p>
 
   <div class="humble-lms-answers">
     <?php foreach( $answers as $key => $answer ): ?>

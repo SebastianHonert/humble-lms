@@ -716,6 +716,28 @@ input[type='submit'].humble-lms-btn--error:active,
   margin-left: .125em;
   color: #8a2738; }
 
+/* Quizzes */
+.humble-lms-quiz {
+  display: block;
+  margin-bottom: 1.5em; }
+
+.humble-lms-quiz-question {
+  display: block;
+  border: 1px solid #ccd8f3;
+  background: #f9fafe;
+  padding: 1em; }
+
+.humble-lms-quiz-question:not(:first-of-type) {
+  margin-top: 1em; }
+
+.humble-lms-quiz-question-title {
+  padding-top: 0;
+  margin-top: 0; }
+
+.humble-lms-multiple-choice-question {
+  display: flex;
+  align-items: center; }
+
 /* H5P */
 .h5p-iframe-wrapper {
   margin-bottom: 2em; }

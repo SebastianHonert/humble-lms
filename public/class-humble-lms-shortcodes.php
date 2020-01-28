@@ -21,6 +21,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $this->access_handler = new Humble_LMS_Public_Access_Handler;
       $this->options_manager = new Humble_LMS_Admin_Options_Manager;
       $this->content_manager = new Humble_LMS_Content_Manager;
+      $this->quiz = new Humble_LMS_Quiz;
 
     }
 
@@ -172,7 +173,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
         while ( $courses->have_posts() ) {
           $courses->the_post();
-            $html .= do_shortcode('[humble_lms_course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
+          $html .= do_shortcode('[humble_lms_course_tile tile_width="' . $tile_width . '" course_id="' . $post->ID . '"]');
         }
         $html .= '</div>';
         $html .= $this->humble_lms_paginate_links( $courses );
@@ -988,6 +989,66 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       </form><?php 
        
       return ob_get_clean();
+    }
+
+    /**
+     * Quizzes.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_quiz( $atts = null ) {
+      extract( shortcode_atts( array (
+        'ids' => '',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
+
+      if( ! $ids ) {
+        $ids = [];
+        return '<p>' . __('Please enter at least one valid quiz ID.', 'humble-lms') . '</p>';
+      }
+
+      $quizzes = $this->quiz->get( $ids );
+      
+      $html = '<div class="humble-lms-quiz" ' . $class . '" style="' . $style . '">';
+
+      if ( $quizzes ) {
+        
+        foreach( $quizzes as $quiz ) {
+          $questions = $this->quiz->questions( $quiz->ID );
+  
+          foreach( $questions as $question ) {
+            $html .= '<div class="humble-lms-quiz-question">';
+              $title = get_post_meta( $question->ID, 'humble_lms_question', true );
+              $html .= '<h3 class="humble-lms-quiz-question-title">' . $title . '</h3>';
+              $question_type = $this->quiz->question_type( $question->ID );
+              
+              switch( $question_type ) {
+                case 'single_choice':
+                  $answers = $this->quiz->answers( $question->ID );
+                  $html .= $this->quiz->single_choice( $answers );
+                  break;
+
+                case 'multiple_choice':
+                  $answers = $this->quiz->answers( $question->ID );
+                  $html .= $this->quiz->multiple_choice( $answers );
+                  break;
+
+                default:
+                  break;
+              }
+            $html .= '</div>';
+          }
+
+        }
+      } else {
+        $html .= '<p>' . __('No quizzes found.', 'humble-lms') . '</p>';
+      }
+
+      $html .= '</div>';
+
+      return $html;
     }
     
   }

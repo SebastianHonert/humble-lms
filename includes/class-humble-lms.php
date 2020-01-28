@@ -298,6 +298,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_lost_password_form', $plugin_shortcodes, 'humble_lms_custom_lost_password_form' );
     $this->loader->add_shortcode( 'humble_lms_reset_password_form', $plugin_shortcodes, 'humble_lms_custom_reset_password_form' );
     $this->loader->add_shortcode( 'humble_lms_user_profile', $plugin_shortcodes, 'humble_lms_custom_user_profile' );
+    $this->loader->add_shortcode( 'humble_lms_quiz', $plugin_shortcodes, 'humble_lms_quiz' );
 
     // AJAX
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );

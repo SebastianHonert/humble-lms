@@ -83,7 +83,8 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
-        'post__in' => $question_ids
+        'post__in' => $question_ids,
+        'orderby' => 'post__in',
       );
     
       $questions = get_posts( $args );

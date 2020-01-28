@@ -45,6 +45,7 @@ register_taxonomy(
     'humble_lms_track',
     'humble_lms_course',
     'humble_lms_lesson',
-    'humble_lms_quiz'
+    'humble_lms_quiz',
+    'humble_lms_question',
   ), $args
 );

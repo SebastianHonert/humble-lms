@@ -106,29 +106,52 @@ jQuery(document).ready(function($) {
   })
 
   // Repeater fields
-  $('.humble-lms-repeater').on('click', function(e) {
+  $('.humble-lms-repeater').live('click', function(e) {
     e.preventDefault()
 
-    var element = $($(this).data('element'))
-    var target = $($(this).data('target'))
+    let elements = $($(this).data('element'))
+    let element = $($(this).data('element')).last()
+    let target = $($(this).data('target'))
 
     if ((element.length === 0) || (target.length === 0)) {
       console.log('No element and/or target selected.')
       return
     }
+  
+    let key = elements.length // parseInt(element.find('input').data('key')) + 1
+    let clone = element.clone()
+
+    clone.appendTo(target)
     
-    element.clone(true).appendTo(target)
+    // Re-index elements
+    if (element.hasClass('humble-lms-answer')) {
+      elements = $($(this).data('element'))
+      reindex(elements)
+    }
   })
 
   // Remove answer
-  $('.humble-lms-remove-answer').on('click', function(e) {
+  $('.humble-lms-remove-answer').live('click', function(e) {
     e.preventDefault()
 
-    let length = $('.humble-lms-answer').length
+    let answers = $('.humble-lms-answer')
+    let length = answers.length
+
     if (length < 2) {
       return
     }
 
     $(this).closest('div').remove()
+    answers = $('.humble-lms-answer')
+    reindex(answers)
   })
+
+  // Re-index elements
+  function reindex(elements) {
+    elements.each(function(index, el) {
+      console.log(index)
+      $(el).find('input').eq(0).attr('name', 'humble_lms_question_answers[' + index + '][answer]')
+      $(el).find('input').eq(1).attr('name', 'humble_lms_question_answers[' + index + '][correct]')
+    })
+  }
 })

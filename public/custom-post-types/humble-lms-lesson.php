@@ -91,8 +91,6 @@ function humble_lms_lesson_access_levels_mb() {
   global $post;
   global $wp_roles;
 
-  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
-
   $roles = $wp_roles->roles;
   $levels = get_post_meta( $post->ID, 'humble_lms_lesson_access_levels', false );
   $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];

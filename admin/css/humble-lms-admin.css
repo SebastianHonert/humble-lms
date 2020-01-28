@@ -98,3 +98,10 @@
 .humble-lms-answer-text {
   margin-bottom: .5em;
 }
+
+.humble-lms-correct-answer-wrapper {
+  display: flex;
+  align-items: center;
+  margin: .25em 0 1em;
+  font-weight: 600;
+}

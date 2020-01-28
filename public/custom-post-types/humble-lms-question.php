@@ -66,25 +66,36 @@ register_post_type( 'humble_lms_question', $args );
 
 function humble_lms_question_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_question_mb', __('Please select a question type.', 'humble-lms'), 'humble_lms_question_mb', 'humble_lms_question', 'normal', 'default' );
+  add_meta_box( 'humble_lms_question_type_mb', __('Question type', 'humble-lms'), 'humble_lms_question_type_mb', 'humble_lms_question', 'normal', 'default' );
+  add_meta_box( 'humble_lms_question_mb', __('Question', 'humble-lms'), 'humble_lms_question_mb', 'humble_lms_question', 'normal', 'default' );
   add_meta_box( 'humble_lms_answers_mb', __('Answers to this question', 'humble-lms'), 'humble_lms_answers_mb', 'humble_lms_question', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_question_add_meta_boxes' );
 
+// Meta box question type
+function humble_lms_question_type_mb() {
+  global $post;
+
+  $question_type = get_post_meta( $post->ID, 'humble_lms_question_type', false );
+  $question_type = isset( $question_type[0] ) && ! empty( $question_type[0] ) ? $question_type[0] : 'multiple_choice'; 
+
+  $selected_multiple_choice = $question_type === 'multiple_choice' ? 'selected' : '';
+
+  echo '<select name="humble_lms_question_type" class="humble_lms_question_type">
+    <option value="multiple_choice" ' . $selected_multiple_choice . '>Single / Multiple Choice</option>
+  </select>';
+}
+
 // Meta box question
 function humble_lms_question_mb() {
   global $post;
 
-  $question = get_post_meta( $post->ID, 'humble_lms_question', false );
-  $question_type = isset( $question[0]['type'] ) && ! empty( $question[0]['type'] ) ? $question[0]['type'] : 'single-choice'; 
+  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
+  
+  $question = get_post_meta( $post->ID, 'humble_lms_question', true );
 
-  $selected_single_choice = $question_type === 'single_choice' ? 'selected' : '';
-  $selected_multiple_choice = $question_type === 'multiple_choice' ? 'selected' : '';
-  echo '<select name="humble-lms-question-type" class="humble-lms-question-type">
-    <option value="single-choice" ' . $selected_single_choice . '>Single Choice</option>
-    <option value="single-choice" ' . $selected_single_choice . '>Multiple Choice</option>
-  </select>';
+  echo '<input name="humble_lms_question" class="widefat" value="' . $question . '">'; 
 }
 
 // Meta box answers
@@ -92,18 +103,95 @@ function humble_lms_answers_mb() {
   global $post;
 
   $question = get_post_meta( $post->ID, 'humble_lms_question', false );
-  $answers = isset( $question[0]['answers'] ) && ! empty( $question[0]['answers'] ) ? $question[0]['answers'] : ['coming soon'];
+  $question_type = get_post_meta( $post->ID, 'humble_lms_question_type', false );
+  $answers = get_post_meta( $post->ID, 'humble_lms_question_answers', true );
+  $answers = maybe_unserialize( $answers );
+
+  $answers = ! isset( $answers ) || ! isset( $answers[0]['answer'] ) || empty( $answers[0]['answer'] ) ? array(['answer' => __('Please provide at least one answer.', 'humble-lms'), 'correct' => 0]) : $answers;
 
   ?>
 
+  <p><?php _e('Select multiple correct answers for a multiple choice question, and only one correct answer for a single choice question.', 'humble-lms'); ?></p>
+
   <div class="humble-lms-answers">
-    <div class="humble-lms-answer">
-      <input type="text" class="humble-lms-answer-text widefat" value="">
-      <a class="button humble-lms-remove-answer"><?php _e('Delete answer', 'humble-lms'); ?></a>
-    </div>
+    <?php foreach( $answers as $key => $answer ): ?>
+      <?php $checked = isset( $answer['correct'] ) && $answer['correct'] === 1 ? 'checked' : ''; ?>
+      <div class="humble-lms-answer">
+        <input type="text" name="humble_lms_question_answers[<?php echo $key; ?>][answer]" data-key="<?php echo $key; ?>" class="humble-lms-answer-text widefat" value="<?php echo $answers[$key]['answer']; ?>">
+        <div class="humble-lms-correct-answer-wrapper">
+          <span>
+            <input type="checkbox" name="humble_lms_question_answers[<?php echo $key; ?>][correct]" data-key="<?php echo $key; ?>" class="humble-lms-answer-correct" value="1" <?php echo $checked; ?>></span>
+            <span><?php echo __('Correct answer', 'humble-lms'); ?>?</span>
+        </div>
+        <a class="button humble-lms-remove-answer"><?php _e('Delete answer', 'humble-lms'); ?></a>
+      </div>
+    <?php endforeach; ?>
   </div>
 
-  <p><a class="button humble-lms-repeater" data-element=".humble-lms-answer:last" data-target=".humble-lms-answers">+ <?php _e('Add answer', 'humble-lms'); ?></a></p>
+  <p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-answer" data-target=".humble-lms-answers">+ <?php _e('Add answer', 'humble-lms'); ?></a></p>
 
   <?php
 }
+
+// Save metabox data
+
+function humble_lms_save_question_meta_boxes( $post_id, $post )
+{
+  $nonce = ! empty( $_POST['humble_lms_meta_nonce'] ) ? $_POST['humble_lms_meta_nonce'] : '';
+
+  if( ! wp_verify_nonce( $nonce, 'humble_lms_meta_nonce' ) ) {
+    return $post_id;
+  }
+  
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+    return $post_id;
+  }
+
+  if( ! is_admin() ) {
+    return false;
+  }
+  
+  if ( ! current_user_can( 'edit_post', $post_id ) ) {
+    return $post_id;
+  }
+  
+  if ( ( ! $post_id ) || get_post_type( $post_id ) !== 'humble_lms_question' ) {
+    return false;
+  }
+
+  $allowed_question_types = array(
+    'multiple_choice'
+  );
+
+  $question_meta['humble_lms_question_type'] = ! empty( $_POST['humble_lms_question_type'] ) && in_array( $_POST['humble_lms_question_type'], $allowed_question_types ) ? $_POST['humble_lms_question_type'] : 'multiple_choice';
+  $question_meta['humble_lms_question'] = ! empty( $_POST['humble_lms_question'] ) ? esc_attr( $_POST['humble_lms_question'] ) : __('Please enter a question.', 'humble-lms');
+  
+  if( is_array( $_POST['humble_lms_question_answers'] ) ) {
+    foreach( $_POST['humble_lms_question_answers'] as $key => $answer ) {
+      if( empty( $answer['answer'] ) ) continue;
+
+      $question_meta['humble_lms_question_answers'][$key]['answer'] = esc_attr( $answer['answer'] );
+      $question_meta['humble_lms_question_answers'][$key]['correct'] = $answer['correct'] ? 1 : 0 ;
+    }
+
+    $question_meta['humble_lms_question_answers'] = serialize( $question_meta['humble_lms_question_answers'] );
+  }
+
+  if( ! empty( $question_meta ) && sizeOf( $question_meta ) > 0 )
+  {
+    foreach ($question_meta as $key => $value)
+    {
+      if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+
+      if( get_post_meta( $post->ID, $key, FALSE ) ) {
+        update_post_meta( $post->ID, $key, $value );
+      } else {
+        add_post_meta( $post->ID, $key, $value );
+      }
+
+      if( ! $value ) delete_post_meta( $post->ID, $key ); // Delete if blank
+    }
+  }
+}
+
+add_action('save_post', 'humble_lms_save_question_meta_boxes', 1, 2);

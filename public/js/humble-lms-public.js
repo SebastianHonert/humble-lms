@@ -57,6 +57,16 @@ jQuery(document).ready(function($) {
 
     loadingLayer(true)
 
+    // Form contains quiz
+    let form = $('#humble-lms-mark-complete')
+    let hasQuiz = form.hasClass('humble-lms-has-quiz')
+    let quizIds = hasQuiz ? $('#quiz-ids').val().split(',') : []
+        quizIds = quizIds.map(function (id) { 
+          return parseInt(id) 
+        })
+    let evaluation = Humble_LMS_Quiz.evaluate()
+        evaluation['quizIds'] = quizIds ? quizIds : []
+
     setTimeout( function() {
       $.ajax({
         url: humble_lms.ajax_url,
@@ -67,7 +77,9 @@ jQuery(document).ready(function($) {
           lessonId: $('#lesson-id').val(),
           lessonCompleted: $(this).data('lesson-completed'),
           nonce: humble_lms.nonce,
-          markComplete: true
+          markComplete: true,
+          hasQuiz: hasQuiz,
+          evaluation: JSON.stringify(evaluation)
         },
         dataType: 'json',
         error: function(MLHttpRequest, textStatus, errorThrown) {

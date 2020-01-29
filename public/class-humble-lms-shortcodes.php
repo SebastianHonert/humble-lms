@@ -439,12 +439,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( ! $is_first ) {
         $prev_lesson = get_post( $lessons[$key-1] );
       }
+      
+      // Lesson contains quizzes
+      $quiz_class = has_shortcode( $post->post_content, 'humble_lms_quiz' ) ? 'humble-lms-has-quiz' : '';
+      $quiz_ids = implode(',', $this->get_shortcode_attributes( 'humble_lms_quiz' ) );
 
-      $html = '<form method="post" id="humble-lms-mark-complete">';
+      $html = '<form method="post" id="humble-lms-mark-complete" class="' . $quiz_class . '">';
         $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
         $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
+        $html .= '<input type="hidden" name="quiz-ids" id="quiz-ids" value="' . $quiz_ids . '">';
         $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->user->completed_lesson( get_current_user_id(), $post->ID ) . '">';
-        
+
         if( $this->user->completed_lesson( get_current_user_id(), $post->ID ) ) {
           $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
         } else {
@@ -1019,10 +1024,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $questions = $this->quiz->questions( $quiz->ID );
   
           foreach( $questions as $question ) {
-            $html .= '<div class="humble-lms-quiz-question">';
+            $question_type = $this->quiz->question_type( $question->ID );
+  
+            $html .= '<div class="humble-lms-quiz-question ' . $question_type . '" data-id="' . $question->ID . '">';
               $title = get_post_meta( $question->ID, 'humble_lms_question', true );
               $html .= '<h3 class="humble-lms-quiz-question-title">' . $title . '</h3>';
-              $question_type = $this->quiz->question_type( $question->ID );
               
               switch( $question_type ) {
                 case 'single_choice':
@@ -1049,6 +1055,33 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $html .= '</div>';
 
       return $html;
+    }
+
+    /**
+     * Get shortcode attributes.
+     * 
+     * @return array
+     * @since   0.0.1
+     */
+    public function get_shortcode_attributes( $shortcode = null ) {
+      global $post;
+
+      if( ! $shortcode )
+        return [];
+
+      if( ! has_shortcode( $post->post_content, esc_attr( $shortcode ) ) )
+        return [];
+
+      preg_match_all( '/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER );
+      
+      if( ! isset( $matches[0][3] ) || empty( $matches[0][3] ) )
+        return;
+      
+      preg_match('/".*?"/', $matches[0][3], $ids);
+      $ids = array_map( 'trim', explode(',', str_replace( '"', '', $ids[0] ) ) );
+      $ids = array_map( 'intval', $ids );
+
+      return $ids;
     }
     
   }

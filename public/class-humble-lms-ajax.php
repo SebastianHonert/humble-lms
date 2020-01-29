@@ -22,6 +22,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     public function __construct() {
 
       $this->user = new Humble_LMS_Public_User;
+      $this->quiz = new Humble_LMS_Quiz;
 
     }
     
@@ -60,6 +61,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
       $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
+      $has_quiz = $_POST['hasQuiz'] === 'true' ? true : false;
+      $evaluation = json_decode( stripslashes( $_POST['evaluation'] ) );
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
 
       // Neither course nor lesson ID is set: redirect accordingly.
@@ -90,10 +93,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
        * 
        * This returns an array with the completed lesson, courses, and track:
        * 
-       * array([lesson_id], [course_id1, course_id2, ...], [track_id1, track_id2, ...])
+       * array([lesson_ids], [course_ids], [track_ids], [award_ids], [certificate_ids], [quiz_ids])
       */
       if( is_user_logged_in() ) {
-        $completed = $this->user->mark_lesson_complete( $lesson_id );
+        $completed = $this->user->mark_lesson_complete( $lesson_id, $evaluation );
       }
 
       // Redirect to the next lesson

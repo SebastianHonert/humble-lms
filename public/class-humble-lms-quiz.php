@@ -179,9 +179,11 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         return;
 
       $html = '';
+      $context = uniqid();
       foreach( $answers as $answer ) {
-        $html .= '<div class="humble-lms-multiple-choice-question">';
-        $html .= '<input type="radio" name="single-choice" value="1">' . $answer['answer'];
+        $correct = $answer['correct'] == 1 ? '1' : '0';
+        $html .= '<div class="humble-lms-answer">';
+        $html .= '<input type="radio" name="single-choice-' . $context . '" value="' . $correct . '">' . $answer['answer'];
         $html .= '</div>';
       }
 
@@ -200,13 +202,41 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         return;
 
       $html = '';
+      $context = uniqid();
       foreach( $answers as $answer ) {
-        $html .= '<div class="humble-lms-multiple-choice-question">';
-        $html .= '<input type="checkbox" name="multiple-choice" value="1">' . $answer['answer'];
+        $correct = $answer['correct'] == 1 ? '1' : '0';
+        $html .= '<div class="humble-lms-answer">';
+        $html .= '<input type="checkbox" name="multiple-choice-' . $context . '" value="' . $correct . '">' . $answer['answer'];
         $html .= '</div>';
       }
 
       return $html;
+    }
+
+    /**
+     * Evaluate quizzes by id.
+     * 
+     * $results = array(
+     *   array(
+     *     'id' => quiz_id,
+     *     'questions' => array(
+     *       'id' => question_id,
+     *         'answers' => array(
+     *           'id' => answer_id,
+     *           'correct' => boolean
+     *         )
+     *       )
+     *     )
+     *   )
+     * );
+     *
+     * @since    0.0.1
+     * @param    array
+     * @return   array
+     */
+    public function evaluate( $quiz_ids = [] ) {
+      if( empty( $quiz_ids ) )
+        return [];      
     }
     
   }

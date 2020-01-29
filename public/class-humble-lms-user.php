@@ -224,14 +224,19 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @param   int
      * @since   0.0.1
      */
-    public function mark_lesson_complete( $lesson_id ) {
+    public function mark_lesson_complete( $lesson_id, $evaluation = null ) {
       if( ! is_user_logged_in() )
         return [];
 
       $user_id = get_current_user_id();
 
-      $completed = array( [], [], [], [], [] ); // lesson, courses, tracks, awards, certificates
+      $completed = array( [], [], [], [], [], [] ); // lesson, courses, tracks, awards, certificates, quizzes
       
+      if( isset( $evaluation ) && isset( $evaluation->completed ) && $evaluation->completed === true ) {
+        $completed[5] = $evaluation->quizIds;
+        update_user_meta( $user_id, 'humble_lms_quizzes_completed', $quizzes_completed );
+      }
+
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
       if( ! is_array( $lessons_completed ) ) $lessons_completed = array();
 

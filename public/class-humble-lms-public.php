@@ -99,8 +99,9 @@ class Humble_LMS_Public {
      * class.
      */
 
+    wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, false );
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, false );
-
+    
     wp_localize_script( $this->humble_lms, 'humble_lms', array(
       'ajax_url' => admin_url( 'admin-ajax.php' ),
       'nonce' => wp_create_nonce( 'humble_lms' )
@@ -261,7 +262,7 @@ class Humble_LMS_Public {
       $html .= $content;
     }
 
-    // Completed lesson/course/track
+    // Completed Lesson / Course / Track / Award / Certificate / Quizzes
     if( isset( $_POST['completed'] ) ) {
       $completed = json_decode( $_POST['completed'] );
       if( ! empty( $completed[0] ) ) {
@@ -274,6 +275,7 @@ class Humble_LMS_Public {
             if( $key === 2 ) { $title = __('Track completed', 'humble-lms'); $icon = 'ti-crown'; }
             if( $key === 3 ) { $title = __('You received an award', 'humble-lms'); $icon = 'ti-medall'; }
             if( $key === 4 ) { $title = __('You have been issued a certificate', 'humble-lms'); $icon = 'ti-clipboard'; }
+            if( $key === 5 ) { $title = __('Quiz completed', 'humble-lms'); $icon = 'ti-clipboard'; }
 
             $html .= '<div class="humble-lms-award-message-inner">
                 <div>
@@ -290,6 +292,10 @@ class Humble_LMS_Public {
                   } elseif ( $key === 3 ) {
                     $html .= '<img class="humble-lms-award-image humble-lms-bounce-in" src="' . get_the_post_thumbnail_url( $id ) . '" alt="" />';
                   } elseif ( $key === 4 ) {
+                    $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
+                      <i class="' . $icon .'"></i>
+                    </div>';
+                  } elseif ( $key === 5 ) {
                     $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
                       <i class="' . $icon .'"></i>
                     </div>';

@@ -255,23 +255,23 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
             $tracks_total = wp_count_posts('humble_lms_track')->publish;
             $completed_tracks = count( $this->user->completed_tracks( $user->ID, true ) );
-            $completed_tracks_percent = ( $completed_tracks / $tracks_total ) * 100;
+            $completed_tracks_percent = $tracks_total > 0 ? ( $completed_tracks / $tracks_total ) * 100 : 0;
 
             $courses_total = wp_count_posts('humble_lms_course')->publish;
             $completed_courses = count( $this->user->completed_courses( $user->ID, true ) );
-            $completed_courses_percent = ( $completed_courses / $courses_total ) * 100;
+            $completed_courses_percent = $courses_total > 0 ? ( $completed_courses / $courses_total ) * 100 : 0;
 
             $lessons_total = wp_count_posts('humble_lms_lesson')->publish;
             $completed_lessons = count( $this->user->completed_lessons( $user->ID, true ) );
-            $completed_lessons_percent = ( $completed_lessons / $lessons_total ) * 100;
+            $completed_lessons_percent = $lessons_total > 0 ? ( $completed_lessons / $lessons_total ) * 100 : 0;
 
             $awards_total = wp_count_posts('humble_lms_award')->publish;
             $completed_awards = count( $this->user->granted_awards( $user->ID, true ) );
-            $completed_awards_percent = ( $completed_awards / $awards_total ) * 100;
+            $completed_awards_percent = $awards_total > 0 ? ( $completed_awards / $awards_total ) * 100 : 0;
 
             $certificates_total = wp_count_posts('humble_lms_cert')->publish;
             $completed_certificates = count( $this->user->issued_certificates( $user->ID, true ) );
-            $completed_certificates_percent = ( $completed_certificates / $certificates_total ) * 100;
+            $completed_certificates_percent = $certificates_total > 0 ? ( $completed_certificates / $certificates_total ) * 100 : 0;
 
             // TODO: link to single user reporting view
             echo '<tr>

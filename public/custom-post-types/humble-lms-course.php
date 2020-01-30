@@ -193,7 +193,7 @@ function humble_lms_course_instructors_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more instructors</a>' ) . '</p>';
+    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/users.php') . '">add one or more instructors</a>' ) . '</p>';
 
   endif;
 }

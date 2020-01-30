@@ -463,6 +463,7 @@ input[type='submit'].humble-lms-btn--error:active,
   color: $color-light;
   font-size: 1.125em;
   display: none;
+  background: rgba($color-primary, .96);
 }
 
 .humble-lms-award-message > div {
@@ -483,7 +484,7 @@ input[type='submit'].humble-lms-btn--error:active,
   text-align: center;
   align-items: center;
   justify-content: center;
-  background: rgba($color-primary, .96);
+  opacity: 0;
 }
 
 .humble-lms-award-message-inner h3 {

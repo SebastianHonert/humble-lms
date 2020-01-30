@@ -390,7 +390,8 @@ input[type='submit'].humble-lms-btn--error:active,
   overflow: auto;
   color: #fff;
   font-size: 1.125em;
-  display: none; }
+  display: none;
+  background: rgba(32, 64, 134, 0.96); }
 
 .humble-lms-award-message > div {
   position: relative;
@@ -409,7 +410,7 @@ input[type='submit'].humble-lms-btn--error:active,
   text-align: center;
   align-items: center;
   justify-content: center;
-  background: rgba(32, 64, 134, 0.96); }
+  opacity: 0; }
 
 .humble-lms-award-message-inner h3 {
   margin: 0 0;

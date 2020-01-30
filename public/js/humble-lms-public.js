@@ -97,31 +97,39 @@ jQuery(document).ready(function($) {
   })
 
   // Award messages
-  function closeAwardMessage (msg = null) {
+  function closeAwardMessage () {
     let messages = $('.humble-lms-award-message-inner')
-    if (msg && messages.length > 1) {
-      $(msg).fadeOut(500, function () {
-        $(this).remove()
-        $('.humble-lms-award-message').fadeOut(0).fadeIn(500)
-      })
-    } else {
+
+    if (messages.length && messages.length === 1) {
       $('.humble-lms-award-message').fadeOut(500)
-      $(messages).fadeOut(500, function() {
-        $(this).remove()
-      })
+      return
     }
+    
+    messages.eq(0).animate({
+      opacity: 0,
+    }, 500, function () {
+      $(this).remove()
+      messages = $('.humble-lms-award-message-inner')
+      if (messages.length) {
+        $('.humble-lms-award-message-inner').eq(0).animate({
+          opacity: 1,
+        }, 500)
+      }
+    })
   }
 
   $('.humble-lms-award-message-close').on('click touch', function () {
-    let msg = $(this).parent('div').parent('.humble-lms-award-message-inner')
-    closeAwardMessage(msg)
+    closeAwardMessage()
   })
 
   $('.humble-lms-award-message-inner').on('click touch', function () {
-    closeAwardMessage($(this))
+    closeAwardMessage()
   })
 
-  $('.humble-lms-award-message').fadeIn(1000)
+  $('.humble-lms-award-message').fadeIn(500)
+  $('.humble-lms-award-message-inner').first().animate({
+    opacity: 1,
+  }, 500)
 
   // Keyboard interaction
   $(document).keyup( function (e) {

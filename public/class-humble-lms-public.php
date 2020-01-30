@@ -140,7 +140,10 @@ class Humble_LMS_Public {
    * @since    0.0.1
    */
   public function humble_lms_archive_templates( $template ) {
-    global $wp_query, $post;
+    global $post;
+
+    if( ! $post )
+      return $template;
 
     // Track archive
     if ( is_archive() && $post->post_type == 'humble_lms_track' ) {

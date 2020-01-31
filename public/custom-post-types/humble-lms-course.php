@@ -75,8 +75,7 @@ function humble_lms_course_lessons_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $course_lessons = get_post_meta( $post->ID, 'humble_lms_course_lessons', true );
-  $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+  $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $post->ID );
 
   $args = array(
     'post_type' => 'humble_lms_lesson',

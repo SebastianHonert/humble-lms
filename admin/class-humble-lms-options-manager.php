@@ -395,8 +395,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <td>'. $this->progress_bar( $this->user->course_progress( $course->ID, $user->ID ) ) . '</td>
         </tr>';
 
-        $course_lessons = get_post_meta( $course->ID, 'humble_lms_course_lessons', true );
-        $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+        $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $course->ID );
 
         foreach( $course_lessons as $lesson_id ) {
           $completed = $this->user->completed_lesson( $user->ID, $lesson_id ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';

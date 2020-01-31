@@ -222,15 +222,14 @@ class Humble_LMS_Admin {
         ) );
 
         foreach( $tracks as $track ) {
-          $track_courses = get_post_meta($track->ID, 'humble_lms_track_courses', true);
-          $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+          $track_courses = Humble_LMS_Content_Manager::get_track_courses( $track->ID );
 
           if( ( $key = array_search( $post_id, $track_courses ) ) !== false ) {
             unset( $track_courses[$key] );
           }
 
           $updated_track_courses = ['[' . implode(',', $track_courses ) . ']'];
-          
+
           update_post_meta( $track->ID, 'humble_lms_track_courses', $updated_track_courses );
         }
 
@@ -245,8 +244,7 @@ class Humble_LMS_Admin {
         ) );
 
         foreach( $courses as $course ) {
-          $course_lessons = get_post_meta($course->ID, 'humble_lms_course_lessons', true);
-          $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+          $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $course->ID );
 
           if( ( $key = array_search( $post_id, $course_lessons ) ) !== false ) {
             unset( $course_lessons[$key] );

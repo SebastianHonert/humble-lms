@@ -51,8 +51,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
-      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+      $course_lessons = $this->content_manager->get_course_lessons( $course_id );
 
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', true );
 
@@ -77,8 +76,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
-      $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+      $track_courses = $this->content_manager->get_track_courses( $track_id );
 
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
 
@@ -603,8 +601,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $user_id )
         return 0;
       
-      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
-      $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+      $track_courses = $this->content_manager->get_track_courses( $track_id );
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
 
       if( ! isset( $courses_completed[0] ) || ! is_array( $courses_completed[0] ) )
@@ -633,8 +630,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $user_id )
         return 0;
       
-      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
-      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+      $course_lessons = $this->content_manager->get_course_lessons( $course_id );
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
 
       if( ! isset( $lessons_completed[0] ) || ! is_array( $lessons_completed[0] ) )

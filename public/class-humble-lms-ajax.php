@@ -23,6 +23,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $this->user = new Humble_LMS_Public_User;
       $this->quiz = new Humble_LMS_Quiz;
+      $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
     
@@ -100,8 +101,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Redirect to the next lesson
-      $lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
-      $lessons = ! empty( $lessons[0] ) ? json_decode( $lessons[0] ) : [];
+      $lessons = $this->content_manager->get_course_lessons( $course_id );
 
       $key = array_search( $lesson_id, $lessons );
       $is_last = $key === array_key_last( $lessons );

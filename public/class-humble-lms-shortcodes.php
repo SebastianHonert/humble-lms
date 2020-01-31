@@ -142,14 +142,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       ), $atts ) );
 
       $is_track = ! empty( $track_id ) && ( is_single() && $post->post_type === 'humble_lms_track' );
+      $courses = $this->content_manager->get_track_courses( $track_id );
 
       $args = array(
         'post_type' => 'humble_lms_course',
         'post_status' => 'publish',
         'posts_per_page' => $is_track ? -1 : get_option( 'posts_per_page' ),
-        'orderby' => 'title',
-        'order' => 'ASC',
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+        'orderby' => 'post__in',
+        'order' => 'ASC',
+        'post__in' => $courses
       );
 
       if( ! empty( $ids ) ) {
@@ -157,8 +159,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       if( $is_track) {
-        $track_courses = get_post_meta($track_id, 'humble_lms_track_courses', true);
-        $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+        $track_courses = $this->content_manager->get_track_courses( $track_id );
 
         if( ! empty( $track_courses ) ) {
           $args['post__in'] = $track_courses;
@@ -285,7 +286,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $lesson_id = null;
       }
 
-      $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
+      $lessons = $this->content_manager->get_course_lessons( $course_id );
 
       if( is_single() && get_post_type() === 'humble_lms_course' && empty( $lessons ) ) {
         return '<p>' . __('There are no lessons attached to this course', 'humble-lms') . '</p>';
@@ -426,8 +427,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
-      $lessons = json_decode( get_post_meta($course_id, 'humble_lms_course_lessons', true)[0] );
-      
+      $lessons = $this->content_manager->get_course_lessons( $course_id );
       $key = array_search( $post->ID, $lessons );
       $is_first = $key === array_key_first( $lessons );
       $is_last = $key === array_key_last( $lessons );
@@ -529,8 +529,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $class_completed = $this->user->completed_track( $track->ID ) ? 'humble-lms-track-progress-track--completed' : '';
         $html .= '<p class="humble-lms-progress-track-title ' . $class_completed . '"><a href="' . esc_url( get_permalink( $track->ID ) ) . '">' . get_the_title( $track->ID ) . '</a></p>';
 
-        $track_courses = get_post_meta( $track->ID, 'humble_lms_track_courses', true );
-        $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+        $track_courses = $this->content_manager->get_track_courses( $track->ID );
 
         if( empty( $track_courses) )
           continue;

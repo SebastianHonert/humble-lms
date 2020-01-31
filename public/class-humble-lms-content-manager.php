@@ -30,7 +30,26 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
-     * Get courses (published / unpublished)
+     * Get courses for a single track id.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_track_courses( $track_id, $published = false ) {
+      $track_courses = [];
+
+      if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' )
+        return $track_courses;
+
+      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
+      $track_courses = ! empty( $track_courses[0] ) ? json_decode( $track_courses[0] ) : [];
+
+      return $track_courses;
+    }
+
+    /**
+     * Get courses (published / unpublished).
      *
      * @param   bool
      * @return  array
@@ -46,6 +65,25 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $courses = get_posts( $args );
 
       return $courses;
+    }
+
+    /**
+     * Get lessons for a single course.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_course_lessons( $course_id ) {
+      $course_lessons = [];
+
+      if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
+        return $course_lessons;
+
+      $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons', true );
+      $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
+
+      return $course_lessons;
     }
 
     /**
@@ -113,9 +151,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
           $courses = $this->get_courses( true );
 
           foreach( $courses as $course ) {
-            $course_lessons = get_post_meta($course->ID, 'humble_lms_course_lessons', true);
-            $course_lessons = ! empty( $course_lessons[0] ) ? json_decode( $course_lessons[0] ) : [];
-
+            $course_lessons = $this->get_course_lessons( $course->ID );
             if( in_array( $id, $course_lessons ) ) {
               array_push( $course_ids, $course->ID );
             }

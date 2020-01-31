@@ -70,13 +70,17 @@ jQuery(document).ready(function($) {
 
     if (evaluation.completed) {
       // TODO: AJAX complete quiz for user
-      $('.humble-lms-award-message-image').html('<i class="ti-face-smile"></i>')
-      $('.humble-lms-award-message--quiz, .humble-lms-message-quiz--completed').fadeIn(500)
+      $('.humble-lms-quiz-message-image').html('<i class="ti-face-smile"></i>')
+      $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(500)
       $('#humble-lms-mark-complete').fadeIn(500)
     } else {
-      $('.humble-lms-award-message-image').html('<i class="ti-face-sad"></i>')
-      $('.humble-lms-award-message--quiz, .humble-lms-message-quiz--failed').fadeIn(500)
+      $('.humble-lms-quiz-message-image').html('<i class="ti-face-sad"></i>')
+      $('.humble-lms-quiz-message, .humble-lms-message-quiz--failed').fadeIn(500)
     }
+  })
+
+  $('.humble-lms-quiz-message').on('click', function() {
+    $(this).fadeOut(500)
   })
 
   // Mark lesson complete
@@ -111,11 +115,14 @@ jQuery(document).ready(function($) {
   })
 
   // Award messages
-  function closeAwardMessage () {
-    let messages = $('.humble-lms-award-message-inner')
+  let messageContainer = $('.humble-lms-award-message')
+  let messages = $('.humble-lms-award-message-inner')
 
+  function closeAwardMessage () {
     if (messages.length && messages.length === 1) {
-      $('.humble-lms-award-message').fadeOut(500)
+      messageContainer.fadeOut(500, function() {
+        messages.remove()
+      })
       return
     }
     
@@ -125,7 +132,7 @@ jQuery(document).ready(function($) {
       $(this).remove()
       messages = $('.humble-lms-award-message-inner')
       if (messages.length) {
-        $('.humble-lms-award-message-inner').eq(0).animate({
+        messages.eq(0).animate({
           opacity: 1,
         }, 500)
       }
@@ -140,15 +147,17 @@ jQuery(document).ready(function($) {
     closeAwardMessage()
   })
 
-  $('.humble-lms-award-message').not('.humble-lms-award-message--quiz').fadeIn(500)
-  $('.humble-lms-award-message-inner').first().animate({
+  messageContainer.fadeIn(500)
+  messages.first().animate({
     opacity: 1,
   }, 500)
 
   // Keyboard interaction
   $(document).keyup( function (e) {
     if (e.key === "Escape") { // escape key maps to keycode `27`
-      closeAwardMessage()
+      messageContainer.fadeOut(500, function() {
+        messages.remove()
+      })
     }
   })
 

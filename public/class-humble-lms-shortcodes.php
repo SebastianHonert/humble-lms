@@ -1038,22 +1038,22 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $quizzes = $this->quiz->get( $ids );
       
       $html = '';
-      $html .= '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div><div class="humble-lms-award-message-inner"><div>
-        <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+      $html .= '<div class="humble-lms-quiz-message"><div><div class="humble-lms-quiz-message-inner"><div>
+        <div class="humble-lms-quiz-message-close" aria-label="Close quiz overlay">
           <i class="ti-close"></i>
         </div>
         <div class="humble-lms-message-quiz humble-lms-message-quiz--completed">
-          <h3 class="humble-lms-award-message-title">' . __('Well done!', 'humble-lms') . '</h3>
+          <h3 class="humble-lms-quiz-message-title">' . __('Well done!', 'humble-lms') . '</h3>
           <p>' . __('You passed this quiz with a score of', 'humble-lms') . '</p><p><span class="humble-lms-quiz-score"></span></p>
           <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
         </div>
         <div class="humble-lms-message-quiz humble-lms-message-quiz--failed">
-          <h3 class="humble-lms-award-message-title">' . __('Bummer', 'humble-lms') . '</h3>
+          <h3 class="humble-lms-quiz-message-title">' . __('Bummer', 'humble-lms') . '</h3>
           <p>' . __('You failed this quiz with a score of', 'humble-lms') . '</p>
           <p><span class="humble-lms-quiz-score"></span></p>
           <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
         </div>
-        <div class="humble-lms-award-message-image humble-lms-bounce-in"></div>
+        <div class="humble-lms-quiz-message-image humble-lms-bounce-in"></div>
       </div></div></div></div>';
       $html .= '<div class="humble-lms-quiz ' . $class . '" style="' . $style . '">';
 

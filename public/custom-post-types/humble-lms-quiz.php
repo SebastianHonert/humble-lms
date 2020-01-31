@@ -68,6 +68,7 @@ function humble_lms_quiz_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_quiz_questions_mb', __('Questions in this quiz', 'humble-lms'), 'humble_lms_quiz_questions_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_passing_grade_mb', __('Passing grade in percent (%)', 'humble-lms'), 'humble_lms_quiz_passing_grade_mb', 'humble_lms_quiz', 'normal', 'default' );
+  add_meta_box( 'humble_lms_quiz_passing_required_mb', __('Passing required', 'humble-lms'), 'humble_lms_quiz_passing_required_mb', 'humble_lms_quiz', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_quiz_add_meta_boxes' );
@@ -133,7 +134,18 @@ function humble_lms_quiz_passing_grade_mb()
   $passing_grade = absint( get_post_meta( $post->ID, 'humble_lms_quiz_passing_grade', true ) );
 
   echo '<input class="widefat" name="humble_lms_quiz_passing_grade" id="humble_lms_quiz_passing_grade" type="number" value="' . $passing_grade . '" min="0" max="100">';
-} 
+}
+
+// Meta box passing required
+
+function humble_lms_quiz_passing_required_mb() {
+  global $post;
+
+  $required = get_post_meta($post->ID, 'humble_lms_quiz_passing_required', true);
+  $checked = $required ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_quiz_passing_required" id="humble_lms_quiz_passing_required" value="1" ' . $checked . '>' . __('Students have to pass this quiz in order to complete the lesson.', 'humble-lms') . '</p>';
+}
 
 // Save metabox data
 
@@ -169,6 +181,8 @@ function humble_lms_save_quiz_meta_boxes( $post_id, $post )
   if( $quiz_meta['humble_lms_quiz_passing_grade'] > 100 )
     $quiz_meta['humble_lms_quiz_passing_grade'] = 100;
 
+  $quiz_meta['humble_lms_quiz_passing_required'] = isset( $_POST['humble_lms_quiz_passing_required'] ) ? 1 : 0;
+  
   if( ! empty( $quiz_meta ) && sizeOf( $quiz_meta ) > 0 )
   {
     foreach ($quiz_meta as $key => $value)

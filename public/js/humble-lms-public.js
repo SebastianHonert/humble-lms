@@ -51,22 +51,38 @@ jQuery(document).ready(function($) {
     })
   })
 
-  // Mark lesson complete and continue to the next lesson
-  $(document).on('submit', '#humble-lms-mark-complete', function (e) {
+  // Evaluate quiz
+  $(document).on('submit', '#humble-lms-evaluate-quiz', function (e) {
     e.preventDefault()
 
-    loadingLayer(true)
-
-    // Form contains quiz
-    let form = $('#humble-lms-mark-complete')
-    let hasQuiz = form.hasClass('humble-lms-has-quiz')
-    let quizIds = hasQuiz ? $('#quiz-ids').val().split(',') : []
+    let quizForm = $('#humble-lms-evaluate-quiz')
+    let quizIds = quizForm.find($('input[name="quiz-ids"]')).val().split(',')
         quizIds = quizIds.map(function (id) { 
-          return parseInt(id) 
+          return parseInt(id)
         })
+
     let evaluation = Humble_LMS_Quiz.evaluate()
         evaluation['quizIds'] = quizIds ? quizIds : []
 
+    $('.humble-lms-message-quiz').hide(0)
+    $('.humble-lms-quiz-score').text(evaluation.grade + ' %')
+    $('.humble-lms-quiz-passing-grade').text(evaluation.passing_grade + ' %')
+
+    if (evaluation.completed) {
+      // TODO: AJAX complete quiz for user
+      $('.humble-lms-award-message-image').html('<i class="ti-face-smile"></i>')
+      $('.humble-lms-award-message--quiz, .humble-lms-message-quiz--completed').fadeIn(500)
+      $('#humble-lms-mark-complete').fadeIn(500)
+    } else {
+      $('.humble-lms-award-message-image').html('<i class="ti-face-sad"></i>')
+      $('.humble-lms-award-message--quiz, .humble-lms-message-quiz--failed').fadeIn(500)
+    }
+  })
+
+  // Mark lesson complete
+  $(document).on('submit', '#humble-lms-mark-complete', function (e) {
+    e.preventDefault()
+    loadingLayer(true)
     setTimeout( function() {
       $.ajax({
         url: humble_lms.ajax_url,
@@ -77,9 +93,7 @@ jQuery(document).ready(function($) {
           lessonId: $('#lesson-id').val(),
           lessonCompleted: $(this).data('lesson-completed'),
           nonce: humble_lms.nonce,
-          markComplete: true,
-          hasQuiz: hasQuiz,
-          evaluation: JSON.stringify(evaluation)
+          markComplete: true
         },
         dataType: 'json',
         error: function(MLHttpRequest, textStatus, errorThrown) {
@@ -126,7 +140,7 @@ jQuery(document).ready(function($) {
     closeAwardMessage()
   })
 
-  $('.humble-lms-award-message').fadeIn(500)
+  $('.humble-lms-award-message').not('.humble-lms-award-message--quiz').fadeIn(500)
   $('.humble-lms-award-message-inner').first().animate({
     opacity: 1,
   }, 500)

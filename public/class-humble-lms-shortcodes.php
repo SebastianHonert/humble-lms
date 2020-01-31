@@ -440,17 +440,39 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $prev_lesson = get_post( $lessons[$key-1] );
       }
       
-      // Lesson contains quizzes
-      $quiz_class = has_shortcode( $post->post_content, 'humble_lms_quiz' ) ? 'humble-lms-has-quiz' : '';
-      $quiz_ids = implode(',', $this->get_shortcode_attributes( 'humble_lms_quiz' ) );
+      $html = '';
+      $lesson_has_quiz = has_shortcode( $post->post_content, 'humble_lms_quiz' );
+      $lesson_completed = $this->user->completed_lesson( get_current_user_id(), $post->ID );
+      $quiz_class = $lesson_has_quiz ? 'humble-lms-has-quiz' : '';
+      $quiz_ids_array = $this->get_shortcode_attributes( 'humble_lms_quiz' );
+      $quiz_ids_string = implode(',', $quiz_ids_array);
+      $passing_required = false;
+      foreach( $quiz_ids_array as $id ) {
+        if( $this->quiz->get_passing_required( $id ) ) {
+          $passing_required = true;
+        }
+      }
 
-      $html = '<form method="post" id="humble-lms-mark-complete" class="' . $quiz_class . '">';
+      // Evaluate quiz button
+      if( $lesson_has_quiz ) {
+        $html .= '<form method="post" id="humble-lms-evaluate-quiz" class="' . $quiz_class . '">';
+          $html .= '<input type="hidden" name="course-id" value="' . $course_id . '">';
+          $html .= '<input type="hidden" name="lesson-id" value="' . $post->ID . '">';
+          $html .= '<input type="hidden" name="quiz-ids" value="' . $quiz_ids_string . '">';
+          $html .= '<input type="hidden" name="lesson-completed" value="' . $lesson_completed . '">';
+          $html .= '<input type="submit" class="humble-lms-btn" value="' . __('Check your answers', 'humble-lms') . '">';
+        $html .= '</form>';
+      }
+
+      // Mark complete button
+      $hidden_style = $passing_required && $lesson_has_quiz && ! $lesson_completed ? 'display:none' : '';
+      $html .= '<form method="post" id="humble-lms-mark-complete" class="' . $quiz_class . '" style="' . $hidden_style . '">';
         $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
         $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
-        $html .= '<input type="hidden" name="quiz-ids" id="quiz-ids" value="' . $quiz_ids . '">';
-        $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $this->user->completed_lesson( get_current_user_id(), $post->ID ) . '">';
+        $html .= '<input type="hidden" name="quiz-ids" id="quiz-ids" value="' . $quiz_ids_string . '">';
+        $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $lesson_completed . '">';
 
-        if( $this->user->completed_lesson( get_current_user_id(), $post->ID ) ) {
+        if( $lesson_completed ) {
           $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
         } else {
           $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark complete and continue', 'humble-lms') . '">';
@@ -1015,12 +1037,34 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $quizzes = $this->quiz->get( $ids );
       
-      $html = '<div class="humble-lms-quiz" ' . $class . '" style="' . $style . '">';
+      $html = '';
+      $html .= '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div><div class="humble-lms-award-message-inner"><div>
+        <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+          <i class="ti-close"></i>
+        </div>
+        <div class="humble-lms-message-quiz humble-lms-message-quiz--completed">
+          <h3 class="humble-lms-award-message-title">' . __('Well done!', 'humble-lms') . '</h3>
+          <p>' . __('You passed this quiz with a score of', 'humble-lms') . '</p><p><span class="humble-lms-quiz-score"></span></p>
+          <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
+        </div>
+        <div class="humble-lms-message-quiz humble-lms-message-quiz--failed">
+          <h3 class="humble-lms-award-message-title">' . __('Bummer', 'humble-lms') . '</h3>
+          <p>' . __('You failed this quiz with a score of', 'humble-lms') . '</p>
+          <p><span class="humble-lms-quiz-score"></span></p>
+          <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
+        </div>
+        <div class="humble-lms-award-message-image humble-lms-bounce-in"></div>
+      </div></div></div></div>';
+      $html .= '<div class="humble-lms-quiz ' . $class . '" style="' . $style . '">';
 
       if ( $quizzes ) {
         
         foreach( $quizzes as $quiz ) {
           $questions = $this->quiz->questions( $quiz->ID );
+          $passing_grade = $this->quiz->get_passing_grade( $quiz->ID );
+          $passing_required = $this->quiz->get_passing_required( $quiz->ID ) ? '1' : '0';
+
+          $html .= '<div class="humble-lms-quiz-single" data-passing-grade="' . $passing_grade . '" data-passing-required="' . $passing_required . '">';
   
           foreach( $questions as $question ) {
             $question_type = $this->quiz->question_type( $question->ID );
@@ -1045,6 +1089,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               }
             $html .= '</div>';
           }
+
+          $html .= '</div>';
 
         }
       } else {

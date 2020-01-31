@@ -175,6 +175,9 @@ li.humble-lms-syllabus-lesson span {
 .humble-lms-mark-complete {
   margin-top: 1em; }
 
+#humble-lms-evaluate-quiz + #humble-lms-mark-complete {
+  margin-top: 1em; }
+
 .humble-lms-next-prev-lesson {
   display: block;
   margin-top: 2em;
@@ -315,6 +318,9 @@ input[type='submit'].humble-lms-btn--error:active,
   border: 1px solid #e6e6e6;
   padding: 1em; }
 
+.humble-lms-message-quiz {
+  display: none; }
+
 .humble-lms-message-title {
   font-size: 1.125em;
   font-weight: 600;
@@ -379,11 +385,11 @@ input[type='submit'].humble-lms-btn--error:active,
   box-sizing: border-box;
   padding: 1em;
   display: flex;
-  width: 120%;
-  height: 120%;
+  width: 100%;
+  height: 100%;
   position: fixed;
-  left: -10%;
-  top: -10%;
+  left: 0;
+  top: 0;
   align-items: center;
   justify-content: center;
   z-index: 999;
@@ -434,8 +440,8 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-award-message-close {
   position: absolute;
-  right: 1em;
-  top: 1.875em;
+  right: 0;
+  top: 0;
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
@@ -726,7 +732,8 @@ input[type='submit'].humble-lms-btn--error:active,
   display: block;
   border: 1px solid #ccd8f3;
   background: #f9fafe;
-  padding: 1em; }
+  padding: 1em;
+  margin-bottom: 1em; }
 
 .humble-lms-quiz-question:not(:first-of-type) {
   margin-top: 1em; }
@@ -738,6 +745,9 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-multiple-choice-question {
   display: flex;
   align-items: center; }
+
+.humble-lms-quiz-score {
+  font-size: 1.875em; }
 
 /* H5P */
 .h5p-iframe-wrapper {

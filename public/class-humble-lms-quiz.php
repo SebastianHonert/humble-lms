@@ -214,6 +214,44 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
     }
 
     /**
+     * Get passing grade for a quiz.
+     *
+     * @since    0.0.1
+     * @param    int
+     * @return   int
+     */
+    public function get_passing_grade( $quiz_id = null ) {
+      if( ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
+        return 0;
+
+      $passing_grade = get_post_meta( $quiz_id, 'humble_lms_quiz_passing_grade', true );
+
+      if( ! $passing_grade || ! isset( $passing_grade ) || empty( $passing_grade ) )
+        return 0;
+      
+      return $passing_grade;
+    }
+
+    /**
+     * Get passing grade for a quiz.
+     *
+     * @since    0.0.1
+     * @param    int
+     * @return   bool
+     */
+    public function get_passing_required( $quiz_id = null ) {
+      if( ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
+        return false;
+
+      $passing_required = get_post_meta( $quiz_id, 'humble_lms_quiz_passing_required', true );
+
+      if( ! $passing_required || ! isset( $passing_required ) || empty( $passing_required ) )
+        return;
+      
+      return true;
+    }
+
+    /**
      * Evaluate quizzes by id.
      * 
      * $results = array(

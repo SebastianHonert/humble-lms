@@ -22,7 +22,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     public function __construct() {
 
       $this->user = new Humble_LMS_Public_User;
-      // $this->quiz = new Humble_LMS_Quiz;
       $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
@@ -37,12 +36,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $user_id = get_current_user_id();
 
-      // Clear user data (testing)
-      // delete_user_meta( $user_id, 'humble_lms_lessons_completed' );
-      // delete_user_meta( $user_id, 'humble_lms_courses_completed' );
-      // delete_user_meta( $user_id, 'humble_lms_tracks_completed' );
-
-      // Dry this function a little bit.
       function default_redirect( $redirect_url, $course_id, $lesson_id, $completed = null ) {
         wp_die( json_encode( array(
           'status' => 200,
@@ -53,18 +46,15 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         ) ) );
       }
 
-      // Check the nonce for permission.
       if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
         die( 'Permission Denied' );
       }
 
-      // Mark lesson complete and continue to the next lesson
       $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
       $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
 
-      // Neither course nor lesson ID is set: redirect accordingly.
       if( ! $course_id ) {
         if( ! $lesson_id ) {
           $redirect_url = esc_url( home_url() );
@@ -75,12 +65,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         default_redirect( $redirect_url, $course_id, $lesson_id );
       }
 
-      // Mark complete is not set: redirect to lessin with course ID set.
       if( ! $mark_complete ) {
         default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
       }
 
-      // Check if course exists
       $course = get_post( $course_id );
 
       if( ! $course ) {
@@ -90,15 +78,15 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       /**
        * Mark lesson complete
        * 
-       * This returns an array with the completed lesson, courses, and track:
+       * This returns an array with the completed lesson, courses, track, award, and certificate ids.
        * 
-       * array([lesson_ids], [course_ids], [track_ids], [award_ids], [certificate_ids], [quiz_ids])
+       * @since   0.0.1
+       * @return  array
       */
       if( is_user_logged_in() ) {
         $completed = $this->user->mark_lesson_complete( $lesson_id );
       }
 
-      // Redirect to the next lesson
       $lessons = $this->content_manager->get_course_lessons( $course_id );
 
       $key = array_search( $lesson_id, $lessons );
@@ -108,7 +96,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $next_lesson = get_post( $lessons[$key+1] );
         $redirect_url = esc_url( get_permalink( $next_lesson->ID ) );
       } else {
-        // TODO: Check if all lessons complete => redirect accordingly
         $redirect_url = esc_url( get_permalink( $lessons[0] ) );
       }
 

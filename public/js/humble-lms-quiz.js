@@ -1,3 +1,8 @@
+/**
+ * This module creates and returns an evaluation object for a quiz.
+ * 
+ * @since   0.0.1
+ */
 var Humble_LMS_Quiz
 
 (function ($) {

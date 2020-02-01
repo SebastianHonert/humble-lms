@@ -508,6 +508,7 @@ input[type='submit'].humble-lms-btn--error:active,
 }  
 
 .humble-lms-award-message-image {
+  line-height: 1;
   font-size: 6em;
   color: $color-award;
   text-shadow: 2px 2px 6px rgba(0,0,0,.2);
@@ -526,6 +527,7 @@ input[type='submit'].humble-lms-btn--error:active,
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
+  font-weight: 700;
   color: $color-light;
 }
 
@@ -566,6 +568,15 @@ input[type='submit'].humble-lms-btn--error:active,
   font-size: 1.125em;
   display: none;
   background: rgba($color-primary, .96);
+  line-height: 1.125;
+}
+
+.humble-lms-quiz-message--success {
+  background: rgba($color-success, .96);
+}
+
+.humble-lms-quiz-message--failed {
+  background: rgba($color-error, .96);
 }
 
 .humble-lms-quiz-message > div {
@@ -601,9 +612,15 @@ input[type='submit'].humble-lms-btn--error:active,
 }  
 
 .humble-lms-quiz-message-image {
+  line-height: 1;
   font-size: 6em;
   color: $color-award;
   text-shadow: 2px 2px 6px rgba(0,0,0,.2);
+  margin-top: .125em;
+}
+
+.humble-lms-quiz-message--failed .humble-lms-quiz-message-image {
+  color: $color-light;
 }
 
 .humble-lms-quiz-image {
@@ -619,6 +636,7 @@ input[type='submit'].humble-lms-btn--error:active,
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
+  font-weight: 700;
   color: $color-light;
 }
 
@@ -994,6 +1012,7 @@ input[type='submit'].humble-lms-btn--error:active,
 }
 
 .humble-lms-quiz-score {
+  font-weight: 700;
   font-size: 1.875em;
 }
 

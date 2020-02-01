@@ -429,6 +429,7 @@ input[type='submit'].humble-lms-btn--error:active,
   font-style: italic; }
 
 .humble-lms-award-message-image {
+  line-height: 1;
   font-size: 6em;
   color: gold;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); }
@@ -445,6 +446,7 @@ input[type='submit'].humble-lms-btn--error:active,
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
+  font-weight: 700;
   color: #fff; }
 
 .humble-lms-award-message-close-text:hover,
@@ -479,7 +481,14 @@ input[type='submit'].humble-lms-btn--error:active,
   color: #fff;
   font-size: 1.125em;
   display: none;
-  background: rgba(32, 64, 134, 0.96); }
+  background: rgba(32, 64, 134, 0.96);
+  line-height: 1.125; }
+
+.humble-lms-quiz-message--success {
+  background: rgba(32, 122, 134, 0.96); }
+
+.humble-lms-quiz-message--failed {
+  background: rgba(138, 39, 56, 0.96); }
 
 .humble-lms-quiz-message > div {
   position: relative;
@@ -510,9 +519,14 @@ input[type='submit'].humble-lms-btn--error:active,
   font-style: italic; }
 
 .humble-lms-quiz-message-image {
+  line-height: 1;
   font-size: 6em;
   color: gold;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); }
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  margin-top: .125em; }
+
+.humble-lms-quiz-message--failed .humble-lms-quiz-message-image {
+  color: #fff; }
 
 .humble-lms-quiz-image {
   width: auto;
@@ -526,6 +540,7 @@ input[type='submit'].humble-lms-btn--error:active,
   overflow: hidden;
   cursor: pointer;
   font-size: 1.5em;
+  font-weight: 700;
   color: #fff; }
 
 .humble-lms-quiz-message-close-text:hover,
@@ -828,6 +843,7 @@ input[type='submit'].humble-lms-btn--error:active,
   align-items: center; }
 
 .humble-lms-quiz-score {
+  font-weight: 700;
   font-size: 1.875em; }
 
 /* H5P */

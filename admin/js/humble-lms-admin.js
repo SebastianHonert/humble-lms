@@ -207,6 +207,7 @@ jQuery(document).ready(function($) {
 
     if (!message || !recipient) {
       alert(humble_lms.sendTestEmailValidation)
+      return
     }
 
     loadingLayer(true)

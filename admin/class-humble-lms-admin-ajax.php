@@ -32,7 +32,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
      * @return void
      */
     public function send_test_email() {
-      $message = nl2br( htmlspecialchars( $_POST['message'] ) );
+      $message = nl2br( stripslashes( htmlspecialchars( $_POST['message'] ) ) );
       $to = sanitize_email( $_POST['recipient'] );
       $subject = htmlspecialchars( $_POST['subject'] );
       $headers = 'From: '. get_option('admin_email') . "\r\n" . 'Reply-To: ' . get_option('admin_email') . "\r\n";

@@ -205,7 +205,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $message = isset( $this->options['email_lost_password'] ) ? $this->options['email_lost_password'] : '';
 
       echo '<p>' . __('This email will be send in plain text format. HTML is currently not allowed. You can use the following strings to include specific information in your email:', 'humble-lms') . '</p>';
-      echo '<p><strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>LOGIN_URL</strong>, <strong>USER_NAME</strong>, <strong>USER_EMAIL</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
+      echo '<p><strong>RESET_PASSWORD_URL</strong>, <strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>LOGIN_URL</strong>, <strong>USER_NAME</strong>, <strong>USER_EMAIL</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
       echo '<div class="humble-lms-test-email" id="humble-lms-test-email-welcome">';
         echo '<p><textarea class="widefat" id="email_lost_password" name="humble_lms_options[email_lost_password]" rows="7">' . $message . '</textarea></p>';
         echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';

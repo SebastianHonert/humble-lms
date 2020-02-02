@@ -743,7 +743,18 @@ class Humble_LMS_Admin {
       $message .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
       $message .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
     } else {
-      $message = $options->email_lost_password; 
+      $message = $options->email_lost_password;
+      $date_format = 'F j, Y';
+      $date = current_time( $date_format );
+      $message = $options->email_welcome;
+      $message = str_replace( 'USER_NAME', $user_login, $message );
+      $message = str_replace( 'USER_EMAIL', $user_data->user_email, $message );
+      $message = str_replace( 'CURRENT_DATE', $date, $message );
+      $message = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $message );
+      $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
+      $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
+      $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
+      $message = str_replace( 'RESET_PASSWORD_URL', esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ), $message );
     }
 
     return $message;
@@ -770,10 +781,19 @@ class Humble_LMS_Admin {
       $message .= sprintf( __('If you have any problems, please contact us at %s.'), get_option('admin_email') ) . "\r\n\r\n";
       $message .= __( 'Bye!' );
     } else {
-      $message = $options->email_welcome; 
+      $date_format = 'F j, Y';
+      $date = current_time( $date_format );
+      $message = $options->email_welcome;
+      $message = str_replace( 'USER_NAME', $user_login, $message );
+      $message = str_replace( 'USER_EMAIL', $user_email, $message );
+      $message = str_replace( 'CURRENT_DATE', $date, $message );
+      $message = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $message );
+      $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
+      $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
+      $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
     }
 
-    $msg['subject'] = sprintf( '[%s] Your credentials.', $blogname );
+    $msg['subject'] = __('Your credentials');
     $msg['headers'] = array('Content-Type: text/plain; charset=UTF-8');
     $msg['message'] = $message;
 

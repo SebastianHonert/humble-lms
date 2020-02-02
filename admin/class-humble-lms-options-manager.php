@@ -106,12 +106,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
-      add_settings_field( 'email_welcome', __('Welcome email content', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options', 'humble_lms_options_section_options');
-      add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
       
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+      add_settings_field( 'email_welcome', __('Welcome email content', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+      add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
     }
 
     /**
@@ -177,6 +177,35 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for displaying country field in registration form.
+     *
+     * @since    0.0.1
+     */
+    public function registration_has_country() {
+      $registration_has_country = isset( $this->options['registration_has_country'] ) ? (int)$this->options['registration_has_country'] : 0;
+      $checked = $registration_has_country === 1 ? 'checked' : '';
+  
+      echo '<p><input id="registration_has_country" name="humble_lms_options[registration_has_country]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, include country in registration form.', 'humble-lms') . '</p>';
+    }
+
+    /**
+     * Option for selecting individual countries to be included in registration form.
+     *
+     * @since    0.0.1
+     */
+    public function registration_countries() {
+      $countries = $this->countries;
+      $registration_countries = isset( $this->options['registration_countries'] ) ? maybe_unserialize( $this->options['registration_countries'] ) : $this->countries;
+  
+      echo '<select multiple size="20" class="widefat" id="registration_countries" placeholder="' . __('Wich countries would you like to include?', 'humble-lms') . '" name="humble_lms_options[registration_countries][]">';
+        foreach( $countries as $key => $country ) {
+          $selected = in_array( $country, $registration_countries ) ? 'selected' : '';
+          echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+        }
+      echo '</select>';
+    }
+
+    /**
      * Content of the welcome email.
      *
      * @since    0.0.1
@@ -215,35 +244,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * Option for displaying country field in registration form.
-     *
-     * @since    0.0.1
-     */
-    public function registration_has_country() {
-      $registration_has_country = isset( $this->options['registration_has_country'] ) ? (int)$this->options['registration_has_country'] : 0;
-      $checked = $registration_has_country === 1 ? 'checked' : '';
-  
-      echo '<p><input id="registration_has_country" name="humble_lms_options[registration_has_country]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, include country in registration form.', 'humble-lms') . '</p>';
-    }
-
-    /**
-     * Option for selecting individual countries to be included in registration form.
-     *
-     * @since    0.0.1
-     */
-    public function registration_countries() {
-      $countries = $this->countries;
-      $registration_countries = isset( $this->options['registration_countries'] ) ? maybe_unserialize( $this->options['registration_countries'] ) : $this->countries;
-  
-      echo '<select multiple size="20" class="widefat" id="registration_countries" placeholder="' . __('Wich countries would you like to include?', 'humble-lms') . '" name="humble_lms_options[registration_countries][]">';
-        foreach( $countries as $key => $country ) {
-          $selected = in_array( $country, $registration_countries ) ? 'selected' : '';
-          echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
-        }
-      echo '</select>';
-    }
-
-    /**
      * Validate option data on save.
      *
      * @param   array
@@ -253,12 +253,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_validate( $options ) {
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
-    
-      $validated['email_welcome'] = isset( $options['email_welcome'] ) ? sanitize_test_field( $options['email_welcome'] ) : '';
-      $validated['email_lost_password'] = isset( $options['email_lost_password'] ) ? sanitize_test_field( $options['email_lost_password'] ) : '';
 
       $validated['registration_has_country'] = (int)$options['registration_has_country'] === 1 ? 1 : 0;
       $validated['registration_countries'] = ! empty( $options['registration_countries'] ) ? serialize( $options['registration_countries'] ) : [];
+
+      $validated['email_welcome'] = isset( $options['email_welcome'] ) ? sanitize_test_field( $options['email_welcome'] ) : '';
+      $validated['email_lost_password'] = isset( $options['email_lost_password'] ) ? sanitize_test_field( $options['email_lost_password'] ) : '';
+
 
       return $validated;
     }

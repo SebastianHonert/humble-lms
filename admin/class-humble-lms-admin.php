@@ -734,19 +734,19 @@ class Humble_LMS_Admin {
    */
   public function replace_retrieve_password_message( $message, $key, $user_login, $user_data ) {
     $options = new Humble_LMS_Admin_Options_Manager;
+    $options = $options->options;
   
-    if( ! isset( $options->email_lost_password ) || empty( $options->email_lost_password ) ) {
-      $message  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
+    if( ! isset( $options['email_lost_password'] ) || empty( $options['email_lost_password'] ) || ! $options['email_lost_password'] ) {
+      $message  = __( 'Hello! (DEFAULT)', 'personalize-login' ) . "\r\n\r\n";
       $message .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
       $message .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
       $message .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
       $message .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
       $message .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
     } else {
-      $message = $options->email_lost_password;
       $date_format = 'F j, Y';
       $date = current_time( $date_format );
-      $message = $options->email_welcome;
+      $message = $options['email_lost_password'];
       $message = str_replace( 'USER_NAME', $user_login, $message );
       $message = str_replace( 'USER_EMAIL', $user_data->user_email, $message );
       $message = str_replace( 'CURRENT_DATE', $date, $message );
@@ -767,12 +767,14 @@ class Humble_LMS_Admin {
    */
   function custom_new_user_notification_email( $msg, $user, $blogname ) {
     $options = new Humble_LMS_Admin_Options_Manager;
+    $options = $options->options;
+
     $user_login = stripslashes( $user->user_login );
     $user_email = stripslashes( $user->user_email );
     $login_url = wp_login_url();
 
-    if( ! isset( $options->email_welcome ) || empty( $options->email_welcome ) ) {
-      $message = __( 'Hi there,' ) . "\r\n\r\n";
+    if( ! isset( $options['email_welcome'] ) || empty( $options['email_welcome'] ) || ! $options['email_welcome'] ) {
+      $message = __( 'Hi there, (DEFAULT)' ) . "\r\n\r\n";
       $message .= sprintf( __( 'welcome to %s! Here\'s how to log in: ' ), get_option('blogname') ) . "\r\n\r\n";
       $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
       $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
@@ -783,7 +785,7 @@ class Humble_LMS_Admin {
     } else {
       $date_format = 'F j, Y';
       $date = current_time( $date_format );
-      $message = $options->email_welcome;
+      $message = $options['email_welcome'];
       $message = str_replace( 'USER_NAME', $user_login, $message );
       $message = str_replace( 'USER_EMAIL', $user_email, $message );
       $message = str_replace( 'CURRENT_DATE', $date, $message );

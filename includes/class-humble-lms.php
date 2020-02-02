@@ -130,6 +130,12 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-options-manager.php';
 
     /**
+     * The class responsible for handling admin ajax requests
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-admin-ajax.php';
+
+
+    /**
      * The class responsible for defining all actions that occur in the public-facing
      * side of the site.
      */
@@ -222,6 +228,12 @@ class Humble_LMS {
     $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
+
+    // AJAX
+    $plugin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );
+
+    $this->loader->add_action( 'wp_ajax_nopriv_send_test_email', $plugin_ajax, 'send_test_email' );
+    $this->loader->add_action( 'wp_ajax_send_test_email', $plugin_ajax, 'send_test_email' );
 
     // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );

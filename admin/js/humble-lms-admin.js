@@ -3,7 +3,11 @@ jQuery(document).ready(function($) {
 
   'use strict'
 
-  // Searchable multi select
+  /**
+   * Searchable multi-select.
+   * 
+   * @since   0.0.1
+   */
   $('.humble-lms-searchable').multiSelect({
     selectableHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
     selectionHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
@@ -64,7 +68,11 @@ jQuery(document).ready(function($) {
     }
   })
 
-  // Pre-select activity
+  /**
+   * Pre-select an activity.
+   * 
+   * @since   0.0.1
+   */
   function activate_activity_trigger_select() {
     let selected_value = $('#humble_lms_activity_trigger').val()
     if (!selected_value) {
@@ -105,7 +113,11 @@ jQuery(document).ready(function($) {
     activate_activity_action_select()
   })
 
-  // Repeater fields
+  /**
+   * Repeater fields.
+   * 
+   * @since   0.0.1
+   */
   $('.humble-lms-repeater').live('click', function(e) {
     e.preventDefault()
 
@@ -118,19 +130,22 @@ jQuery(document).ready(function($) {
       return
     }
   
-    let key = elements.length // parseInt(element.find('input').data('key')) + 1
+    let key = elements.length
     let clone = element.clone()
 
     clone.appendTo(target)
-    
-    // Re-index elements
+
     if (element.hasClass('humble-lms-answer')) {
       elements = $($(this).data('element'))
       reindex(elements)
     }
   })
 
-  // Remove answer
+  /**
+   * Remove a quiz answer.
+   * 
+   * @since   0.0.1
+   */
   $('.humble-lms-remove-answer').live('click', function(e) {
     e.preventDefault()
 
@@ -146,7 +161,11 @@ jQuery(document).ready(function($) {
     reindex(answers)
   })
 
-  // Re-index elements
+  /**
+   * Re-index elements.
+   * 
+   * @since   0.0.1
+   */
   function reindex(elements) {
     elements.each(function(index, el) {
       console.log(index)
@@ -154,4 +173,78 @@ jQuery(document).ready(function($) {
       $(el).find('input').eq(1).attr('name', 'humble_lms_question_answers[' + index + '][correct]')
     })
   }
+
+  /**
+   * Show/hide loading layer/spinner
+   * 
+   * @since   0.0.1
+   */
+  function loadingLayer(show = false, f = null) {
+    let loadingLayer = $('.humble-lms-loading-layer')
+    if (show) {
+      loadingLayer.css('display', 'flex')
+    } else {
+      loadingLayer.hide(0)
+    }
+
+    if (isFunction (f)) {
+      setTimeout( function() {
+        f()
+      }, 100)
+    }
+  }
+
+  /**
+   * Send a test email.
+   * 
+   * @since   0.0.1
+   */
+  $('a.humble-lms-send-test-email').on('click', function(e) {
+    let container = $(this).closest('div.humble-lms-test-email')
+    let subject = container.find('input[name=subject]').val()
+    let message = container.find('textarea').val()
+    let recipient = container.find('#humble-lms-test-email-recipient').val()
+
+    if (!message || !recipient) {
+      alert(humble_lms.sendTestEmailValidation)
+    }
+
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'send_test_email',
+        subject: subject,
+        message: message,
+        recipient: recipient,
+        nonce: humble_lms.nonce
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown)
+        loadingLayer(false)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        loadingLayer(false, function() {
+          if (response === 'success') {
+            alert(humble_lms.sendTestEmailSuccess)
+          } else {
+            alert(humble_lms.sendTestEmailError)
+          }
+        })
+      },
+    })
+  })
+
+  /**
+   * Check if object is a function.
+   * 
+   * @since   0.0.1
+   */
+  function isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  }
+
 })

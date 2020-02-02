@@ -106,6 +106,13 @@ class Humble_LMS_Admin {
     wp_enqueue_script( 'multi-select', plugin_dir_url( __FILE__ ) . 'js/lou-multi-select/js/jquery.multi-select.js', array( 'jquery' ), '0.9.12', true );
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-admin.js', array( 'jquery' ), $this->version, true );
 
+    wp_localize_script( $this->humble_lms, 'humble_lms', array(
+      'ajax_url' => admin_url( 'admin-ajax.php' ),
+      'sendTestEmailSuccess' => __('Email sent successfully.', 'humble-lms'),
+      'sendTestEmailError' => __('Sorry, something went wrong sending the test email.', 'humble-lms'),
+      'sendTestEmailValidation' => __('Please provide a message and a valid email address.', 'humble-lms'),
+      'nonce' => wp_create_nonce( 'humble_lms' )
+    ) );
   }
 
   /**
@@ -432,7 +439,7 @@ class Humble_LMS_Admin {
             add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
           }
 
-          // Notify admin and user ('both')
+          // Notify admin and user (=> 'both')
           wp_new_user_notification( $new_user_id, null, 'both' );
           
           // Log in new user
@@ -726,14 +733,20 @@ class Humble_LMS_Admin {
    * @return string   The mail message to send.
    */
   public function replace_retrieve_password_message( $message, $key, $user_login, $user_data ) {
-    $msg  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
-    $msg .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
-    $msg .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
-    $msg .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
-    $msg .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
-    $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+    $options = new Humble_LMS_Admin_Options_Manager;
+  
+    if( ! isset( $options->email_lost_password ) || empty( $options->email_lost_password ) ) {
+      $message  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
+      $message .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
+      $message .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
+      $message .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
+      $message .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
+      $message .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+    } else {
+      $message = $options->email_lost_password; 
+    }
 
-    return $msg;
+    return $message;
   }
 
   /**
@@ -742,17 +755,23 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   function custom_new_user_notification_email( $msg, $user, $blogname ) {
+    $options = new Humble_LMS_Admin_Options_Manager;
     $user_login = stripslashes( $user->user_login );
     $user_email = stripslashes( $user->user_email );
     $login_url = wp_login_url();
-    $message = __( 'Hi there,' ) . "\r\n\r\n";
-    $message .= sprintf( __( 'welcome to %s! Here\'s how to log in: ' ), get_option('blogname') ) . "\r\n\r\n";
-    $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
-    $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
-    $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
-    $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
-    $message .= sprintf( __('If you have any problems, please contact us at %s.'), get_option('admin_email') ) . "\r\n\r\n";
-    $message .= __( 'Bye!' );
+
+    if( ! isset( $options->email_welcome ) || empty( $options->email_welcome ) ) {
+      $message = __( 'Hi there,' ) . "\r\n\r\n";
+      $message .= sprintf( __( 'welcome to %s! Here\'s how to log in: ' ), get_option('blogname') ) . "\r\n\r\n";
+      $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
+      $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
+      $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
+      $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
+      $message .= sprintf( __('If you have any problems, please contact us at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+      $message .= __( 'Bye!' );
+    } else {
+      $message = $options->email_welcome; 
+    }
 
     $msg['subject'] = sprintf( '[%s] Your credentials.', $blogname );
     $msg['headers'] = array('Content-Type: text/plain; charset=UTF-8');

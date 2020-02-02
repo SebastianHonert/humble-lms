@@ -42,6 +42,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_page() {
+      echo '<div class="humble-lms-loading-layer">
+        <div class="humble-lms-loading"></div>
+      </div>';
+
       echo '<div class="wrap">';
         echo '<h1> ' . __('Humble LMS', 'humble-lms') . '</h1>';
         
@@ -102,6 +106,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'email_welcome', __('Welcome email content', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      
+      
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
     }
@@ -169,6 +177,44 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Content of the welcome email.
+     *
+     * @since    0.0.1
+     */
+    function email_welcome()
+    {
+      $message = isset( $this->options['email_welcome'] ) ? $this->options['email_welcome'] : '';
+
+      echo '<p>' . __('This email will be send in plain text format. HTML is currently not allowed. You can use the following strings to include specific information in your email:', 'humble-lms') . '</p>';
+      echo '<p><strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>LOGIN_URL</strong>, <strong>USER_NAME</strong>, <strong>USER_EMAIL</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
+      echo '<div class="humble-lms-test-email" id="humble-lms-test-email-welcome">';
+        echo '<p><textarea class="widefat" id="email_welcome" name="humble_lms_options[email_welcome]" rows="7">' . $message . '</textarea></p>';
+        echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';
+        echo '<input type="hidden" name="subject" value="' . __('Test email: Welcome', 'humble-lms') . '" />';
+        echo '<p><a class="button humble-lms-send-test-email">' . __('Send a test email', 'humble-lms') . '</a></p>';
+      echo '</div>';
+    }
+
+    /**
+     * Content of the lost password email.
+     *
+     * @since    0.0.1
+     */
+    function email_lost_password()
+    {
+      $message = isset( $this->options['email_lost_password'] ) ? $this->options['email_lost_password'] : '';
+
+      echo '<p>' . __('This email will be send in plain text format. HTML is currently not allowed. You can use the following strings to include specific information in your email:', 'humble-lms') . '</p>';
+      echo '<p><strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>LOGIN_URL</strong>, <strong>USER_NAME</strong>, <strong>USER_EMAIL</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
+      echo '<div class="humble-lms-test-email" id="humble-lms-test-email-welcome">';
+        echo '<p><textarea class="widefat" id="email_lost_password" name="humble_lms_options[email_lost_password]" rows="7">' . $message . '</textarea></p>';
+        echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';
+        echo '<input type="hidden" name="subject" value="' . __('Test email: Lost password', 'humble-lms') . '" />';
+        echo '<p><a class="button humble-lms-send-test-email">' . __('Send a test email', 'humble-lms') . '</a></p>';
+      echo '</div>';
+    }
+
+    /**
      * Option for displaying country field in registration form.
      *
      * @since    0.0.1
@@ -207,6 +253,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_validate( $options ) {
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
+    
+      $validated['email_welcome'] = isset( $options['email_welcome'] ) ? sanitize_test_field( $options['email_welcome'] ) : '';
+      $validated['email_lost_password'] = isset( $options['email_lost_password'] ) ? sanitize_test_field( $options['email_lost_password'] ) : '';
+
       $validated['registration_has_country'] = (int)$options['registration_has_country'] === 1 ? 1 : 0;
       $validated['registration_countries'] = ! empty( $options['registration_countries'] ) ? serialize( $options['registration_countries'] ) : [];
 

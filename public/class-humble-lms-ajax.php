@@ -27,7 +27,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
     
     /**
-     * Mark lessons complete / open lesson
+     * Mark lesson complete button clicked / open lesson.
      *
      * @since 1.0.0
      * @return void
@@ -75,14 +75,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         default_redirect( esc_url( get_permalink( $lesson_id ) ), $course_id, $lesson_id );
       }
 
-      /**
-       * Mark lesson complete
-       * 
-       * This returns an array with the completed lesson, courses, track, award, and certificate ids.
-       * 
-       * @since   0.0.1
-       * @return  array
-      */
+      // This returns an array with the completed lesson, courses, track,
+      // award, and certificate ids [[lessonIds], [courseIds], [trackIds] ...]
       if( is_user_logged_in() ) {
         $completed = $this->user->mark_lesson_complete( $lesson_id );
       }
@@ -100,6 +94,37 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       default_redirect( $redirect_url, $course_id, $next_lesson->ID, $completed );
+    }
+
+    /**
+     * Save evaluated quiz for logged in user.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function evaluate_quiz() {
+      if( ! is_user_logged_in() || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
+        die( 'Permission Denied' );
+      }
+
+      $evaluation = $_POST['evaluation'];
+      $completed = (bool)$evaluation['completed'];
+      foreach( $evaluation['quizIds'] as $key => $id ) {
+        $evaluation['quizIds'][$key] = (int)$id;
+      }
+
+      if( $completed ) {
+        $completed_quizzes = $this->user->completed_quizzes( get_current_user_ID() );
+        foreach( $evaluation['quizIds'] as $id ) {
+          if( ! in_array( $id, $completed_quizzes) ) {
+            array_push( $completed_quizzes, $id );
+          }
+        }
+
+        update_user_meta( get_current_user_ID(), 'humble_lms_quizzes_completed', $completed_quizzes );
+      }
+
+      die;
     }
     
   }

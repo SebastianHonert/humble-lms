@@ -447,25 +447,31 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $quiz_ids_array = $this->get_shortcode_attributes( 'humble_lms_quiz' );
       $quiz_ids_string = implode(',', $quiz_ids_array);
       $passing_required = false;
+      $user_completed_quizzes = true;
       foreach( $quiz_ids_array as $id ) {
         if( $this->quiz->get_passing_required( $id ) ) {
           $passing_required = true;
         }
+        if( ! $this->user->completed_quiz( $id ) ) {
+          $user_completed_quizzes = false;
+        }
       }
-
+  
       // Evaluate quiz button
+      $button_text = ! $user_completed_quizzes ? __('Check your answers', 'humble-lms') : __('You passed the quiz!', 'humble-lms');
+      $button_class = $user_completed_quizzes ? 'humble-lms-btn--success' : '';
       if( $lesson_has_quiz ) {
         $html .= '<form method="post" id="humble-lms-evaluate-quiz" class="' . $quiz_class . '">';
           $html .= '<input type="hidden" name="course-id" value="' . $course_id . '">';
           $html .= '<input type="hidden" name="lesson-id" value="' . $post->ID . '">';
           $html .= '<input type="hidden" name="quiz-ids" value="' . $quiz_ids_string . '">';
           $html .= '<input type="hidden" name="lesson-completed" value="' . $lesson_completed . '">';
-          $html .= '<input type="submit" class="humble-lms-btn" value="' . __('Check your answers', 'humble-lms') . '">';
+          $html .= '<input type="submit" class="humble-lms-btn ' . $button_class . '" value="' . $button_text . '">';
         $html .= '</form>';
       }
 
       // Mark complete button
-      $hidden_style = $passing_required && $lesson_has_quiz && ! $lesson_completed ? 'display:none' : '';
+      $hidden_style = ! $user_completed_quizzes && ( $passing_required && $lesson_has_quiz && ! $lesson_completed ) ? 'display:none' : '';
       $html .= '<form method="post" id="humble-lms-mark-complete" class="' . $quiz_class . '" style="' . $hidden_style . '">';
         $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';
         $html .= '<input type="hidden" name="lesson-id" id="lesson-id" value="' . $post->ID . '">';
@@ -1076,12 +1082,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               switch( $question_type ) {
                 case 'single_choice':
                   $answers = $this->quiz->answers( $question->ID );
-                  $html .= $this->quiz->single_choice( $answers );
+                  $html .= $this->quiz->single_choice( $quiz->ID, $answers );
                   break;
 
                 case 'multiple_choice':
                   $answers = $this->quiz->answers( $question->ID );
-                  $html .= $this->quiz->multiple_choice( $answers );
+                  $html .= $this->quiz->multiple_choice( $quiz->ID, $answers );
                   break;
 
                 default:

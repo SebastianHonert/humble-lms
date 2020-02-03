@@ -215,6 +215,50 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Returns an array of completed quizzes.
+     *
+     * @return  array
+     * @since   0.0.1
+     */
+    public function completed_quizzes( $user_id = null, $published = false ) {
+      if( ! $user_id )
+        return [];
+  
+      $completed_quizzes = get_user_meta( $user_id, 'humble_lms_quizzes_completed', false );
+      $completed_quizzes = isset( $completed_quizzes[0] ) ? $completed_quizzes[0] : [];
+
+      if( empty( $completed_quizzes ) )
+        return [];
+
+      if( ! $published ) {
+        return $completed_quizzes;
+      }
+
+      foreach( $completed_quizzes as $key => $quiz ) {
+        if( get_post_status( $quiz ) !== 'publish' ) {
+          unset( $completed_quizzes[$key] );
+        }
+      }
+
+      return $completed_quizzes;
+    }
+
+    /**
+     * Checks if a user has completed a quiz.
+     *
+     * @since    0.0.1
+     */
+    public function completed_quiz( $quiz_id ) {
+      if( ! is_user_logged_in() || ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
+        return;
+
+      $user_id = get_current_user_id();
+      $completed_quizzes = $this->completed_quizzes( get_current_user_ID() );
+
+      return is_array( $completed_quizzes) ? in_array( $quiz_id, $completed_quizzes ) : false;
+    }
+
+    /**
      * Updates the lessons, courses, and tracks completed by the current user.
      * Returns an array of completed IDs.
      *

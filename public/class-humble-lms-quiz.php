@@ -174,16 +174,18 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @param    array
      * @return   string
      */
-    public function single_choice( $answers = null ) {
-      if( ! $answers )
+    public function single_choice( $quiz_id = null, $answers = null ) {
+      if( ! $answers || ! $quiz_id )
         return;
 
       $html = '';
       $context = uniqid();
+      $completed = $this->user->completed_quiz( $quiz_id );
       foreach( $answers as $answer ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
+        $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
-        $html .= '<input type="radio" name="single-choice-' . $context . '" value="' . $correct . '">' . $answer['answer'];
+        $html .= '<input type="radio" name="single-choice-' . $context . '" value="' . $correct . '" ' . $checked  . '>' . $answer['answer'];
         $html .= '</div>';
       }
 
@@ -197,16 +199,18 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @param    array
      * @return   string
      */
-    public function multiple_choice( $answers = null ) {
-      if( ! $answers )
+    public function multiple_choice( $quiz_id = null, $answers = null ) {
+      if( ! $answers || ! $quiz_id )
         return;
 
       $html = '';
       $context = uniqid();
+      $completed = $this->user->completed_quiz( $quiz_id );
       foreach( $answers as $answer ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
+        $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
-        $html .= '<input type="checkbox" name="multiple-choice-' . $context . '" value="' . $correct . '">' . $answer['answer'];
+        $html .= '<input type="checkbox" name="multiple-choice-' . $context . '" value="' . $correct . '" ' . $checked . '>' . $answer['answer'];
         $html .= '</div>';
       }
 

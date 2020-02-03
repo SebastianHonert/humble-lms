@@ -229,11 +229,11 @@ class Humble_LMS {
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
 
-    // AJAX
-    $plugin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );
+    // Admin AJAX
+    $admin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );
 
-    $this->loader->add_action( 'wp_ajax_nopriv_send_test_email', $plugin_ajax, 'send_test_email' );
-    $this->loader->add_action( 'wp_ajax_send_test_email', $plugin_ajax, 'send_test_email' );
+    $this->loader->add_action( 'wp_ajax_nopriv_send_test_email', $admin_ajax, 'send_test_email' );
+    $this->loader->add_action( 'wp_ajax_send_test_email', $admin_ajax, 'send_test_email' );
 
     // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
@@ -317,6 +317,8 @@ class Humble_LMS {
 
     $this->loader->add_action( 'wp_ajax_nopriv_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
     $this->loader->add_action( 'wp_ajax_mark_lesson_complete', $plugin_ajax, 'mark_lesson_complete' );
+    $this->loader->add_action( 'wp_ajax_nopriv_evaluate_quiz', $plugin_ajax, 'evaluate_quiz' );
+    $this->loader->add_action( 'wp_ajax_evaluate_quiz', $plugin_ajax, 'evaluate_quiz' );
 
   }
 

@@ -7,7 +7,7 @@ var Humble_LMS_Quiz
 
 (function ($) {
   Humble_LMS_Quiz = {
-    evaluate: function () {
+    evaluate: function (quizIds) {
       let quizzes = $('.humble-lms-quiz-single')
       let passing_grades = [];
         quizzes.each(function (index, quiz) { passing_grades.push(parseInt($(quiz).data('passing-grade'))) })
@@ -19,6 +19,7 @@ var Humble_LMS_Quiz
       let questions_multiple_choice = $('.humble-lms-quiz-question.multiple_choice, .humble-lms-quiz-question.single_choice')
       let answers = $('.humble-lms-answer')
       let evaluation = {
+        quizIds: quizIds,
         questions: questions_multiple_choice.length,
         answers: answers.length,
         correct: 0,
@@ -36,12 +37,14 @@ var Humble_LMS_Quiz
           input = $(answer).find('input')
           if ($(input).val() == 1) {
             evaluation.correct++
-
             if ($(input).is(':checked')) {
               evaluation.score++
             }
           } else {
             evaluation.incorrect++
+            if ($(input).is(':checked')) {
+              evaluation.score--
+            }
           }
         })
       })

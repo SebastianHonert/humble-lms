@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
     $('.humble-lms-quiz-score').text(evaluation.grade + ' %')
     $('.humble-lms-quiz-passing-grade').text(evaluation.passing_grade + ' %')
 
-    if (evaluation.completed) {
+    if (evaluation.completed || evaluation.tryAgain === 1) {
       loadingLayer(true)
 
       $.ajax({
@@ -102,12 +102,15 @@ jQuery(document).ready(function($) {
           loadingLayer(false)
         },
         success: function(response, textStatus, XMLHttpRequest) {
-          console.log(response)
-          $('.humble-lms-quiz-message-image').html('<i class="ti-face-smile"></i>')
-          $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--failed').addClass('humble-lms-quiz-message--success')
-          $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(500)
-          $('#humble-lms-mark-complete').fadeIn(500)
-          loadingLayer(false)
+          if (evaluation.tryAgain === 0) {
+            $('.humble-lms-quiz-message-image').html('<i class="ti-face-smile"></i>')
+            $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--failed').addClass('humble-lms-quiz-message--success')
+            $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(500)
+            $('#humble-lms-mark-complete').fadeIn(500)
+            loadingLayer(false)
+          } else {
+            location.reload()
+          }
         },
         complete: function(reply, textStatus) {
           loadingLayer(false)

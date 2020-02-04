@@ -109,15 +109,25 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $evaluation = $_POST['evaluation'];
       $completed = (bool)$evaluation['completed'];
+      $tryAgain = (int)$evaluation['tryAgain'];
       foreach( $evaluation['quizIds'] as $key => $id ) {
         $evaluation['quizIds'][$key] = (int)$id;
       }
 
       if( $completed ) {
         $completed_quizzes = $this->user->completed_quizzes( get_current_user_ID() );
-        foreach( $evaluation['quizIds'] as $id ) {
-          if( ! in_array( $id, $completed_quizzes) ) {
-            array_push( $completed_quizzes, $id );
+
+        if( $tryAgain === 0 ) {
+          foreach( $evaluation['quizIds'] as $id ) {
+            if( ! in_array( $id, $completed_quizzes) ) {
+              array_push( $completed_quizzes, $id );
+            }
+          }
+        } elseif( $tryAgain === 1 ) {
+          foreach( $completed_quizzes as $key => $quiz_id ) {
+            if( in_array( $quiz_id, $evaluation['quizIds'] ) ) {
+              unset( $completed_quizzes[$key] );
+            }
           }
         }
 

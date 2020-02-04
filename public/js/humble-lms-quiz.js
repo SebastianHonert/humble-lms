@@ -8,6 +8,7 @@ var Humble_LMS_Quiz
 (function ($) {
   Humble_LMS_Quiz = {
     evaluate: function (quizIds) {
+      let tryAgain = parseInt($('input[name="try-again"]').val())
       let quizzes = $('.humble-lms-quiz-single')
       let passing_grades = [];
         quizzes.each(function (index, quiz) { passing_grades.push(parseInt($(quiz).data('passing-grade'))) })
@@ -20,6 +21,7 @@ var Humble_LMS_Quiz
       let answers = $('.humble-lms-answer')
       let evaluation = {
         quizIds: quizIds,
+        tryAgain: tryAgain,
         questions: questions_multiple_choice.length,
         answers: answers.length,
         correct: 0,
@@ -29,6 +31,10 @@ var Humble_LMS_Quiz
         passing_grade: passing_grade,
         passing_required: passing_required,
         completed: false
+      }
+
+      if (tryAgain === 1) {
+        return evaluation
       }
 
       questions_multiple_choice.each(function (index, question) {

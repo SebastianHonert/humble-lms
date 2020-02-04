@@ -136,6 +136,25 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       die;
     }
+
+    /**
+     * Reset user progress.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function reset_user_progress( $user_id = null ) {
+      if( ! $user_id && ! $_POST['userId'] )
+        die;
+
+      $user_id = $user_id ? $user_id : (int)$_POST['userId'];
+
+      if( ! get_user_by( 'id', $user_id ) )
+        die;
+
+      $this->user->reset_user_progress( $user_id );
+      die;
+    }
     
   }
   

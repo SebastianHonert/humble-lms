@@ -685,6 +685,24 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       return round( $percent, 1 );
     }
 
+    /**
+     * Reset user progress.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function reset_user_progress( $user_id = null ) {
+      if( ! $user_id || ! get_user_by( 'id', $user_id ) )
+        return;
+
+      update_user_meta( $user_id, 'humble_lms_tracks_completed', [] );
+      update_user_meta( $user_id, 'humble_lms_courses_completed', [] );
+      update_user_meta( $user_id, 'humble_lms_lessons_completed', [] );
+      update_user_meta( $user_id, 'humble_lms_quizzes_completed', [] );
+      update_user_meta( $user_id, 'humble_lms_awards', [] );
+      update_user_meta( $user_id, 'humble_lms_certificates', [] );
+    }
+
   }
 
 }

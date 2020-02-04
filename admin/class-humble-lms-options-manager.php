@@ -492,6 +492,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       echo '</table>';
+
+      echo '<p><a class="button button-primary humble-lms-reset-user-progress" data-user-id="' . $user->ID . '">' . __('Reset learning progress for this user?', 'humble-lms') . '</a></p>';
   
       $users_per_page = $this->users_per_page();
       $users_per_page = $users_per_page !== 50 ? '&users-per-page=' . $users_per_page : '';

@@ -216,4 +216,46 @@ jQuery(document).ready(function($) {
 
   showMessages()
 
+  /**
+   * Reset user progress.
+   *
+   * @since   0.0.1
+   */
+  $('#humble-lms-reset-user-progress').on('click', function(e) {
+    e.preventDefault()
+    let userId = $(this).data('user-id')
+
+    if (confirm(humble_lms.confirmResetUserProgress)) {
+      loadingLayer(true)
+      setTimeout( function() {
+        $.ajax({
+          url: humble_lms.ajax_url,
+          type: 'POST',
+          data: {
+            action: 'reset_user_progress',
+            userId: userId,
+            nonce: humble_lms.nonce
+          },
+          dataType: 'json',
+          error: function(MLHttpRequest, textStatus, errorThrown) {
+            loadingLayer(false)
+          },
+          success: function(response, textStatus, XMLHttpRequest) {
+            let url = window.location.href  
+            if (url.indexOf('?') > -1) {
+              url += '&progress=reset'
+            } else {
+              url += '?progress=reset'
+            }
+            window.location.href = url;
+            loadingLayer(false)
+          },
+          complete: function(reply, textStatus) {
+            loadingLayer(false)
+          }
+        })
+      }, 250)
+    }
+  })
+
 })

@@ -104,7 +104,8 @@ class Humble_LMS_Public {
     
     wp_localize_script( $this->humble_lms, 'humble_lms', array(
       'ajax_url' => admin_url( 'admin-ajax.php' ),
-      'nonce' => wp_create_nonce( 'humble_lms' )
+      'nonce' => wp_create_nonce( 'humble_lms' ),
+      'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
     ) );
   }
   
@@ -208,6 +209,10 @@ class Humble_LMS_Public {
    */
   public function humble_lms_add_content_to_pages( $content ) {
     global $post;
+
+    echo '<div class="humble-lms-loading-layer">
+      <div class="humble-lms-loading"></div>
+    </div>';
 
     // Welcome message after successful registration
     if( isset( $_GET['humble-lms-welcome'] ) && (int)$_GET['humble-lms-welcome'] === 1 ) {

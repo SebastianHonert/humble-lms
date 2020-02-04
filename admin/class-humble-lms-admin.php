@@ -111,6 +111,7 @@ class Humble_LMS_Admin {
       'sendTestEmailSuccess' => __('Email sent successfully.', 'humble-lms'),
       'sendTestEmailError' => __('Sorry, something went wrong sending the test email.', 'humble-lms'),
       'sendTestEmailValidation' => __('Please provide a message and a valid email address.', 'humble-lms'),
+      'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset this user\'s learning progress, including awards and certificates.', 'humble-lms'),
       'nonce' => wp_create_nonce( 'humble_lms' )
     ) );
   }

@@ -939,6 +939,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $usermeta = get_user_meta( $user_id );
 
       ob_start();
+
+      if( isset( $_GET['progress'] ) && esc_attr( $_GET['progress'] ) === 'reset' ) {
+        echo '<div class="humble-lms-message humble-lms-message--success">' . __('You progress was reset successfully.', 'humble-lms') . '</div>';
+      }
       
       if( $codes = Humble_LMS_Admin::humble_lms_errors()->get_error_codes() ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
@@ -1019,7 +1023,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         </fieldset>
 
         <input type="hidden" name="humble-lms-form" value="humble-lms-update-user" />
-      </form><?php 
+      </form>
+      
+      <p><a id="humble-lms-reset-user-progress" data-user-id="<?php echo get_current_user_ID(); ?>" class="humble-lms-btn humble-lms-btn--error"><small><?php _e('Reset my learning progress', 'humble-lms'); ?></small></a></p>
+      
+      <?php 
        
       return ob_get_clean();
     }

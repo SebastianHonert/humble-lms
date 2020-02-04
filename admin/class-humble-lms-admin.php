@@ -112,6 +112,7 @@ class Humble_LMS_Admin {
       'sendTestEmailError' => __('Sorry, something went wrong sending the test email.', 'humble-lms'),
       'sendTestEmailValidation' => __('Please provide a message and a valid email address.', 'humble-lms'),
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset this user\'s learning progress, including awards and certificates.', 'humble-lms'),
+      'uncheckUserIsInstructor' => __('Please note: This user is currently marked as a course instructor. Removing instructor status and saving this user\'s settings will also result in removing this user as an instructor from all courses and lessons.', 'humble-lms'),
       'nonce' => wp_create_nonce( 'humble_lms' )
     ) );
   }
@@ -171,11 +172,14 @@ class Humble_LMS_Admin {
    * @since    0.0.1
    */
   public function add_user_profile_fields( $user ) {
-    $checked = ( isset( $user->humble_lms_is_instructor ) && $user->humble_lms_is_instructor ) ? 'checked="checked"' : '';
+    $user_is_instructor = ( isset( $user->humble_lms_is_instructor ) && $user->humble_lms_is_instructor );
+    $checked = $user_is_instructor ? 'checked="checked"' : '';
+    $was_instructor = $user_is_instructor ? 1 : 0;
     echo '<hr>';
     echo '<h3>Humble LMS</h3>';
     echo '<h4>' . __('Course Instructor', 'humble-lms') . '</h4>';
     echo '<p><input name="humble_lms_is_instructor" type="checkbox" id="humble_lms_is_instructor" value="1" ' . $checked . '>';
+    echo '<input type="hidden" name="humble_lms_was_instructor" value="' . $was_instructor . '" />';
     echo __('This user is a course instructor.', 'humble-lms') . '</p>';
 
     $options = new Humble_LMS_Admin_Options_Manager;
@@ -198,6 +202,14 @@ class Humble_LMS_Admin {
    * @since    0.0.1
    */
   public function update_user_profile( $user_id ) {
+    $user = new Humble_LMS_Public_User;
+    $is_instructor = isset( $_POST['humble_lms_is_instructor'] ) && (int)$_POST['humble_lms_is_instructor'] === 0;
+    $was_instructor = isset( $_POST['humble_lms_was_instructor'] ) && (int)$_POST['humble_lms_was_instructor'] === 1;
+    
+    if( $is_instructor === 0 && $was_instructor === 1 ) {
+      $user->remove_instructor_status( $user_id );
+    }
+
     if( current_user_can('edit_user', $user_id) ) {
       update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
       update_user_meta( $user_id, 'humble_lms_country', sanitize_text_field( $_POST['humble_lms_country'] ) );

@@ -703,6 +703,44 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       update_user_meta( $user_id, 'humble_lms_certificates', [] );
     }
 
+    /**
+     * TODO: Remove user instructor status.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function remove_instructor_status( $user_id = null ) {
+      // if( ! $user_id || ! get_user_by( 'id', $user_id ) )
+      //   return;
+
+      // $courses = $this->content_manager->get_courses();
+      
+      // foreach( $courses as $course_id ) {
+      //   $course_instructors = get_post_meta( $course_id, 'humble_lms_course_instructors', true );
+      //   $course_instructors = ! empty( $course_instructors[0] ) ? json_decode( $course_instructors[0] ) : [];
+
+      //   if( in_array( $user_id, $course_instructors ) ) {
+      //     $course_instructors = array_diff( $course_instructors, [$user_id] );
+      //   }
+
+      //   update_post_meta( $course_id, 'humble_lms_course_instructors', json_encode( $course_instructors ) );
+
+      //   $lessons = $this->content_manager->get_lessons( $course_id );
+
+      //   foreach( $lessons as $lesson_id ) {
+      //     $lesson_instructors = get_post_meta( $lesson_id, 'humble_lms_lesson_instructors', true );
+      //     $lesson_instructors = ! empty( $lesson_instructors[0] ) ? json_decode( $lesson_instructors[0] ) : [];
+  
+      //     if( in_array( $user_id, $course_instructors ) ) {
+      //       $lesson_instructors = array_diff( $lesson_instructors, [$user_id] );
+      //     }
+
+      //     update_post_meta( $lesson_id, 'humble_lms_lesson_instructors', json_encode( $lesson_instructors ) );
+      //   }
+      // }
+      
+    }
+
   }
 
 }

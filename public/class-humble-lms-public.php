@@ -209,10 +209,14 @@ class Humble_LMS_Public {
    */
   public function humble_lms_add_content_to_pages( $content ) {
     global $post;
+    
+    $html = '';
 
-    echo '<div class="humble-lms-loading-layer">
-      <div class="humble-lms-loading"></div>
-    </div>';
+    if( ! is_admin() ) {
+      $html .= '<div class="humble-lms-loading-layer">
+        <div class="humble-lms-loading"></div>
+      </div>';
+    }
 
     // Welcome message after successful registration
     if( isset( $_GET['humble-lms-welcome'] ) && (int)$_GET['humble-lms-welcome'] === 1 ) {
@@ -232,7 +236,6 @@ class Humble_LMS_Public {
       return $content;
     }
 
-    $html = '';
     $course_id = null;
     $lesson_id = null;
 

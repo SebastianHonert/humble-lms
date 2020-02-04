@@ -285,4 +285,21 @@ jQuery(document).ready(function($) {
     }
   })
 
+  /**
+   * Uncheck instructor on user profile page.
+   *
+   * @since   0.0.1
+   */
+  $('#humble_lms_is_instructor').on('change', function(e) {
+    let isInstructor = $(this).is(':checked')
+    let wasInstructor = parseInt($('input[name="humble_lms_was_instructor"]').val())
+
+    if (wasInstructor === 1 && ! isInstructor) {
+      if (! confirm(humble_lms.uncheckUserIsInstructor)) {
+        $(this).prop('checked', true) 
+      }
+    }
+  })
+  
+
 })

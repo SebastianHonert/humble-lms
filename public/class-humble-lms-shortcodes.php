@@ -596,8 +596,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
       $html = '';
 
-      if( ! $awards ) {
-        $html .= '<p>' . __('No have not received any awards yet.', 'humble-lms') . '</p>';
+      if( ! $awards[0] || empty( $awards[0] ) ) {
+        $html .= '<p>' . __('You have not received any awards yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-awards-list">';
         foreach( $awards[0] as $award ) {
@@ -625,8 +625,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $certificates = get_user_meta( get_current_user_id(), 'humble_lms_certificates', false );
       $html = '';
 
-      if( ! $certificates ) {
-        $html .= '<p>' . __('No have not been issued any certificates yet.', 'humble-lms') . '</p>';
+      if( ! $certificates[0] || empty( $certificates[0] ) ) {
+        $html .= '<p>' . __('You have not been issued any certificates yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-certificates-list">';
         foreach( $certificates[0] as $certificate ) {

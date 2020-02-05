@@ -95,7 +95,7 @@ function humble_lms_question_mb() {
   
   $question = get_post_meta( $post->ID, 'humble_lms_question', true );
 
-  echo '<input name="humble_lms_question" class="widefat" value="' . $question . '">'; 
+  echo '<input type="text" name="humble_lms_question" class="widefat" value="' . $question . '">'; 
 }
 
 // Meta box answers

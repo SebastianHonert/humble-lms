@@ -118,6 +118,32 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Register custom post types
+   *
+   * @since    0.0.1
+   */
+  public function register_custom_post_types() {
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-question.php';
+  }
+
+  /**
+   * Register custom taxonomies
+   *
+   * @since    0.0.1
+   */
+  public function register_custom_taxonomies() {
+    require_once plugin_dir_path( __FILE__ ) . 'custom-taxonomies/humble-lms-course-level.php';
+  }
+
+  /**
    * Block users / students from dashboard access and redirect
    * to front page instead.
    *

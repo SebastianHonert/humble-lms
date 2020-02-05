@@ -108,32 +108,6 @@ class Humble_LMS_Public {
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
     ) );
   }
-  
-  /**
-   * Register custom post types
-   *
-   * @since    0.0.1
-   */
-  public function register_custom_post_types() {
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-question.php';
-  }
-
-  /**
-   * Register custom taxonomies
-   *
-   * @since    0.0.1
-   */
-  public function register_custom_taxonomies() {
-    require_once plugin_dir_path( __FILE__ ) . 'custom-taxonomies/humble-lms-course-level.php';
-  }
 
   /**
    * Register archive templates

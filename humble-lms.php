@@ -8,13 +8,13 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://minimalwordpress.com/humble-lms
+ * @link              https://sebastianhonert.com
  * @since             0.0.1
  * @package           Humble_LMS
  *
  * @wordpress-plugin
  * Plugin Name:       Humble LMS
- * Plugin URI:        https://minimalwordpress.com/humble-lms
+ * Plugin URI:        https://sebastianhonert.com
  * Description:       Humble LMS is a learning management system plugin for WordPress with a focus on simplicity.
  * Version:           0.0.1
  * Requires PHP:      7.2

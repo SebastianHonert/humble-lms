@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       https://minimalwordpress.com/humble-lms
+ * @link       https://sebastianhonert.com
  * @since      0.0.1
  *
  * @package    Humble_LMS

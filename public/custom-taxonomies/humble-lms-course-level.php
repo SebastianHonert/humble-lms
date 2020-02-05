@@ -1,9 +1,9 @@
 <?php
 
 $labels = array(
-  'name'                       => _x( 'Level of difficulty', 'Taxonomy General Name', 'humble_lms' ),
-  'singular_name'              => _x( 'Level of difficulty', 'Taxonomy Singular Name', 'humble_lms' ),
-  'menu_name'                  => __( 'Level of difficulty', 'humble_lms' ),
+  'name'                       => _x( 'Difficulty', 'Taxonomy General Name', 'humble_lms' ),
+  'singular_name'              => _x( 'Difficulty', 'Taxonomy Singular Name', 'humble_lms' ),
+  'menu_name'                  => __( 'Difficulty', 'humble_lms' ),
   'all_items'                  => __( 'All Items', 'humble_lms' ),
   'parent_item'                => __( 'Parent Item', 'humble_lms' ),
   'parent_item_colon'          => __( 'Parent Item:', 'humble_lms' ),

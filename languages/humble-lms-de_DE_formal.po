@@ -1,0 +1,1912 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-02-05 17:23+0100\n"
+"PO-Revision-Date: 2020-02-05 17:30+0100\n"
+"Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/class-humble-lms-admin.php:111
+msgid "Email sent successfully."
+msgstr "Die E-Mail wurde gesendet."
+
+#: admin/class-humble-lms-admin.php:112
+msgid "Sorry, something went wrong sending the test email."
+msgstr "Tut uns leid, es gab einen Fehler beim Versenden der E-Mail."
+
+#: admin/class-humble-lms-admin.php:113
+msgid "Please provide a message and a valid email address."
+msgstr "Bitte geben Sie eine Nachricht und eine gültige E-Mail-Adresse ein."
+
+#: admin/class-humble-lms-admin.php:114
+msgid ""
+"Are you sure? This will irrevocably reset this user's learning progress, "
+"including awards and certificates."
+msgstr ""
+"Sind Sie sicher? Das wird den Lernfortschritt des Nutzers unwiderruflich "
+"löschen, einschließlich Auszeichnungen und Zertifikaten."
+
+#: admin/class-humble-lms-admin.php:115
+msgid ""
+"Please note: This user is currently marked as a course instructor. Removing "
+"instructor status and saving this user's settings will also result in "
+"removing this user as an instructor from all courses and lessons."
+msgstr ""
+"Hinweis: Dieser Nutzer ist aktuell als Kurstrainer/in markiert. Wenn dieser "
+"Status entfernt wird, wird der Nutzer auch als Kurstrainer aus allen "
+"Lektionen, Kursen usw. entfernt."
+
+#: admin/class-humble-lms-admin.php:144
+msgid "Humble LMS Sidebar"
+msgstr "Humble LMS Sidebar"
+
+#: admin/class-humble-lms-admin.php:146
+msgid "Widgets in this area will be shown on Humble LMS single lesson pages."
+msgstr ""
+"Widgets in diesem Bereich werden in der Einzelansicht von Lektionen "
+"angezeigt."
+
+#: admin/class-humble-lms-admin.php:180
+msgid "Course Instructor"
+msgstr "Kurstrainer/in"
+
+#: admin/class-humble-lms-admin.php:183
+msgid "This user is a course instructor."
+msgstr "Dieser Nutzer ist ein/e Kurstrainer/in."
+
+#: admin/class-humble-lms-admin.php:189
+#: public/class-humble-lms-shortcodes.php:767
+#: public/class-humble-lms-shortcodes.php:986
+msgid "Country"
+msgstr "Land"
+
+#: admin/class-humble-lms-admin.php:191
+msgid "Please select a country"
+msgstr "Bitte wählen Sie ein Land"
+
+#: admin/class-humble-lms-admin.php:379
+msgid "Username already taken."
+msgstr "Nutzername ist bereits vergeben."
+
+#: admin/class-humble-lms-admin.php:383
+msgid "Invalid username."
+msgstr "Ungültiger Nutzername."
+
+#: admin/class-humble-lms-admin.php:385
+msgid "Please enter a username."
+msgstr "Bitte geben Sie einen Nutzernamen an."
+
+#: admin/class-humble-lms-admin.php:389
+msgid "Please enter your first name."
+msgstr "Bitte geben Sie Ihren Vornamen an."
+
+#: admin/class-humble-lms-admin.php:393
+msgid "Please enter your last name"
+msgstr "Bitte geben Sie Ihren Nachnamen an"
+
+#: admin/class-humble-lms-admin.php:398 admin/class-humble-lms-admin.php:497
+msgid "Please select your country."
+msgstr "Bitte wählen Sie ein Land aus."
+
+#: admin/class-humble-lms-admin.php:403 admin/class-humble-lms-admin.php:502
+#: public/class-humble-lms-shortcodes.php:830
+msgid "Please enter a valid email address."
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an."
+
+#: admin/class-humble-lms-admin.php:407 admin/class-humble-lms-admin.php:506
+msgid "Email address already registered."
+msgstr "Diese E-Mail-Adresse ist bereits vergeben."
+
+#: admin/class-humble-lms-admin.php:411 admin/class-humble-lms-admin.php:510
+msgid "The email addresses you entered do not match."
+msgstr "Die angegebenen E-Mail-Adressen stimmen nicht überein."
+
+#: admin/class-humble-lms-admin.php:415 admin/class-humble-lms-admin.php:519
+msgid "Please enter a password."
+msgstr "Bitte geben Sie ein Passwort an."
+
+#: admin/class-humble-lms-admin.php:419 admin/class-humble-lms-admin.php:523
+msgid "Password should be at least 12 characters."
+msgstr "Das Passwort muss mind. 12 Zeichen lang sein."
+
+#: admin/class-humble-lms-admin.php:423 admin/class-humble-lms-admin.php:527
+msgid "Password should include at least 1 number."
+msgstr "Das Passwort muss mind. 1 Zahl enthalten."
+
+#: admin/class-humble-lms-admin.php:427 admin/class-humble-lms-admin.php:531
+msgid "Password should include at least 1 letter."
+msgstr "Das Passwort muss mind. 1 Buchstaben enthalten."
+
+#: admin/class-humble-lms-admin.php:431 admin/class-humble-lms-admin.php:535
+msgid "Passwords do not match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: admin/class-humble-lms-admin.php:514
+msgid "Please fill in the email confirmation field."
+msgstr "Bitte füllen Sie das Feld zur Bestätigung des Passworts aus."
+
+#: admin/class-humble-lms-admin.php:729
+msgid "Invalid request."
+msgstr "Ungültige Anfrage."
+
+#: admin/class-humble-lms-admin.php:753
+msgid "Hello! (DEFAULT)"
+msgstr "Hallo! (DEFAULT)"
+
+#: admin/class-humble-lms-admin.php:754
+#, php-format
+msgid ""
+"You asked us to reset your password for your account using the email address "
+"%s."
+msgstr ""
+"Sie haben eine Anfrage zum Zurücksetzen des Passworts für den Account mit "
+"folgender E-Mail übermittelt: %s."
+
+#: admin/class-humble-lms-admin.php:755
+msgid ""
+"If this was a mistake, or you didn't ask for a password reset, just ignore "
+"this email and nothing will happen."
+msgstr ""
+"Falls das ein Irrtum sein sollte, oder Sie diese Anfrage nicht selbst "
+"gestellt haben sollten, können Sie diese Nachricht einfach ignorieren."
+
+#: admin/class-humble-lms-admin.php:756
+msgid "To reset your password, visit the following address:"
+msgstr "Um Ihr Passwort zurückzusetzen, öffnen Sie bitte folgenden Link:"
+
+#: admin/class-humble-lms-admin.php:758
+msgid "Thanks!"
+msgstr "Danke!"
+
+#: admin/class-humble-lms-admin.php:790
+msgid "Hi there, (DEFAULT)"
+msgstr "Hallo, (DEFAULT)"
+
+#: admin/class-humble-lms-admin.php:791
+#, php-format
+msgid "welcome to %s! Here's how to log in:"
+msgstr "willkommen bei %s! So können Sie sich zukünftig einloggen:"
+
+#: admin/class-humble-lms-admin.php:792
+#, php-format
+msgid "Username: %s"
+msgstr "Nutzername: %s"
+
+#: admin/class-humble-lms-admin.php:793
+#, php-format
+msgid "Email: %s"
+msgstr "E-Mail: %s"
+
+#: admin/class-humble-lms-admin.php:794
+#, php-format
+msgid "Website: %s"
+msgstr "Website: %s"
+
+#: admin/class-humble-lms-admin.php:795
+msgid "Please use the password you entered in the registration form."
+msgstr ""
+"Bitte verwenden Sie zum Anmelden das Passwort, das Sie bei der Registrierung "
+"angegeben haben."
+
+#: admin/class-humble-lms-admin.php:796
+#, php-format
+msgid "If you have any problems, please contact us at %s."
+msgstr ""
+"Falls irgendwelche Probleme auftauchen sollten, erreichen Sie uns gerne "
+"unter %s."
+
+#: admin/class-humble-lms-admin.php:797
+msgid "Bye!"
+msgstr "Bis bald!"
+
+#: admin/class-humble-lms-admin.php:811
+msgid "Your credentials"
+msgstr "Ihre Anmeldedaten"
+
+#: admin/class-humble-lms-options-manager.php:50
+msgid "Humble LMS"
+msgstr "Humble LMS"
+
+#: admin/class-humble-lms-options-manager.php:61
+msgid "Reporting: Users"
+msgstr "Auswertung: Nutzer"
+
+#: admin/class-humble-lms-options-manager.php:62
+#: admin/class-humble-lms-options-manager.php:103
+msgid "Reporting: Courses"
+msgstr "Auswertung: Kurse"
+
+#: admin/class-humble-lms-options-manager.php:63
+#: admin/class-humble-lms-options-manager.php:104
+msgid "Options"
+msgstr "Optionen"
+
+#: admin/class-humble-lms-options-manager.php:64
+msgid "Registration"
+msgstr "Registrierung"
+
+#: admin/class-humble-lms-options-manager.php:105
+msgid "User Registration"
+msgstr "Nutzerregistrierung"
+
+#: admin/class-humble-lms-options-manager.php:107
+msgid "Track archive tile width"
+msgstr "Breite der Kachel (Lernpfadarchiv)"
+
+#: admin/class-humble-lms-options-manager.php:108
+msgid "Course archive tile width"
+msgstr "Breite der Kachel (Kursarchiv)"
+
+#: admin/class-humble-lms-options-manager.php:111
+msgid "Include country in registration form?"
+msgstr "Option „Land“ im Registrierungsformular anzeigen?"
+
+#: admin/class-humble-lms-options-manager.php:112
+msgid "Which countries should be included (multiselect)?"
+msgstr "Welche Länder sollen angezeigt werden (Mehrfachauswahl)?"
+
+#: admin/class-humble-lms-options-manager.php:113
+msgid "Welcome email"
+msgstr "Begrüßungsnachricht (E-Mail)"
+
+#: admin/class-humble-lms-options-manager.php:114
+msgid "Lost password email"
+msgstr "Passwort verloren (E-Mail)"
+
+#: admin/class-humble-lms-options-manager.php:126
+msgid "Registered users"
+msgstr "Registrierte Nutzer/innen"
+
+#: admin/class-humble-lms-options-manager.php:138
+msgid "Display options and general settings"
+msgstr "Anzeigeoptionen und allg. Einstellungen"
+
+#: admin/class-humble-lms-options-manager.php:154
+#: admin/class-humble-lms-options-manager.php:171
+msgid "Default tile width"
+msgstr "Standard-Kachelbreite"
+
+#: admin/class-humble-lms-options-manager.php:188
+msgid "Yes, include country in registration form."
+msgstr "Ja, „Land“ im Registrierungsformular anzeigen."
+
+#: admin/class-humble-lms-options-manager.php:200
+msgid "Wich countries would you like to include?"
+msgstr "Welche Länder sollen auswählbar sein?"
+
+#: admin/class-humble-lms-options-manager.php:217
+#: admin/class-humble-lms-options-manager.php:236
+msgid ""
+"This email will be send in plain text format. HTML is currently not allowed. "
+"You can use the following strings to include specific information in your "
+"email:"
+msgstr ""
+"Diese E-Mail wird als text/plain versendet. HTML ist derzeit nicht erlaubt. "
+"Bitte nutzen Sie die folgenden Zeichenketten, um spezielle Informationen in "
+"deiner E-Mail anzuzeigen:"
+
+#: admin/class-humble-lms-options-manager.php:222
+msgid "Test email: Welcome"
+msgstr "Test-Nachricht: Begrüßung"
+
+#: admin/class-humble-lms-options-manager.php:223
+#: admin/class-humble-lms-options-manager.php:242
+msgid "Send a test email"
+msgstr "Testnachricht senden"
+
+#: admin/class-humble-lms-options-manager.php:241
+msgid "Test email: Lost password"
+msgstr "Testnachricht: Passwort verloren"
+
+#: admin/class-humble-lms-options-manager.php:346
+msgid "Users per page"
+msgstr "Nutzer pro Seite"
+
+#: admin/class-humble-lms-options-manager.php:354
+msgid "Submit"
+msgstr "Abschicken"
+
+#: admin/class-humble-lms-options-manager.php:376
+msgid "Please provide a valid user ID."
+msgstr "Bitte geben Sie eine gültige Nutzer-ID ein."
+
+#: admin/class-humble-lms-options-manager.php:383
+msgid "Registered"
+msgstr "Registriert"
+
+#: admin/class-humble-lms-options-manager.php:424
+#: public/custom-post-types/humble-lms-track.php:4
+#: public/custom-post-types/humble-lms-track.php:6
+#: public/custom-post-types/humble-lms-track.php:7
+msgid "Tracks"
+msgstr "Lernpfade"
+
+#: admin/class-humble-lms-options-manager.php:425
+#: admin/class-humble-lms-options-manager.php:440
+#: admin/class-humble-lms-options-manager.php:465
+#: admin/class-humble-lms-options-manager.php:482
+#: public/class-humble-lms-shortcodes.php:115
+#: public/class-humble-lms-shortcodes.php:227
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: admin/class-humble-lms-options-manager.php:439
+msgid "Courses and Lessons"
+msgstr "Kurse und Lektionen"
+
+#: admin/class-humble-lms-options-manager.php:464
+#: public/custom-post-types/humble-lms-award.php:4
+#: public/custom-post-types/humble-lms-award.php:6
+#: public/custom-post-types/humble-lms-award.php:7
+msgid "Awards"
+msgstr "Auszeichnungen"
+
+#: admin/class-humble-lms-options-manager.php:481
+#: public/custom-post-types/humble-lms-certificate.php:4
+#: public/custom-post-types/humble-lms-certificate.php:6
+#: public/custom-post-types/humble-lms-certificate.php:7
+msgid "Certificates"
+msgstr "Zertifikate"
+
+#: admin/class-humble-lms-options-manager.php:496
+msgid "Reset learning progress for this user?"
+msgstr "Lernfortschritt für diesen Nutzer zurücksetzen?"
+
+#: admin/class-humble-lms-options-manager.php:501
+msgid "Back"
+msgstr "Zurück"
+
+#: public/class-humble-lms-public.php:108
+msgid ""
+"Are you sure? This will irrevocably reset your learning progress, including "
+"awards and certificates."
+msgstr ""
+"Sind Sie sicher? Das wird den Lernfortschritt unwiderruflich zurücksetzen, "
+"einschließlich Auszeichnungen und Zertifikate."
+
+#: public/class-humble-lms-public.php:224
+msgid "Registration successful"
+msgstr "Registrierung erfolgreich"
+
+#: public/class-humble-lms-public.php:225
+#, php-format
+msgid ""
+"Welcome on board! %s We just sent you a welcome email with further "
+"instructions. Please check your email account."
+msgstr ""
+"Willkommen an Bord! %s Wir haben Ihnen soeben eine Nachricht mit weiteren "
+"Anweisungen an Ihre E-Mail-Adresse gesendet."
+
+#: public/class-humble-lms-public.php:245
+msgid "Access denied"
+msgstr "Kein Zugang"
+
+#: public/class-humble-lms-public.php:246
+#, php-format
+msgid ""
+"You need to be <a href=\"%s\">logged in</a> and have the required "
+"permissions in order to access the requested content."
+msgstr ""
+"Sie müssen <a href=\"%s\">angemeldet</a> sein und die erforderlichen Rechte "
+"besitzen, um auf diesen Inhalt zugreifen zu können."
+
+#: public/class-humble-lms-public.php:259
+msgid "Congratulations"
+msgstr "Glückwunsch"
+
+#: public/class-humble-lms-public.php:260
+#, php-format
+msgid "You successfully completed the course \"%s\"."
+msgstr "Sie haben den Kurs \"%s\" erfolgreich abgeschlossen."
+
+#: public/class-humble-lms-public.php:267
+#: public/class-humble-lms-shortcodes.php:112
+#: public/class-humble-lms-shortcodes.php:224
+msgid "Level"
+msgstr "Schwierigkeitsgrad"
+
+#: public/class-humble-lms-public.php:284
+msgid "Lesson completed"
+msgstr "Lektion abgeschlossen"
+
+#: public/class-humble-lms-public.php:285
+msgid "Course completed"
+msgstr "Kurs abgeschlossen"
+
+#: public/class-humble-lms-public.php:286
+msgid "Track completed"
+msgstr "Lernpfad abgeschlossen"
+
+#: public/class-humble-lms-public.php:287
+msgid "You received an award"
+msgstr "Auszeichnung erhalten"
+
+#: public/class-humble-lms-public.php:288
+msgid "You have been issued a certificate"
+msgstr "Sie haben ein Zertifikat erworben"
+
+#: public/class-humble-lms-public.php:289
+msgid "Quiz completed"
+msgstr "Quiz gelöst"
+
+#: public/class-humble-lms-quiz.php:165
+#: public/custom-post-types/humble-lms-question.php:110
+msgid "Please provide at least one answer."
+msgstr "Bitte geben Sie mindestens eine Antwort ein."
+
+#: public/class-humble-lms-shortcodes.php:70
+msgid "No tracks found."
+msgstr "Keine Lernpfade gefunden."
+
+#: public/class-humble-lms-shortcodes.php:99
+#: public/class-humble-lms-shortcodes.php:101
+#: public/class-humble-lms-shortcodes.php:211
+#: public/class-humble-lms-shortcodes.php:213
+msgid "Not specified"
+msgstr "Nicht angegeben"
+
+#: public/class-humble-lms-shortcodes.php:113
+#: public/class-humble-lms-shortcodes.php:225
+#: public/class-humble-lms-shortcodes.php:332
+msgid "Duration"
+msgstr "Dauer"
+
+#: public/class-humble-lms-shortcodes.php:167
+msgid "This track does not include any courses."
+msgstr "Dieser Lernpfad beinhaltet keine Kurse."
+
+#: public/class-humble-lms-shortcodes.php:182
+msgid "No courses found."
+msgstr "Keine Kurse gefunden."
+
+#: public/class-humble-lms-shortcodes.php:292
+msgid "There are no lessons attached to this course"
+msgstr "Diesem Kurs sind keine Lektionen zugeordnet"
+
+#: public/class-humble-lms-shortcodes.php:306
+msgid "Syllabus"
+msgstr "Kurplan"
+
+#: public/class-humble-lms-shortcodes.php:309
+msgid ""
+"Looking for the course syllabus? It seems that you have accessed this lesson "
+"directly so it is not related to a specific course. Please open the course "
+"and start your learning activities from there."
+msgstr ""
+"Suchen Sie den Kursplan? Es sieht so aus, als hätten Sie diese Lektion "
+"direkt aufgerufen, sie ist daher keinem Kurs zugeordnet. Bitte öffnen Sie "
+"den entsprechenden Kurs, um fortzufahren."
+
+#: public/class-humble-lms-shortcodes.php:335
+#: public/custom-post-types/humble-lms-course.php:5
+#: public/custom-post-types/humble-lms-course.php:34
+#: public/custom-post-types/humble-lms-course.php:35
+msgid "Course"
+msgstr "Kurs"
+
+#: public/class-humble-lms-shortcodes.php:335
+msgid "not selected"
+msgstr "nicht ausgewählt"
+
+#: public/class-humble-lms-shortcodes.php:342
+msgid "Start the course now"
+msgstr "Kurs jetzt starten"
+
+#: public/class-humble-lms-shortcodes.php:461
+msgid "Check your answers"
+msgstr "Prüfen Sie Ihre Antworten"
+
+#: public/class-humble-lms-shortcodes.php:461
+msgid "Quiz passed. Try again?"
+msgstr "Quiz gelöst. Erneut versuchen?"
+
+#: public/class-humble-lms-shortcodes.php:483
+msgid "Mark incomplete and continue"
+msgstr "Als unvollständig markieren"
+
+#: public/class-humble-lms-shortcodes.php:485
+msgid "Mark complete and continue"
+msgstr "Als abgeschlossen markieren"
+
+#: public/class-humble-lms-shortcodes.php:492
+msgid "Back to course overview"
+msgstr "Zurück zur Kursübersicht"
+
+#: public/class-humble-lms-shortcodes.php:494
+msgid "Previous lesson"
+msgstr "Vorherige Lektion"
+
+#: public/class-humble-lms-shortcodes.php:498
+msgid "Back to first lesson"
+msgstr "Zurück zur ersten Lektion"
+
+#: public/class-humble-lms-shortcodes.php:500
+msgid "Next lesson"
+msgstr "Nächste Lektion"
+
+#: public/class-humble-lms-shortcodes.php:553
+msgid "No tracks available."
+msgstr "Keine Lernpfade vorhanden."
+
+#: public/class-humble-lms-shortcodes.php:600
+msgid "You have not received any awards yet."
+msgstr "Sie haben noch keine Auszeichnungen erhalten."
+
+#: public/class-humble-lms-shortcodes.php:629
+msgid "You have not been issued any certificates yet."
+msgstr "Sie haben noch keine Zertifikate erworben."
+
+#: public/class-humble-lms-shortcodes.php:652
+#: public/class-humble-lms-shortcodes.php:934
+#, php-format
+msgid "Please %s first."
+msgstr "Bitte erst %s."
+
+#: public/class-humble-lms-shortcodes.php:666
+msgid "Login failed."
+msgstr "Anmeldung fehlgeschlagen."
+
+#: public/class-humble-lms-shortcodes.php:666
+msgid "Username and password do not match."
+msgstr "Nutzername und Passwort stimmen nicht überein."
+
+#: public/class-humble-lms-shortcodes.php:674
+msgid "You have successfully been logged out."
+msgstr "Sie wurden erfolgreich abgemeldet."
+
+#: public/class-humble-lms-shortcodes.php:678
+#, php-format
+msgid "Invalid key. Please try to %s again."
+msgstr "Ungültiger Schlüssel. Bitte versuchen Sie es erneut: %s."
+
+#: public/class-humble-lms-shortcodes.php:678
+#: public/class-humble-lms-shortcodes.php:682
+msgid "reset your password"
+msgstr "Passwort zurücksetzen"
+
+#: public/class-humble-lms-shortcodes.php:682
+#, php-format
+msgid "Expired key. Please try to %s again."
+msgstr "Schlüssel abgelaufen. Bitte versuchen Sie es erneut: %s."
+
+#: public/class-humble-lms-shortcodes.php:686
+msgid "Password changed successfully. Please sign in below."
+msgstr "Passwort erfolgreich zurückgesetzt. Bitte melden Sie sich an."
+
+#: public/class-humble-lms-shortcodes.php:691
+msgid "Please check your email inbox for a link to reset your password."
+msgstr ""
+"Ein Link zum Zurücksetzen Ihres Passworts wurde Ihnen per E-Mail gesendet."
+
+#: public/class-humble-lms-shortcodes.php:698
+#: public/class-humble-lms-shortcodes.php:754
+#: public/class-humble-lms-shortcodes.php:973
+msgid "Username"
+msgstr "Nutzername"
+
+#: public/class-humble-lms-shortcodes.php:699
+#: public/class-humble-lms-shortcodes.php:791
+#: public/class-humble-lms-shortcodes.php:1010
+msgid "Password"
+msgstr "Passwort"
+
+#: public/class-humble-lms-shortcodes.php:700
+msgid "Remember me"
+msgstr "Erinnere dich an mich"
+
+#: public/class-humble-lms-shortcodes.php:701
+#: public/class-humble-lms-shortcodes.php:809
+#: public/class-humble-lms-shortcodes.php:864
+msgid "Login"
+msgstr "Anmelden"
+
+#: public/class-humble-lms-shortcodes.php:705
+#: public/class-humble-lms-shortcodes.php:809
+msgid "Lost your password?"
+msgstr "Passwort verloren?"
+
+#: public/class-humble-lms-shortcodes.php:705
+#: public/class-humble-lms-shortcodes.php:864
+msgid "Register"
+msgstr "Registrieren"
+
+#: public/class-humble-lms-shortcodes.php:707
+#: public/class-humble-lms-shortcodes.php:721
+#: public/class-humble-lms-shortcodes.php:822
+#: public/class-humble-lms-shortcodes.php:875
+msgid "You are already signed in."
+msgstr "Sie sind bereits angemeldet."
+
+#: public/class-humble-lms-shortcodes.php:725
+msgid "This site is currently not open for registration."
+msgstr "Die Registrierung ist derzeit nicht möglich."
+
+#: public/class-humble-lms-shortcodes.php:734
+#: public/class-humble-lms-shortcodes.php:842
+#: public/class-humble-lms-shortcodes.php:881
+#: public/class-humble-lms-shortcodes.php:885
+#: public/class-humble-lms-shortcodes.php:900
+#: public/class-humble-lms-shortcodes.php:951
+msgid "Error"
+msgstr "Fehler"
+
+#: public/class-humble-lms-shortcodes.php:758
+#: public/class-humble-lms-shortcodes.php:977
+msgid "First Name"
+msgstr "Vorname"
+
+#: public/class-humble-lms-shortcodes.php:758
+#: public/class-humble-lms-shortcodes.php:762
+msgid "Required for certification."
+msgstr "Wird für Zertifikate benötigt."
+
+#: public/class-humble-lms-shortcodes.php:762
+#: public/class-humble-lms-shortcodes.php:981
+msgid "Last Name"
+msgstr "Nachname"
+
+#: public/class-humble-lms-shortcodes.php:769
+#: public/class-humble-lms-shortcodes.php:988
+msgid "Please select your country"
+msgstr "Bitte wählen Sie Ihr Land"
+
+#: public/class-humble-lms-shortcodes.php:782
+#: public/class-humble-lms-shortcodes.php:1001
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: public/class-humble-lms-shortcodes.php:786
+#: public/class-humble-lms-shortcodes.php:1005
+msgid "Confirm email address"
+msgstr "E-Mail-Adresse bestätigen"
+
+#: public/class-humble-lms-shortcodes.php:792
+#: public/class-humble-lms-shortcodes.php:1011
+msgid "Min. 12 characters, at least 1 letter and 1 number"
+msgstr "Mind. 12 Zeichen, mind. 1 Buchstabe und 1 Zahl"
+
+#: public/class-humble-lms-shortcodes.php:797
+#: public/class-humble-lms-shortcodes.php:1016
+msgid "Password again"
+msgstr "Passwort wiederholen"
+
+#: public/class-humble-lms-shortcodes.php:802
+msgid "Register Your Account"
+msgstr "Nutzerkonto registrieren"
+
+#: public/class-humble-lms-shortcodes.php:826
+msgid "Check your email for a link to reset your password."
+msgstr ""
+"Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt."
+
+#: public/class-humble-lms-shortcodes.php:834
+msgid "There are no users registered with this email address."
+msgstr "Keine registrierten Nutzer/innen mit dieser E-Mail-Adresse."
+
+#: public/class-humble-lms-shortcodes.php:850
+msgid ""
+"Please enter your email address and we will send you a link you can use to "
+"pick a new password."
+msgstr ""
+"Bitte geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum "
+"Zurücksetzen Ihres Passworts."
+
+#: public/class-humble-lms-shortcodes.php:854
+msgid "Your email address"
+msgstr "Deine E-Mail-Adresse"
+
+#: public/class-humble-lms-shortcodes.php:859
+#: public/class-humble-lms-shortcodes.php:919
+msgid "Reset Password"
+msgstr "Passwort zurücksetzen"
+
+#: public/class-humble-lms-shortcodes.php:881
+msgid "The passwords you entered do not match."
+msgstr "Die angegebenen Passwörter stimmen nicht überein."
+
+#: public/class-humble-lms-shortcodes.php:885
+msgid ""
+"Your new password should be at least 12 characters long and contain min. 1 "
+"letter and 1 number."
+msgstr ""
+"Ihr neues Passwort sollte mind. 12 Zeichen lang sein und 1 Buchstaben und 1 "
+"Zahl beinhalten."
+
+#: public/class-humble-lms-shortcodes.php:908
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: public/class-humble-lms-shortcodes.php:912
+msgid "Repeat new password"
+msgstr "Passwort wiederholen"
+
+#: public/class-humble-lms-shortcodes.php:944
+msgid "You progress was reset successfully."
+msgstr "Ihr Lernfortschritt wurde zurückgesetzt."
+
+#: public/class-humble-lms-shortcodes.php:956
+msgid "Profile update successful."
+msgstr "Profil erfolgreich aktualisiert."
+
+#: public/class-humble-lms-shortcodes.php:973
+#: public/class-humble-lms-shortcodes.php:977
+#: public/class-humble-lms-shortcodes.php:981
+msgid "Can't be changed"
+msgstr "Kann nicht geändert werden"
+
+#: public/class-humble-lms-shortcodes.php:1021
+msgid "Save changes"
+msgstr "Änderungen speichern"
+
+#: public/class-humble-lms-shortcodes.php:1028
+msgid "Reset my learning progress"
+msgstr "Lernfortschritt zurücksetzen"
+
+#: public/class-humble-lms-shortcodes.php:1050
+msgid "Please enter at least one valid quiz ID."
+msgstr "Bitte mind. 1 gültige Quiz-ID angeben."
+
+#: public/class-humble-lms-shortcodes.php:1061
+msgid "Well done!"
+msgstr "Gut gemacht!"
+
+#: public/class-humble-lms-shortcodes.php:1062
+msgid "You passed this quiz with a score of"
+msgstr "Quiz bestanden mit einer Puktzahl von"
+
+#: public/class-humble-lms-shortcodes.php:1063
+#: public/class-humble-lms-shortcodes.php:1069
+msgid "This quiz requires at least"
+msgstr "Dieser Quiz benötigt mindestens"
+
+#: public/class-humble-lms-shortcodes.php:1066
+msgid "Bummer"
+msgstr "Schade"
+
+#: public/class-humble-lms-shortcodes.php:1067
+msgid "You failed this quiz with a score of"
+msgstr "Sie haben den Quiz nicht bestanden mit"
+
+#: public/class-humble-lms-shortcodes.php:1112
+msgid "No quizzes found."
+msgstr "Keine Quizze gefunden."
+
+#: public/custom-post-types/humble-lms-activity.php:4
+#: public/custom-post-types/humble-lms-activity.php:6
+#: public/custom-post-types/humble-lms-activity.php:7
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#: public/custom-post-types/humble-lms-activity.php:5
+#: public/custom-post-types/humble-lms-activity.php:40
+#: public/custom-post-types/humble-lms-activity.php:41
+msgid "Activity"
+msgstr "Aktivität"
+
+#: public/custom-post-types/humble-lms-activity.php:8
+msgid "Activity Archives"
+msgstr "Aktivitätsarchiv"
+
+#: public/custom-post-types/humble-lms-activity.php:9
+msgid "Activity Attributes"
+msgstr "Aktivitätsattribute"
+
+#: public/custom-post-types/humble-lms-activity.php:10
+msgid "Parent Activity:"
+msgstr "Übergeordnete Aktivität:"
+
+#: public/custom-post-types/humble-lms-activity.php:11
+msgid "All Activities"
+msgstr "Alle Aktivitäten"
+
+#: public/custom-post-types/humble-lms-activity.php:12
+msgid "Add New Activity"
+msgstr "Aktivität hinzufügen"
+
+#: public/custom-post-types/humble-lms-activity.php:13
+#: public/custom-post-types/humble-lms-award.php:13
+#: public/custom-post-types/humble-lms-certificate.php:13
+#: public/custom-post-types/humble-lms-course.php:13
+#: public/custom-post-types/humble-lms-email.php:13
+#: public/custom-post-types/humble-lms-lesson.php:13
+#: public/custom-post-types/humble-lms-question.php:13
+#: public/custom-post-types/humble-lms-quiz.php:13
+#: public/custom-post-types/humble-lms-track.php:13
+msgid "Add New"
+msgstr "Neu hinzufügen"
+
+#: public/custom-post-types/humble-lms-activity.php:14
+msgid "New Activity"
+msgstr "Neue Aktivität"
+
+#: public/custom-post-types/humble-lms-activity.php:15
+msgid "Edit Activity"
+msgstr "Aktivität bearbeiten"
+
+#: public/custom-post-types/humble-lms-activity.php:16
+msgid "Update Activity"
+msgstr "Aktivität aktualisieren"
+
+#: public/custom-post-types/humble-lms-activity.php:17
+msgid "View Activity"
+msgstr "Aktivität ansehen"
+
+#: public/custom-post-types/humble-lms-activity.php:18
+msgid "View Activities"
+msgstr "Aktivitäten ansehen"
+
+#: public/custom-post-types/humble-lms-activity.php:19
+msgid "Search Activity"
+msgstr "Aktivität suchen"
+
+#: public/custom-post-types/humble-lms-activity.php:20
+#: public/custom-post-types/humble-lms-award.php:20
+#: public/custom-post-types/humble-lms-certificate.php:20
+#: public/custom-post-types/humble-lms-course.php:20
+#: public/custom-post-types/humble-lms-email.php:20
+#: public/custom-post-types/humble-lms-lesson.php:20
+#: public/custom-post-types/humble-lms-question.php:20
+#: public/custom-post-types/humble-lms-quiz.php:20
+#: public/custom-post-types/humble-lms-track.php:20
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: public/custom-post-types/humble-lms-activity.php:21
+#: public/custom-post-types/humble-lms-award.php:21
+#: public/custom-post-types/humble-lms-certificate.php:21
+#: public/custom-post-types/humble-lms-course.php:21
+#: public/custom-post-types/humble-lms-email.php:21
+#: public/custom-post-types/humble-lms-lesson.php:21
+#: public/custom-post-types/humble-lms-question.php:21
+#: public/custom-post-types/humble-lms-quiz.php:21
+#: public/custom-post-types/humble-lms-track.php:21
+msgid "Not found in Trash"
+msgstr "Nicht im Papierkorb gefunden"
+
+#: public/custom-post-types/humble-lms-activity.php:22
+#: public/custom-post-types/humble-lms-award.php:22
+#: public/custom-post-types/humble-lms-certificate.php:22
+#: public/custom-post-types/humble-lms-course.php:22
+#: public/custom-post-types/humble-lms-email.php:22
+#: public/custom-post-types/humble-lms-lesson.php:22
+#: public/custom-post-types/humble-lms-question.php:22
+#: public/custom-post-types/humble-lms-quiz.php:22
+#: public/custom-post-types/humble-lms-track.php:22
+msgid "Featured Image"
+msgstr "Beitragsbild"
+
+#: public/custom-post-types/humble-lms-activity.php:23
+#: public/custom-post-types/humble-lms-award.php:23
+#: public/custom-post-types/humble-lms-certificate.php:23
+#: public/custom-post-types/humble-lms-course.php:23
+#: public/custom-post-types/humble-lms-email.php:23
+#: public/custom-post-types/humble-lms-lesson.php:23
+#: public/custom-post-types/humble-lms-question.php:23
+#: public/custom-post-types/humble-lms-quiz.php:23
+#: public/custom-post-types/humble-lms-track.php:23
+msgid "Set featured image"
+msgstr "Beitragsbild festlegen"
+
+#: public/custom-post-types/humble-lms-activity.php:24
+#: public/custom-post-types/humble-lms-award.php:24
+#: public/custom-post-types/humble-lms-certificate.php:24
+#: public/custom-post-types/humble-lms-course.php:24
+#: public/custom-post-types/humble-lms-email.php:24
+#: public/custom-post-types/humble-lms-lesson.php:24
+#: public/custom-post-types/humble-lms-question.php:24
+#: public/custom-post-types/humble-lms-quiz.php:24
+#: public/custom-post-types/humble-lms-track.php:24
+msgid "Remove featured image"
+msgstr "Beitragsbild entfernen"
+
+#: public/custom-post-types/humble-lms-activity.php:25
+#: public/custom-post-types/humble-lms-award.php:25
+#: public/custom-post-types/humble-lms-certificate.php:25
+#: public/custom-post-types/humble-lms-course.php:25
+#: public/custom-post-types/humble-lms-email.php:25
+#: public/custom-post-types/humble-lms-lesson.php:25
+#: public/custom-post-types/humble-lms-question.php:25
+#: public/custom-post-types/humble-lms-quiz.php:25
+#: public/custom-post-types/humble-lms-track.php:25
+msgid "Use as featured image"
+msgstr "Als Beitragsbild festlegen"
+
+#: public/custom-post-types/humble-lms-activity.php:26
+msgid "Insert into activity"
+msgstr "In Aktivität einfügen"
+
+#: public/custom-post-types/humble-lms-activity.php:27
+msgid "Uploaded to this activity"
+msgstr "Für diese Aktivität hochgeladen"
+
+#: public/custom-post-types/humble-lms-activity.php:28
+msgid "Activities list"
+msgstr "Liste der Aktivitäten"
+
+#: public/custom-post-types/humble-lms-activity.php:29
+msgid "Activities list navigation"
+msgstr "Aktivitäten Navigation"
+
+#: public/custom-post-types/humble-lms-activity.php:30
+msgid "Filter activities list"
+msgstr "Aktivitäten filtern"
+
+#: public/custom-post-types/humble-lms-activity.php:68
+msgid "Activity type"
+msgstr "Aktivitätstyp"
+
+#: public/custom-post-types/humble-lms-activity.php:69
+msgid "Action following the activity"
+msgstr "Aktionen im Anschluss an die Aktivität"
+
+#: public/custom-post-types/humble-lms-activity.php:112
+msgid "Please select an activity trigger"
+msgstr "Bitte wählen Sie einen Auslöser für die Aktivität"
+
+#: public/custom-post-types/humble-lms-activity.php:114
+msgid "Student completed a track"
+msgstr "Nutzer/in komplettiert Lernpfad"
+
+#: public/custom-post-types/humble-lms-activity.php:116
+msgid "Student completed a course"
+msgstr "Nutzer/in komplettiert einen Kurs"
+
+#: public/custom-post-types/humble-lms-activity.php:118
+msgid "Student completed a lesson"
+msgstr "Nutzer/in komplettiert eine Lektion"
+
+#: public/custom-post-types/humble-lms-activity.php:120
+msgid "Student completed all tracks"
+msgstr "Nutzer/in komplettiert alle Lernpfade"
+
+#: public/custom-post-types/humble-lms-activity.php:122
+msgid "Student completed all courses"
+msgstr "Nutzer/in komplettiert alle Kurse"
+
+#: public/custom-post-types/humble-lms-activity.php:126
+msgid "Select a track"
+msgstr "Wählen Sie einen Lernpfad"
+
+#: public/custom-post-types/humble-lms-activity.php:134
+msgid "Select a course"
+msgstr "Wählen Sie einen Kurs"
+
+#: public/custom-post-types/humble-lms-activity.php:142
+msgid "Select a lesson"
+msgstr "Wählen Sie eine Lektion"
+
+#: public/custom-post-types/humble-lms-activity.php:162
+msgid "Select an action following the activity"
+msgstr "Wählen Sie eine Aktion, die dieser Aktivität folgt"
+
+#: public/custom-post-types/humble-lms-activity.php:166
+msgid "Grant an award"
+msgstr "Eine Auszeichnung verleihen"
+
+#: public/custom-post-types/humble-lms-activity.php:167
+msgid "Send an email"
+msgstr "Eine E-Mail senden"
+
+#: public/custom-post-types/humble-lms-activity.php:168
+msgid "Issue a certificate"
+msgstr "Ein Zertifikat ausstellen"
+
+#: public/custom-post-types/humble-lms-activity.php:196
+msgid "Select an award"
+msgstr "Wählen Sie eine Auszeichnung"
+
+#: public/custom-post-types/humble-lms-activity.php:204
+msgid "Select an email"
+msgstr "Wählen Sie eine E-Mail"
+
+#: public/custom-post-types/humble-lms-activity.php:212
+msgid "Select a certificate"
+msgstr "Wählen Sie ein Zertifikat"
+
+#: public/custom-post-types/humble-lms-award.php:5
+#: public/custom-post-types/humble-lms-award.php:40
+#: public/custom-post-types/humble-lms-award.php:41
+msgid "Award"
+msgstr "Auszeichnung"
+
+#: public/custom-post-types/humble-lms-award.php:8
+msgid "Award Archives"
+msgstr "Auszeichnungsarchiv"
+
+#: public/custom-post-types/humble-lms-award.php:9
+msgid "Award Attributes"
+msgstr "Auszeichnungsattribute"
+
+#: public/custom-post-types/humble-lms-award.php:10
+msgid "Parent Award:"
+msgstr "Eltern-Auszeichnung:"
+
+#: public/custom-post-types/humble-lms-award.php:11
+msgid "All Awards"
+msgstr "Alls Auszeichnungen"
+
+#: public/custom-post-types/humble-lms-award.php:12
+msgid "Add New Award"
+msgstr "Auszeichnung hinzufügen"
+
+#: public/custom-post-types/humble-lms-award.php:14
+msgid "New Award"
+msgstr "Neue Auszeichnung"
+
+#: public/custom-post-types/humble-lms-award.php:15
+msgid "Edit Award"
+msgstr "Auszeichung bearbeiten"
+
+#: public/custom-post-types/humble-lms-award.php:16
+msgid "Update Award"
+msgstr "Auszeichnung aktualisieren"
+
+#: public/custom-post-types/humble-lms-award.php:17
+#: public/custom-post-types/humble-lms-award.php:18
+msgid "View Awards"
+msgstr "Auszeichnungen ansehen"
+
+#: public/custom-post-types/humble-lms-award.php:19
+msgid "Search Award"
+msgstr "Auszeichnungen suchen"
+
+#: public/custom-post-types/humble-lms-award.php:26
+msgid "Insert into award"
+msgstr "In Auszeichnung einfügen"
+
+#: public/custom-post-types/humble-lms-award.php:27
+msgid "Uploaded to this award"
+msgstr "Zu dieser Auszeichnung hochgeladen"
+
+#: public/custom-post-types/humble-lms-award.php:28
+msgid "Awards list"
+msgstr "Liste der Auszeichnung"
+
+#: public/custom-post-types/humble-lms-award.php:29
+msgid "Awards list navigation"
+msgstr "Navigation Auszeichnungen"
+
+#: public/custom-post-types/humble-lms-award.php:30
+msgid "Filter awards list"
+msgstr "Auszeichnungen filtern"
+
+#: public/custom-post-types/humble-lms-award.php:67
+msgid "Award image (256x256)"
+msgstr "Bild für die Auszeichnung (256x256)"
+
+#: public/custom-post-types/humble-lms-certificate.php:5
+#: public/custom-post-types/humble-lms-certificate.php:41
+#: public/custom-post-types/humble-lms-certificate.php:42
+msgid "Certificate"
+msgstr "Zertifikat"
+
+#: public/custom-post-types/humble-lms-certificate.php:8
+msgid "Certificate Archives"
+msgstr "Zertifikatsarchiv"
+
+#: public/custom-post-types/humble-lms-certificate.php:9
+msgid "Certificate Attributes"
+msgstr "Zertifikatsattribute"
+
+#: public/custom-post-types/humble-lms-certificate.php:10
+msgid "Parent Certificate:"
+msgstr "Eltern-Zertifikat:"
+
+#: public/custom-post-types/humble-lms-certificate.php:11
+msgid "All Certificates"
+msgstr "Alle Zertifikate"
+
+#: public/custom-post-types/humble-lms-certificate.php:12
+msgid "Add New Certificate"
+msgstr "Zertifikat hinzufügen"
+
+#: public/custom-post-types/humble-lms-certificate.php:14
+msgid "New Certificate"
+msgstr "Neues Zertifikat"
+
+#: public/custom-post-types/humble-lms-certificate.php:15
+msgid "Edit Certificate"
+msgstr "Zertifikat bearbeiten"
+
+#: public/custom-post-types/humble-lms-certificate.php:16
+msgid "Update Certificate"
+msgstr "Zertifikat aktualisieren"
+
+#: public/custom-post-types/humble-lms-certificate.php:17
+#: public/custom-post-types/humble-lms-certificate.php:18
+msgid "View Certificates"
+msgstr "Zertifikat ansehen"
+
+#: public/custom-post-types/humble-lms-certificate.php:19
+msgid "Search Certificate"
+msgstr "Zertifikat suchen"
+
+#: public/custom-post-types/humble-lms-certificate.php:26
+msgid "Insert into certificate"
+msgstr "In Zertifikat einfügen"
+
+#: public/custom-post-types/humble-lms-certificate.php:27
+msgid "Uploaded to this certificate"
+msgstr "Zu diesem Zertifikat hochgeladen"
+
+#: public/custom-post-types/humble-lms-certificate.php:28
+msgid "Certificates list"
+msgstr "Liste aller Zertifikate"
+
+#: public/custom-post-types/humble-lms-certificate.php:29
+msgid "Certificates list navigation"
+msgstr "Zertifikate Navigation"
+
+#: public/custom-post-types/humble-lms-certificate.php:30
+msgid "Filter certificates list"
+msgstr "Zertifikate filtern"
+
+#: public/custom-post-types/humble-lms-certificate.php:34
+msgid "certificates"
+msgstr "Zertifikate"
+
+#: public/custom-post-types/humble-lms-certificate.php:69
+msgid "Heading"
+msgstr "Überschrift"
+
+#: public/custom-post-types/humble-lms-certificate.php:70
+msgid "Subtitle"
+msgstr "Untertitel"
+
+#: public/custom-post-types/humble-lms-certificate.php:71
+msgid "Date format"
+msgstr "Datumsformat"
+
+#: public/custom-post-types/humble-lms-certificate.php:72
+msgid "Content (HTML allowed)"
+msgstr "Inhalt (HTML erlaubt)"
+
+#: public/custom-post-types/humble-lms-certificate.php:73
+msgid "Template"
+msgstr "Vorlage"
+
+#: public/custom-post-types/humble-lms-certificate.php:110
+msgid "German (20. Februar 2020)"
+msgstr "Deutsch (20. Februar 2020)"
+
+#: public/custom-post-types/humble-lms-certificate.php:111
+msgid "English (March 10, 2001)"
+msgstr "Englisch (March 10, 2001)"
+
+#: public/custom-post-types/humble-lms-certificate.php:126
+#: public/custom-post-types/humble-lms-email.php:86
+msgid "Student name"
+msgstr "Name des Lernenden"
+
+#: public/custom-post-types/humble-lms-certificate.php:127
+msgid "Student first name"
+msgstr "Vorname des Lernenden"
+
+#: public/custom-post-types/humble-lms-certificate.php:128
+msgid "Student last name"
+msgstr "Nachname des Lernenden"
+
+#: public/custom-post-types/humble-lms-certificate.php:129
+msgid "Current date"
+msgstr "Aktuelles Datum"
+
+#: public/custom-post-types/humble-lms-certificate.php:130
+#: public/custom-post-types/humble-lms-email.php:87
+msgid "Website name"
+msgstr "Name der Website"
+
+#: public/custom-post-types/humble-lms-certificate.php:131
+#: public/custom-post-types/humble-lms-email.php:88
+msgid "Website URL"
+msgstr "URL der Website"
+
+#: public/custom-post-types/humble-lms-certificate.php:135
+msgid "You can use the following tags in the content of your certificate"
+msgstr "Sie können folgende HTML-Tags in diesem Zertifikat verwenden"
+
+#: public/custom-post-types/humble-lms-certificate.php:147
+msgid "Default template"
+msgstr "Standard-Vorlage"
+
+#: public/custom-post-types/humble-lms-certificate.php:148
+msgid "Preview certificate"
+msgstr "Vorschau ansehen"
+
+#: public/custom-post-types/humble-lms-course.php:4
+#: public/custom-post-types/humble-lms-course.php:6
+#: public/custom-post-types/humble-lms-course.php:7
+#: public/partials/humble-lms-course-archive.php:8
+msgid "Courses"
+msgstr "Kurse"
+
+#: public/custom-post-types/humble-lms-course.php:8
+msgid "Course Archives"
+msgstr "Kursarchiv"
+
+#: public/custom-post-types/humble-lms-course.php:9
+msgid "Course Attributes"
+msgstr "Kursattribute"
+
+#: public/custom-post-types/humble-lms-course.php:10
+msgid "Parent Course:"
+msgstr "Eltern-Kurs:"
+
+#: public/custom-post-types/humble-lms-course.php:11
+msgid "All Courses"
+msgstr "Alle Kurse"
+
+#: public/custom-post-types/humble-lms-course.php:12
+msgid "Add New Course"
+msgstr "Neuen Kurs hinzufügen"
+
+#: public/custom-post-types/humble-lms-course.php:14
+msgid "New Course"
+msgstr "Neuer Kurs"
+
+#: public/custom-post-types/humble-lms-course.php:15
+msgid "Edit Course"
+msgstr "Kurs bearbeiten"
+
+#: public/custom-post-types/humble-lms-course.php:16
+msgid "Update Course"
+msgstr "Kurs aktualisieren"
+
+#: public/custom-post-types/humble-lms-course.php:17
+msgid "View Course"
+msgstr "Kurs ansehen"
+
+#: public/custom-post-types/humble-lms-course.php:18
+msgid "View Courses"
+msgstr "Kurse ansehen"
+
+#: public/custom-post-types/humble-lms-course.php:19
+msgid "Search Course"
+msgstr "Kurse suchen"
+
+#: public/custom-post-types/humble-lms-course.php:26
+msgid "Insert into course"
+msgstr "In Kurs einfügen"
+
+#: public/custom-post-types/humble-lms-course.php:27
+msgid "Uploaded to this course"
+msgstr "Hochgeladen zu diesem Kurs"
+
+#: public/custom-post-types/humble-lms-course.php:28
+msgid "Courses list"
+msgstr "Kursliste"
+
+#: public/custom-post-types/humble-lms-course.php:29
+msgid "Courses list navigation"
+msgstr "Kurslisten Navigation"
+
+#: public/custom-post-types/humble-lms-course.php:30
+msgid "Filter courses list"
+msgstr "Kursliste filtern"
+
+#: public/custom-post-types/humble-lms-course.php:62
+msgid "Lesson(s) in this course"
+msgstr "Lektion(en) in diesem Kurs"
+
+#: public/custom-post-types/humble-lms-course.php:63
+#: public/custom-post-types/humble-lms-track.php:63
+msgid "Duration (approximately, e.g. 8 hours)"
+msgstr "Dauer (ungefähr, z.B. 8 Stunden)"
+
+#: public/custom-post-types/humble-lms-course.php:64
+msgid "Display featured image"
+msgstr "Beitragsbild anzeigen"
+
+#: public/custom-post-types/humble-lms-course.php:65
+msgid "Select instructor(s) for this course (optional)"
+msgstr "Kursleiter/innen für diesen Kurs (optional)"
+
+#: public/custom-post-types/humble-lms-course.php:119
+#, php-format
+msgid "No lessons found. Please %s first."
+msgstr "Keine Lektionen gefunden. Bitte zuerst %s."
+
+#: public/custom-post-types/humble-lms-course.php:144
+msgid "Yes, display the featured image on the course page."
+msgstr "Ja, Beitragsbild auf der Kursseite anzeigen."
+
+#: public/custom-post-types/humble-lms-course.php:195
+#: public/custom-post-types/humble-lms-lesson.php:155
+#: public/custom-post-types/humble-lms-track.php:198
+#, php-format
+msgid "No instructors found. Please %s first."
+msgstr "Keine Kursleiter/innen gefunden. Bitte %s."
+
+#: public/custom-post-types/humble-lms-email.php:4
+#: public/custom-post-types/humble-lms-email.php:6
+#: public/custom-post-types/humble-lms-email.php:7
+msgid "Emails"
+msgstr "E-Mails"
+
+#: public/custom-post-types/humble-lms-email.php:5
+#: public/custom-post-types/humble-lms-email.php:40
+#: public/custom-post-types/humble-lms-email.php:41
+msgid "Email"
+msgstr "E-Mail"
+
+#: public/custom-post-types/humble-lms-email.php:8
+msgid "Email Archives"
+msgstr "E-Mail-Archiv"
+
+#: public/custom-post-types/humble-lms-email.php:9
+msgid "Email Attributes"
+msgstr "E-Mail-Attribute"
+
+#: public/custom-post-types/humble-lms-email.php:10
+msgid "Parent Email:"
+msgstr "Eltern-E-Mail:"
+
+#: public/custom-post-types/humble-lms-email.php:11
+msgid "All Emails"
+msgstr "Alle E-Mails"
+
+#: public/custom-post-types/humble-lms-email.php:12
+msgid "Add New Email"
+msgstr "Neue E-Mail hinzufügen"
+
+#: public/custom-post-types/humble-lms-email.php:14
+msgid "New Email"
+msgstr "Neue E-Mail"
+
+#: public/custom-post-types/humble-lms-email.php:15
+msgid "Edit Email"
+msgstr "E-Mail bearbeiten"
+
+#: public/custom-post-types/humble-lms-email.php:16
+msgid "Update Email"
+msgstr "E-Mail aktualisieren"
+
+#: public/custom-post-types/humble-lms-email.php:17
+#: public/custom-post-types/humble-lms-email.php:18
+msgid "View Emails"
+msgstr "E-Mails ansehen"
+
+#: public/custom-post-types/humble-lms-email.php:19
+msgid "Search Email"
+msgstr "E-Mail suchen"
+
+#: public/custom-post-types/humble-lms-email.php:26
+msgid "Insert into email"
+msgstr "In E-Mail einfügen"
+
+#: public/custom-post-types/humble-lms-email.php:27
+msgid "Uploaded to this email"
+msgstr "Hochgeladen zu dieser E-Mail"
+
+#: public/custom-post-types/humble-lms-email.php:28
+msgid "Emails list"
+msgstr "E-Mail-Liste"
+
+#: public/custom-post-types/humble-lms-email.php:29
+msgid "Emails list navigation"
+msgstr "E-Mail-Liste Navigation"
+
+#: public/custom-post-types/humble-lms-email.php:30
+msgid "Filter emails list"
+msgstr "E-Mails filtern"
+
+#: public/custom-post-types/humble-lms-email.php:67
+msgid "E-Mail message"
+msgstr "E-Mail-Nachricht"
+
+#: public/custom-post-types/humble-lms-email.php:68
+msgid "E-Mail format"
+msgstr "E-Mail-Format"
+
+#: public/custom-post-types/humble-lms-email.php:92
+msgid "If you send emails in HTML format, you can use the following tags"
+msgstr ""
+"Falls die E-Mail im HTML-Format gesendet wird, können Sie folgende HTML-Tags "
+"verwenden"
+
+#: public/custom-post-types/humble-lms-lesson.php:4
+#: public/custom-post-types/humble-lms-lesson.php:6
+#: public/custom-post-types/humble-lms-lesson.php:7
+msgid "Lessons"
+msgstr "Lektionen"
+
+#: public/custom-post-types/humble-lms-lesson.php:5
+#: public/custom-post-types/humble-lms-lesson.php:41
+#: public/custom-post-types/humble-lms-lesson.php:42
+msgid "Lesson"
+msgstr "Lektion"
+
+#: public/custom-post-types/humble-lms-lesson.php:8
+msgid "Lesson Archives"
+msgstr "Lektionsarchiv"
+
+#: public/custom-post-types/humble-lms-lesson.php:9
+msgid "Lesson Attributes"
+msgstr "Lektionsattribute"
+
+#: public/custom-post-types/humble-lms-lesson.php:10
+msgid "Parent Lesson:"
+msgstr "Eltern-Lektion:"
+
+#: public/custom-post-types/humble-lms-lesson.php:11
+msgid "All Lessons"
+msgstr "Alle Lektionen"
+
+#: public/custom-post-types/humble-lms-lesson.php:12
+msgid "Add New Lesson"
+msgstr "Neue Lektion hinzufügen"
+
+#: public/custom-post-types/humble-lms-lesson.php:14
+msgid "New Lesson"
+msgstr "Neue Lektion"
+
+#: public/custom-post-types/humble-lms-lesson.php:15
+msgid "Edit Lesson"
+msgstr "Lektion bearbeiten"
+
+#: public/custom-post-types/humble-lms-lesson.php:16
+msgid "Update Lesson"
+msgstr "Lektion aktualisieren"
+
+#: public/custom-post-types/humble-lms-lesson.php:17
+msgid "View Lesson"
+msgstr "Lektion ansehen"
+
+#: public/custom-post-types/humble-lms-lesson.php:18
+msgid "View Lessons"
+msgstr "Lektionen ansehen"
+
+#: public/custom-post-types/humble-lms-lesson.php:19
+msgid "Search Lesson"
+msgstr "Lektion suchen"
+
+#: public/custom-post-types/humble-lms-lesson.php:26
+msgid "Insert into lesson"
+msgstr "In Lektion einfügen"
+
+#: public/custom-post-types/humble-lms-lesson.php:27
+msgid "Uploaded to this lesson"
+msgstr "Hochgeladen in diese Lektion"
+
+#: public/custom-post-types/humble-lms-lesson.php:28
+msgid "Lessons list"
+msgstr "Lekstionsliste"
+
+#: public/custom-post-types/humble-lms-lesson.php:29
+msgid "Lessons list navigation"
+msgstr "Lektionsliste Navigation"
+
+#: public/custom-post-types/humble-lms-lesson.php:30
+msgid "Filter lessons list"
+msgstr "Lektionen filtern"
+
+#: public/custom-post-types/humble-lms-lesson.php:68
+msgid "What is this lesson about?"
+msgstr "Worum geht es in dieser Lektion?"
+
+#: public/custom-post-types/humble-lms-lesson.php:69
+msgid "Who can access this lesson?"
+msgstr "Wer hat Zugriff auf diese Lektion?"
+
+#: public/custom-post-types/humble-lms-lesson.php:70
+msgid "Select instructor(s) for this lesson (optional)"
+msgstr "Kursleiter/innen für dies Lektion (optional)"
+
+#: public/custom-post-types/humble-lms-lesson.php:84
+msgid ""
+"Describe the content of this lesson in a few words. Allowed HTML-tags: "
+"strong, em, b, i."
+msgstr ""
+"Beschreiben Sie den Inhalt dieser Lektion in einigen Worten. Erlaubte HTML-"
+"Tags: strong, em, b, i."
+
+#: public/custom-post-types/humble-lms-lesson.php:98
+msgid ""
+"Select the user roles that can access this lesson. If you do not select any "
+"specific role(s), the lesson will be publicly available."
+msgstr ""
+"Wählen Sie die Nutzerrollen, die Zugriff auf diese Lektion haben wollen. "
+"Wenn Sie keine Rollen wählen, ist die Lektion öffentlich zugänglich."
+
+#: public/custom-post-types/humble-lms-question.php:4
+#: public/custom-post-types/humble-lms-question.php:7
+msgid "Questions"
+msgstr "Fragen"
+
+#: public/custom-post-types/humble-lms-question.php:5
+#: public/custom-post-types/humble-lms-question.php:41
+#: public/custom-post-types/humble-lms-question.php:42
+#: public/custom-post-types/humble-lms-question.php:70
+msgid "Question"
+msgstr "Frage"
+
+#: public/custom-post-types/humble-lms-question.php:6
+msgid "Quiz Questions"
+msgstr "Quizfragen"
+
+#: public/custom-post-types/humble-lms-question.php:8
+msgid "Question Archives"
+msgstr "Quizfragearchiv"
+
+#: public/custom-post-types/humble-lms-question.php:9
+msgid "Question Attributes"
+msgstr "Quizfrageattribute"
+
+#: public/custom-post-types/humble-lms-question.php:10
+msgid "Parent Question:"
+msgstr "Eltern-Quizfrage:"
+
+#: public/custom-post-types/humble-lms-question.php:11
+msgid "All Questions"
+msgstr "Alle Quizfragen"
+
+#: public/custom-post-types/humble-lms-question.php:12
+msgid "Add New Question"
+msgstr "Neue Quizfrage hinzufügen"
+
+#: public/custom-post-types/humble-lms-question.php:14
+msgid "New Question"
+msgstr "Neue Quizfrage"
+
+#: public/custom-post-types/humble-lms-question.php:15
+msgid "Edit Question"
+msgstr "Quizfrage bearbeiten"
+
+#: public/custom-post-types/humble-lms-question.php:16
+msgid "Update Question"
+msgstr "Quizfrage aktualisieren"
+
+#: public/custom-post-types/humble-lms-question.php:17
+msgid "View Question"
+msgstr "Quizfrage ansehen"
+
+#: public/custom-post-types/humble-lms-question.php:18
+msgid "View Questions"
+msgstr "Quizfragen ansehen"
+
+#: public/custom-post-types/humble-lms-question.php:19
+msgid "Search Question"
+msgstr "Quizfrage suchen"
+
+#: public/custom-post-types/humble-lms-question.php:26
+msgid "Insert into question"
+msgstr "In Quizfrage einfügen"
+
+#: public/custom-post-types/humble-lms-question.php:27
+msgid "Uploaded to this question"
+msgstr "Hochgeladen in diese Quizfrage"
+
+#: public/custom-post-types/humble-lms-question.php:28
+msgid "Questions list"
+msgstr "Quizfragenliste"
+
+#: public/custom-post-types/humble-lms-question.php:29
+msgid "Questions list navigation"
+msgstr "Quizfragenliste Navigation"
+
+#: public/custom-post-types/humble-lms-question.php:30
+msgid "Filter questions list"
+msgstr "Quizfragen filtern"
+
+#: public/custom-post-types/humble-lms-question.php:34
+msgid "questions"
+msgstr "Quizfragen"
+
+#: public/custom-post-types/humble-lms-question.php:69
+msgid "Question type"
+msgstr "Fragetyp"
+
+#: public/custom-post-types/humble-lms-question.php:71
+msgid "Answers to this question"
+msgstr "Antworten auf diese Frage"
+
+#: public/custom-post-types/humble-lms-question.php:114
+msgid ""
+"Select more than on correct answer for a <strong>multiple choice</strong> "
+"question, and only one correct answer for a <strong>single choice</strong> "
+"question."
+msgstr ""
+"Wählen Sie mehr als eine richtige Antwort für eine <strong>Multiple-Choice</"
+"strong> Frage, und nur eine richtige Antwort für eine <strong>Single-Choice</"
+"strong> Frage."
+
+#: public/custom-post-types/humble-lms-question.php:124
+msgid "Correct answer"
+msgstr "Richtige Antwort"
+
+#: public/custom-post-types/humble-lms-question.php:126
+msgid "Delete answer"
+msgstr "Antwort löschen"
+
+#: public/custom-post-types/humble-lms-question.php:131
+msgid "Add answer"
+msgstr "Antwort hinzufügen"
+
+#: public/custom-post-types/humble-lms-question.php:167
+msgid "Please enter a question."
+msgstr "Bitte geben Sie eine Frage ein."
+
+#: public/custom-post-types/humble-lms-quiz.php:4
+#: public/custom-post-types/humble-lms-quiz.php:6
+#: public/custom-post-types/humble-lms-quiz.php:7
+msgid "Quizzes"
+msgstr "Quizze"
+
+#: public/custom-post-types/humble-lms-quiz.php:5
+#: public/custom-post-types/humble-lms-quiz.php:41
+#: public/custom-post-types/humble-lms-quiz.php:42
+msgid "Quiz"
+msgstr "Quiz"
+
+#: public/custom-post-types/humble-lms-quiz.php:8
+msgid "Quiz Archives"
+msgstr "Quizarchiv"
+
+#: public/custom-post-types/humble-lms-quiz.php:9
+msgid "Quiz Attributes"
+msgstr "Quizattribute"
+
+#: public/custom-post-types/humble-lms-quiz.php:10
+msgid "Parent Quiz:"
+msgstr "Eltern-Quiz:"
+
+#: public/custom-post-types/humble-lms-quiz.php:11
+msgid "All Quizzes"
+msgstr "Alle Quizze"
+
+#: public/custom-post-types/humble-lms-quiz.php:12
+msgid "Add New Quiz"
+msgstr "Neues Quiz hinzufügen"
+
+#: public/custom-post-types/humble-lms-quiz.php:14
+msgid "New Quiz"
+msgstr "Neues Quiz"
+
+#: public/custom-post-types/humble-lms-quiz.php:15
+msgid "Edit Quiz"
+msgstr "Quiz bearbeiten"
+
+#: public/custom-post-types/humble-lms-quiz.php:16
+msgid "Update Quiz"
+msgstr "Quiz aktualisieren"
+
+#: public/custom-post-types/humble-lms-quiz.php:17
+msgid "View Quiz"
+msgstr "Quiz ansehen"
+
+#: public/custom-post-types/humble-lms-quiz.php:18
+msgid "View Quizzes"
+msgstr "Quizze ansehen"
+
+#: public/custom-post-types/humble-lms-quiz.php:19
+msgid "Search Quiz"
+msgstr "Quiz suchen"
+
+#: public/custom-post-types/humble-lms-quiz.php:26
+msgid "Insert into quiz"
+msgstr "In Quiz einfügen"
+
+#: public/custom-post-types/humble-lms-quiz.php:27
+msgid "Uploaded to this quiz"
+msgstr "Hochladen in dieses Quiz"
+
+#: public/custom-post-types/humble-lms-quiz.php:28
+msgid "Quizzes list"
+msgstr "Quizliste"
+
+#: public/custom-post-types/humble-lms-quiz.php:29
+msgid "Quizzes list navigation"
+msgstr "Quizliste Navigation"
+
+#: public/custom-post-types/humble-lms-quiz.php:30
+msgid "Filter quizzes list"
+msgstr "Quizze filtern"
+
+#: public/custom-post-types/humble-lms-quiz.php:34
+msgid "quizzes"
+msgstr "Quizze"
+
+#: public/custom-post-types/humble-lms-quiz.php:69
+msgid "Questions in this quiz"
+msgstr "Fragen in diesem Quiz"
+
+#: public/custom-post-types/humble-lms-quiz.php:70
+msgid "Passing grade in percent (%)"
+msgstr "Mindestpuktzahl zum Bestehen dieses Quiz in Prozent (%)"
+
+#: public/custom-post-types/humble-lms-quiz.php:71
+msgid "Passing required"
+msgstr "Erfolgreiches Bestehen erforderlich"
+
+#: public/custom-post-types/humble-lms-quiz.php:124
+#, php-format
+msgid "No questions found. Please %s first."
+msgstr "Keine Fragen gefunden. Bitte zuerst %s."
+
+#: public/custom-post-types/humble-lms-quiz.php:147
+msgid "Students have to pass this quiz in order to complete the lesson."
+msgstr ""
+"Lerner/innen müssen dieses Quiz bestehen, um die Lektion erfolgreich "
+"abzuschließen."
+
+#: public/custom-post-types/humble-lms-track.php:5
+#: public/custom-post-types/humble-lms-track.php:34
+#: public/custom-post-types/humble-lms-track.php:35
+msgid "Track"
+msgstr "Lernpfad"
+
+#: public/custom-post-types/humble-lms-track.php:8
+msgid "Track Archives"
+msgstr "Lernpfadarchiv"
+
+#: public/custom-post-types/humble-lms-track.php:9
+msgid "Track Attributes"
+msgstr "Lernpfadattribute"
+
+#: public/custom-post-types/humble-lms-track.php:10
+msgid "Parent Track:"
+msgstr "Eltern-Lernpfad:"
+
+#: public/custom-post-types/humble-lms-track.php:11
+msgid "All Tracks"
+msgstr "Alle Lernpfade"
+
+#: public/custom-post-types/humble-lms-track.php:12
+msgid "Add New Track"
+msgstr "Neuen Lernpfad hinzufügen"
+
+#: public/custom-post-types/humble-lms-track.php:14
+msgid "New Track"
+msgstr "Neuer Lernpfad"
+
+#: public/custom-post-types/humble-lms-track.php:15
+msgid "Edit Track"
+msgstr "Lernpfad bearbeiten"
+
+#: public/custom-post-types/humble-lms-track.php:16
+msgid "Update Track"
+msgstr "Lernpfad aktualisieren"
+
+#: public/custom-post-types/humble-lms-track.php:17
+msgid "View Track"
+msgstr "Lernpfad ansehen"
+
+#: public/custom-post-types/humble-lms-track.php:18
+msgid "View Tracks"
+msgstr "Lernpfade ansehen"
+
+#: public/custom-post-types/humble-lms-track.php:19
+msgid "Search Track"
+msgstr "Lernpfad suchen"
+
+#: public/custom-post-types/humble-lms-track.php:26
+msgid "Insert into track"
+msgstr "In Lernpfad einfügen"
+
+#: public/custom-post-types/humble-lms-track.php:27
+msgid "Uploaded to this track"
+msgstr "Hochgeladen in diesen Lernpfad"
+
+#: public/custom-post-types/humble-lms-track.php:28
+msgid "Tracks list"
+msgstr "Lernpfadliste"
+
+#: public/custom-post-types/humble-lms-track.php:29
+msgid "Tracks list navigation"
+msgstr "Lernpfadliste Navigation"
+
+#: public/custom-post-types/humble-lms-track.php:30
+msgid "Filter tracks list"
+msgstr "Lernpfade filtern"
+
+#: public/custom-post-types/humble-lms-track.php:62
+msgid "Courses in this track"
+msgstr "Kurse in diesem Lernpfad"
+
+#: public/custom-post-types/humble-lms-track.php:64
+msgid "Position on track archive page (low = first)"
+msgstr "Position auf Lernpfad-Archivseite (niedrigste = zuerst)"
+
+#: public/custom-post-types/humble-lms-track.php:65
+msgid "Select instructor(s) for this track (optional)"
+msgstr "Kursbetreuer/innen für diesen Lernpfad (optional)"
+
+#: public/custom-post-types/humble-lms-track.php:119
+#, php-format
+msgid "No courses found. Please %s first."
+msgstr "Keine Kurse gefunden. Bitte zuerst %s."
+
+#: public/custom-taxonomies/humble-lms-course-level.php:4
+#: public/custom-taxonomies/humble-lms-course-level.php:5
+#: public/custom-taxonomies/humble-lms-course-level.php:6
+msgid "Level of difficulty"
+msgstr "Schwierigkeitsgrad"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:7
+msgid "All Items"
+msgstr "Alle Elemente"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:8
+msgid "Parent Item"
+msgstr "Eltern-Element"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:9
+msgid "Parent Item:"
+msgstr "Eltern-Element:"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:10
+msgid "New Item Name"
+msgstr "Name des neuen Elements"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:11
+msgid "Add New Item"
+msgstr "Neues Element bearbeiten"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:12
+msgid "Edit Item"
+msgstr "Element bearbeiten"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:13
+msgid "Update Item"
+msgstr "Element aktualisieren"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:14
+msgid "View Item"
+msgstr "Element ansehen"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:15
+msgid "Separate items with commas"
+msgstr "Element durch Kommata trennen"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:16
+msgid "Add or remove items"
+msgstr "Element hinzufügen oder entfernen"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:17
+msgid "Choose from the most used"
+msgstr "Aus meistgenutzten wählen"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:18
+msgid "Popular Items"
+msgstr "Häufige Elemente"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:19
+msgid "Search Items"
+msgstr "Elemente suchen"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:20
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:21
+msgid "No items"
+msgstr "Keine Elemente"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:22
+msgid "Items list"
+msgstr "Liste aller Elemente"
+
+#: public/custom-taxonomies/humble-lms-course-level.php:23
+msgid "Items list navigation"
+msgstr "Elemente Navigation"
+
+#: public/partials/humble-lms-certificate-single.php:19
+#: public/partials/humble-lms-certificate-single.php:20
+msgid "not set"
+msgstr "nicht festgelegt"
+
+#: public/partials/humble-lms-certificate-single.php:64
+msgid "Back to home page"
+msgstr "Zurück zur Startseite"
+
+#: public/partials/humble-lms-track-archive.php:8
+msgid "Course Tracks"
+msgstr "Lernpfade"

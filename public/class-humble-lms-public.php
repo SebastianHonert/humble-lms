@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://minimalwordpress.com/humble-lms
+ * @link       https://sebastianhonert.com
  * @since      0.0.1
  *
  * @package    Humble_LMS

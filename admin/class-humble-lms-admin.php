@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://minimalwordpress.com/humble-lms
+ * @link       https://sebastianhonert.com
  * @since      0.0.1
  *
  * @package    Humble_LMS
@@ -788,7 +788,7 @@ class Humble_LMS_Admin {
 
     if( ! isset( $options['email_welcome'] ) || empty( $options['email_welcome'] ) || ! $options['email_welcome'] ) {
       $message = __( 'Hi there, (DEFAULT)' ) . "\r\n\r\n";
-      $message .= sprintf( __( 'welcome to %s! Here\'s how to log in: ' ), get_option('blogname') ) . "\r\n\r\n";
+      $message .= sprintf( __( 'welcome to %s! Here\'s how to log in:' ), get_option('blogname') ) . "\r\n\r\n";
       $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
       $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
       $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";

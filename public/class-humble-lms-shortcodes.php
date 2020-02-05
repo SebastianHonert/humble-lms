@@ -663,7 +663,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
   
       if( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
         echo '<div class="humble-lms-message humble-lms-message--error">';
-          echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match. ', 'humble-lms');
+          echo '<strong>' . __('Login failed.', 'humble-lms') . '</strong> ' . __('Username and password do not match.', 'humble-lms');
         echo '</div>';
       } else if( isset( $_GET['login'] ) && $_GET['login'] === 'empty' ) {
         // echo '<div class="humble-lms-message humble-lms-message--error">';
@@ -698,7 +698,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             'label_username' => __( 'Username', 'humble-lms' ),
             'label_password' => __( 'Password', 'humble-lms' ),
             'label_remember' => __( 'Remember me', 'humble-lms' ),
-            'label_log_in' => __( 'Login' ),
+            'label_log_in' => __( 'Login', 'humble-lms' ),
             'remember' => true
         );
         wp_login_form( $args );

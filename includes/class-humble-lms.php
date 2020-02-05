@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://minimalwordpress.com/humble-lms
+ * @link       https://sebastianhonert.com
  * @since      0.0.1
  *
  * @package    Humble_LMS
@@ -188,7 +188,7 @@ class Humble_LMS {
 
     $plugin_i18n = new Humble_LMS_i18n();
 
-    $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+    $this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
 
   }
   

@@ -300,6 +300,30 @@ jQuery(document).ready(function($) {
       }
     }
   })
-  
+
+  /**
+   * Check if every quiz question has an answer.
+   *
+   * @since   0.0.1
+   */
+  $('form#post').on('submit', function(e) {
+    if (!$('body').hasClass('post-type-humble_lms_question')) {
+      return
+    }
+
+    if (!$('input[name="humble_lms_question"]').val()) {
+      e.preventDefault()
+      alert(humble_lms.questionMissing)
+      return false
+    }
+
+    if ($('select.humble_lms_question_type').val() === 'multiple_choice') {
+      if ($('.humble-lms-answer-correct:checked').length === 0) {
+        e.preventDefault()
+        alert(humble_lms.correctAnswerMissing)
+        return false
+      }
+    }
+  })
 
 })

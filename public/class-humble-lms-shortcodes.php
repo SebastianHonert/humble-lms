@@ -363,8 +363,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       );
 
       if( is_single() && in_array( $post->post_type, $allowed_templates ) ) {
-        $instructors = get_post_meta( $post->ID, 'humble_lms_lesson_instructors', true );
-        $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
+        $instructors = $this->content_manager->get_instructors( $post->ID );
       }
 
       $course_id = $post->post_type === 'humble_lms_course' ? $post->ID : null;

@@ -231,10 +231,10 @@ class Humble_LMS_Admin {
    */
   public function update_user_profile( $user_id ) {
     $user = new Humble_LMS_Public_User;
-    $is_instructor = isset( $_POST['humble_lms_is_instructor'] ) && (int)$_POST['humble_lms_is_instructor'] === 0;
-    $was_instructor = isset( $_POST['humble_lms_was_instructor'] ) && (int)$_POST['humble_lms_was_instructor'] === 1;
+    $is_instructor = isset( $_POST['humble_lms_is_instructor'] );
+    $was_instructor = isset( $_POST['humble_lms_was_instructor'] );
     
-    if( $is_instructor === 0 && $was_instructor === 1 ) {
+    if( ! $is_instructor && $was_instructor ) {
       $user->remove_instructor_status( $user_id );
     }
 

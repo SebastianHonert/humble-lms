@@ -165,6 +165,35 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
     }
 
+    /**
+     * Get instructors by post ID.
+     * 
+     * @param   int
+     * @return  array
+     * @since   0.0.1
+     */
+    function get_instructors( $post_id = null ) {
+      $allowed_post_types = array(
+        'humble_lms_course',
+        'humble_lms_lesson',
+      );
+
+      $post_type = get_post_type( $post_id );
+
+      if( ! in_array( $post_type, $allowed_post_types ) )
+        return [];
+
+      if( $post_type === 'humble_lms_course' ) {
+        $instructors = get_post_meta( $post_id, 'humble_lms_course_instructors', true );
+      } elseif( $post_type === 'humble_lms_lesson' ) {
+        $instructors = get_post_meta( $post_id, 'humble_lms_lesson_instructors', true );
+      }
+
+      $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
+
+      return $instructors;
+    }
+
   }
   
 }

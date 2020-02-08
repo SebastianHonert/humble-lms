@@ -352,11 +352,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return string
      * @since   0.0.1
      */
-    function instructors() {
+    function instructors( $atts = null ) {
       global $post;
+
+      extract( shortcode_atts( array (
+        'widget' => '',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
       
       $html = '';
-
+      $widget = filter_var( $widget, FILTER_VALIDATE_BOOLEAN );
       $allowed_templates = array(
         'humble_lms_lesson',
         'humble_lms_course',
@@ -379,18 +385,18 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $instructors = $this->content_manager->get_instructors( $post_id );
       }
 
-      if( empty( $instructors ) ) {
-        return $html;
-      }
+      $html .= '<div class="humble-lms-instructors ' . $class . '" style="' . $style . '">';
 
-      $html .= '<div class="humble-lms-instructors">';
-
-      foreach( $instructors as $user_id ) {
-        if( get_userdata( $user_id ) ) {
-          $user = get_user_by( 'id', $user_id );
-          $html .= '<a href="mailto:' . $user->user_email . '">' . $user->display_name . '</a>';
+      if( ! empty( $instructors ) ) {
+        foreach( $instructors as $user_id ) {
+          if( get_userdata( $user_id ) ) {
+            $user = get_user_by( 'id', $user_id );
+            $html .= '<a href="mailto:' . $user->user_email . '">' . $user->display_name . '</a>';
+          }
         }
-      }
+      } else {
+        $html .= $widget ? '<p>' . __('No instructors available.', 'humble-lms'). '</p>' : '';
+      }  
 
       $html .= '</div>';
 

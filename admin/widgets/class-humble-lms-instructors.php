@@ -35,7 +35,7 @@ class Humble_LMS_Widget_Instructors extends WP_Widget
       echo $args['after_title'];
     }
 
-    echo do_shortcode('[humble_lms_instructors]');
+    echo do_shortcode('[humble_lms_instructors widget="1"]');
 
     echo $args['after_widget'];
   }

@@ -17,8 +17,6 @@ if (have_posts()):
 
       the_content();
 
-      echo do_shortcode('[humble_lms_instructors]');
-
     echo '</section>';
 
     echo do_shortcode('[humble_lms_syllabus]');

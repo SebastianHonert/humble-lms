@@ -3,17 +3,17 @@
 if ( ! defined( 'ABSPATH' ) )
     exit;
 
-class Humble_LMS_Widget_Course_Instructors extends WP_Widget
+class Humble_LMS_Widget_Instructors extends WP_Widget
 {
   public function __construct()
   {
     $widget_options = array(
-      'classname' => 'humble-lms-widget-course-instructors',
-      'description' => 'Humble LMS course instructors.',
+      'classname' => 'humble-lms-widget-instructors',
+      'description' => 'Humble LMS instructors.',
     );
 
     parent::__construct(
-      'humble-lms-widget-course-instructors',
+      'humble-lms-widget-instructors',
       esc_html__('Humble LMS Instructors', 'humble-lms'),
       $widget_options
     );
@@ -35,7 +35,7 @@ class Humble_LMS_Widget_Course_Instructors extends WP_Widget
       echo $args['after_title'];
     }
 
-    echo do_shortcode('[humble_lms_course_instructors]');
+    echo do_shortcode('[humble_lms_instructors]');
 
     echo $args['after_widget'];
   }
@@ -84,7 +84,7 @@ class Humble_LMS_Widget_Course_Instructors extends WP_Widget
   }
 
   // Register the widget
-  public function register_widget_course_instructors() {
-    register_widget('Humble_LMS_Widget_Course_Instructors');
+  public function register_widget_instructors() {
+    register_widget('Humble_LMS_Widget_Instructors');
   }
 }

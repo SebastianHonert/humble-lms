@@ -352,7 +352,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return string
      * @since   0.0.1
      */
-    function course_instructors() {
+    function instructors() {
       global $post;
       
       $html = '';
@@ -360,20 +360,23 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $allowed_templates = array(
         'humble_lms_lesson',
         'humble_lms_course',
+        'humble_lms_track',
       );
 
-      if( is_single() && in_array( $post->post_type, $allowed_templates ) ) {
+      // Inside a lesson?
+      if( $post->post_type === 'humble_lms_lesson' ) {
         $instructors = $this->content_manager->get_instructors( $post->ID );
       }
 
-      $course_id = $post->post_type === 'humble_lms_course' ? $post->ID : null;
-      if( ! $course_id ) {
-        $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
-      }
-
-      if( empty( $instructors ) && $course_id ) {
-        $instructors = get_post_meta( $course_id, 'humble_lms_course_instructors', true );
-        $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
+      // Inside a course?
+      if( empty( $instructors ) ) {
+        if( $post->post_type === 'humble_lms_course' ) {
+          $post_id = $post->ID;
+        } else {
+          $post_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+        }
+        
+        $instructors = $this->content_manager->get_instructors( $post_id );
       }
 
       if( empty( $instructors ) ) {

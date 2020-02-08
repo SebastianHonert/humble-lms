@@ -121,7 +121,7 @@ class Humble_LMS {
      * The class providing widgets.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-syllabus.php';
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-course-instructors.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-instructors.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-progress-bar.php';
 
     /**
@@ -239,11 +239,11 @@ class Humble_LMS {
 
     // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
-    $plugin_widget_course_instructors = new Humble_LMS_Widget_Course_Instructors( $plugin_admin );
+    $plugin_widget_instructors = new Humble_LMS_Widget_Instructors( $plugin_admin );
     $plugin_widget_progress_bar = new Humble_LMS_Widget_Progress_Bar( $plugin_admin );
 
     $this->loader->add_action( 'widgets_init', $plugin_widget_syllabus, 'register_widget_syllabus');
-    $this->loader->add_action( 'widgets_init', $plugin_widget_course_instructors, 'register_widget_course_instructors');
+    $this->loader->add_action( 'widgets_init', $plugin_widget_instructors, 'register_widget_instructors');
     $this->loader->add_action( 'widgets_init', $plugin_widget_progress_bar, 'register_widget_progress_bar');
     
     // Options
@@ -300,7 +300,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_course_tile', $plugin_shortcodes, 'course_tile' );
     $this->loader->add_shortcode( 'humble_lms_progress_bar', $plugin_shortcodes, 'progress_bar' );
     $this->loader->add_shortcode( 'humble_lms_syllabus', $plugin_shortcodes, 'syllabus' );
-    $this->loader->add_shortcode( 'humble_lms_course_instructors', $plugin_shortcodes, 'course_instructors' );
+    $this->loader->add_shortcode( 'humble_lms_instructors', $plugin_shortcodes, 'instructors' );
     $this->loader->add_shortcode( 'humble_lms_mark_complete_button', $plugin_shortcodes, 'mark_complete_button' );
     $this->loader->add_shortcode( 'humble_lms_user_progress', $plugin_shortcodes, 'user_progress' );
     $this->loader->add_shortcode( 'humble_lms_user_awards', $plugin_shortcodes, 'user_awards' );

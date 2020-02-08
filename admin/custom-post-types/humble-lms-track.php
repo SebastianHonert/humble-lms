@@ -62,7 +62,6 @@ function humble_lms_track_add_meta_boxes()
   add_meta_box( 'humble_lms_track_courses_mb', __('Courses in this track', 'humble-lms'), 'humble_lms_track_courses_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
-  add_meta_box( 'humble_lms_track_instructors_mb', __('Select instructor(s) for this track (optional)', 'humble-lms'), 'humble_lms_track_instructors_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_track_add_meta_boxes' );
@@ -147,59 +146,6 @@ function humble_lms_track_position_mb()
   
 }
 
-// Track Instructor
-
-function humble_lms_track_instructors_mb()
-{
-  global $post;
-
-  $track_instructors = get_post_meta( $post->ID, 'humble_lms_track_instructors', true );
-  $track_instructors = ! empty( $track_instructors[0] ) ? json_decode( $track_instructors[0] ) : [];
-
-  $args = array(
-    'posts_per_page' => -1,
-    'orderby' => 'title',
-    'order' => 'ASC',
-    'meta_key' => 'humble_lms_is_instructor',
-    'meta_value' => 1,
-    'exclude' => $track_instructors
-  );
-
-  $instructors = get_users( $args );
-
-  $selected_instructors = [];
-
-  foreach( $track_instructors as $key => $user_id ) {
-    if( get_userdata( $user_id ) ) {
-      $instructor = get_user_by( 'id', $user_id );
-      array_push( $selected_instructors, $instructor );
-    }
-  }
-
-  if( $instructors || $selected_instructors ):
-
-    echo '<div id="humble-lms-admin-track-instructors humble_lms_multiselect_track_instructors">';
-      echo '<select class="humble-lms-searchable" data-content="track_instructors" multiple="multiple">';
-        foreach( $selected_instructors as $instructor ) {
-          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
-            if( is_array( $track_instructors ) && in_array( $instructor->ID, $track_instructors ) ) { echo 'selected'; }
-          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
-        }
-        foreach( $instructors as $instructor ) {
-          echo '<option data-id="' . $instructor->ID . '" value="' . $instructor->ID . '" ';
-            if( is_array( $track_instructors ) && in_array( $instructor->ID, $track_instructors ) ) { echo 'selected'; }
-          echo '>' . $instructor->display_name . ' (ID ' . $instructor->ID . ')</option>';
-        }
-      echo '</select>';
-      echo '<input class="humble-lms-multiselect-value" id="humble_lms_track_instructors" name="humble_lms_track_instructors" type="hidden" value="' . implode(',', $track_instructors) . '">';
-    echo '</div>';
-  else:
-
-    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/users.php') . '">add one or more instructors</a>' ) . '</p>';
-
-  endif;
-}
-
 // Save metabox data
 
 function humble_lms_save_track_meta_boxes( $post_id, $post )
@@ -231,8 +177,6 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_courses'] = array_map( 'esc_attr', $track_meta['humble_lms_track_courses'] );
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
-  $track_meta['humble_lms_track_instructors'] = isset( $_POST['humble_lms_track_instructors'] ) ? (array) $_POST['humble_lms_track_instructors'] : array();
-  $track_meta['humble_lms_track_instructors'] = array_map( 'esc_attr', $track_meta['humble_lms_track_instructors'] );
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

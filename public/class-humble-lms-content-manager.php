@@ -173,7 +173,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @since   0.0.1
      */
     function get_instructors( $post_id = null ) {
+      if( ! get_post( $post_id ) )
+        return [];
+
+      $instructors = [];
       $allowed_post_types = array(
+        'humble_lms_track',
         'humble_lms_course',
         'humble_lms_lesson',
       );
@@ -181,17 +186,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $post_type = get_post_type( $post_id );
 
       if( ! in_array( $post_type, $allowed_post_types ) )
-        return [];
+        return $instructors;
 
-      if( $post_type === 'humble_lms_course' ) {
-        $instructors = get_post_meta( $post_id, 'humble_lms_course_instructors', true );
-      } elseif( $post_type === 'humble_lms_lesson' ) {
-        $instructors = get_post_meta( $post_id, 'humble_lms_lesson_instructors', true );
-      }
-
+      $instructors = get_post_meta( $post_id, 'humble_lms_instructors', true );
       $instructors = ! empty( $instructors[0] ) ? json_decode( $instructors[0] ) : [];
 
-      return $instructors;
+      return $instructors ? $instructors : [];
     }
 
   }

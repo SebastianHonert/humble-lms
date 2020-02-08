@@ -110,8 +110,9 @@ function humble_lms_lesson_instructors_mb()
 {
   global $post;
 
-  $lesson_instructors = get_post_meta( $post->ID, 'humble_lms_lesson_instructors', true );
+  $lesson_instructors = get_post_meta( $post->ID, 'humble_lms_instructors', true );
   $lesson_instructors = ! empty( $lesson_instructors[0] ) ? json_decode( $lesson_instructors[0] ) : [];
+  if( $lesson_instructors === null ) $lesson_instructors = [];
 
   $args = array(
     'posts_per_page' => -1,
@@ -194,8 +195,8 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
   $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? (array) $_POST['humble_lms_lesson_access_levels'] : array();
   $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );
-  $lesson_meta['humble_lms_lesson_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? (array) $_POST['humble_lms_lesson_instructors'] : array();
-  $lesson_meta['humble_lms_lesson_instructors'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_instructors'] );
+  $lesson_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? (array) $_POST['humble_lms_lesson_instructors'] : array();
+  $lesson_meta['humble_lms_instructors'] = array_map( 'esc_attr', $lesson_meta['humble_lms_instructors'] );
 
   if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )
   {

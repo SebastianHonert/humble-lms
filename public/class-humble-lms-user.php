@@ -558,8 +558,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $certificate_id )
         return;
 
-      // update_user_meta( $user_id, 'humble_lms_certificates', [] );
-
       $certificates = get_user_meta( $user_id, 'humble_lms_certificates', false );
       $certificates = is_array( $certificates ) && ! empty( $certificates[0] ) ? $certificates[0] : [];
       
@@ -715,27 +713,25 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $courses = $this->content_manager->get_courses();
       
-      foreach( $courses as $course_id ) {
-        $course_instructors = $this->content_manager->get_instructors( $course_id );
-
-        // print_r( $course_instructors );
+      foreach( $courses as $course ) {
+        $course_instructors = $this->content_manager->get_instructors( $course->ID );
 
         if( in_array( $user_id, $course_instructors ) ) {
-          $course_instructors = array_diff( $course_instructors, [$user_id] );
+          $course_instructors = array_values( array_diff( $course_instructors, [$user_id] ) );
+          $course_instructors = '[' . implode( ',', $course_instructors ) . ']';
+          update_post_meta( $course->ID, 'humble_lms_instructors', [$course_instructors] );
         }
 
-        update_post_meta( $course_id, 'humble_lms_course_instructors', json_encode( $course_instructors ) );
-
-        $lessons = $this->content_manager->get_course_lessons( $course_id );
+        $lessons = $this->content_manager->get_course_lessons( $course->ID );
 
         foreach( $lessons as $lesson_id ) {
-          $course_instructors = $this->content_manager->get_instructors( $lesson_id );
+          $lesson_instructors = $this->content_manager->get_instructors( $lesson_id );
 
-          if( in_array( $user_id, $course_instructors ) ) {
-            $lesson_instructors = array_diff( $lesson_instructors, [$user_id] );
+          if( in_array( $user_id, $lesson_instructors ) ) {
+            $lesson_instructors = array_values( array_diff( $lesson_instructors, [$user_id] ) );
+            $lesson_instructors = '[' . implode( ',', $lesson_instructors ) . ']';
+            update_post_meta( $lesson_id, 'humble_lms_instructors', [$lesson_instructors] );
           }
-
-          update_post_meta( $lesson_id, 'humble_lms_lesson_instructors', json_encode( $lesson_instructors ) );
         }
       }
       

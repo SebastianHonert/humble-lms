@@ -1062,13 +1062,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         <div class="humble-lms-message-quiz humble-lms-message-quiz--completed">
           <h3 class="humble-lms-quiz-message-title">' . __('Well done!', 'humble-lms') . '</h3>
           <p>' . __('You passed this quiz with a score of', 'humble-lms') . '</p><p><span class="humble-lms-quiz-score"></span></p>
-          <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
         </div>
         <div class="humble-lms-message-quiz humble-lms-message-quiz--failed">
           <h3 class="humble-lms-quiz-message-title">' . __('Bummer', 'humble-lms') . '</h3>
           <p>' . __('You failed this quiz with a score of', 'humble-lms') . '</p>
           <p><span class="humble-lms-quiz-score"></span></p>
-          <!-- <p>' . __('This quiz requires at least', 'humble-lms') . ' <span class="humble-lms-quiz-passing-grade"></span></p> -->
         </div>
         <div class="humble-lms-quiz-message-image humble-lms-bounce-in"></div>
       </div></div></div></div>';

@@ -56,6 +56,13 @@ var Humble_LMS_Quiz
       })
 
       evaluation.grade = Math.round(evaluation.score / evaluation.correct * 100, 2)
+
+      if (evaluation.grade < 0) {
+        evaluation.grade = 0;
+      } else if (evaluation.grade > 100) {
+        evaluation.grade = 100;
+      }
+
       evaluation.completed = evaluation.grade >= evaluation.passing_grade ? true : false
 
       return evaluation

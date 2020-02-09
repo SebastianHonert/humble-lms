@@ -208,7 +208,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $percent = 0;
       $users = get_users();
       $num_users = count_users();
-      $num_students = $num_users['avail_roles']['humble_lms_student'];
+      $num_students = isset( $num_users['avail_roles']['humble_lms_student'] ) ? $num_users['avail_roles']['humble_lms_student'] : 0;
 
       if( $num_students === 0 ) {
         return 0;

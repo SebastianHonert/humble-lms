@@ -194,6 +194,43 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       return $instructors ? $instructors : [];
     }
 
+    /**
+     * How many users have completed a course in percent.
+     * 
+     * @param   int
+     * @return  float
+     * @since   0.0.1
+     */
+    function course_completion_percentage( $course_id = null ) {
+      if( ! get_post( $course_id ) )
+        return [];
+
+      $percent = 0;
+      $users = get_users();
+      $num_users = count_users();
+      $num_students = $num_users['avail_roles']['humble_lms_student'];
+
+      if( $num_students === 0 ) {
+        return 0;
+      }
+
+      $course = get_post( $course_id );
+      
+      if( ! $course )
+        return 0;
+
+      foreach( $users as $user ) {
+        if( ! in_array( 'humble_lms_student', (array) $user->roles ) )
+          continue;
+
+        $course_progress = Humble_LMS_Public_User::course_progress( $course_id, $user->ID );
+        $percent += $course_progress;
+      }
+
+      return $percent === 100 ? 100 : round( ( $percent / $num_students ), 1 );
+      
+    }
+
   }
   
 }

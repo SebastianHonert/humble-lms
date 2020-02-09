@@ -24,6 +24,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->user = new Humble_LMS_Public_User;
       $this->countries = array_map('trim', explode(',', 'Afghanistan, Albania, Algeria, Andorra, Angola, Antigua & Deps, Argentina, Armenia, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bhutan, Bolivia, Bosnia Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Central African Rep, Chad, Chile, China, Colombia, Comoros, Congo, Congo {Democratic Rep}, Costa Rica, Croatia, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon, Gambia, Georgia, Germany, Ghana, Greece, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland {Republic}, Israel, Italy, Ivory Coast, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea North, Korea South, Kosovo, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Mauritania, Mauritius, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, {Burma}, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russian Federation, Rwanda, St Kitts & Nevis, St Lucia, Saint Vincent & the Grenadines, Samoa, San Marino, Sao Tome & Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe'));
       $this->page_sections = array();
+      $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
 
@@ -474,6 +475,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '</tr>';
       }
 
+      if( ! $awards ) {
+        echo '<tr class="humble-lms-reporting-awards">';
+          echo '<td>' . __('No awards available.', 'humble-lms') . '</td>';
+          echo '<td>–</td>';
+        echo '</tr>';
+      }
+
       echo '</table>';
 
       // Certificates
@@ -488,6 +496,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<tr class="humble-lms-reporting-certificates">';
           echo '<td><strong><a href="' . get_edit_post_link( $certificate->ID ) . '">' . get_the_title( $certificate->ID ) . '</a></strong></td>';
           echo '<td>'. $completed . '</td>';
+        echo '</tr>';
+      }
+
+      if( ! $certificates ) {
+        echo '<tr class="humble-lms-reporting-certificates">';
+          echo '<td>' . __('No certificates available.', 'humble-lms') . '</td>';
+          echo '<td>–</td>';
         echo '</tr>';
       }
 
@@ -508,7 +523,29 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public function reporting_courses_table() {
-      echo 'TODO: reporting_courses_table()';
+      $courses = $this->content_manager->get_courses();
+
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="34%">' . __('Course', 'humble-lms') . '</th>
+        <th width="66%">' . __('Completed (counting only user role "Student")', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      foreach( $courses as $course ) {
+        $completed = $this->content_manager->course_completion_percentage( $course->ID );
+        echo '<tr class="humble-lms-reporting-courses">';
+          echo '<td><strong><a href="' . get_edit_post_link( $course->ID ) . '">' . $course->post_title . '</a></strong></td>';
+          echo '<td>'. $this->progress_bar( $completed ) . '</td>';
+        echo '</tr>';
+      }
+
+      if( ! $courses ) {
+        echo '<tr class="humble-lms-reporting-courses">';
+          echo '<td>' . __('No courses available.', 'humble-lms') . '</td>';
+          echo '<td>–</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
     }
 
     /**

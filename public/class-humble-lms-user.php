@@ -660,14 +660,14 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @return float
      * @since   0.0.1
      */
-    function course_progress( $course_id, $user_id = null ) {
+    public static function course_progress( $course_id, $user_id = null ) {
       if( ! $course_id )
         return 0;
 
       if( ! $user_id )
         return 0;
       
-      $course_lessons = $this->content_manager->get_course_lessons( $course_id );
+      $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $course_id );
       $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
 
       if( ! isset( $lessons_completed[0] ) || ! is_array( $lessons_completed[0] ) )

@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
             $('#humble-lms-mark-complete').fadeIn(500)
             loadingLayer(false)
           } else {
-            location.reload()
+            window.location = window.location.href
           }
         },
         complete: function(reply, textStatus) {

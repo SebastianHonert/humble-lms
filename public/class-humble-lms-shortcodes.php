@@ -449,14 +449,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
       
       $html = '';
-      $lesson_has_quiz = has_shortcode( $post->post_content, 'humble_lms_quiz' );
+      $quizzes = Humble_LMS_Content_Manager::get_lesson_quizzes( $post->ID );
+      $lesson_has_quiz = isset( $quizzes ) && ! empty( $quizzes );
       $lesson_completed = $this->user->completed_lesson( get_current_user_id(), $post->ID );
       $quiz_class = $lesson_has_quiz ? 'humble-lms-has-quiz' : '';
-      $quiz_ids_array = $this->get_shortcode_attributes( 'humble_lms_quiz' );
-      $quiz_ids_string = implode(',', $quiz_ids_array);
+      $quiz_ids_string = implode(',', $quizzes);
       $passing_required = false;
       $user_completed_quizzes = true;
-      foreach( $quiz_ids_array as $id ) {
+
+      foreach( $quizzes as $id ) {
         if( $this->quiz->get_passing_required( $id ) ) {
           $passing_required = true;
         }
@@ -1124,33 +1125,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $html .= '</div>';
 
       return $html;
-    }
-
-    /**
-     * Get shortcode attributes.
-     * 
-     * @return array
-     * @since   0.0.1
-     */
-    public function get_shortcode_attributes( $shortcode = null ) {
-      global $post;
-
-      if( ! $shortcode )
-        return [];
-
-      if( ! has_shortcode( $post->post_content, esc_attr( $shortcode ) ) )
-        return [];
-
-      preg_match_all( '/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER );
-      
-      if( ! isset( $matches[0][3] ) || empty( $matches[0][3] ) )
-        return;
-      
-      preg_match('/".*?"/', $matches[0][3], $ids);
-      $ids = array_map( 'trim', explode(',', str_replace( '"', '', $ids[0] ) ) );
-      $ids = array_map( 'intval', $ids );
-
-      return $ids;
     }
     
   }

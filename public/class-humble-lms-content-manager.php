@@ -195,6 +195,25 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get quizzes for a single lesson.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_lesson_quizzes( $lesson_id ) {
+      $lesson_quizzes = [];
+
+      if( ! $lesson_id || get_post_type( $lesson_id ) !== 'humble_lms_lesson' )
+        return $lesson_quizzes;
+
+      $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', true );
+      $lesson_quizzes = ! empty( $lesson_quizzes[0] ) ? json_decode( $lesson_quizzes[0] ) : [];
+
+      return $lesson_quizzes;
+    }
+
+    /**
      * How many users have completed a course in percent.
      * 
      * @param   int

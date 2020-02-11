@@ -68,6 +68,7 @@ function humble_lms_lesson_add_meta_boxes() {
   add_meta_box( 'humble_lms_lesson_description_mb', __('What is this lesson about?', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_access_levels_mb', __('Who can access this lesson?', 'humble-lms'), 'humble_lms_lesson_access_levels_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_instructors_mb', __('Select instructor(s) for this lesson (optional)', 'humble-lms'), 'humble_lms_lesson_instructors_mb', 'humble_lms_lesson', 'normal', 'default' );
+  add_meta_box( 'humble_lms_lesson_quizzes_mb', __('Quizzes attached to this lesson', 'humble-lms'), 'humble_lms_lesson_quizzes_mb', 'humble_lms_lesson', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_lesson_add_meta_boxes' );
@@ -158,6 +159,58 @@ function humble_lms_lesson_instructors_mb()
   endif;
 }
 
+// Quizzes meta box
+
+function humble_lms_lesson_quizzes_mb()
+{
+  global $post;
+
+  $lesson_quizzes = Humble_LMS_Content_Manager::get_lesson_quizzes( $post->ID );
+
+  $args = array(
+    'post_type' => 'humble_lms_quiz',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+    'exclude' => $lesson_quizzes
+  );
+
+  $quizzes = get_posts( $args );
+
+  $selected_quizzes = [];
+  foreach( $lesson_quizzes as $id ) {
+    if( get_post_status( $id ) ) {
+      $lesson = get_post( $id );
+      array_push( $selected_quizzes, $lesson );
+    }
+  }
+
+  if( $quizzes || $selected_quizzes ):
+
+    echo '<div id="humble-lms-admin-lesson-quizzes">';
+      echo '<select class="humble-lms-searchable" data-content="lesson_quizzes"  multiple="multiple">';
+        foreach( $selected_quizzes as $quiz ) {
+          echo '<option data-id="' . $quiz->ID . '" value="' . $quiz->ID . '" ';
+            if( is_array( $lesson_quizzes ) && in_array( $quiz->ID, $lesson_quizzes ) ) { echo 'selected'; }
+          echo '>' . $quiz->post_title . ' (ID ' . $quiz->ID . ')</option>';
+        }
+        foreach( $quizzes as $quiz ) {
+          echo '<option data-id="' . $quiz->ID . '" value="' . $quiz->ID . '" ';
+            if( is_array( $lesson_quizzes ) && in_array( $quiz->ID, $lesson_quizzes ) ) { echo 'selected'; }
+          echo '>' . $quiz->post_title . ' (ID ' . $quiz->ID . ')</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_lesson_quizzes" name="humble_lms_lesson_quizzes" type="hidden" value="' . implode(',', $lesson_quizzes) . '">';
+    echo '</div>';
+  
+  else:
+
+    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
+
+  endif;
+}
+
 // Save metabox data
 
 function humble_lms_save_lesson_meta_boxes( $post_id, $post )
@@ -197,6 +250,8 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );
   $lesson_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? (array) $_POST['humble_lms_lesson_instructors'] : array();
   $lesson_meta['humble_lms_instructors'] = array_map( 'esc_attr', $lesson_meta['humble_lms_instructors'] );
+  $lesson_meta['humble_lms_quizzes'] = isset( $_POST['humble_lms_lesson_quizzes'] ) ? (array) $_POST['humble_lms_lesson_quizzes'] : array();
+  $lesson_meta['humble_lms_quizzes'] = array_map( 'esc_attr', $lesson_meta['humble_lms_quizzes'] );
 
   if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )
   {

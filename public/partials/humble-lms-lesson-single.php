@@ -21,6 +21,13 @@ if (have_posts()):
       <?php
         the_content();
 
+        $quizzes = Humble_LMS_Content_Manager::get_lesson_quizzes( $post->ID );
+
+        if( isset( $quizzes ) && ! empty( $quizzes ) ) {
+          $quiz_ids = implode( ',', $quizzes );
+          echo do_shortcode('[humble_lms_quiz ids="' . $quiz_ids . '"]');
+        }
+
         echo do_shortcode('[humble_lms_mark_complete_button]');
       ?>
 

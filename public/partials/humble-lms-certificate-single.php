@@ -22,9 +22,11 @@ $last_name = isset( $user_info->last_name ) ? $user_info->last_name : __('not se
 $_user = new Humble_LMS_Public_User;
 $user_certificates = $_user->issued_certificates( $user->ID );
 
-if( ! in_array( $post->ID, $user_certificates ) ) {
-  wp_redirect( esc_url( site_url() ) );
-  die;
+if( ! current_user_can('manage_options') ) {
+  if( ! in_array( $post->ID, $user_certificates ) ) {
+    wp_redirect( esc_url( site_url() ) );
+    die;
+  }
 }
   
 ?><!DOCTYPE html>
@@ -34,7 +36,7 @@ if( ! in_array( $post->ID, $user_certificates ) ) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Humble LMS Certificate</title>
-  <link rel="stylesheet" href="<?php echo plugins_url( 'humble-lms/public/css/certificate/default.css' ); ?>">
+  <link rel="stylesheet" href="<?php echo dirname( plugin_dir_url( __FILE__ ) ) . '/css/certificate/default.css'; ?>">
 </head>
 <body><?
 
@@ -57,7 +59,7 @@ if( ! in_array( $post->ID, $user_certificates ) ) {
     echo $heading ? '<h1>' . $heading . '</h1>' : '';
     echo $subheading ? '<h2>' . $subheading . '</h2>' : '';
 
-    echo $content ? '<div class="content">' . $content . '</div>' : '';
+    echo $content ? '<div class="content">' . wpautop( do_shortcode( $content ) ) . '</div>' : '';
 
   echo '</div>';
 

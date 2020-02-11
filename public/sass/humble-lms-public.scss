@@ -977,6 +977,11 @@ input[type='submit'].humble-lms-btn--error:active,
 }
 
 /* Login and registration forms */
+.humble-lms-form label {
+  display: block;
+  margin-bottom: .25em;
+}
+
 #humble-lms-registration-form label.humble-lms-required::after {
   display: inline-block;
   content: '*';

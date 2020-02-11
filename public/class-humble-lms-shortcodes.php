@@ -316,7 +316,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
             $locked = $this->access_handler->can_access_lesson( $lesson->ID ) ? '' : '<i class="ti-lock"></i>';
             $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
-            $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson->post_title . '</span>';
+            $html .= '<span class="humble-lms-syllabus-title">' . $locked . (int)($key+1) . '. ' . $lesson->post_title . '</span>';
             $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
             $html .= '</li>';
           }
@@ -552,7 +552,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $args = array(
         'post_type' => 'humble_lms_track',
         'posts_per_page' => -1,
-        'post_status' => 'publish'
+        'post_status' => 'publish',
+        'meta_key' => 'humble_lms_track_position',
+        'orderby' => 'meta_value_num',
+        'order' => 'ASC',
       );
 
       $tracks = get_posts( $args );
@@ -604,7 +607,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
       $html = '';
 
-      if( ! $awards[0] || empty( $awards[0] ) ) {
+      if( ! isset( $awards[0] ) || ! $awards[0] || empty( $awards[0] ) ) {
         $html .= '<p>' . __('You have not received any awards yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-awards-list">';
@@ -633,7 +636,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $certificates = get_user_meta( get_current_user_id(), 'humble_lms_certificates', false );
       $html = '';
 
-      if( ! $certificates[0] || empty( $certificates[0] ) ) {
+      if( ! isset( $certificates[0] ) || ! $certificates[0] || empty( $certificates[0] ) ) {
         $html .= '<p>' . __('You have not been issued any certificates yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-certificates-list">';

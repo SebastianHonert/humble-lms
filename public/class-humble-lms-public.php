@@ -250,11 +250,27 @@ class Humble_LMS_Public {
     // Completed Lesson / Course / Track / Award / Certificate / Quizzes
     if( isset( $_POST['completed'] ) ) {
       $completed = json_decode( $_POST['completed'] );
-      if( ! empty( $completed[0] ) ) {
+      $options = get_option('humble_lms_options');
+      $messages = isset( $options['messages'] ) ? $options['messages'] : [];
+
+      if( ! empty( $completed[0] ) && ! empty( $messages ) ) {
         $html .= '<div class="humble-lms-award-message"><div>';
 
         foreach( $completed as $key => $ids ) {
           foreach( $ids as $id ) {
+
+            if( $key === 0 && ! in_array( 'lesson', $messages ) ) {
+              continue;
+            } elseif( $key === 1 && ! in_array( 'course', $messages ) ) {
+              continue;
+            } elseif( $key === 2 && ! in_array( 'track', $messages ) ) {
+              continue;
+            } elseif( $key === 3 && ! in_array( 'award', $messages ) ) {
+              continue;
+            } elseif( $key === 4 && ! in_array( 'certificate', $messages ) ) {
+              continue;
+            }
+
             if( $key === 0 ) { $title = __('Lesson completed', 'humble-lms'); $icon = 'ti-thumb-up'; }
             if( $key === 1 ) { $title = __('Course completed', 'humble-lms'); $icon = 'ti-medall'; }
             if( $key === 2 ) { $title = __('Track completed', 'humble-lms'); $icon = 'ti-crown'; }

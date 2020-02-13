@@ -31,10 +31,13 @@ class Humble_LMS_Activator {
    */
   public function activate() {
     $this->add_custom_pages();
+    $this->init_options();
   }
 
   /**
    * Add custom pages for login, registration and password reset.
+   * 
+   * @since   0.0.1
    */
   public function add_custom_pages() {
     $custom_page_course_archive = array(
@@ -120,6 +123,17 @@ class Humble_LMS_Activator {
 
     if( ! get_page_by_title('Humble LMS User Profile', OBJECT, 'page') )
       wp_insert_post( $custom_page_user_profile );
+  }
+
+  /**
+   * Initialize plugin options.
+   * 
+   * @since   0.0.1
+   */
+  public function init_options() {
+    update_option('humble_lms_options', array(
+      'messages' => array('lesson', 'course', 'track', 'award', 'certificate')
+    ) );
   }
 
 }

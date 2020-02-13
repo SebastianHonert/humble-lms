@@ -334,11 +334,13 @@ jQuery(document).ready(function($) {
   $('.humble-lms-access-levels-check-all').on('click', function() {
     let checkboxes = $('input[name="humble_lms_lesson_access_levels[]"]')
     let checked = false
-    $.each(checkboxes, function(index, value) {
+
+    $.each(checkboxes, function (index, value) {
       if ($(checkboxes[index]).is(':checked')) {
         checked = true
       }
     })
+
     $('input[name="humble_lms_lesson_access_levels[]"]').prop('checked', !checked)
   }) 
 

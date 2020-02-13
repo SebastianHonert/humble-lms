@@ -183,8 +183,9 @@ class Humble_LMS_Public {
    */
   public function humble_lms_add_content_to_pages( $content ) {
     global $post;
-    
+
     $html = '';
+    $options = get_option('humble_lms_options');
 
     if( ! is_admin() ) {
       $html .= '<div class="humble-lms-loading-layer">
@@ -247,36 +248,28 @@ class Humble_LMS_Public {
       $html .= $content;
     }
 
-    // Completed Lesson / Course / Track / Award / Certificate / Quizzes
+    // Completed => [lesson, course, track, award, certificate]
     if( isset( $_POST['completed'] ) ) {
       $completed = json_decode( $_POST['completed'] );
-      $options = get_option('humble_lms_options');
       $messages = isset( $options['messages'] ) ? $options['messages'] : [];
 
-      if( ! empty( $completed[0] ) && ! empty( $messages ) ) {
+      if( $this->has_messages( $completed, $messages ) ) {
         $html .= '<div class="humble-lms-award-message"><div>';
 
         foreach( $completed as $key => $ids ) {
           foreach( $ids as $id ) {
 
-            if( $key === 0 && ! in_array( 'lesson', $messages ) ) {
-              continue;
-            } elseif( $key === 1 && ! in_array( 'course', $messages ) ) {
-              continue;
-            } elseif( $key === 2 && ! in_array( 'track', $messages ) ) {
-              continue;
-            } elseif( $key === 3 && ! in_array( 'award', $messages ) ) {
-              continue;
-            } elseif( $key === 4 && ! in_array( 'certificate', $messages ) ) {
-              continue;
-            }
+            if( $key === 0 && ! in_array( 'lesson', $messages ) ) { continue; }
+            if( $key === 1 && ! in_array( 'course', $messages ) ) { continue; }
+            if( $key === 2 && ! in_array( 'track', $messages ) ) { continue; }
+            if( $key === 3 && ! in_array( 'award', $messages ) ) { continue; }
+            if( $key === 4 && ! in_array( 'certificate', $messages ) ) { continue; }
 
             if( $key === 0 ) { $title = __('Lesson completed', 'humble-lms'); $icon = 'ti-thumb-up'; }
             if( $key === 1 ) { $title = __('Course completed', 'humble-lms'); $icon = 'ti-medall'; }
             if( $key === 2 ) { $title = __('Track completed', 'humble-lms'); $icon = 'ti-crown'; }
             if( $key === 3 ) { $title = __('You received an award', 'humble-lms'); $icon = 'ti-medall'; }
             if( $key === 4 ) { $title = __('You have been issued a certificate', 'humble-lms'); $icon = 'ti-clipboard'; }
-            if( $key === 5 ) { $title = __('Quiz completed', 'humble-lms'); $icon = 'ti-clipboard'; }
 
             $html .= '<div class="humble-lms-award-message-inner">
                 <div>
@@ -296,10 +289,6 @@ class Humble_LMS_Public {
                     $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
                       <i class="' . $icon .'"></i>
                     </div>';
-                  } elseif ( $key === 5 ) {
-                    $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
-                      <i class="' . $icon .'"></i>
-                    </div>';
                   }
 
                 $html .= '</div>
@@ -312,6 +301,22 @@ class Humble_LMS_Public {
     }
 
     return $html;
+  }
+
+  /**
+   * Check if there are any messages that need to be shown.
+   *
+   * @since    0.0.1
+   */
+  public function has_messages( $completed, $messages ) {
+    if( empty( $completed ) || empty( $messages ) ) { return false; }
+    if( ! empty( $completed[0] ) && in_array( 'lesson', $messages ) ) { return true; }
+    if( ! empty( $completed[1] ) && in_array( 'course', $messages ) ) { return true; }
+    if( ! empty( $completed[2] ) && in_array( 'track', $messages ) ) { return true; }
+    if( ! empty( $completed[3] ) && in_array( 'award', $messages ) ) { return true; }
+    if( ! empty( $completed[4] ) && in_array( 'certificate', $messages ) ) { return true; }
+
+    return false;
   }
 
   /**

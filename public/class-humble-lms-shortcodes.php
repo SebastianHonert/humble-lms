@@ -606,6 +606,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return $this->display_login_text();
 
       $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
+
+      if( isset( $awards[0] ) && ! empty( $awards[0] ) ) {
+        foreach( $awards[0] as $key => $id ) {
+          if( get_post_status( $id ) !== 'publish' ) {
+            unset( $awards[0][$key] );
+          }
+        }
+      }
+
       $html = '';
 
       if( ! isset( $awards[0] ) || ! $awards[0] || empty( $awards[0] ) ) {
@@ -635,6 +644,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return $this->display_login_text();
 
       $certificates = get_user_meta( get_current_user_id(), 'humble_lms_certificates', false );
+
+      if( isset( $certificates[0] ) && ! empty( $certificates[0] ) ) {
+        foreach( $certificates[0] as $key => $id ) {
+          if( get_post_status( $id ) !== 'publish' ) {
+            unset( $certificates[0][$key] );
+          }
+        }
+      }
+
       $html = '';
 
       if( ! isset( $certificates[0] ) || ! $certificates[0] || empty( $certificates[0] ) ) {

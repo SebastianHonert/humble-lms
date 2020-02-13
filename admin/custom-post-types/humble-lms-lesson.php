@@ -101,8 +101,9 @@ function humble_lms_lesson_access_levels_mb() {
   foreach( $roles as $key => $role ) {
     if( $key === 'administrator' ) continue;
     $checked = in_array( $key, $levels ) ? 'checked' : '';
-    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" id="humble_lms_lesson_access_levels" value="' . $key . '" ' . $checked . '> ' . $role['name'] . '<br>';
+    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" value="' . $key . '" ' . $checked . '> ' . $role['name'] . '<br>';
   }
+  echo '<p><a class="button humble-lms-access-levels-check-all">' . __('Check / uncheck all', 'humble-lms') . '</a></p>';
 }
 
 // Lesson Instructor

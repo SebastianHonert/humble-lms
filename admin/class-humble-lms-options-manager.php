@@ -18,11 +18,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function __construct() {
 
+      $this->user = new Humble_LMS_Public_User;
+      $this->content_manager = new Humble_LMS_Content_Manager;
+
+      $this->page_sections = array();
+      $this->login_url = wp_login_url();
       $this->options = get_option('humble_lms_options');
       $this->admin_url = add_query_arg( 'page', 'humble_lms_options', admin_url() );
-      $this->login_url = wp_login_url();
-      $this->user = new Humble_LMS_Public_User;
       $this->countries = array_map('trim', explode(',', 'Afghanistan, Albania, Algeria, Andorra, Angola, Antigua & Deps, Argentina, Armenia, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bhutan, Bolivia, Bosnia Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Central African Rep, Chad, Chile, China, Colombia, Comoros, Congo, Congo {Democratic Rep}, Costa Rica, Croatia, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon, Gambia, Georgia, Germany, Ghana, Greece, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland {Republic}, Israel, Italy, Ivory Coast, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea North, Korea South, Kosovo, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Mauritania, Mauritius, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, {Burma}, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russian Federation, Rwanda, St Kitts & Nevis, St Lucia, Saint Vincent & the Grenadines, Samoa, San Marino, Sao Tome & Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe'));
+
       $this->messages = array(
         'lesson' => __('Lessons', 'humble-lms'),
         'course' => __('Courses', 'humble-lms'),
@@ -30,8 +34,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'award' => __('Awards', 'humble-lms'),
         'certificate' => __('Certificates', 'humble-lms'),
       );
-      $this->page_sections = array();
-      $this->content_manager = new Humble_LMS_Content_Manager;
+
+      $this->custom_pages = array(
+        'login' => 0,
+        'registration' => 0,
+        'lost_password' => 0,
+        'reset_password' => 0,
+        'user_profile' => 0,
+      );
 
     }
 
@@ -115,6 +125,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'custom_pages', __('Please select the custom page IDs (login, registration, lost password)', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
@@ -189,7 +200,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    public function  messages() {
+    public function messages() {
       $messages = $this->messages;
       $selected_messages = isset( $this->options['messages'] ) ? $this->options['messages'] : [];
 
@@ -199,6 +210,26 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<input id="messages" name="humble_lms_options[messages][]" type="checkbox" value="' . $key . '" ' . $checked . '>' . $message . '<br>';
       }
       echo '</p>';
+    }
+
+    /**
+     * Option for messages showing when students complete a lesson.
+     *
+     * @since    0.0.1
+     */
+    public function custom_pages() {
+      $custom_pages = isset( $this->options['custom_pages'] ) ? $this->options['custom_pages'] : $this->custom_pages;
+
+      echo '<p><strong>' . __('Login', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['login'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
+      echo '<p><input type="number" name="humble_lms_options[custom_pages][login]" value="' . (int)$custom_pages['login'] . '" /></p>';
+      echo '<p><strong>' . __('Registration', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['registration'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
+      echo '<p><input type="number" name="humble_lms_options[custom_pages][registration]" value="' . (int)$custom_pages['registration'] . '" /></p>';
+      echo '<p><strong>' . __('Lost Password', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['lost_password'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
+      echo '<p><input type="number" name="humble_lms_options[custom_pages][lost_password]" value="' . (int)$custom_pages['lost_password'] . '" /></p>';
+      echo '<p><strong>' . __('Reset Password', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['reset_password'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
+      echo '<p><input type="number" name="humble_lms_options[custom_pages][reset_password]" value="' . (int)$custom_pages['reset_password'] . '" /></p>';
+      echo '<p><strong>' . __('User Profile', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['user_profile'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
+      echo '<p><input type="number" name="humble_lms_options[custom_pages][user_profile]" value="' . (int)$custom_pages['user_profile'] . '" /></p>';
     }
 
     /**
@@ -279,6 +310,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
       $validated['messages'] = $options['messages'];
+      $validated['custom_pages'] = $options['custom_pages'];
 
       $validated['registration_has_country'] = (int)$options['registration_has_country'] === 1 ? 1 : 0;
       $validated['registration_countries'] = ! empty( $options['registration_countries'] ) ? serialize( $options['registration_countries'] ) : [];

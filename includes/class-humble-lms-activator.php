@@ -131,9 +131,22 @@ class Humble_LMS_Activator {
    * @since   0.0.1
    */
   public function init_options() {
+    $custom_page_login = get_page_by_title('Humble LMS Login', OBJECT, 'page');
+    $custom_page_registration = get_page_by_title('Humble LMS Registration', OBJECT, 'page');
+    $custom_page_lost_password = get_page_by_title('Humble LMS Lost Password', OBJECT, 'page');
+    $custom_page_reset_password = get_page_by_title('Humble LMS Reset Password', OBJECT, 'page');
+    $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
+
     update_option('humble_lms_options', array(
-      'messages' => array('lesson', 'course', 'track', 'award', 'certificate')
-    ) );
+      'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
+      'custom_pages' => array(
+        'login' => $custom_page_login->ID,
+        'registration' => $custom_page_registration->ID,
+        'lost_password' => $custom_page_lost_password->ID,
+        'reset_password' => $custom_page_reset_password->ID,
+        'user_profile' => $custom_page_user_profile->ID,
+      ),
+    ));
   }
 
 }

@@ -188,9 +188,7 @@ class Humble_LMS_Public {
     $options = get_option('humble_lms_options');
 
     if( ! is_admin() ) {
-      $html .= '<div class="humble-lms-loading-layer">
-        <div class="humble-lms-loading"></div>
-      </div>';
+      $html .= '<div class="humble-lms-loading-layer"><div class="humble-lms-loading"></div></div>';
     }
 
     // Welcome message after successful registration

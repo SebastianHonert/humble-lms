@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-02-18 17:43+0100\n"
-"PO-Revision-Date: 2020-02-18 17:44+0100\n"
+"PO-Revision-Date: 2020-02-18 18:08+0100\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1669,7 +1669,7 @@ msgstr "Diesem Kurs sind keine Lektionen zugeordnet"
 
 #: public/class-humble-lms-shortcodes.php:306
 msgid "Syllabus"
-msgstr "Kurplan"
+msgstr "Kursplan"
 
 #: public/class-humble-lms-shortcodes.php:309
 msgid ""
@@ -1677,7 +1677,7 @@ msgid ""
 "directly so it is not related to a specific course. Please open the course "
 "and start your learning activities from there."
 msgstr ""
-"Suchst du den Kurplan? Es sieht so aus, als hättest du diese Lektion direkt "
+"Suchst du den Kursplan? Es sieht so aus, als hättest du diese Lektion direkt "
 "aufgerufen. Sie kann daher keinem Kurs zugeordnet werden. Bitte öffne den "
 "entsprechenden Kurs, um fortzufahren."
 

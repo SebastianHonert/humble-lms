@@ -79,8 +79,8 @@ function humble_lms_quiz_questions_mb() {
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $quiz_questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', true );
-  $quiz_questions = ! empty( $quiz_questions[0] ) ? json_decode( $quiz_questions[0] ) : [];
+  $quiz_questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', false );
+  $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
 
   $args = array(
     'post_type' => 'humble_lms_question',
@@ -174,7 +174,7 @@ function humble_lms_save_quiz_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
-  $quiz_meta['humble_lms_quiz_questions'] = isset( $_POST['humble_lms_quiz_questions'] ) ? (array) $_POST['humble_lms_quiz_questions'] : array();
+  $quiz_meta['humble_lms_quiz_questions'] = isset( $_POST['humble_lms_quiz_questions'] ) ? explode(',', $_POST['humble_lms_quiz_questions']) : array();
   $quiz_meta['humble_lms_quiz_questions'] = array_map( 'esc_attr', $quiz_meta['humble_lms_quiz_questions'] );
   $quiz_meta['humble_lms_quiz_passing_grade'] = absint( $_POST['humble_lms_quiz_passing_grade'] );
   

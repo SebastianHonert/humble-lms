@@ -173,8 +173,7 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
-  $track_meta['humble_lms_track_courses'] = isset( $_POST['humble_lms_track_courses'] ) ? (array) $_POST['humble_lms_track_courses'] : array();
-  $track_meta['humble_lms_track_courses'] = array_map( 'esc_attr', $track_meta['humble_lms_track_courses'] );
+  $track_meta['humble_lms_track_courses'] = isset( $_POST['humble_lms_track_courses'] ) ? explode( ',', $_POST['humble_lms_track_courses'] ) : [];
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
 

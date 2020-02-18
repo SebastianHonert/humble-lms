@@ -129,7 +129,7 @@ function humble_lms_course_duration_mb()
 
   $duration = get_post_meta($post->ID, 'humble_lms_course_duration', true);
 
-  echo '<input type="text" class="widefat" name="humble_lms_course_duration" id="humble_lms_course_duration" value="">';
+  echo '<input type="text" class="widefat" name="humble_lms_course_duration" id="humble_lms_course_duration" value="' . $duration . '">';
   
 }
 
@@ -150,9 +150,7 @@ function humble_lms_course_instructors_mb()
 {
   global $post;
 
-  $course_instructors = get_post_meta( $post->ID, 'humble_lms_instructors', true );
-  $course_instructors = ! empty( $course_instructors[0] ) ? json_decode( $course_instructors[0] ) : [];
-  if( $course_instructors === null ) $course_instructors = [];
+  $course_instructors = Humble_LMS_Content_Manager::get_instructors( $post->ID );
 
   $args = array(
     'posts_per_page' => -1,
@@ -225,11 +223,11 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
-  $course_meta['humble_lms_course_lessons'] = isset( $_POST['humble_lms_course_lessons'] ) ? (array) $_POST['humble_lms_course_lessons'] : array();
+  $course_meta['humble_lms_course_lessons'] = isset( $_POST['humble_lms_course_lessons'] ) ? explode( ',', $_POST['humble_lms_course_lessons'] ) : [];
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
-  $course_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? (array) $_POST['humble_lms_course_instructors'] : array();
+  $course_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? explode(',', $_POST['humble_lms_course_instructors']) : [];
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )

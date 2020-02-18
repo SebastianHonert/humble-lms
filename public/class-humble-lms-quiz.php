@@ -64,7 +64,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @param    int
      * @return   array
      */
-    public function questions( $quiz_id = null ) {
+    public static function questions( $quiz_id = null ) {
       if ( ! $quiz_id )
         return [];
 
@@ -74,8 +74,8 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       if( get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
         return [];
 
-      $question_ids = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', true );
-      $question_ids = ! empty( $question_ids[0] ) ? json_decode( $question_ids[0] ) : [];
+      $question_ids = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', false );
+      $question_ids = isset( $question_ids[0] ) && ! empty( $question_ids[0] ) && ( isset( $question_ids[0][0] ) && $question_ids[0][0] !== '' ) ?  $question_ids[0] : [];
       
       $args = array(
         'post_type' => 'humble_lms_question',

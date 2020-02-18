@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
           })
 
           if ($('#humble_lms_' + content).length) {
-            $('#humble_lms_' + content).val(JSON.stringify(selectedItemIds))
+            $('#humble_lms_' + content).val(selectedItemIds)
           }
         }
       })

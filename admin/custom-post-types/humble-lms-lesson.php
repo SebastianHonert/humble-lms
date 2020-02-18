@@ -94,7 +94,7 @@ function humble_lms_lesson_access_levels_mb() {
 
   $roles = $wp_roles->roles;
   $levels = get_post_meta( $post->ID, 'humble_lms_lesson_access_levels', false );
-  $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
+  $levels = isset( $levels[0] ) && ! empty( $levels[0] ) ? $levels[0] : [];
 
   echo '<p>' . __('Select the user roles that can access this lesson. If you do not select any specific role(s), the lesson will be publicly available.', 'humble-lms') . '</p>';
   echo '<input type="checkbox" checked disabled>Administrator<br>';
@@ -112,9 +112,7 @@ function humble_lms_lesson_instructors_mb()
 {
   global $post;
 
-  $lesson_instructors = get_post_meta( $post->ID, 'humble_lms_instructors', true );
-  $lesson_instructors = ! empty( $lesson_instructors[0] ) ? json_decode( $lesson_instructors[0] ) : [];
-  if( $lesson_instructors === null ) $lesson_instructors = [];
+  $lesson_instructors = Humble_LMS_Content_Manager::get_instructors( $post->ID );
 
   $args = array(
     'posts_per_page' => -1,
@@ -247,11 +245,11 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   );
 
   $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
-  $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? (array) $_POST['humble_lms_lesson_access_levels'] : array();
+  $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? $_POST['humble_lms_lesson_access_levels'] : [];
   $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );
-  $lesson_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? (array) $_POST['humble_lms_lesson_instructors'] : array();
+  $lesson_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_lesson_instructors'] ) ? explode(',', $_POST['humble_lms_lesson_instructors']) : [];
   $lesson_meta['humble_lms_instructors'] = array_map( 'esc_attr', $lesson_meta['humble_lms_instructors'] );
-  $lesson_meta['humble_lms_quizzes'] = isset( $_POST['humble_lms_lesson_quizzes'] ) ? (array) $_POST['humble_lms_lesson_quizzes'] : array();
+  $lesson_meta['humble_lms_quizzes'] = isset( $_POST['humble_lms_lesson_quizzes'] ) ? explode(',', $_POST['humble_lms_lesson_quizzes']) : [];
   $lesson_meta['humble_lms_quizzes'] = array_map( 'esc_attr', $lesson_meta['humble_lms_quizzes'] );
 
   if( ! empty( $lesson_meta ) && sizeOf( $lesson_meta ) > 0 )

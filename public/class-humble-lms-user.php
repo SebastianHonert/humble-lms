@@ -718,7 +718,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
         if( in_array( $user_id, $course_instructors ) ) {
           $course_instructors = array_values( array_diff( $course_instructors, [$user_id] ) );
-          $course_instructors = '[' . implode( ',', $course_instructors ) . ']';
           update_post_meta( $course->ID, 'humble_lms_instructors', [$course_instructors] );
         }
 
@@ -729,7 +728,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
           if( in_array( $user_id, $lesson_instructors ) ) {
             $lesson_instructors = array_values( array_diff( $lesson_instructors, [$user_id] ) );
-            $lesson_instructors = '[' . implode( ',', $lesson_instructors ) . ']';
             update_post_meta( $lesson_id, 'humble_lms_instructors', [$lesson_instructors] );
           }
         }

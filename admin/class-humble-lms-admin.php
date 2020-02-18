@@ -276,9 +276,7 @@ class Humble_LMS_Admin {
             unset( $track_courses[$key] );
           }
 
-          $updated_track_courses = ['[' . implode(',', $track_courses ) . ']'];
-
-          update_post_meta( $track->ID, 'humble_lms_track_courses', $updated_track_courses );
+          update_post_meta( $track->ID, 'humble_lms_track_courses', $track_courses );
         }
 
       break;
@@ -298,8 +296,7 @@ class Humble_LMS_Admin {
             unset( $course_lessons[$key] );
           }
 
-          $updated_course_lessons = ['[' . implode(',', $course_lessons ) . ']'];
-          update_post_meta( $course->ID, 'humble_lms_course_lessons', $updated_course_lessons );
+          update_post_meta( $course->ID, 'humble_lms_course_lessons', $course_lessons );
         }
 
       break;

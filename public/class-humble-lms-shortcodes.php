@@ -339,7 +339,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // View course/lesson
       if( $context === 'course' ) {
-        $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn-start-course humble-lms-open-lesson" data-lesson-id="' . $lessons[0]->ID  . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+        $lesson_id = isset( $lessons[0]->ID ) ? $lessons[0]->ID : 0;
+        $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn-start-course humble-lms-open-lesson" data-lesson-id="' . $lesson_id . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
       }
 
       return $html;
@@ -387,7 +388,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $html .= '<div class="humble-lms-instructors ' . $class . '" style="' . $style . '">';
 
-      if( ! empty( $instructors ) ) {
+      if( isset( $instructors[0] ) && ! empty( $instructors ) ) {
         foreach( $instructors as $user_id ) {
           if( get_userdata( $user_id ) ) {
             $user = get_user_by( 'id', $user_id );

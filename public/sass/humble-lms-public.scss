@@ -982,6 +982,11 @@ input[type='submit'].humble-lms-btn--error:active,
   color: $color-error;
 }
 
+.humble-lms-honeypot {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 /* Quizzes */
 .humble-lms-quiz {
   display: block;

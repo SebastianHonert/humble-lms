@@ -383,13 +383,17 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_register_user() {
+    global $wp;
+
     if( ! get_option( 'users_can_register' ) )
       return;
 
     if( ! isset( $_POST['humble-lms-form'] ) || $_POST['humble-lms-form'] !== 'humble-lms-registration' )
       return;
 
-    global $wp;
+    // Honeypot
+    if( isset( $_POST['humble-lms-honeypot'] ) && ! empty( $_POST['humble-lms-honeypot'] ) )
+      return;
 
     $options_manager = new Humble_LMS_Admin_Options_Manager;
     $countries = $options_manager->countries;

@@ -784,6 +784,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <p>
             <label for="humble-lms-user-login" class="humble-lms-required"><?php _e('Username', 'humble-lms'); ?></label>
             <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" />
+            <input class="humble-lms-honeypot" type="text" name="humble-lms-honeypot" value="" />
           </p>
           <p>
             <label for="humble-lms-user-first" class="humble-lms-required"><?php _e('First Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>

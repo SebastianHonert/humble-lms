@@ -62,6 +62,7 @@ function humble_lms_course_add_meta_boxes()
   add_meta_box( 'humble_lms_course_lessons_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_lessons_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
@@ -196,6 +197,17 @@ function humble_lms_course_instructors_mb()
   endif;
 }
 
+// Order of completion meta box
+
+function humble_lms_course_consecutive_order_mb() {
+  global $post;
+
+  $chronological = get_post_meta($post->ID, 'humble_lms_course_consecutive_order', true);
+  $checked = $chronological ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_course_consecutive_order" id="humble_lms_course_consecutive_order" value="1" ' . $checked . '>' . __('Yes, the lessons in this course need to be completed in consecutive order.', 'humble-lms') . '</p>';
+}
+
 // Save metabox data
 
 function humble_lms_save_course_meta_boxes( $post_id, $post )
@@ -227,6 +239,7 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
+  $course_meta['humble_lms_course_consecutive_order'] = (int)$_POST['humble_lms_course_consecutive_order'];
   $course_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? explode(',', $_POST['humble_lms_course_instructors']) : [];
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
 

@@ -19,6 +19,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
     public function __construct() {
 
       $this->user = new Humble_LMS_Public_User;
+      $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
 
@@ -26,25 +27,56 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      * Checks user privileges when accessing course contents.
      *
      * @since    0.0.1
+     * @return   string
      */
-    public function can_access_lesson( $lesson_id ) {
+    public function can_access_lesson( $lesson_id = null, $course_id = null ) {
       // Administrators can access all content
       if( current_user_can('manage_options') )
-        return true;
+        return 'allowed';
+
+      if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
+        return 'allowed';
 
       $levels = get_post_meta( $lesson_id, 'humble_lms_lesson_access_levels', false );
       $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
 
+      // Check for consecutive order of lessons
+      if( ! $this->reached_lesson( $lesson_id, $course_id ) ) {
+        return 'order';
+      }
+
       // Public lesson
       if( empty( $levels ) )
-        return true;
+        return 'allowed';
 
       if( ! is_user_logged_in() )
-        return false;
+        return 'denied';
 
       $user = wp_get_current_user();
 
-      return ! empty( array_intersect( $user->roles, $levels ) );
+      return empty( array_intersect( $user->roles, $levels ) ) ? 'denied' : 'allowed';
+    }
+
+    /**
+     * Checks if lessons have to be completed in a consecutive order and
+     * whether or not a user has completed the previous lessons.
+     *
+     * @since    0.0.1
+     */
+    public function reached_lesson( $lesson_id = null, $course_id = null ) {
+      $lessons = $this->content_manager->get_course_lessons( $course_id );
+      $current_lesson_index = array_search( $lesson_id, $lessons );
+
+      if( $current_lesson_index === 0 )
+        return true;
+
+      for( $i = 0; $i < $current_lesson_index; $i++ ) {
+        if( ! $this->user->completed_lesson( get_current_user_id(), $lessons[$i] ) ) {
+          return false;
+        }
+      }
+
+      return true;
     }
     
   }

@@ -220,6 +220,13 @@ class Humble_LMS_Public {
       $html .= '</div>';
     }
 
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'order' ) && ! current_user_can('manage_options' ) ) {
+      $html .= '<div class="humble-lms-message humble-lms-message--error">';
+      $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-message-content">' . sprintf( __('The lessons of this course need to be completed in a consecutive order. Please complete the previous lessons first.', 'humble-lms' ), wp_login_url() ) . '</span>';
+      $html .= '</div>';
+    }
+
     // Message user completed course
     if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
       $course_id = $post->ID;
@@ -326,13 +333,19 @@ class Humble_LMS_Public {
   public function humble_lms_template_redirect() {
     global $post;
 
-    if ( is_single() && $post->post_type == 'humble_lms_lesson' && ! $this->access_handler->can_access_lesson( $post->ID ) ) {
-      if( ! empty( $_POST['course_id'] ) ) {
-        wp_redirect( add_query_arg( 'access', 'denied', esc_url( get_permalink( (int)$_POST['course_id'] ) ) ) );
-      } else {
-        wp_redirect( add_query_arg( 'access', 'denied', esc_url( site_url() ) ) );
-      }
+    $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+    $access = $this->access_handler->can_access_lesson( $post->ID, $course_id );
+    $url = ! empty( $_POST['course_id'] ) ? esc_url( get_permalink( (int)$_POST['course_id'] ) ) : esc_url( site_url() ); 
 
+    if( is_single() && $post->post_type == 'humble_lms_lesson' && $access !== 'allowed' ) {
+      switch( $access ) {
+        case 'order':
+          wp_redirect( add_query_arg( 'access', 'order', $url ) );
+          break;
+        default:
+          wp_redirect( add_query_arg( 'access', 'denied', $url ) );
+          break;
+      }
       die;
     }
   }

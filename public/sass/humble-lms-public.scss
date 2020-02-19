@@ -3,8 +3,8 @@
  * included in this file.
  */
 
- $color-primary: #204086;
- $color-success: #207a86;
+ $color-primary: #444bb1;
+ $color-success: #188e6e;
  $color-error: #8a2738;
  $color-light: #fff;
  $color-award: gold;
@@ -126,44 +126,36 @@ body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
 
 li.humble-lms-syllabus-lesson {
   display: block;
-  background: $color-primary;
-  color: $color-light;
+  background: desaturate(lighten($color-primary, 47%), 23%);
   font-weight: 400;
   padding: .75em;
   cursor: pointer;
   transition: all .3s ease-in-out;
 }
 
-li.humble-lms-syllabus-lesson:hover,
-li.humble-lms-syllabus-lesson--current {
-  background: darken($color-primary, 5%);
+li.humble-lms-syllabus-lesson:hover {
+  background: desaturate(lighten($color-primary, 44%), 23%);
 }
 
 li.humble-lms-syllabus-lesson--completed {
-  background: $color-success;
   .humble-lms-syllabus-title::before {
     display: inline-block;
-    margin-right: 6px;
+    margin-right: .15em;
     font-family: 'themify';
     content: '\e64c';
     font-size: .75em;
     font-weight: 700;
+    color: $color-success;
   }
 }
 
 li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
   display: inline-block;
-  margin-right: 6px;
+  margin-right: .15em;
   font-family: 'themify';
   content: '\e63d';
   font-size: .75em;
   font-weight: 400;
-}
-
-li.humble-lms-syllabus-lesson--completed:hover,
-li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed,
-li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed:hover {
-  background: darken($color-success, 5%);
 }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
@@ -179,6 +171,7 @@ li.humble-lms-syllabus-lesson span {
   font-size: 1.25em;
   display: flex;
   align-items: center;
+  color: $color-primary;
 }
 
 .humble-lms-syllabus-description {
@@ -997,8 +990,8 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-quiz-question {
   display: block;
-  border: 1px solid lighten($color-primary, 55%);
-  background: lighten($color-primary, 66%);
+  background: desaturate(lighten($color-primary, 50%), 23%);
+  border: 1px solid desaturate(lighten($color-primary, 40%), 23%);
   padding: 1em;
   margin-bottom: 1em;
 }

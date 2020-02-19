@@ -41,6 +41,7 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   $(document).on('click', '.humble-lms-open-lesson', function (e) {
+    loadingLayer(true)
     $.ajax({
       url: humble_lms.ajax_url,
       type: 'POST',
@@ -53,6 +54,7 @@ jQuery(document).ready(function($) {
       },
       dataType: 'json',
       error: function(MLHttpRequest, textStatus, errorThrown) {
+        loadingLayer(false)
         console.error(errorThrown)
       },
       success: function(response, textStatus, XMLHttpRequest) {

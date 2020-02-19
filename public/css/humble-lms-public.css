@@ -18,7 +18,7 @@
 
 .humble-lms-course-tile {
   position: relative;
-  background: #204086;
+  background: #444bb1;
   color: #fff;
   padding: 1em 1em 0 1em;
   background-size: cover;
@@ -54,7 +54,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: #204086;
+  background: #444bb1;
   opacity: .8; }
 
 .humble-lms-16-9 {
@@ -103,39 +103,31 @@ body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
 
 li.humble-lms-syllabus-lesson {
   display: block;
-  background: #204086;
-  color: #fff;
+  background: #f0f0f5;
   font-weight: 400;
   padding: .75em;
   cursor: pointer;
   transition: all .3s ease-in-out; }
 
-li.humble-lms-syllabus-lesson:hover,
-li.humble-lms-syllabus-lesson--current {
-  background: #1b3671; }
+li.humble-lms-syllabus-lesson:hover {
+  background: #e6e7ef; }
 
-li.humble-lms-syllabus-lesson--completed {
-  background: #207a86; }
-  li.humble-lms-syllabus-lesson--completed .humble-lms-syllabus-title::before {
-    display: inline-block;
-    margin-right: 6px;
-    font-family: 'themify';
-    content: '\e64c';
-    font-size: .75em;
-    font-weight: 700; }
+li.humble-lms-syllabus-lesson--completed .humble-lms-syllabus-title::before {
+  display: inline-block;
+  margin-right: .15em;
+  font-family: 'themify';
+  content: '\e64c';
+  font-size: .75em;
+  font-weight: 700;
+  color: #188e6e; }
 
 li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
   display: inline-block;
-  margin-right: 6px;
+  margin-right: .15em;
   font-family: 'themify';
   content: '\e63d';
   font-size: .75em;
   font-weight: 400; }
-
-li.humble-lms-syllabus-lesson--completed:hover,
-li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed,
-li.humble-lms-syllabus-lesson--current.humble-lms-syllabus-lesson--completed:hover {
-  background: #1b6771; }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .5em; }
@@ -147,7 +139,8 @@ li.humble-lms-syllabus-lesson span {
   font-weight: 400;
   font-size: 1.25em;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  color: #444bb1; }
 
 .humble-lms-syllabus-description {
   font-weight: 400;
@@ -231,16 +224,16 @@ input[type='submit'].humble-lms-btn,
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
-  background: #204086;
+  background: #444bb1;
   transition: background-color .125s ease-in-out, box-shadow .125s ease-in-out;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
-  border-left: 1px solid #112348;
-  border-right: 1px solid #112348;
+  border-left: 1px solid #2f347a;
+  border-right: 1px solid #2f347a;
   border-bottom-width: .25em;
-  border-bottom-color: #112348;
+  border-bottom-color: #2f347a;
   border-bottom-style: solid; }
 
 .humble-lms-btn,
@@ -260,16 +253,16 @@ input[type='submit'].humble-lms-btn,
 #humble-lms-custom-login-form input[type='submit']:hover,
 #humble-lms-custom-login-form input[type='submit']:focus,
 #humble-lms-custom-login-form input[type='submit']:active {
-  background: #1b3671;
+  background: #3d439f;
   box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.35); }
 
 .humble-lms-btn--success,
 input[type='submit'].humble-lms-btn--success {
-  background-color: #207a86;
-  border-left: 1px solid #16555d;
-  border-right: 1px solid #16555d;
+  background-color: #188e6e;
+  border-left: 1px solid #11624c;
+  border-right: 1px solid #11624c;
   border-bottom-width: .25em;
-  border-bottom-color: #16555d;
+  border-bottom-color: #11624c;
   border-bottom-style: solid; }
 
 .humble-lms-btn--success:hover,
@@ -278,7 +271,7 @@ input[type='submit'].humble-lms-btn--success {
 input[type='submit'].humble-lms-btn--success:hover,
 input[type='submit'].humble-lms-btn--success:focus,
 input[type='submit'].humble-lms-btn--success:active {
-  background-color: #1b6771; }
+  background-color: #14785d; }
 
 .humble-lms-btn--error,
 input[type='submit'].humble-lms-btn--error {
@@ -342,18 +335,18 @@ input[type='submit'].humble-lms-btn--error:active,
   margin-right: .15em; }
 
 .humble-lms-message--success {
-  color: #071c1f;
-  border: 1px solid #8ac6cf;
-  background: #d1ebee; }
+  color: #06211a;
+  border: 1px solid #82d7c0;
+  background: #cdf1e7; }
 
 .humble-lms-message--success a,
 .humble-lms-message--success a:hover,
 .humble-lms-message--success a:focus,
 .humble-lms-message--success a:active,
 .humble-lms-message--success a:visited {
-  color: #071c1f;
+  color: #06211a;
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #abdae0 72%); }
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 67%, #a6e6d4 72%); }
 
 .humble-lms-message--error {
   color: #8a2738;
@@ -398,7 +391,7 @@ input[type='submit'].humble-lms-btn--error:active,
   color: #fff;
   font-size: 1.125em;
   display: none;
-  background: rgba(32, 64, 134, 0.96); }
+  background: rgba(68, 75, 177, 0.96); }
 
 .humble-lms-award-message > div {
   position: relative;
@@ -482,11 +475,11 @@ input[type='submit'].humble-lms-btn--error:active,
   color: #fff;
   font-size: 1.125em;
   display: none;
-  background: rgba(32, 64, 134, 0.96);
+  background: rgba(68, 75, 177, 0.96);
   line-height: 1.125; }
 
 .humble-lms-quiz-message--success {
-  background: rgba(32, 122, 134, 0.96); }
+  background: rgba(24, 142, 110, 0.96); }
 
 .humble-lms-quiz-message--failed {
   background: rgba(138, 39, 56, 0.96); }
@@ -600,7 +593,7 @@ input[type='submit'].humble-lms-btn--error:active,
   display: inline-block;
   content: '\e64c';
   font-family: 'themify';
-  color: #207a86;
+  color: #188e6e;
   margin-left: .15em; }
 
 .humble-lms-track-progress-course {
@@ -613,7 +606,7 @@ input[type='submit'].humble-lms-btn--error:active,
   border: 2px dashed #bfbfbf;
   border-radius: 50%;
   font-size: 1.5em;
-  color: #204086;
+  color: #444bb1;
   font-weight: 600;
   position: relative; }
 
@@ -621,10 +614,10 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-track-progress-course:active,
 .humble-lms-track-progress-course:focus,
 .humble-lms-track-progress-course:visited {
-  color: #204086; }
+  color: #444bb1; }
 
 .humble-lms-track-progress-course--completed {
-  background: #204086;
+  background: #444bb1;
   border: 0;
   color: #fff; }
 
@@ -709,7 +702,7 @@ input[type='submit'].humble-lms-btn--error:active,
   top: 0;
   left: 0;
   height: 100%;
-  background: #207a86; }
+  background: #188e6e; }
 
 /* Loading layer/spinner */
 .humble-lms-loading-layer {
@@ -831,8 +824,8 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-quiz-question {
   display: block;
-  border: 1px solid #ccd8f3;
-  background: #f9fafe;
+  background: #f9f9fb;
+  border: 1px solid #dadbe7;
   padding: 1em;
   margin-bottom: 1em; }
 

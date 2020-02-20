@@ -215,6 +215,7 @@ class Humble_LMS {
    * @access   private
    */
   private function define_admin_hooks() {
+    global $pagenow;
 
     $plugin_admin = new Humble_LMS_Admin( $this->get_humble_lms(), $this->get_version() );
 
@@ -230,6 +231,13 @@ class Humble_LMS {
     $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
+
+    if ( is_admin() && 'users.php' === $pagenow ) {
+      $this->loader->add_action( 'manage_users_columns', $plugin_admin, 'add_user_column_country' );
+      $this->loader->add_action( 'manage_users_sortable_columns', $plugin_admin, 'sortable_column_country' );
+      $this->loader->add_filter( 'manage_users_custom_column', $plugin_admin, 'modify_user_table_row', 10, 3 );
+      $this->loader->add_filter( 'pre_get_posts', $plugin_admin, 'column_orderby' );
+    }
 
     // Admin AJAX
     $admin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );

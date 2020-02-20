@@ -849,4 +849,56 @@ class Humble_LMS_Admin {
     return $msg;
   }
 
+  /**
+   * Add columns to display user country information.
+   * 
+   * @since   0.0.1
+   */
+  public function add_user_column_country( $column ) {
+    $column['country'] = __('Country', 'humble-lms');
+    return $column;
+  }
+
+  /**
+   * Modify column 'country' in user table row.
+   * 
+   * @since   0.0.1
+   */
+  public function modify_user_table_row( $val, $column_name, $user_id ) {
+    switch( $column_name ) {
+      case 'country' :
+        $val = get_user_meta( $user_id, 'humble_lms_country', true );
+        return ! empty( $val ) && $val !== '' ? $val : '–';
+        break;
+    }
+
+    return $val;
+  }
+
+  /**
+   * Make column 'country' in user table row sortable.
+   * 
+   * @since   0.0.1
+   */
+  public function sortable_column_country( $columns ) {
+    $columns['country'] = __('Country', 'humble-lms');
+
+    return $columns;
+  }
+
+  /**
+   * Modify the ordering of user table column 'Country'.
+   * 
+   * @since   0.0.1
+   */
+  public function column_orderby( $vars ) {
+    if( isset( $vars['orderby'] ) && 'Country' === $vars['orderby'] ) {    
+      $vars = array_merge( $vars, array(
+        'orderby' => 'meta_key',
+      ));
+    }
+
+    return $vars;
+  }
+
 }

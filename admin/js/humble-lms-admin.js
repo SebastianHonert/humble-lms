@@ -342,6 +342,16 @@ jQuery(document).ready(function($) {
     })
 
     $('input[name="humble_lms_lesson_access_levels[]"]').prop('checked', !checked)
-  }) 
+  })
+
+  /**
+   * Color picker
+   * 
+   * @since   0.0.1
+   */
+  $('.humble_lms_color_picker')
+  if ($.isFunction( jQuery.fn.wpColorPicker)) {
+		$('.humble_lms_color_picker').wpColorPicker()
+	}
 
 })

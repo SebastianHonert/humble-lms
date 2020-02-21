@@ -64,6 +64,7 @@ function humble_lms_course_add_meta_boxes()
   add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_color_mb', __('Select a color for this course (optional)', 'humble-lms'), 'humble_lms_course_color_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
@@ -208,6 +209,18 @@ function humble_lms_course_consecutive_order_mb() {
   echo '<p><input type="checkbox" name="humble_lms_course_consecutive_order" id="humble_lms_course_consecutive_order" value="1" ' . $checked . '>' . __('Yes, the lessons in this course need to be completed in consecutive order.', 'humble-lms') . '</p>';
 }
 
+// Color meta box
+
+function humble_lms_course_color_mb()
+{
+  global $post;
+
+  $color = get_post_meta($post->ID, 'humble_lms_course_color', true);
+  $color = ! $color ? '' : $color;
+
+  echo '<input type="text" class="humble_lms_color_picker"" name="humble_lms_course_color" id="humble_lms_course_color" value="' . $color . '">';
+}
+
 // Save metabox data
 
 function humble_lms_save_course_meta_boxes( $post_id, $post )
@@ -242,6 +255,7 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_course_consecutive_order'] = (int)$_POST['humble_lms_course_consecutive_order'];
   $course_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? explode(',', $_POST['humble_lms_course_instructors']) : [];
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
+  $course_meta['humble_lms_course_color'] = isset( $_POST['humble_lms_course_color'] ) ? sanitize_hex_color( $_POST['humble_lms_course_color'] ) : '';
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

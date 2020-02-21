@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-02-19 15:18+0100\n"
-"PO-Revision-Date: 2020-02-19 15:20+0100\n"
+"PO-Revision-Date: 2020-02-21 15:40+0100\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1629,7 +1629,7 @@ msgstr "Glückwunsch"
 
 #: public/class-humble-lms-public.php:240
 msgid "You successfully completed this following course."
-msgstr "Du hast diesen Kurse erfolgreich abgeschlossen."
+msgstr "Du hast diesen Kurs erfolgreich abgeschlossen."
 
 #: public/class-humble-lms-public.php:247
 #: public/class-humble-lms-shortcodes.php:112

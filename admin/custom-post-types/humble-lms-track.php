@@ -62,6 +62,7 @@ function humble_lms_track_add_meta_boxes()
   add_meta_box( 'humble_lms_track_courses_mb', __('Courses in this track', 'humble-lms'), 'humble_lms_track_courses_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
+  add_meta_box( 'humble_lms_track_color_mb', __('Select a color for this track (optional)', 'humble-lms'), 'humble_lms_track_color_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_track_add_meta_boxes' );
@@ -146,6 +147,18 @@ function humble_lms_track_position_mb()
   
 }
 
+// Color meta box
+
+function humble_lms_track_color_mb()
+{
+  global $post;
+
+  $color = get_post_meta($post->ID, 'humble_lms_track_color', true);
+  $color = ! $color ? '' : $color;
+
+  echo '<input type="text" class="humble_lms_color_picker"" name="humble_lms_track_color" id="humble_lms_track_color" value="' . $color . '">';
+}
+
 // Save metabox data
 
 function humble_lms_save_track_meta_boxes( $post_id, $post )
@@ -176,6 +189,7 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_courses'] = isset( $_POST['humble_lms_track_courses'] ) ? explode( ',', $_POST['humble_lms_track_courses'] ) : [];
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
+  $track_meta['humble_lms_track_color'] = isset( $_POST['humble_lms_track_color'] ) ? sanitize_hex_color( $_POST['humble_lms_track_color'] ) : '';
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

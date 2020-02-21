@@ -100,10 +100,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->track_progress( $track_id, get_current_user_id() );
+      $color = get_post_meta( $track_id, 'humble_lms_track_color', true );
+      $overlay_color = $color !== '' ? 'background-color:' . $color : '';
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
-          $html .= '<div class="humble-lms-course-tile-layer"></div>';
+          $html .= '<div class="humble-lms-course-tile-layer" style="' . $overlay_color . '"></div>';
           $html .= '<div class="humble-lms-16-9">';
             $html .= '<div class="humble-lms-course-title">' . $track->post_title . '</div>';
           $html .= '</div>';
@@ -212,10 +214,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
       $duration = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->course_progress( $course_id, get_current_user_id() );
+      $color = get_post_meta( $course_id, 'humble_lms_course_color', true );
+      $overlay_color = $color !== '' ? 'background-color:' . $color : '';
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
         $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
-          $html .= '<div class="humble-lms-course-tile-layer"></div>';
+          $html .= '<div class="humble-lms-course-tile-layer" style="' . $overlay_color . '"></div>';
           $html .= '<div class="humble-lms-16-9">';
             $html .= '<div class="humble-lms-course-title">' . $course->post_title . '</div>';
           $html .= '</div>';

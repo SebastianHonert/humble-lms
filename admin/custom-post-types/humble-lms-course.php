@@ -64,7 +64,7 @@ function humble_lms_course_add_meta_boxes()
   add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
-  add_meta_box( 'humble_lms_course_color_mb', __('Select a color for this course (optional)', 'humble-lms'), 'humble_lms_course_color_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_color_mb', __('Select a color for the course tile (optional)', 'humble-lms'), 'humble_lms_course_color_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );

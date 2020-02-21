@@ -62,7 +62,7 @@ function humble_lms_track_add_meta_boxes()
   add_meta_box( 'humble_lms_track_courses_mb', __('Courses in this track', 'humble-lms'), 'humble_lms_track_courses_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
-  add_meta_box( 'humble_lms_track_color_mb', __('Select a color for this track (optional)', 'humble-lms'), 'humble_lms_track_color_mb', 'humble_lms_track', 'normal', 'default' );
+  add_meta_box( 'humble_lms_track_color_mb', __('Select a color for the track tile (optional)', 'humble-lms'), 'humble_lms_track_color_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_track_add_meta_boxes' );

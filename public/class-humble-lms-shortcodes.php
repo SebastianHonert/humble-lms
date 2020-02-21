@@ -1150,6 +1150,28 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       return $html;
     }
+
+    /**
+     * PayPal Buttons.
+     * 
+     * @return false
+     * @since   0.0.1
+     */
+    public function humble_lms_paypal_buttons() {
+      if( ! is_user_logged_in() ) {
+        return $this->display_login_text();
+      }
+
+      if( ! Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+        if( current_user_can('manage_options') ) {
+          return '<p>' . __('Please provide your PayPal credentials first.', 'humble-lms') . '</p>';
+        } else {
+          return '';
+        }
+      }
+
+      return '<div id="humble-lms-paypal-buttons"></div>';
+    }
     
   }
   

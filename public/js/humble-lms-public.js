@@ -260,4 +260,34 @@ jQuery(document).ready(function($) {
     }
   })
 
+  /**
+   * Render PayPal buttons.
+   * 
+   * @since   0.0.1
+   */
+  if (typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
+    paypal.Buttons({
+
+      // Set up the transaction
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '0.01'
+            }
+          }]
+        })
+      },
+
+      // Finalize the transaction
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          console.log(details)
+          alert('Transaction completed by ' + details.payer.name.given_name + '!')
+        });
+      }
+
+    }).render('#humble-lms-paypal-buttons')
+  }
+
 })

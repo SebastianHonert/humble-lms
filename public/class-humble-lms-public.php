@@ -53,6 +53,7 @@ class Humble_LMS_Public {
     $this->version = $version;
     $this->user = new Humble_LMS_Public_User;
     $this->access_handler = new Humble_LMS_Public_Access_Handler;
+    $this->options = get_option('humble_lms_options');
 
   }
 
@@ -98,6 +99,10 @@ class Humble_LMS_Public {
      * between the defined hooks and the functions defined in this
      * class.
      */
+
+    if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+      wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'], false, NULL, true );
+    }
 
     wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, false );
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, false );
@@ -334,7 +339,7 @@ class Humble_LMS_Public {
     global $post;
 
     $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
-    $access = $this->access_handler->can_access_lesson( $post->ID, $course_id );
+    $access = isset( $post->ID ) ? $this->access_handler->can_access_lesson( $post->ID, $course_id ) : 'allowed';
     $url = ! empty( $_POST['course_id'] ) ? esc_url( get_permalink( (int)$_POST['course_id'] ) ) : esc_url( site_url() ); 
 
     if( is_single() && $post->post_type == 'humble_lms_lesson' && $access !== 'allowed' ) {

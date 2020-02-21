@@ -103,6 +103,15 @@ class Humble_LMS_Activator {
       'post_type' => 'page',
     );
 
+    $custom_page_checkout = array(
+      'post_title' => 'Humble LMS Checkout',
+      'post_name' => 'checkout',
+      'post_content' => '[humble_lms_paypal_buttons]',
+      'post_status' => 'publish',
+      'post_author' => 1,
+      'post_type' => 'page',
+    );
+
     if( ! get_page_by_title('Humble LMS Course Archive', OBJECT, 'page') )
       wp_insert_post( $custom_page_course_archive );
     
@@ -123,6 +132,9 @@ class Humble_LMS_Activator {
 
     if( ! get_page_by_title('Humble LMS User Profile', OBJECT, 'page') )
       wp_insert_post( $custom_page_user_profile );
+
+    if( ! get_page_by_title('Humble LMS Checkout', OBJECT, 'page') )
+      wp_insert_post( $custom_page_checkout );
   }
 
   /**
@@ -136,6 +148,7 @@ class Humble_LMS_Activator {
     $custom_page_lost_password = get_page_by_title('Humble LMS Lost Password', OBJECT, 'page');
     $custom_page_reset_password = get_page_by_title('Humble LMS Reset Password', OBJECT, 'page');
     $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
+    $custom_page_checkout = get_page_by_title('Humble LMS Checkout', OBJECT, 'page');
 
     update_option('humble_lms_options', array(
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
@@ -145,6 +158,7 @@ class Humble_LMS_Activator {
         'lost_password' => $custom_page_lost_password->ID,
         'reset_password' => $custom_page_reset_password->ID,
         'user_profile' => $custom_page_user_profile->ID,
+        'checkout' => $custom_page_checkout->ID,
       ),
     ));
   }

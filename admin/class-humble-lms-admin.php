@@ -51,6 +51,7 @@ class Humble_LMS_Admin {
 
     $this->humble_lms = $humble_lms;
     $this->version = $version;
+    $this->options = get_option('humble_lms_options');
     $this->login_page = site_url('/login/');
     $this->registration_page = site_url('/registration/');
     $this->lost_password_page = site_url('/lost-password/');
@@ -356,8 +357,19 @@ class Humble_LMS_Admin {
    */
   public function humble_lms_user_profile_page_exists() {
     $options = get_option('humble_lms_options');
-    $custom_page_user_profile =get_post( $options['custom_pages']['user_profile'] );
+    $custom_page_user_profile = get_post( $options['custom_pages']['user_profile'] );
     return get_post_status( $custom_page_user_profile ) === 'publish' && has_shortcode( $custom_page_user_profile->post_content, 'humble_lms_user_profile' );
+  }
+
+  /**
+   * Check if checkout page exists and contains shortcode
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_checkout_page_exists() {
+    $options = get_option('humble_lms_options');
+    $custom_page_checkout = get_post( $options['custom_pages']['checkout'] );
+    return get_post_status( $custom_page_checkout ) === 'publish' && has_shortcode( $custom_page_checkout->post_content, 'humble_lms_paypal_buttons' );
   }
 
   /**

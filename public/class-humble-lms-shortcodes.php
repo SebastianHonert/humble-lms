@@ -972,8 +972,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $user_id = get_current_user_ID();
       $userdata = get_userdata( $user_id );
-      $usermeta = get_user_meta( $user_id );
-
+      
       ob_start();
 
       if( isset( $_GET['progress'] ) && esc_attr( $_GET['progress'] ) === 'reset' ) {
@@ -1001,11 +1000,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $user_country = get_user_meta( $user_id, 'humble_lms_country', true );
       $user_email = $userdata->user_email;
       $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
-      
+      $user_is_premium = get_user_meta( $user_id, 'humble_lms_premium', true );
+      $options = get_option('humble_lms_options');
+      $checkout_post_id = isset( $options['custom_pages']['checkout'] ) ? (int)$options['custom_pages']['checkout'] : null;
+
       ?>
       
       <form id="humble-lms-user-profile-form" class="humble-lms-form" action="" method="post">
         <fieldset>
+          <?php if( $user_is_premium ): ?>
+          <label for="humble-lms-user-premium"><?php _e('Premium Status', 'humble-lms'); ?> <small>(<?php echo __('Get access to all courses', 'humble-lms' ); ?>)</small></label>
+          <p><strong><?php echo $user_is_premium ? __('Activated', 'humble-lms') : '' ?></strong></p>
+          <?php else: ?>
+          <p><a class="humble-lms-btn humble-lms-btn--success" href="<?php echo esc_url( get_permalink( $checkout_post_id ) ); ?>"><?php _e('Update to premium status', 'humble-lms'); ?></a></p>
+          <?php endif; ?>
           <label for="humble-lms-user-login"><?php _e('Username', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_login; ?></strong></p>
           <input type="hidden" name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $user_login; ?>" />

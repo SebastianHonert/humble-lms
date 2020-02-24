@@ -122,9 +122,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_admin_init() {
-      register_setting( 'humble_lms_options', 'humble_lms_options', 'humble_lms_options_validate' );
-      register_setting( 'humble_lms_options_registration', 'humble_lms_options', 'humble_lms_options_validate' );
-      register_setting( 'humble_lms_options_paypal', 'humble_lms_options', 'humble_lms_options_validate' );
+      register_setting( 'humble_lms_options', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
+      register_setting( 'humble_lms_options_registration', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
+      register_setting( 'humble_lms_options_paypal', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       
       add_settings_section('humble_lms_options_section_reporting_users', '', array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
@@ -347,28 +347,48 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * Validate option data on save.
+     * Validate options on save.
      *
      * @param   array
      * @return  array
      * @since   0.0.1
      */
-    public function humble_lms_options_validate( $options ) {
-      $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
-      $validated['tile_width_course'] = sanitize_text_field( $options['tile_width_course'] );
-      $validated['messages'] = $options['messages'];
-      $validated['custom_pages'] = $options['custom_pages'];
+    public function humble_lms_options_validate( $input ) {
+      $options = $this->options;
 
-      $validated['registration_has_country'] = (int)$options['registration_has_country'] === 1 ? 1 : 0;
-      $validated['registration_countries'] = ! empty( $options['registration_countries'] ) ? serialize( $options['registration_countries'] ) : [];
+      // error_log(print_r($input, true));
 
-      $validated['email_welcome'] = isset( $options['email_welcome'] ) ? sanitize_text_field( $options['email_welcome'] ) : '';
-      $validated['email_lost_password'] = isset( $options['email_lost_password'] ) ? sanitize_text_field( $options['email_lost_password'] ) : '';
+      if( isset( $input['tile_width_course'] ) )
+        $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
 
-      $validated['paypal_client_id'] = isset( $options['paypal_client_id'] ) ? sanitize_text_field( $options['paypal_client_id'] ) : '';
-      $validated['paypal_secret'] = isset( $options['paypal_secret'] ) ? sanitize_text_field( $options['paypal_secret'] ) : '';
+      if( isset( $input['tile_width_track'] ) )
+        $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );
+      
+      if( isset( $input['messages'] ) )
+        $options['messages'] = $input['messages'];
+      
+      if( isset( $input['custom_pages'] ) )
+        $options['custom_pages'] = $input['custom_pages'];
 
-      return $validated;
+      if( isset( $input['registration_has_country'] ) )
+        $options['registration_has_country'] = (int)$input['registration_has_country'] === 1 ? 1 : 0;
+      
+      if( isset( $input['registration_countries'] ) )
+        $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( $input['registration_countries'] ) : [];
+
+      if( isset( $input['email_welcome'] ) )
+        $options['email_welcome'] = sanitize_text_field( $input['email_welcome'] );
+      
+      if( isset( $input['email_lost_password'] ) )
+        $options['email_lost_password'] = sanitize_text_field( $input['email_lost_password'] );
+
+      if( isset( $input['paypal_client_id'] ) )
+        $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
+      
+      if( isset( $input['paypal_secret'] ) )
+        $options['paypal_secret'] = sanitize_text_field( trim( $input['paypal_secret'] ) );
+      
+      return $options;
     }
 
     /**

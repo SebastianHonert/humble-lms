@@ -61,6 +61,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_page() {
+      global $pagenow;
+
       echo '<div class="humble-lms-loading-layer">
         <div class="humble-lms-loading"></div>
       </div>';
@@ -84,8 +86,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <a href="' . $this->admin_url . '&active=registration" class="nav-tab ' . $nav_tab_registration . '">' . __('Registration', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=paypal" class="nav-tab ' . $nav_tab_paypal . '">PayPal</a>
         </h2>';
-        
-        echo '<form method="post" action="options.php">';
+
+        echo '<form method="post" action="' . $this->admin_url . '&active=' . $active . '">';
           switch( $active ) {
             case 'reporting-users':
               settings_fields('humble_lms_options_reporting_users');
@@ -355,8 +357,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function humble_lms_options_validate( $input ) {
       $options = $this->options;
-
-      // error_log(print_r($input, true));
 
       if( isset( $input['tile_width_course'] ) )
         $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );

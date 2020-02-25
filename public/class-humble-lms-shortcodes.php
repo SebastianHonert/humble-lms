@@ -1179,7 +1179,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      return '<div id="humble-lms-paypal-buttons"></div>';
+      $membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+      
+      if( $membership !== 'premium' ) {
+        return '<div id="humble-lms-paypal-buttons"></div>';
+      } else {
+        return '<p>' . __('Your account has been upgraded to premium status. Enjoy the courses! 😊', 'humble-lms') . '</p><p><a class="humble-lms-btn" href="' . esc_url( site_url() ) . '">' . __('Back to home page', 'humble-lms') . '</a></p>';
+      }
+      
     }
     
   }

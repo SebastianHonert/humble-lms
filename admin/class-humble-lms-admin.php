@@ -827,7 +827,7 @@ class Humble_LMS_Admin {
     $options = $options->options;
   
     if( ! isset( $options['email_lost_password'] ) || empty( $options['email_lost_password'] ) || ! $options['email_lost_password'] ) {
-      $message  = __( 'Hello! (DEFAULT)', 'personalize-login' ) . "\r\n\r\n";
+      $message  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
       $message .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
       $message .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
       $message .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
@@ -864,7 +864,7 @@ class Humble_LMS_Admin {
     $login_url = wp_login_url();
 
     if( ! isset( $options['email_welcome'] ) || empty( $options['email_welcome'] ) || ! $options['email_welcome'] ) {
-      $message = __( 'Hi there, (DEFAULT)' ) . "\r\n\r\n";
+      $message = __( 'Hi there,' ) . "\r\n\r\n";
       $message .= sprintf( __( 'welcome to %s! Here\'s how to log in:' ), get_option('blogname') ) . "\r\n\r\n";
       $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
       $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";

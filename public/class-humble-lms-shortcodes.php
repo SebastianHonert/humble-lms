@@ -771,7 +771,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '</div>';
       }
 
-      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === '1';
+      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === 1;
       $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
 
       $post_user_login = isset( $_POST['humble-lms-user-login'] ) ? sanitize_text_field( $_POST['humble-lms-user-login'] ) : '';
@@ -992,7 +992,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === '1';
+      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === 1;
       $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
       $user_login = $userdata->user_login;
       $user_first = $userdata->first_name;

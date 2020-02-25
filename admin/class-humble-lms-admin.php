@@ -439,7 +439,7 @@ class Humble_LMS_Admin {
 
     $options_manager = new Humble_LMS_Admin_Options_Manager;
     $countries = $options_manager->countries;
-    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === '1';
+    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === 1;
     
     if( isset( $_POST['humble-lms-user-login'] ) && wp_verify_nonce( $_POST['humble-lms-register-nonce'], 'humble-lms-register-nonce' ) ) {
       $user_login = $_POST['humble-lms-user-login'];	
@@ -560,7 +560,7 @@ class Humble_LMS_Admin {
     $userdata = get_userdata( $user_id );
     $options_manager = new Humble_LMS_Admin_Options_Manager;
     $countries = $options_manager->countries;
-    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === '1';
+    $registration_has_country = isset( $options_manager->options['registration_has_country'] ) && $options_manager->options['registration_has_country'] === 1;
     
     if( wp_verify_nonce( $_POST['humble-lms-update-user-nonce'], 'humble-lms-update-user-nonce' ) ) {
       $user_email	= $_POST['humble-lms-user-email'];

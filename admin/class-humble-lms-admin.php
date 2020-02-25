@@ -213,6 +213,7 @@ class Humble_LMS_Admin {
     echo __('This user is an instructor.', 'humble-lms') . '</p>';
 
     $options = new Humble_LMS_Admin_Options_Manager;
+    $memberships = $options->memberships;
     $countries = $options->countries;
 
     $user_country = get_user_meta( $user->ID, 'humble_lms_country', true);
@@ -222,6 +223,21 @@ class Humble_LMS_Admin {
       foreach( $countries as $key => $country ) {
         $selected = $country === $user_country ? 'selected' : '';
         echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+      }
+    echo '</select>';
+
+    $user_membership = get_user_meta( $user->ID, 'humble_lms_membership', true);
+
+    if( ! in_array( $user_membership, $memberships ) ) {
+      $user_membership = 'free';
+    }
+
+    echo '<h4>' . __('Membership', 'humble-lms') . '</h4>';
+    echo '<select name="humble_lms_membership" id="humble_lms_membership">';
+      echo '<option value="" disabled>' . __('Please select a membership type', 'humble-lms') . '</option>';
+      foreach( $memberships as $key => $membership ) {
+        $selected = $membership === $user_membership ? 'selected' : '';
+        echo '<option value="' . $membership . '" ' . $selected . '>' . $membership . '</option>';
       }
     echo '</select>';
   }
@@ -243,6 +259,7 @@ class Humble_LMS_Admin {
     if( current_user_can('edit_user', $user_id) ) {
       update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
       update_user_meta( $user_id, 'humble_lms_country', sanitize_text_field( $_POST['humble_lms_country'] ) );
+      update_user_meta( $user_id, 'humble_lms_membership', sanitize_text_field( $_POST['humble_lms_membership'] ) );
     }
   }
 
@@ -509,6 +526,7 @@ class Humble_LMS_Admin {
           // Add country to user meta
           if( $registration_has_country ) {
             add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
+            add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
           }
 
           // Notify admin and user (=> 'both')

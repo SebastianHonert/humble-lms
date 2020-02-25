@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-02-25 17:00+0100\n"
-"PO-Revision-Date: 2020-02-25 17:04+0100\n"
+"POT-Creation-Date: 2020-02-25 17:26+0100\n"
+"PO-Revision-Date: 2020-02-25 17:27+0100\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -157,8 +157,8 @@ msgid "Invalid request."
 msgstr "Ungültige Anfrage."
 
 #: admin/class-humble-lms-admin.php:830
-msgid "Hello! (DEFAULT)"
-msgstr "Hallo! (DEFAULT)"
+msgid "Hello!"
+msgstr ""
 
 #: admin/class-humble-lms-admin.php:831
 #, php-format
@@ -186,7 +186,9 @@ msgid "Thanks!"
 msgstr "Danke!"
 
 #: admin/class-humble-lms-admin.php:867
-msgid "Hi there, (DEFAULT)"
+#, fuzzy
+#| msgid "Hi there, (DEFAULT)"
+msgid "Hi there,"
 msgstr "Hallöchen, (DEFAULT)"
 
 #: admin/class-humble-lms-admin.php:868
@@ -2038,18 +2040,27 @@ msgstr "Keine Quizze gefunden."
 msgid "Please provide your PayPal credentials first."
 msgstr "Bitte gib zuerst deine PayPal-Zugangsdaten an."
 
+#: public/class-humble-lms-shortcodes.php:1187
+msgid "Your account has been upgraded to premium status. Enjoy the courses! 😊"
+msgstr ""
+"Du verfügst über einen Premium-Account. Viel Spaß mit unseren Kursen! 😊"
+
+#: public/class-humble-lms-shortcodes.php:1187
+#: public/partials/humble-lms-certificate-single.php:66
+msgid "Back to home page"
+msgstr "Zurück zur Startseite"
+
 #: public/partials/humble-lms-certificate-single.php:19
 #: public/partials/humble-lms-certificate-single.php:20
 msgid "not set"
 msgstr "nicht festgelegt"
 
-#: public/partials/humble-lms-certificate-single.php:66
-msgid "Back to home page"
-msgstr "Zurück zur Startseite"
-
 #: public/partials/humble-lms-track-archive.php:8
 msgid "Course Tracks"
 msgstr "Lernpfade"
+
+#~ msgid "Hello! (DEFAULT)"
+#~ msgstr "Hallo! (DEFAULT)"
 
 #~ msgid "Quiz completed"
 #~ msgstr "Quiz gelöst"

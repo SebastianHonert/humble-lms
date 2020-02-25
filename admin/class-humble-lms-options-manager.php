@@ -21,6 +21,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
 
+      $this->active = 'reporting-users';
       $this->page_sections = array();
       $this->login_url = wp_login_url();
       $this->options = get_option('humble_lms_options');
@@ -71,7 +72,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         
         settings_errors();
 
-        $active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
+        $this->active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
+        $active = $this->active;
+
         $nav_tab_reporting_users = $active === 'reporting-users' ? 'nav-tab-active' : '';
         $nav_tab_reporting_courses = $active === 'reporting-courses' ? 'nav-tab-active' : '';
         $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
@@ -262,6 +265,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $checked = $registration_has_country === 1 ? 'checked' : '';
   
       echo '<p><input id="registration_has_country" name="humble_lms_options[registration_has_country]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, include country in registration form.', 'humble-lms') . '</p>';
+      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 
     /**
@@ -356,6 +360,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function humble_lms_options_validate( $input ) {
       $options = $this->options;
+      $active = isset( $input['active'] ) ? sanitize_text_field( $input['active'] ) : '';
 
       if( isset( $input['tile_width_course'] ) )
         $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
@@ -369,8 +374,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( isset( $input['custom_pages'] ) )
         $options['custom_pages'] = $input['custom_pages'];
 
-      if( isset( $input['registration_has_country'] ) )
-        $options['registration_has_country'] = (int)$input['registration_has_country'] === 1 ? 1 : 0;
+      if( $active === 'registration' ) {
+        $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
+      }
       
       if( isset( $input['registration_countries'] ) )
         $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( $input['registration_countries'] ) : [];

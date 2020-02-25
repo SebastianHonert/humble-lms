@@ -1008,10 +1008,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
       <form id="humble-lms-user-profile-form" class="humble-lms-form" action="" method="post">
         <fieldset>
-          <label for="humble-lms-user-membership"><?php _e('Membership', 'humble-lms'); ?> <small>(<?php echo __('Get access to all courses', 'humble-lms' ); ?>)</small></label>
           <?php if( $user_membership === 'premium'): ?>
+            <label for="humble-lms-user-membership"><?php _e('Membership', 'humble-lms'); ?> <small>(<?php echo __('You can access all courses', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo __('Premium', 'humble-lms'); ?></strong></p>
           <?php else: ?>
+          <label for="humble-lms-user-membership"><?php _e('Membership', 'humble-lms'); ?> <small>(<?php echo __('Get access to all courses', 'humble-lms' ); ?>)</small></label>
           <p><?php _e('You are currently registered with a free account. In order to access all courses on this website please upgrade to a paid membership.', 'humble-lms' ); ?></p>
           <p><a class="humble-lms-btn humble-lms-btn--success" href="<?php echo esc_url( get_permalink( $checkout_post_id ) ); ?>"><?php _e('Upgrade membership', 'humble-lms'); ?></a></p>
           <?php endif; ?>

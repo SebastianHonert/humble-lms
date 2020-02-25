@@ -85,7 +85,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <a href="' . $this->admin_url . '&active=paypal" class="nav-tab ' . $nav_tab_paypal . '">PayPal</a>
         </h2>';
 
-        echo '<form method="post" action="' . $this->admin_url . '&active=' . $active . '">';
+        echo '<form method="post" action="options.php?active=' . $active . '">';
           switch( $active ) {
             case 'reporting-users':
               settings_fields('humble_lms_options_reporting_users');

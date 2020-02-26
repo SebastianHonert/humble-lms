@@ -25,7 +25,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->page_sections = array();
       $this->login_url = wp_login_url();
       $this->options = get_option('humble_lms_options');
-      $this->admin_url = add_query_arg( 'page', 'humble_lms_options', admin_url() );
+      $this->admin_url = add_query_arg( 'page', 'humble_lms_options', esc_url( admin_url('options.php') ) );
       $this->memberships = array('free', 'premium');
       $this->countries = array_map('trim', explode(',', 'Afghanistan, Albania, Algeria, Andorra, Angola, Antigua & Deps, Argentina, Armenia, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bhutan, Bolivia, Bosnia Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Central African Rep, Chad, Chile, China, Colombia, Comoros, Congo, Congo {Democratic Rep}, Costa Rica, Croatia, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon, Gambia, Georgia, Germany, Ghana, Greece, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland {Republic}, Israel, Italy, Ivory Coast, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea North, Korea South, Kosovo, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Mauritania, Mauritius, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, {Burma}, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russian Federation, Rwanda, St Kitts & Nevis, St Lucia, Saint Vincent & the Grenadines, Samoa, San Marino, Sao Tome & Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe'));
 
@@ -89,7 +89,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <a href="' . $this->admin_url . '&active=paypal" class="nav-tab ' . $nav_tab_paypal . '">PayPal</a>
         </h2>';
 
-        echo '<form method="post" action="options.php?active=' . $active . '">';
+        echo '<form method="post" action="options.php">';
           switch( $active ) {
             case 'reporting-users':
               settings_fields('humble_lms_options_reporting_users');
@@ -126,6 +126,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_admin_init() {
+      register_setting( 'humble_lms_options_reporting_users', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_registration', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_paypal', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
@@ -161,6 +162,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( ! $user_id ) {
         echo '<h2>' . __('Registered users', 'humble-lms' ). ' (' . count_users()['total_users'] . ')' . '</h2>';
         $this->reporting_users_table();
+        submit_button();
       } else {
         $this->reporting_user_single( $user_id );
       }
@@ -362,6 +364,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $options = $this->options;
       $active = isset( $input['active'] ) ? sanitize_text_field( $input['active'] ) : '';
 
+      if( isset( $input['users_per_page'] ) )
+        $options['users_per_page'] = (int)$input['users_per_page'];
+
       if( isset( $input['tile_width_course'] ) )
         $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
 
@@ -403,9 +408,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public function reporting_users_table() {
-      // TODO: pagination
       $users_per_page = $this->users_per_page();
-
       $paged = isset( $_GET['paged'] ) ? (int)$_GET['paged'] : 0;
       $total_users = count_users()['total_users'];
 
@@ -456,10 +459,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             $completed_certificates = count( $this->user->issued_certificates( $user->ID, true ) );
             $completed_certificates_percent = $certificates_total > 0 ? ( $completed_certificates / $certificates_total ) * 100 : 0;
 
-            // TODO: link to single user reporting view
             echo '<tr>
               <td><a href="' . get_edit_user_link( $user->ID ) . '">' . $user->ID . '</a></td>
-              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '&users-per-page=' . $users_per_page . '"><strong>' . $user->user_login . '</strong></a></td>
+              <td><a href="' . $this->admin_url . '&user_id=' . $user->ID . '&users_per_page=' . $users_per_page . '"><strong>' . $user->user_login . '</strong></a></td>
               <td>' . implode(',', $user_meta->roles ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_tracks_percent, $completed_tracks ) . '</td>
               <td>' . $this->progress_bar( (int)$completed_courses_percent, $completed_courses ) . '</td>
@@ -476,24 +478,21 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $users_per_page_values = array(10, 25, 50, 100, 250, 500);
 
       echo '<p><strong>' . __('Users per page', 'humble-lms') . '</strong><p>
-      <form method="post" action="' . $this->admin_url . '">
-        <select id="users-per-page" name="users-per-page">';
+        <select id="users_per_page" name="humble_lms_options[users_per_page]">';
         array_walk( $users_per_page_values, function( $value, $key, $users_per_page ) {
           $selected = $value === $users_per_page ? 'selected' : '';
           echo '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
         }, $users_per_page);
-        echo '</select>
-        <input type="submit" value="' . __('Submit') . '" />
-      </form>';
+        echo '</select>';
 
       if( $total_users > $users_per_page ) {
         $args = array(
-           'format' => '?paged=%#%&users-per-page=' . $users_per_page,
+           'format' => '?paged=%#%&users_per_page=' . $users_per_page,
            'total' => ceil($total_users / $users_per_page),
            'current' => max(1, $paged),
         );
 
-        echo '<br>' . paginate_links( $args );
+        echo '<p>' . paginate_links( $args ) . '</p>';
       }
     }
 
@@ -642,7 +641,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '<p><a class="button button-primary humble-lms-reset-user-progress" data-user-id="' . $user->ID . '">' . __('Reset learning progress for this user?', 'humble-lms') . '</a></p>';
   
       $users_per_page = $this->users_per_page();
-      $users_per_page = $users_per_page !== 50 ? '&users-per-page=' . $users_per_page : '';
+      $users_per_page = $users_per_page !== 50 ? '&users_per_page=' . $users_per_page : '';
 
       echo '<p><a class="button" href="' . $this->admin_url . $users_per_page . '">' . __('Back', 'humble-lms') . '</a></p>';
     }
@@ -705,15 +704,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public function users_per_page() {
-      if( isset( $_GET['users-per-page'] ) && $_GET['users-per-page'] !== '' ) {
-        $users_per_page = (int)$_GET['users-per-page'];
-      } else if( isset( $_POST['users-per-page'] ) ) {
-        $users_per_page = (int)$_POST['users-per-page'];
-      } else {
-        $users_per_page = 50;
-      }
+      $users_per_page = isset( $this->options['users_per_page'] ) ? $this->options['users_per_page'] : 50;
+      if( $users_per_page === 0 ) $users_per_page = 50;
 
       return $users_per_page;
+      
     }
 
     /**

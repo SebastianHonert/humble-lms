@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
           }
         },
         complete: function(reply, textStatus) {
-          loadingLayer(false)
+          // ... 
         }
       })
     } else {
@@ -155,10 +155,9 @@ jQuery(document).ready(function($) {
         },
         success: function(response, textStatus, XMLHttpRequest) {
           redirectForm(response)
-          loadingLayer(false)
         },
         complete: function(reply, textStatus) {
-          loadingLayer(false)
+          // ...
         }
       })
     }, 250)

@@ -147,8 +147,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'email_welcome', __('Welcome email', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       
-      add_settings_field( 'paypal_client_id', 'Client ID (PayPal)', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
-      add_settings_field( 'paypal_secret', __('Secret (PayPal)', 'humble-lms'), array( $this, 'paypal_secret' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      // add_settings_field( 'paypal_secret', __('Secret', 'humble-lms'), array( $this, 'paypal_secret' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
 
     /**
@@ -181,7 +181,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     public function humble_lms_options_section_paypal() {
-      echo '<p><em>' . __('In order to use PayPal you need to register a developer account first.', 'humble-lms') . '</em>: <a href="https://developer.paypal.com/" target="_blank">' . __('Register developer account', 'humble-lms') . '</a></p>';
+      echo '<p><em>' . __('In order to use PayPal you need to register a developer account first.', 'humble-lms') . '</em> <a href="https://developer.paypal.com/" target="_blank">' . __('Register developer account', 'humble-lms') . '</a></p>';
     }
 
     /**
@@ -342,16 +342,16 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.1
      */
-    function paypal_secret()
-    {
-      $paypal_secret = isset( $this->options['paypal_secret'] ) ? $this->options['paypal_secret'] : '';
+    // function paypal_secret()
+    // {
+    //   $paypal_secret = isset( $this->options['paypal_secret'] ) ? $this->options['paypal_secret'] : '';
 
-      if( current_user_can('manage_options') ) {
-        echo '<p><input class="widefat" name="humble_lms_options[paypal_secret]" value="' . $paypal_secret . '"></p>';
-      } else {
-        echo '<p>' . __('This option is only available for site administrators.', 'humble-lms') . '</p>';
-      }
-    }
+    //   if( current_user_can('manage_options') ) {
+    //     echo '<p><input class="widefat" name="humble_lms_options[paypal_secret]" value="' . $paypal_secret . '"></p>';
+    //   } else {
+    //     echo '<p>' . __('This option is only available for site administrators.', 'humble-lms') . '</p>';
+    //   }
+    // }
 
     /**
      * Validate options on save.
@@ -394,9 +394,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( isset( $input['paypal_client_id'] ) )
         $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
-      
-      if( isset( $input['paypal_secret'] ) )
-        $options['paypal_secret'] = sanitize_text_field( trim( $input['paypal_secret'] ) );
+
+      // if( isset( $input['paypal_secret'] ) )
+      //   $options['paypal_secret'] = sanitize_text_field( trim( $input['paypal_secret'] ) );
       
       return $options;
     }
@@ -719,7 +719,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public static function has_paypal() {
       $options = get_option('humble_lms_options');
-      return ( ! empty( $options['paypal_client_id'] ) && ! empty( $options['paypal_secret'] ) );
+      // return ( ! empty( $options['paypal_client_id'] ) && ! empty( $options['paypal_secret'] ) );
+      return ( ! empty( $options['paypal_client_id'] ) );
     }
     
   }

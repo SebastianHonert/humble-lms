@@ -165,3 +165,7 @@
   margin: .25em 0 1em;
   font-weight: 600;
 }
+
+.humble-lms-less-margin {
+  margin: .125em 0 .5em;
+}

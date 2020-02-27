@@ -330,6 +330,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_evaluate_quiz', $plugin_ajax, 'evaluate_quiz' );
     $this->loader->add_action( 'wp_ajax_nopriv_reset_user_progress', $plugin_ajax, 'reset_user_progress' );
     $this->loader->add_action( 'wp_ajax_reset_user_progress', $plugin_ajax, 'reset_user_progress' );
+    $this->loader->add_action( 'wp_ajax_nopriv_save_paypal_transaction', $plugin_ajax, 'save_paypal_transaction' );
+    $this->loader->add_action( 'wp_ajax_save_paypal_transaction', $plugin_ajax, 'save_paypal_transaction' );
 
   }
 

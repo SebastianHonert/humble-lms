@@ -101,6 +101,11 @@ class Humble_LMS_Public {
      */
 
     if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+      $client_id = $this->options['paypal_client_id'];
+      
+      if( ! $client_id )
+        $client_id = 'sb';
+
       wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'], false, NULL, true );
     }
 

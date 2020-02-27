@@ -155,6 +155,68 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $this->user->reset_user_progress( $user_id );
       die;
     }
+
+    /**
+     * Save PayPal transaction.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function save_paypal_transaction() {
+      if( ! is_user_logged_in() ) {
+        die;
+      }
+
+      $user_id = get_current_user_id();
+      $user = get_user_by( 'id', $user_id );
+
+      if( ! $user ) {
+        die;
+      }
+
+      $membership = get_user_meta( $user_id, 'humble_lms_membership', true );
+      if( $membership === 'premium' ) {
+        die;
+      }
+
+      $details = $_POST['details'];
+
+      // Create new transaction post
+      $txn = array(
+        'post_type' => 'humble_lms_txn',
+        'post_title' => sanitize_text_field( $user->user_login ) . ' ' . date("Y-m-d h:i"),
+        'post_status' => 'publish',
+        'post_author' => 1,
+      );
+
+      $txn_id = wp_insert_post( $txn, $wp_error );
+
+      // Update transaction meta
+      $order_details = array (
+        'order_id' => sanitize_text_field( $details['id'] ),
+        'payer_id' => sanitize_text_field( $details['payer']['payer_id'] ),
+        'status' => sanitize_text_field( $details['status'] ),
+        'user_id' => (int)$user_id,
+        'payment_service_provider' => 'PayPal',
+        'email_address' => sanitize_email( $details['payer']['email_address'] ),
+        'create_time' => sanitize_text_field( $details['create_time'] ),
+        'update_time' => sanitize_text_field( $details['update_time'] ),
+        'given_name' => sanitize_text_field( $details['payer']['name']['given_name'] ),
+        'surname' => sanitize_text_field( $details['payer']['name']['surname'] ),
+        'reference_id' => sanitize_text_field( $details['purchase_units'][0]['reference_id'] ),
+        'currency_code' => sanitize_text_field( $details['purchase_units'][0]['amount']['currency_code'] ),
+        'value' => sanitize_text_field( $details['purchase_units'][0]['amount']['value'] ),
+      );
+
+      add_post_meta( $txn_id, 'humble_lms_order_details', $order_details );
+
+      // Update user meta
+      update_user_meta( $user_id, 'humble_lms_membership', 'premium' );
+
+      // Done
+      echo json_encode($details, true);
+      die;
+    }
     
   }
   

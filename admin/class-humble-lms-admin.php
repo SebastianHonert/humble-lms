@@ -136,6 +136,7 @@ class Humble_LMS_Admin {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-question.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-txn.php';
   }
 
   /**
@@ -237,7 +238,7 @@ class Humble_LMS_Admin {
       echo '<option value="" disabled>' . __('Please select a membership type', 'humble-lms') . '</option>';
       foreach( $memberships as $key => $membership ) {
         $selected = $membership === $user_membership ? 'selected' : '';
-        echo '<option value="' . $membership . '" ' . $selected . '>' . $membership . '</option>';
+        echo '<option value="' . $membership . '" ' . $selected . '>' . ucfirst( $membership ) . '</option>';
       }
     echo '</select>';
   }

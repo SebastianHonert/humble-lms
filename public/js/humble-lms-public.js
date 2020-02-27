@@ -59,9 +59,6 @@ jQuery(document).ready(function($) {
       },
       success: function(response, textStatus, XMLHttpRequest) {
         redirectForm(response)
-      },
-      complete: function(reply, textStatus) {
-        // Taking a nap...
       }
     })
   })
@@ -248,7 +245,7 @@ jQuery(document).ready(function($) {
             } else {
               url += '?progress=reset'
             }
-            window.location.href = url;
+            window.location.href = url
             loadingLayer(false)
           },
           complete: function(reply, textStatus) {
@@ -266,26 +263,37 @@ jQuery(document).ready(function($) {
    */
   if (typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
     paypal.Buttons({
-
-      // Set up the transaction
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
             amount: {
               value: '0.01'
-            }
+            },
+            reference_id: 'Premium Membership'
           }]
         })
       },
-
-      // Finalize the transaction
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
           console.log(details)
-          alert('Transaction completed by ' + details.payer.name.given_name + '!')
-        });
+          $.ajax({
+            url: humble_lms.ajax_url,
+            type: 'POST',
+            data: {
+              action: 'save_paypal_transaction',
+              details: details
+            },
+            dataType: 'json',
+            error: function(MLHttpRequest, textStatus, errorThrown) {
+              alert('Sorry, there has been an error processing your transaction.')
+              console.error(errorThrown)
+            },
+            success: function(response, textStatus, XMLHttpRequest) {
+              location.reload()
+            }
+          })
+        })
       }
-
     }).render('#humble-lms-paypal-buttons')
   }
 

@@ -37,8 +37,13 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
         return 'allowed';
 
-      $levels = get_post_meta( $lesson_id, 'humble_lms_lesson_access_levels', false );
-      $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
+      // Check for free/premium access
+      $lesson_membership = get_post_meta( $lesson_id, 'humble_lms_membership', true );
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+
+      if( $lesson_membership === 'premium' && ( $user_membership === 'free' || ! $user_membership ) ) {
+        return 'membership';
+      }
 
       // Check for consecutive order of lessons
       if( ! $this->reached_lesson( $lesson_id, $course_id ) ) {
@@ -46,6 +51,9 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       }
 
       // Public lesson
+      $levels = get_post_meta( $lesson_id, 'humble_lms_lesson_access_levels', false );
+      $levels = is_array( $levels ) && ! empty( $levels[0] ) ? $levels[0] : [];
+
       if( empty( $levels ) )
         return 'allowed';
 

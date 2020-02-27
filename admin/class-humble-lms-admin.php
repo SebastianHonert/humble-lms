@@ -213,7 +213,7 @@ class Humble_LMS_Admin {
     echo __('This user is an instructor.', 'humble-lms') . '</p>';
 
     $options = new Humble_LMS_Admin_Options_Manager;
-    $memberships = $options->memberships;
+    $memberships = $options::$memberships;
     $countries = $options->countries;
 
     $user_country = get_user_meta( $user->ID, 'humble_lms_country', true);
@@ -393,7 +393,7 @@ class Humble_LMS_Admin {
    * 
    * @since   0.0.1
    */
-  public function humble_lms_checkout_page_exists() {
+  public static function humble_lms_checkout_page_exists() {
     $options = get_option('humble_lms_options');
     if( ! isset( $options['custom_pages']['checkout'] ) ) return false;
 

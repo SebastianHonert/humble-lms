@@ -225,6 +225,21 @@ class Humble_LMS_Public {
       $html .= '</div>';
     }
 
+    // Premium membership required
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'membership' ) && ! current_user_can('manage_options' ) ) {
+      $html .= '<div class="humble-lms-message humble-lms-message--error">';
+      $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-message-content">' . __('You need to upgrade your account to premium status in order to access the requested content.', 'humble-lms' );
+
+      if( Humble_LMS_Admin::humble_lms_checkout_page_exists() ) {
+        $html .= ' <a href="' . esc_url( get_permalink( $options['custom_pages']['checkout'] ) ) . '">' . __('Upgrade your account now.', 'humble_lms') . '</a>';
+      }
+
+      $html .= '</span>';
+      $html .= '</div>';
+    }
+
+    // Lesson not accessed in consecutive order
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'order' ) && ! current_user_can('manage_options' ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--error">';
       $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
@@ -346,6 +361,9 @@ class Humble_LMS_Public {
       switch( $access ) {
         case 'order':
           wp_redirect( add_query_arg( 'access', 'order', $url ) );
+          break;
+        case 'membership':
+          wp_redirect( add_query_arg( 'access', 'membership', $url ) );
           break;
         default:
           wp_redirect( add_query_arg( 'access', 'denied', $url ) );

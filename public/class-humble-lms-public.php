@@ -262,7 +262,7 @@ class Humble_LMS_Public {
     if( isset( $course_id ) && $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
-        <span class="humble-lms-message-content">' . __('You successfully completed this following course.', 'humble-lms') . '</span> 
+        <span class="humble-lms-message-content">' . __('You successfully completed this course.', 'humble-lms') . '</span> 
       </div>';
     }
 

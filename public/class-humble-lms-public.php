@@ -132,14 +132,18 @@ class Humble_LMS_Public {
 
     // Track archive
     if ( is_archive() && $post->post_type == 'humble_lms_track' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-archive.php' ) ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-track-archive.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-track-archive.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-archive.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-archive.php';
       }
     }
 
     // Course archive
     if ( is_archive() && $post->post_type == 'humble_lms_course' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php' ) ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-course-archive.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-course-archive.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-archive.php';
       }
     }
@@ -157,21 +161,27 @@ class Humble_LMS_Public {
 
     // Track single
     if ( is_single() && $post->post_type == 'humble_lms_track' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-single.php' ) ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-track-single.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-track-single.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-single.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-track-single.php';
       }
     }
 
     // Course single
     if ( is_single() && $post->post_type == 'humble_lms_course' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-single.php' ) ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-course-single.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-course-single.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-single.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-course-single.php';
       }
     }
 
     // Lesson single
     if ( is_single() && $post->post_type == 'humble_lms_lesson' ) {
-      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php' ) ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-lesson-single.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-lesson-single.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php' ) ) {
           return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-lesson-single.php';
       }
     }

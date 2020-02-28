@@ -19,6 +19,7 @@
   display: block;
   margin-bottom: 2em;
   transition: box-shadow .3s linear;
+  border: 1px solid desaturate( lighten($color-primary, 40%), 50%);
 }
 
 .humble-lms-course-tile-wrapper:hover {
@@ -100,7 +101,6 @@
   bottom: 0;
   width: 100%;
   background: $color-light;
-  border: 1px solid darken($color-light, 15%);
 }
 
 .humble-lms-course-tile-meta span {
@@ -839,6 +839,13 @@ input[type='submit'].humble-lms-btn--error:active,
   left: 0;
   height: 100%;
   background: $color-success;
+  background: repeating-linear-gradient(
+    125deg,
+    $color-success,
+    $color-success .5em,
+    darken($color-success, 2%) .5em,
+    darken($color-success, 2%) 1em
+  );
 }
 
 /* Loading layer/spinner */

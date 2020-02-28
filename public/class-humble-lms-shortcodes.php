@@ -96,9 +96,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $completed = $this->user->completed_track( $track_id ) ? 'humble-lms-track-completed' : '';
       $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_course_level', '', ', ') );
-      $level = $level ? $level : __('Not specified', 'humble-lms');
+      $level_str = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
-      $duration = $duration ? $duration : __('Not specified', 'humble-lms');
+      $duration_str = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->track_progress( $track_id, get_current_user_id() );
       $color = get_post_meta( $track_id, 'humble_lms_track_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
@@ -111,8 +111,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
-          $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
-          $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
+          $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
+          $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
           if( is_user_logged_in() ) {
             $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
             $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
@@ -210,9 +210,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $completed = $this->user->completed_course( $course_id ) ? 'humble-lms-course-completed' : '';
       $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile'); 
       $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_course_level', '', ', ') );
-      $level = $level ? $level : __('Not specified', 'humble-lms');
+      $level_str = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
-      $duration = $duration ? $duration : __('Not specified', 'humble-lms');
+      $duration_str = $duration ? $duration : __('Not specified', 'humble-lms');
       $progress = $this->user->course_progress( $course_id, get_current_user_id() );
       $color = get_post_meta( $course_id, 'humble_lms_course_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
@@ -225,8 +225,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
-          $html .= '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level . '</span>';
-          $html .= '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration  . '</span>';
+          $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
+          $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
           if( is_user_logged_in() ) {
             $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
             $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');

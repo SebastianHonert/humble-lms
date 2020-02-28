@@ -109,6 +109,13 @@
   top: 0;
   height: 100%;
   background: #207a86;
+  background: repeating-linear-gradient(
+    125deg,
+    #207a86,
+    #207a86 .5em,
+    #1d717c .5em,
+    #1d717c 1em
+  );
 }
 
 .humble-lms-admin-progress-bar-text {

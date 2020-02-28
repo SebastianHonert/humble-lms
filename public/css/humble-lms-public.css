@@ -11,7 +11,8 @@
   position: relative;
   display: block;
   margin-bottom: 2em;
-  transition: box-shadow .3s linear; }
+  transition: box-shadow .3s linear;
+  border: 1px solid #e1e1e1; }
 
 .humble-lms-course-tile-wrapper:hover {
   box-shadow: 0 0.125em 0.75em rgba(0, 0, 0, 0.2); }
@@ -82,8 +83,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background: #fff;
-  border: 1px solid #d9d9d9; }
+  background: #fff; }
 
 .humble-lms-course-tile-meta span {
   display: block; }
@@ -702,7 +702,8 @@ input[type='submit'].humble-lms-btn--error:active,
   top: 0;
   left: 0;
   height: 100%;
-  background: #188e6e; }
+  background: #188e6e;
+  background: repeating-linear-gradient(125deg, #188e6e, #188e6e 0.5em, #178567 0.5em, #178567 1em); }
 
 /* Loading layer/spinner */
 .humble-lms-loading-layer {

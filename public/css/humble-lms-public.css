@@ -580,9 +580,8 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-track-progress {
   padding-bottom: .5em; }
 
-.humble-lms-progress-track-title {
-  font-weight: 600;
-  font-size: 1.125em; }
+.humble-lms-course-tile-meta span {
+  display: block; }
 
 .humble-lms-track-progress-track--completed {
   display: flex;

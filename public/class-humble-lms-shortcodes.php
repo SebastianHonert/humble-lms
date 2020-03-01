@@ -113,10 +113,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
           $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
-          if( is_user_logged_in() ) {
-            $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-            $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
-          }
+          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+          $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
         $html .= '</div>';
       $html .= '</div>';
 
@@ -227,10 +225,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
           $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
-          if( is_user_logged_in() ) {
-            $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
-            $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
-          }
+          $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
+          $html .= do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
         $html .= '</div>';
       $html .= '</div>';
 

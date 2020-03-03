@@ -5,8 +5,12 @@ if ( ! defined( 'ABSPATH' ) )
 
 get_header();
 
-  echo '<h1>' . __('Courses', 'humble-lms') . '</h1>';
+do_action( 'humble_lms_before_course_archive_title' );
 
-  echo do_shortcode('[humble_lms_course_archive]');
+echo '<h1>' . __('Courses', 'humble-lms') . '</h1>';
+
+do_action( 'humble_lms_before_course_archive' );
+
+echo do_shortcode('[humble_lms_course_archive]');
 
 get_footer();

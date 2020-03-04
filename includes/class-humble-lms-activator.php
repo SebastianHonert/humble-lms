@@ -151,6 +151,7 @@ class Humble_LMS_Activator {
     $custom_page_checkout = get_page_by_title('Humble LMS Checkout', OBJECT, 'page');
 
     update_option('humble_lms_options', array(
+      'tiles_per_page' => 10,
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
       'custom_pages' => array(
         'login' => $custom_page_login->ID,

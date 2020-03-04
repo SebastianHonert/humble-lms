@@ -137,6 +137,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_section('humble_lms_options_section_registration', __('User Registration', 'humble-lms'), array( $this, 'humble_lms_options_section_registration' ), 'humble_lms_options_registration' );
       add_settings_section('humble_lms_options_section_paypal', 'PayPal', array( $this, 'humble_lms_options_section_paypal' ), 'humble_lms_options_paypal' );
 
+      add_settings_field( 'tiles_per_page', __('Tiles per page (track/course archive)', 'humble-lms'), array( $this, 'tiles_per_page' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -181,6 +182,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
     public function humble_lms_options_section_paypal() {
       echo '<p><em>' . __('In order to use PayPal you need to register a developer account first.', 'humble-lms') . '</em> <a href="https://developer.paypal.com/" target="_blank">' . __('Register developer account', 'humble-lms') . '</a></p>';
+    }
+
+    /**
+     * Option for track/course archive pagination.
+     *
+     * @since    0.0.1
+     */
+    public function tiles_per_page() {
+      $tiles_per_page = isset( $this->options['tiles_per_page'] ) ? (int)$this->options['tiles_per_page'] : 10;
+
+      echo '<input type="number" step="1" min="1" max="100" name="humble_lms_options[tiles_per_page]" value="' . $tiles_per_page . '">';
     }
 
     /**
@@ -352,6 +364,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( isset( $input['tile_width_course'] ) )
         $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
+
+      if( isset( $input['tiles_per_page'] ) )
+        $options['tiles_per_page'] = (int)$input['tiles_per_page'];
 
       if( isset( $input['tile_width_track'] ) )
         $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );

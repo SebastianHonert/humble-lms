@@ -33,6 +33,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function track_archive( $atts = null ) {
       $html = '';
       $options = $this->options_manager->options;
+      $tiles_per_page = isset( $options['tiles_per_page'] ) ? (int)$options['tiles_per_page'] : 10;
       $tile_width = isset( $options['tile_width_track'] ) ? $options['tile_width_track'] : 'half';
 
       extract( shortcode_atts( array (
@@ -42,10 +43,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
+
       $args = array(
         'post_type' => 'humble_lms_track',
         'post_status' => 'publish',
-        'posts_per_page' => get_option( 'posts_per_page' ),
+        'posts_per_page' => $tiles_per_page,
         'meta_key' => 'humble_lms_track_position',
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
@@ -131,6 +133,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $html = '';
       $options = $this->options_manager->options;
+      $tiles_per_page = isset( $options['tiles_per_page'] ) ? (int)$options['tiles_per_page'] : 10;
       $tile_width = isset( $options['tile_width_course'] ) ? $options['tile_width_course'] : 'half';
 
       extract( shortcode_atts( array (
@@ -147,7 +150,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $args = array(
         'post_type' => 'humble_lms_course',
         'post_status' => 'publish',
-        'posts_per_page' => $is_track ? -1 : get_option( 'posts_per_page' ),
+        'posts_per_page' => $is_track ? -1 : $tiles_per_page,
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         'orderby' => 'post__in',
         'order' => 'ASC',
@@ -520,7 +523,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * 
      * @since   0.0.1
      */
-    function humble_lms_paginate_links( $query ) {
+    public function humble_lms_paginate_links( $query ) {
       global $wp_query; if( ! $query ) $query = $wp_query;
   
       $big = 999999999;

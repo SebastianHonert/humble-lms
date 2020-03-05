@@ -57,7 +57,7 @@ jQuery(document).ready(function($) {
               $('#humble_lms_' + content).val(selectedItemIds)
             }
 
-            updateCourseSections()
+            updateCourseSectionsInput()
           }
         })
 
@@ -114,7 +114,7 @@ jQuery(document).ready(function($) {
         $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
       })
 
-      updateCourseSections()
+      updateCourseSectionsInput()
     })
 
   })
@@ -124,17 +124,24 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  function updateCourseSections() {
+  function updateCourseSectionsInput() {
     let section_array = []
     let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
     
     sections.each(function(index, section) {
       let section_object = {}
-      
-      section_object['title'] = $(section).find('.humble-lms-course-section-title').val()
-      section_object['lessons'] = $(section).find('.humble-lms-multiselect-value').val()
+      let lessons = $(section).find('.ms-selection .ms-elem-selection.ms-selected')
+      let lesson_ids = []
 
-      console.log(section_object)
+
+      lessons.each(function(index, lesson) {
+        lesson_ids.push($(lesson).data('id'))
+      })
+
+      lesson_ids = lesson_ids.join(',')
+
+      section_object['title'] = $(section).find('.humble-lms-course-section-title').first().val()
+      section_object['lessons'] = lesson_ids
 
       section_array.push(section_object)
       $('#humble_lms_course_sections').val(JSON.stringify(section_array))

@@ -85,6 +85,9 @@ function humble_lms_course_lessons_mb()
   $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
   $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $post->ID );
 
+  if( ! $sections )
+    $sections = array(1);
+
   $args = array(
     'post_type' => 'humble_lms_lesson',
     'post_status' => 'publish',
@@ -117,7 +120,7 @@ function humble_lms_course_lessons_mb()
 
     foreach( $sections as $key => $section ) {
       $selected_lessons = [];
-      $section_lessons = explode(',', $section['lessons'] );
+      $section_lessons = ! is_array( $section['lessons'] ) ? explode(',', $section['lessons'] ) : [];
 
       $args = array(
         'post_type' => 'humble_lms_lesson',
@@ -153,7 +156,7 @@ function humble_lms_course_lessons_mb()
             echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
           }
         echo '</select>';
-        echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons-' . ($key + 1) . '" name="humble_lms_course_lessons" type="hidden" value="' . $section['lessons'] . '">';
+        echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons-' . ($key + 1) . '" name="humble_lms_course_lessons" type="hidden" value="' . implode(',', $section_lessons) . '">';
         echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
       echo '</div>';
     }

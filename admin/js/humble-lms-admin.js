@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('.humble-lms-course-section-remove').live('click', function() {
+  $(document).on('click', '.humble-lms-course-section-remove', function() {
     let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
     let section = $(this).parent().parent('.humble-lms-course-section')
 
@@ -107,7 +107,6 @@ jQuery(document).ready(function($) {
     section.fadeOut(500, function() {
       $(this).remove()
 
-      // Reindex items
       sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
       sections.each(function(index, el) {
         $(el).attr('data-id', (index+1))
@@ -120,8 +119,12 @@ jQuery(document).ready(function($) {
 
   })
 
+  /**
+   * Update course sections.
+   * 
+   * @since   0.0.1
+   */
   function updateCourseSections() {
-    // Course sections
     let section_array = []
     let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
     
@@ -130,6 +133,8 @@ jQuery(document).ready(function($) {
       
       section_object['title'] = $(section).find('.humble-lms-course-section-title').val()
       section_object['lessons'] = $(section).find('.humble-lms-multiselect-value').val()
+
+      console.log(section_object)
 
       section_array.push(section_object)
       $('#humble_lms_course_sections').val(JSON.stringify(section_array))
@@ -186,7 +191,7 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('.humble-lms-repeater').live('click', function(e) {
+  $(document).on('click', '.humble-lms-repeater', function(e) {
     e.preventDefault()
 
     let elements = $($(this).data('element'))
@@ -236,7 +241,7 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('.humble-lms-remove-answer').live('click', function(e) {
+  $(document).on('click', '.humble-lms-remove-answer', function(e) {
     e.preventDefault()
 
     let answers = $('.humble-lms-answer')

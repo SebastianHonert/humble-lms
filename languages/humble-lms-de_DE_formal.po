@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-03-05 11:40+0100\n"
-"PO-Revision-Date: 2020-03-05 11:41+0100\n"
+"POT-Creation-Date: 2020-03-05 12:30+0100\n"
+"PO-Revision-Date: 2020-03-05 12:31+0100\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -244,7 +244,7 @@ msgid "Courses"
 msgstr "Kurse"
 
 #: admin/class-humble-lms-options-manager.php:35
-#: admin/class-humble-lms-options-manager.php:549
+#: admin/class-humble-lms-options-manager.php:554
 #: admin/custom-post-types/humble-lms-track.php:4
 #: admin/custom-post-types/humble-lms-track.php:6
 #: admin/custom-post-types/humble-lms-track.php:7
@@ -252,7 +252,7 @@ msgid "Tracks"
 msgstr "Lernpfade"
 
 #: admin/class-humble-lms-options-manager.php:36
-#: admin/class-humble-lms-options-manager.php:589
+#: admin/class-humble-lms-options-manager.php:594
 #: admin/custom-post-types/humble-lms-award.php:4
 #: admin/custom-post-types/humble-lms-award.php:6
 #: admin/custom-post-types/humble-lms-award.php:7
@@ -260,7 +260,7 @@ msgid "Awards"
 msgstr "Auszeichnungen"
 
 #: admin/class-humble-lms-options-manager.php:37
-#: admin/class-humble-lms-options-manager.php:613
+#: admin/class-humble-lms-options-manager.php:618
 #: admin/custom-post-types/humble-lms-certificate.php:4
 #: admin/custom-post-types/humble-lms-certificate.php:6
 #: admin/custom-post-types/humble-lms-certificate.php:7
@@ -397,8 +397,16 @@ msgstr "Ja, „Land“ im Registrierungsformular anzeigen."
 msgid "Wich countries would you like to include?"
 msgstr "Welche Länder sollen auswählbar sein?"
 
-#: admin/class-humble-lms-options-manager.php:310
-#: admin/class-humble-lms-options-manager.php:329
+#: admin/class-humble-lms-options-manager.php:300
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: admin/class-humble-lms-options-manager.php:300
+msgid "Deselect all"
+msgstr "Alle entfernen"
+
+#: admin/class-humble-lms-options-manager.php:312
+#: admin/class-humble-lms-options-manager.php:331
 msgid ""
 "This email will be send in plain text format. HTML is currently not allowed. "
 "You can use the following strings to include specific information in your "
@@ -408,61 +416,61 @@ msgstr ""
 "Bitte nutzen Sie die folgenden Zeichenketten, um spezielle Informationen in "
 "deiner E-Mail anzuzeigen:"
 
-#: admin/class-humble-lms-options-manager.php:315
+#: admin/class-humble-lms-options-manager.php:317
 msgid "Test email: Welcome"
 msgstr "Test-Nachricht: Begrüßung"
 
-#: admin/class-humble-lms-options-manager.php:316
-#: admin/class-humble-lms-options-manager.php:335
+#: admin/class-humble-lms-options-manager.php:318
+#: admin/class-humble-lms-options-manager.php:337
 msgid "Send a test email"
 msgstr "Testnachricht senden"
 
-#: admin/class-humble-lms-options-manager.php:334
+#: admin/class-humble-lms-options-manager.php:336
 msgid "Test email: Lost password"
 msgstr "Testnachricht: Passwort verloren"
 
-#: admin/class-humble-lms-options-manager.php:474
+#: admin/class-humble-lms-options-manager.php:479
 msgid "Users per page"
 msgstr "Nutzer pro Seite"
 
-#: admin/class-humble-lms-options-manager.php:501
+#: admin/class-humble-lms-options-manager.php:506
 msgid "Please provide a valid user ID."
 msgstr "Bitte geben Sie eine gültige Nutzer-ID ein."
 
-#: admin/class-humble-lms-options-manager.php:508
+#: admin/class-humble-lms-options-manager.php:513
 msgid "Registered"
 msgstr "Registriert"
 
-#: admin/class-humble-lms-options-manager.php:550
-#: admin/class-humble-lms-options-manager.php:565
-#: admin/class-humble-lms-options-manager.php:590
-#: admin/class-humble-lms-options-manager.php:614
+#: admin/class-humble-lms-options-manager.php:555
+#: admin/class-humble-lms-options-manager.php:570
+#: admin/class-humble-lms-options-manager.php:595
+#: admin/class-humble-lms-options-manager.php:619
 #: public/class-humble-lms-shortcodes.php:118
 #: public/class-humble-lms-shortcodes.php:231
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: admin/class-humble-lms-options-manager.php:564
+#: admin/class-humble-lms-options-manager.php:569
 msgid "Courses and Lessons"
 msgstr "Kurse und Lektionen"
 
-#: admin/class-humble-lms-options-manager.php:604
+#: admin/class-humble-lms-options-manager.php:609
 msgid "No awards available."
 msgstr "Keine Auszeichungen vorhanden."
 
-#: admin/class-humble-lms-options-manager.php:628
+#: admin/class-humble-lms-options-manager.php:633
 msgid "No certificates available."
 msgstr "Keine Zertifikate vorhanden."
 
-#: admin/class-humble-lms-options-manager.php:635
+#: admin/class-humble-lms-options-manager.php:640
 msgid "Reset learning progress for this user?"
 msgstr "Lernfortschritt für diesen Nutzer zurücksetzen?"
 
-#: admin/class-humble-lms-options-manager.php:640
+#: admin/class-humble-lms-options-manager.php:645
 msgid "Back"
 msgstr "Zurück"
 
-#: admin/class-humble-lms-options-manager.php:653
+#: admin/class-humble-lms-options-manager.php:658
 #: admin/custom-post-types/humble-lms-course.php:5
 #: admin/custom-post-types/humble-lms-course.php:34
 #: admin/custom-post-types/humble-lms-course.php:35
@@ -470,11 +478,11 @@ msgstr "Zurück"
 msgid "Course"
 msgstr "Kurs"
 
-#: admin/class-humble-lms-options-manager.php:654
+#: admin/class-humble-lms-options-manager.php:659
 msgid "Completed (counting only user role \"Student\")"
 msgstr "Abgeschlossen (nur Rolle „Student“ wir gezählt)"
 
-#: admin/class-humble-lms-options-manager.php:667
+#: admin/class-humble-lms-options-manager.php:672
 msgid "No courses available."
 msgstr "Keine Kurse verfügbar."
 

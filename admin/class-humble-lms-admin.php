@@ -828,12 +828,12 @@ class Humble_LMS_Admin {
     $options = $options->options;
   
     if( ! isset( $options['email_lost_password'] ) || empty( $options['email_lost_password'] ) || ! $options['email_lost_password'] ) {
-      $message  = __( 'Hello!', 'personalize-login' ) . "\r\n\r\n";
-      $message .= sprintf( __( 'You asked us to reset your password for your account using the email address %s.', 'personalize-login' ), $user_data->user_email ) . "\r\n\r\n";
-      $message .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'personalize-login' ) . "\r\n\r\n";
-      $message .= __( 'To reset your password, visit the following address:', 'personalize-login' ) . "\r\n\r\n";
+      $message  = __( 'Hi there,', 'humble-lms' ) . "\r\n\r\n";
+      $message .= sprintf( __( 'you asked us to reset your password for your account using the email address %s.', 'humble-lms' ), $user_data->user_email ) . "\r\n\r\n";
+      $message .= __( 'If this was a mistake, or you didn\'t ask for a password reset, just ignore this email and nothing will happen.', 'humble-lms' ) . "\r\n\r\n";
+      $message .= __( 'To reset your password, visit the following address:', 'humble-lms' ) . "\r\n\r\n";
       $message .= esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ) . "\r\n\r\n";
-      $message .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+      $message .= __( 'Thanks!', 'humble-lms' ) . "\r\n";
     } else {
       $date_format = 'F j, Y';
       $date = current_time( $date_format );
@@ -871,7 +871,7 @@ class Humble_LMS_Admin {
       $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
       $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
       $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
-      $message .= sprintf( __('If you have any problems, please contact us at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+      $message .= sprintf( __('If you have any problems, please contact us via email to %s.'), get_option('admin_email') ) . "\r\n\r\n";
       $message .= __( 'Bye!' );
     } else {
       $date_format = 'F j, Y';

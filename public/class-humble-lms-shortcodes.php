@@ -858,7 +858,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       if( isset( $_GET['lost_password_sent'] ) ) {
-        echo '<p class="humble-lms-message humble-lms-message--success">' . __( 'Check your email for a link to reset your password.', 'personalize-login' ) . '</div>';
+        echo '<p class="humble-lms-message humble-lms-message--success">' . __( 'Check your email for a link to reset your password.', 'humble-lms' ) . '</div>';
       } elseif( isset( $_GET['errors'] ) ) {
         switch( sanitize_text_field( $_GET['errors'] ) ) {
           case 'empty_username':

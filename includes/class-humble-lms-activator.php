@@ -161,7 +161,30 @@ class Humble_LMS_Activator {
         'user_profile' => $custom_page_user_profile->ID,
         'checkout' => $custom_page_checkout->ID,
       ),
-    ));
+      'email_welcome' => "Hi there,
+
+welcome to WEBSITE_NAME! Here's how to log in:
+
+Username: USER_NAME
+Email: USER_EMAIL
+Login URL: LOGIN_URL
+
+Please use the password you entered in the registration form.
+
+If you have any problems, please contact us via email to ADMIN_EMAIL.
+
+Best wishes –
+Sebastian",
+        'email_lost_password' => "Hi there,
+
+you asked us to reset your password for your account using the email address USER_EMAIL.
+
+If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.
+
+To reset your password please visit the following address: RESET_PASSWORD_URL
+
+Thank you!"
+    ) );
   }
 
 }

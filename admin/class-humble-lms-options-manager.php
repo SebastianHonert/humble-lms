@@ -377,18 +377,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( isset( $input['custom_pages'] ) )
         $options['custom_pages'] = $input['custom_pages'];
 
-      if( $active === 'registration' ) {
+      if( $active === 'registration' )
         $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
-      }
       
       if( isset( $input['registration_countries'] ) )
         $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( $input['registration_countries'] ) : [];
 
       if( isset( $input['email_welcome'] ) )
-        $options['email_welcome'] = sanitize_text_field( $input['email_welcome'] );
+        $options['email_welcome'] = esc_html( $input['email_welcome'] );
       
       if( isset( $input['email_lost_password'] ) )
-        $options['email_lost_password'] = sanitize_text_field( $input['email_lost_password'] );
+        $options['email_lost_password'] = esc_html( $input['email_lost_password'] );
 
       if( isset( $input['paypal_client_id'] ) )
         $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );

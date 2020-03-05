@@ -87,6 +87,25 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get sections for a single course.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_course_sections( $course_id ) {
+      $course_sections = [];
+
+      if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
+        return $course_sections;
+
+        $course_sections = get_post_meta( $course_id, 'humble_lms_course_sections', true );
+        $course_sections = json_decode( $course_sections, true );
+  
+        return $course_sections;
+    }
+
+    /**
      * Get track IDs (published / unpublished)
      *
      * @param   bool

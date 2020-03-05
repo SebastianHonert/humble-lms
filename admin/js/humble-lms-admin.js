@@ -8,75 +8,133 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('.humble-lms-searchable').multiSelect({
-    selectableHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
-    selectionHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
-    afterInit: function(ms) {
-      let that = this,
-          $selectableSearch = that.$selectableUl.prev(),
-          $selectionSearch = that.$selectionUl.prev(),
-          selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-          selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected'
-  
-      that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-      .on('keydown', function (e) {
-        if (e.which === 40) {
-          that.$selectableUl.focus()
-          return false
-        }
-      })
-  
-      that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-      .on('keydown', function (e) {
-        if (e.which == 40) {
-          that.$selectionUl.focus()
-          return false
-        }
-      })
+  function initMultiselect (el) {
+    $(el).multiSelect({
+      selectableHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
+      selectionHeader: "<input type='text' class='search-input widefat humble-lms-searchable-input' autocomplete='off' placeholder='Search...'>",
+      afterInit: function(ms) {
+        let that = this,
+            $selectableSearch = that.$selectableUl.prev(),
+            $selectionSearch = that.$selectionUl.prev(),
+            selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+            selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected'
 
-      let content = that.$element.data('content')
-      let sortableList = that.$element.parent().parent().find('.ms-selection .ms-list')[0]
-      
-      that.sortable = Sortable.create(sortableList, {
-        animation: 100,
-        onEnd: function () { 
-          let selectedItemIds = []
-          let selectedItems = Array.from($(sortableList).find('.ms-selected'))
-
-          selectedItems.forEach(item => selectedItemIds.push($(item).data('id')))
-          selectedItemIds = selectedItems.map(function (item) {
-            return $(item).data('id')
-          })
-
-          if ($('#humble_lms_' + content).length) {
-            $('#humble_lms_' + content).val(selectedItemIds)
+        $('.humble-lms-course-section-title').on('keyup', function() {
+          that.sortable.options.onEnd()
+        })
+        
+        that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+        .on('keydown', function (e) {
+          if (e.which === 40) {
+            that.$selectableUl.focus()
+            return false
           }
-        }
-      })
+        })
 
-      this.sortable.options.onEnd()
-    },
-    afterSelect: function () {
-      this.qs1.cache()
-      this.qs2.cache()
-      this.sortable.options.onEnd()
-    },
-    afterDeselect: function () {
-      this.qs1.cache()
-      this.qs2.cache()
-      this.sortable.options.onEnd()
-    }
-  })
+        that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+        .on('keydown', function (e) {
+          if (e.which == 40) {
+            that.$selectionUl.focus()
+            return false
+          }
+        })
 
-  // Multiselect select/deselect all
+        let content = that.$element.data('content')
+        let sortableList = that.$element.parent().parent().find('.ms-selection .ms-list')[0]
+        
+        that.sortable = Sortable.create(sortableList, {
+          animation: 100,
+          onEnd: function () {
+            let selectedItemIds = []
+            let selectedItems = Array.from($(sortableList).find('.ms-selected'))
+
+            selectedItems.forEach(item => selectedItemIds.push($(item).data('id')))
+            selectedItemIds = selectedItems.map(function (item) {
+              return $(item).data('id')
+            })
+
+            if ($('#humble_lms_' + content).length) {
+              $('#humble_lms_' + content).val(selectedItemIds)
+            }
+
+            updateCourseSections()
+          }
+        })
+
+        this.sortable.options.onEnd()
+      },
+      afterSelect: function () {
+        this.qs1.cache()
+        this.qs2.cache()
+        this.sortable.options.onEnd()
+      },
+      afterDeselect: function () {
+        this.qs1.cache()
+        this.qs2.cache()
+        this.sortable.options.onEnd()
+      }
+    })
+  }
+
+  initMultiselect('.humble-lms-searchable')
+
+  /**
+   * Multiselect: select/deselect all
+   * 
+   * @since   0.0.1
+   */
   $('.humble-lms-multiselect-select-all').on('click', function() {
     $('.humble-lms-searchable').multiSelect('select_all')
   })
 
   $('.humble-lms-multiselect-deselect-all').on('click', function() {
-    $('.humble-lms-searchable').multiSelect('deselect_all');
+    $('.humble-lms-searchable').multiSelect('deselect_all')
   })
 
+  /**
+   * Remove course sections.
+   * 
+   * @since   0.0.1
+   */
+  $('.humble-lms-course-section-remove').live('click', function() {
+    let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
+    let section = $(this).parent().parent('.humble-lms-course-section')
+
+    if (sections.length === 1) {
+      return
+    }
+
+    section.fadeOut(500, function() {
+      $(this).remove()
+
+      // Reindex items
+      sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
+      sections.each(function(index, el) {
+        $(el).attr('data-id', (index+1))
+        $(el).find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (index+1))
+        $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
+      })
+
+      updateCourseSections()
+    })
+
+  })
+
+  function updateCourseSections() {
+    // Course sections
+    let section_array = []
+    let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
+    
+    sections.each(function(index, section) {
+      let section_object = {}
+      
+      section_object['title'] = $(section).find('.humble-lms-course-section-title').val()
+      section_object['lessons'] = $(section).find('.humble-lms-multiselect-value').val()
+
+      section_array.push(section_object)
+      $('#humble_lms_course_sections').val(JSON.stringify(section_array))
+    })
+  }
 
   /**
    * Pre-select an activity.
@@ -143,12 +201,34 @@ jQuery(document).ready(function($) {
     let key = elements.length
     let clone = element.clone()
 
+
+    // Humble LMS Course Section
+    if (element.hasClass('humble-lms-course-section')) {
+      key = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable)').length
+
+      clone.attr('data-id', (key+1))
+      clone.find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (key+1))
+      clone.removeClass('humble-lms-course-section--cloneable')
+      clone.find('.humble-lms-searchable--cloneable').addClass('humble-lms-searchable').removeClass('humble-lms-searchable--cloneable')
+      clone.find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (key+1))
+      clone.css('display', 'block')
+      clone.appendTo(target)
+
+      initMultiselect(clone.find('.humble-lms-searchable'))
+      clone.find('.humble-lms-searchable').multiSelect('deselect_all')
+
+      return
+    }
+
+    // Append clone
     clone.appendTo(target)
 
+    // Humble LMS Answer
     if (element.hasClass('humble-lms-answer')) {
       elements = $($(this).data('element'))
       reindex(elements)
     }
+
   })
 
   /**
@@ -178,7 +258,6 @@ jQuery(document).ready(function($) {
    */
   function reindex(elements) {
     elements.each(function(index, el) {
-      console.log(index)
       $(el).find('input').eq(0).attr('name', 'humble_lms_question_answers[' + index + '][answer]')
       $(el).find('input').eq(1).attr('name', 'humble_lms_question_answers[' + index + '][correct]')
     })
@@ -255,7 +334,7 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   function isFunction(functionToCheck) {
-    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
   }
 
   /**

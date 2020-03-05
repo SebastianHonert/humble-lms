@@ -160,6 +160,37 @@
   color: rgb(189, 16, 16);
 }
 
+/* Courses */
+.humble-lms-course-section {
+  padding: 1em;
+  background: rgba(139, 139, 150, .1);
+  border: 1px solid #e2e4e7;
+  margin-bottom: 1em;
+}
+
+.humble-lms-course-section-title-label {
+  font-weight: 700;
+  margin: 0 0 .375em;
+  display: block;
+}
+
+.humble-lms-course-section-title-label:not(:first-of-type) {
+  margin-top: .5em;
+}
+
+.humble-lms-course-section-title {
+  margin: 0 0 .375em;
+}
+
+.humble-lms-course-section-remove-wrapper {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.humble-lms-course-section--cloneable {
+  display: none !important;
+}
+
 /* Quizzes */
 .humble-lms-question-type {
   margin-top: .25em;

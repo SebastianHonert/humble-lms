@@ -77,6 +77,12 @@ function humble_lms_course_lessons_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
+  if( ! get_posts( array( 'post_type' => 'humble_lms_lesson') ) ) {
+    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
+    return;
+  }
+
+  $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
   $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $post->ID );
 
   $args = array(
@@ -85,42 +91,78 @@ function humble_lms_course_lessons_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
-    'exclude' => $course_lessons
   );
 
   $lessons = get_posts( $args );
 
-  $selected_lessons = [];
-  foreach( $course_lessons as $id ) {
-    if( get_post_status( $id ) ) {
-      $lesson = get_post( $id );
-      array_push( $selected_lessons, $lesson );
+  /**
+   * This container is the cloneable instance of the section wrapper.
+   * The class "humble-lms-course-section--cloneable" will prevent the
+   * JS multiselect function from getting triggered on this container.
+   */
+  echo '<div class="humble-lms-course-section humble-lms-course-section--cloneable" data-id="">';
+    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . '</label>';
+    echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
+    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
+    echo '<select class="humble-lms-searchable--cloneable" data-content="course_lessons-"  multiple="multiple">';
+      foreach( $lessons as $lesson ) {
+        echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '">' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+      }
+    echo '</select>';
+    echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons-" name="humble_lms_course_lessons" type="hidden" value="">';
+    echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
+  echo '</div>';
+
+  echo '<div id="humble-lms-admin-course-sections">';
+
+    foreach( $sections as $key => $section ) {
+      $selected_lessons = [];
+      $section_lessons = explode(',', $section['lessons'] );
+
+      $args = array(
+        'post_type' => 'humble_lms_lesson',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+        'exclude' => $section_lessons
+      );
+    
+      $lessons = get_posts( $args );
+
+      foreach( $section_lessons as $id ) {
+        if( get_post_status( $id ) ) {
+          $lesson = get_post( $id );
+          array_push( $selected_lessons, $lesson );
+        }
+      }
+
+      echo '<div class="humble-lms-course-section" data-id="' . ($key + 1) . '">';
+        echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . '</label>';
+        echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="' . $section['title'] . '" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
+        echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
+        echo '<select class="humble-lms-searchable" data-content="course_lessons-' . ($key + 1) . '"  multiple="multiple">';
+          foreach( $lessons as $lesson ) {
+            echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+              if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
+            echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+          }
+          foreach( $selected_lessons as $lesson ) {
+            echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+              if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
+            echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+          }
+        echo '</select>';
+        echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons-' . ($key + 1) . '" name="humble_lms_course_lessons" type="hidden" value="' . $section['lessons'] . '">';
+        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
+      echo '</div>';
     }
-  }
 
-  if( $lessons || $selected_lessons ):
+  echo '</div>';
 
-    echo '<div id="humble-lms-admin-course-lessons">';
-      echo '<select class="humble-lms-searchable" data-content="course_lessons"  multiple="multiple">';
-        foreach( $selected_lessons as $lesson ) {
-          echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-            if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
-          echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
-        }
-        foreach( $lessons as $lesson ) {
-          echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-            if( is_array( $course_lessons ) && in_array( $lesson->ID, $course_lessons ) ) { echo 'selected'; }
-          echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
-        }
-      echo '</select>';
-      echo '<input class="humble-lms-multiselect-value" id="humble_lms_course_lessons" name="humble_lms_course_lessons" type="hidden" value="' . implode(',', $course_lessons) . '">';
-    echo '</div>';
-  
-  else:
+  echo '<input type="hidden" name="humble_lms_course_sections" id="humble_lms_course_sections" value="">';
 
-    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
-
-  endif;
+  echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section--cloneable" data-target="#humble-lms-admin-course-sections">+ ' . __('Add section', 'humble-lms') . '</a></p>';
 }
 
 // Duration meta box
@@ -248,6 +290,7 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
+  $course_meta['humble_lms_course_sections'] = isset( $_POST['humble_lms_course_sections'] ) ? $_POST['humble_lms_course_sections'] : '';
   $course_meta['humble_lms_course_lessons'] = isset( $_POST['humble_lms_course_lessons'] ) ? explode( ',', $_POST['humble_lms_course_lessons'] ) : [];
   $course_meta['humble_lms_course_lessons'] = array_map( 'esc_attr', $course_meta['humble_lms_course_lessons'] );
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );

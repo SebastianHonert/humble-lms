@@ -153,6 +153,7 @@ class Humble_LMS_Activator {
     update_option('humble_lms_options', array(
       'tiles_per_page' => 10,
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
+      'registration_countries' => array(),
       'custom_pages' => array(
         'login' => $custom_page_login->ID,
         'registration' => $custom_page_registration->ID,

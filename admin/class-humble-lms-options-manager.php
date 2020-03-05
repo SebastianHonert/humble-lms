@@ -289,13 +289,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function registration_countries() {
       $countries = $this->countries;
       $registration_countries = isset( $this->options['registration_countries'] ) ? maybe_unserialize( $this->options['registration_countries'] ) : $this->countries;
-  
-      echo '<select multiple size="20" class="widefat" id="registration_countries" placeholder="' . __('Wich countries would you like to include?', 'humble-lms') . '" name="humble_lms_options[registration_countries][]">';
+
+      echo '<select multiple size="20" class="humble-lms-searchable" id="registration_countries" placeholder="' . __('Wich countries would you like to include?', 'humble-lms') . '" name="humble_lms_options[registration_countries][]" data-content="registration_countries"  multiple="multiple">';
         foreach( $countries as $key => $country ) {
           $selected = in_array( $country, $registration_countries ) ? 'selected' : '';
-          echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+          echo '<option data-id="' . $country . '" value="' . $country . '" ' . $selected . '>' . $country . '</option>';
         }
       echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_registration_countries" name="humble_lms_options[registration_countries]" type="hidden" value="' . implode(',', $registration_countries) . '">';
+      echo '<p><a class="humble-lms-multiselect-select-all">' . __('Select all', 'humble-lms') . '</a> | <a class="humble-lms-multiselect-deselect-all">' . __('Deselect all', 'humble-lms') . '</a></p>';
     }
 
     /**
@@ -381,7 +383,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
       
       if( isset( $input['registration_countries'] ) )
-        $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( $input['registration_countries'] ) : [];
+        $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : [];
+
+      if( empty( $options['registration_countries'] ) )
+        $options['registration_has_country'] = 0;
 
       if( isset( $input['email_welcome'] ) )
         $options['email_welcome'] = esc_html( $input['email_welcome'] );

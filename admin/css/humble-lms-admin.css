@@ -63,6 +63,14 @@
   }
 }
 
+.ms-container .ms-selectable, .ms-container .ms-selection {
+  background: transparent;
+}
+
+.ms-list {
+  background: #fff;
+}
+
 .humble-lms-searchable-input {
   margin-bottom: .375em;
 }
@@ -77,6 +85,11 @@
 .ms-container .ms-selection li.ms-hover {
   border-bottom: 1px solid #08c;
 }
+
+.humble-lms-multiselect-select-all,
+.humble-lms-multiselect-deselect-all {
+  cursor: pointer;
+}   
 
 .humble-lms-activity-trigger-select,
 .humble-lms-activity-action-select {

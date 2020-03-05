@@ -68,6 +68,16 @@ jQuery(document).ready(function($) {
     }
   })
 
+  // Multiselect select/deselect all
+  $('.humble-lms-multiselect-select-all').on('click', function() {
+    $('.humble-lms-searchable').multiSelect('select_all')
+  })
+
+  $('.humble-lms-multiselect-deselect-all').on('click', function() {
+    $('.humble-lms-searchable').multiSelect('deselect_all');
+  })
+
+
   /**
    * Pre-select an activity.
    * 

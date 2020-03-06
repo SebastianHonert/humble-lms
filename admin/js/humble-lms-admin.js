@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
         })
 
         let content = that.$element.data('content')
-        let sortableList = that.$element.parent().parent().find('.ms-selection .ms-list')[0]
+        let sortableList = that.$element.parent().find('.ms-selection .ms-list')[0]
         
         that.sortable = Sortable.create(sortableList, {
           animation: 100,
@@ -110,6 +110,7 @@ jQuery(document).ready(function($) {
       sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
       sections.each(function(index, el) {
         $(el).attr('data-id', (index+1))
+        $(el).find('.humble-lms-course-section-number').text(index+1)
         $(el).find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (index+1))
         $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
       })
@@ -219,6 +220,7 @@ jQuery(document).ready(function($) {
       key = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable)').length
 
       clone.attr('data-id', (key+1))
+      clone.find('.humble-lms-course-section-number').text((key+1))
       clone.find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (key+1))
       clone.removeClass('humble-lms-course-section--cloneable')
       clone.find('.humble-lms-searchable--cloneable').addClass('humble-lms-searchable').removeClass('humble-lms-searchable--cloneable')

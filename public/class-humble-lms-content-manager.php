@@ -74,16 +74,21 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
-    public static function get_course_lessons( $course_id ) {
+    public static function get_course_lessons( $course_id = null ) {
       $course_lessons = [];
 
       if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
         return $course_lessons;
 
-        $course_lessons = get_post_meta( $course_id, 'humble_lms_course_lessons' );
-        $course_lessons = isset( $course_lessons[0] ) && is_array( $course_lessons[0] ) && ! empty( $course_lessons[0] ) && ( isset( $course_lessons[0][0] ) && $course_lessons[0][0] !== '' ) ? $course_lessons[0] : [];
-        
-        return $course_lessons;
+      $course_sections = self::get_course_sections( $course_id );
+      foreach( $course_sections as $section ) {
+        $lesson_ids = ! is_array( $section['lessons'] ) ? explode( ',', $section['lessons'] ) : [];
+        foreach( $lesson_ids as $lesson_id ) {
+          array_push( $course_lessons, (int)$lesson_id );
+        }
+      }
+
+      return $course_lessons;
     }
 
     /**
@@ -93,16 +98,25 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
-    public static function get_course_sections( $course_id ) {
+    public static function get_course_sections( $course_id = null ) {
       $course_sections = [];
 
       if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
         return $course_sections;
 
-        $course_sections = get_post_meta( $course_id, 'humble_lms_course_sections', true );
-        $course_sections = json_decode( $course_sections, true );
-  
-        return $course_sections;
+      $course_sections = get_post_meta( $course_id, 'humble_lms_course_sections', true );
+      $course_sections = json_decode( $course_sections, true );
+
+      if( ! is_array( $course_sections ) ) {
+        $course_sections = array(
+          array(
+            'title' => '',
+            'lessons' => array(),
+          ),
+        );
+      }
+
+      return $course_sections;
     }
 
     /**

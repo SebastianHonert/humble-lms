@@ -290,6 +290,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $lessons = $this->content_manager->get_course_lessons( $course_id );
+      $sections = $this->content_manager->get_course_sections( $course_id );
 
       if( is_single() && get_post_type() === 'humble_lms_course' && empty( $lessons ) ) {
         return '<p>' . __('There are no lessons attached to this course', 'humble-lms') . '</p>';
@@ -313,15 +314,34 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         } else {
           $html .= '<ul class="humble-lms-syllabus-lessons">';
 
-          foreach( $lessons as $key => $lesson ) {
-            $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
-            $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
-            $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
-            $locked = $this->access_handler->can_access_lesson( $lesson->ID, $course_id ) === 'allowed' ? '' : '<i class="ti-lock"></i>';
-            $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
-            $html .= '<span class="humble-lms-syllabus-title">' . $locked . (int)($key+1) . '. ' . $lesson->post_title . '</span>';
-            $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
-            $html .= '</li>';
+          $lesson_index = 0;
+  
+          foreach( $sections as $key => $section ) {
+            $set_title = true;
+            $section_title = ! empty( $section['title'] ) ? $section['title'] : '';
+            $section_lessons = explode(',', $section['lessons']);
+            if( ! is_array( $section_lessons ) || empty( $section_lessons ) ) {
+              continue;
+            }
+
+            foreach( $section_lessons as $key => $id ) {
+              $lesson_index++;
+              $lesson = get_post( $id );
+              $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
+              $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
+              $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
+              $locked = $this->access_handler->can_access_lesson( $lesson->ID, $course_id ) === 'allowed' ? '' : '<i class="ti-lock"></i>';
+              $html .= $section_title && $set_title ? '<li class="humble-lms-syllabus-section-title">' . $section_title . '</li>' : '';
+
+              if( $set_title ) {
+                $set_title = false;
+              }
+
+              $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
+              $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson_index . '. ' . $lesson->post_title . '</span>';
+              $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
+              $html .= '</li>';
+            }
           }
           
           $html .= '</ul>';

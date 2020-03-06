@@ -120,6 +120,17 @@ ul.humble-lms-syllabus-lessons {
   padding: 0 0;
 }
 
+.humble-lms-syllabus-section-title {
+  font-size: 1.25em;
+  font-style: italic;
+  display: block;
+  margin: 1.5em 0 .6125em;
+}
+
+.humble-lms-syllabus-section-title:first-of-type {
+  margin-top: 0;
+}
+
 body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
   font-size: .75em;
 }
@@ -134,10 +145,18 @@ li.humble-lms-syllabus-lesson {
 }
 
 li.humble-lms-syllabus-lesson:hover {
-  background: desaturate(lighten($color-primary, 44%), 23%);
+  background: desaturate(lighten($color-primary, 44%), 25%);
 }
 
 li.humble-lms-syllabus-lesson--completed {
+  color: darken($color-success, 25%);
+  background: desaturate(lighten($color-success, 60%), 25%);
+  &:hover {
+    background: desaturate(lighten($color-success, 54%), 25%);
+  }
+  .humble-lms-syllabus-title {
+    color: darken($color-success, 25%);
+  }
   .humble-lms-syllabus-title::before {
     display: inline-block;
     margin-right: .15em;
@@ -145,7 +164,6 @@ li.humble-lms-syllabus-lesson--completed {
     content: '\e64c';
     font-size: .75em;
     font-weight: 700;
-    color: $color-success;
   }
 }
 
@@ -402,8 +420,8 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-message--success {
   color: darken($color-success, 25%);
-  border: 1px solid desaturate(lighten($color-success, 35%), 20%);
-  background: desaturate(lighten($color-success, 55%), 15%);
+  border: 1px solid desaturate(lighten($color-success, 45%), 54%);
+  background: desaturate(lighten($color-success, 60%), 25%);
 }
 
 .humble-lms-message--success a,

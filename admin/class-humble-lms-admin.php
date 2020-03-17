@@ -935,14 +935,154 @@ class Humble_LMS_Admin {
    * 
    * @since   0.0.1
    */
-  public function column_orderby( $vars ) {
-    if( isset( $vars['orderby'] ) && 'Country' === $vars['orderby'] ) {    
+  public function column_users_sort( $vars ) {
+    if( isset( $vars['orderby'] ) && 'country' === $vars['orderby'] ) {    
       $vars = array_merge( $vars, array(
         'orderby' => 'meta_key',
       ));
     }
 
     return $vars;
+  }
+
+  /**
+   * Add course column to humble_lms_lesson (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function add_humble_lms_lesson_column_courses( $columns ) {
+    $new = array();
+    foreach( $columns as $key => $title ) {
+      if( $key === 'categories' ) {
+        $new['courses'] = __('Courses', 'humble-lms');
+      }
+
+      $new[$key] = $title;
+    }
+
+    return $new;
+  }
+
+  /**
+   * Add sortable course column content to humble_lms_lesson (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_lesson_sortable_column_courses( $column, $post_id ) {
+    $content_manager = new Humble_LMS_Content_Manager;
+    switch ( $column ) {
+      case 'courses' :
+        $courses_array = array();
+        $courses = $content_manager->get_courses();
+
+        foreach( $courses as $course ) {
+          $lessons = $content_manager->get_course_lessons( $course->ID );
+
+          foreach( $lessons as $lesson ) {
+            if( in_array( $post_id, $lessons ) ) {
+              array_push( $courses_array, array(
+                'id' => $course->ID,
+                'name' => $course->post_title,
+              ) );
+            }
+          }
+        }
+
+        $courses_array = array_unique( $courses_array, SORT_REGULAR );
+
+        foreach( $courses_array as $course ) {
+          echo '<a href="' . get_edit_post_link( $course['id'] ) . '">' . $course['name'] . '</a>';
+          
+          if( $course !== end( $courses_array ) ) {
+            echo ', ';
+          }
+        }
+
+        break;
+    }
+  }
+
+  /**
+   * Sort lessons based on column "Courses".
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_lesson_courses_sort( $columns ) {
+    $custom = array(
+      'courses' => 'courses',
+    );
+
+    return wp_parse_args($custom, $columns);
+  }
+
+  /**
+   * Add track column to humble_lms_course (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function add_humble_lms_course_column_tracks( $columns ) {
+    $new = array();
+    foreach( $columns as $key => $title ) {
+      if( $key === 'categories' ) {
+        $new['tracks'] = __('Tracks', 'humble-lms');
+      }
+
+      $new[$key] = $title;
+    }
+
+    return $new;
+  }
+
+  /**
+   * Add sortable track column content to humble_lms_course (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_course_sortable_column_tracks( $column, $post_id ) {
+    $content_manager = new Humble_LMS_Content_Manager;
+    switch ( $column ) {
+      case 'tracks' :
+        $tracks_array = array();
+        $tracks = $content_manager->get_tracks();
+
+        foreach( $tracks as $track ) {
+          $courses = $content_manager->get_track_courses( $track->ID );
+
+          foreach( $courses as $course ) {
+            if( in_array( $post_id, $courses ) ) {
+              array_push( $tracks_array, array(
+                'id' => $track->ID,
+                'name' => $track->post_title,
+              ) );
+            }
+          }
+        }
+
+        $tracks_array = array_unique( $tracks_array, SORT_REGULAR );
+
+        foreach( $tracks_array as $track ) {
+          echo '<a href="' . get_edit_post_link( $track['id'] ) . '">' . $track['name'] . '</a>';
+          
+          if( $track !== end( $tracks_array ) ) {
+            echo ', ';
+          }
+        }
+
+        break;
+    }
+  }
+
+  /**
+   * Sort courses based on column "Tracks".
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_course_tracks_sort( $columns ) {
+    $custom = array(
+      'tracks' => 'tracks',
+    );
+
+    return wp_parse_args($custom, $columns);
   }
 
 }

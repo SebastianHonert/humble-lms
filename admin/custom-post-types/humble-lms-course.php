@@ -110,7 +110,7 @@ function humble_lms_course_sections_mb()
    * JS multiselect function from getting triggered on this container.
    */
   echo '<div class="humble-lms-course-section humble-lms-course-section--cloneable" data-id="">';
-    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . '<span class="humble-lms-course-section-number"></span></label>';
+    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . ' <span class="humble-lms-course-section-number"></span></label>';
     echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
     echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
     echo '<select class="humble-lms-searchable--cloneable" data-content="course_lessons-"  multiple="multiple">';

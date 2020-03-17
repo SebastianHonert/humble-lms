@@ -225,8 +225,7 @@ jQuery(document).ready(function($) {
       clone.removeClass('humble-lms-course-section--cloneable')
       clone.find('.humble-lms-searchable--cloneable').addClass('humble-lms-searchable').removeClass('humble-lms-searchable--cloneable')
       clone.find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (key+1))
-      clone.css('display', 'block')
-      clone.appendTo(target)
+      clone.css('display', 'none').appendTo(target).fadeIn(400)
 
       initMultiselect(clone.find('.humble-lms-searchable'))
       clone.find('.humble-lms-searchable').multiSelect('deselect_all')

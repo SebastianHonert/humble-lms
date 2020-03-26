@@ -149,6 +149,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_welcome', __('Welcome email', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+      add_settings_field( 'email_agreement', __('Email agreement', 'humble-lms'), array( $this, 'email_agreement' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
@@ -373,6 +374,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for making email agreement required or optional.
+     *
+     * @since    0.0.1
+     */
+    public function email_agreement() {
+      $email_agreement = isset( $this->options['email_agreement'] ) ? (int)$this->options['email_agreement'] : 0;
+      $checked = $email_agreement === 1 ? 'checked' : '';
+  
+      echo '<p><input id="email_agreement" name="humble_lms_options[email_agreement]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, make the agreement for receiving essential emails from this website required at registration.', 'humble-lms') . '</p>';
+    }
+
+    /**
      * PayPal client ID.
      *
      * @since    0.0.1
@@ -419,8 +432,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( isset( $input['custom_pages'] ) )
         $options['custom_pages'] = $input['custom_pages'];
 
-      if( $active === 'registration' )
+      if( $active === 'registration' ) {
         $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
+        $options['email_agreement'] = isset( $input['email_agreement'] ) ? 1 : 0;
+      }
       
       if( isset( $input['registration_countries'] ) )
         $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : [];
@@ -430,9 +445,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( isset( $input['email_welcome'] ) )
         $options['email_welcome'] = esc_html( $input['email_welcome'] );
-      
-      if( isset( $input['email_lost_password'] ) )
-        $options['email_lost_password'] = esc_html( $input['email_lost_password'] );
 
       if( isset( $input['paypal_client_id'] ) )
         $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );

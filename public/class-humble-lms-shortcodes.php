@@ -884,6 +884,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" />
           </p>
           <p>
+            <?php $class = isset( $this->options_manager->options['email_agreement'] ) && $this->options_manager->options['email_agreement'] === 1 ? 'humble-lms-required' : ''; ?>
+            <label for="email-agreement" class="<?php echo $class; ?>"><?php _e('Email agreement', 'humble-lms'); ?> </label>
+            <input name="humble-lms-email-agreement" id="email-agreement" class="<?php echo $class; ?>" type="checkbox" value="1" /> <?php _e('Yes, I wish to receive emails from this website which are essential for participating in the online courses.', 'humble-lms'); ?>
+          </p>
+          <p>
             <input type="hidden" name="humble-lms-register-nonce" value="<?php echo wp_create_nonce('humble-lms-register-nonce'); ?>" />
             <input type="submit" class="humble-lms-btn" value="<?php _e('Register Your Account', 'humble-lms'); ?>"/>
           </p>

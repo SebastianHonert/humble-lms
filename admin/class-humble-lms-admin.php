@@ -241,6 +241,10 @@ class Humble_LMS_Admin {
         echo '<option value="' . $membership . '" ' . $selected . '>' . ucfirst( $membership ) . '</option>';
       }
     echo '</select>';
+
+    $checked = get_user_meta( $user->ID, 'humble_lms_email_agreement', true ) === '1' ? 'checked' : '';
+    echo '<h4>' . __('Email agreement', 'humble-lms') . '</h4>';
+    echo '<input type="checkbox" name="humble_lms_email_agreement" id="humble_lms_email_agreement" value="1" ' . $checked . '> ' . __('Yes, I wish to receive emails from this website which are essential for participating in the online courses.', 'humble-lms');
   }
 
   /**
@@ -252,6 +256,7 @@ class Humble_LMS_Admin {
     $user = new Humble_LMS_Public_User;
     $is_instructor = isset( $_POST['humble_lms_is_instructor'] );
     $was_instructor = isset( $_POST['humble_lms_was_instructor'] );
+    $email_agreement = isset( $_POST['humble_lms_email_agreement'] );
     
     if( ! $is_instructor && $was_instructor ) {
       $user->remove_instructor_status( $user_id );
@@ -261,6 +266,7 @@ class Humble_LMS_Admin {
       update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
       update_user_meta( $user_id, 'humble_lms_country', sanitize_text_field( $_POST['humble_lms_country'] ) );
       update_user_meta( $user_id, 'humble_lms_membership', sanitize_text_field( $_POST['humble_lms_membership'] ) );
+      update_user_meta( $user_id, 'humble_lms_email_agreement', isset( $_POST['humble_lms_email_agreement'] ) );
     }
   }
 
@@ -451,6 +457,7 @@ class Humble_LMS_Admin {
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $user_pass = $_POST['humble-lms-user-pass'];
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
+      $email_agreement = empty( $_POST['humble-lms-email-agreement'] ) ? 0 : 1;
       
       if( username_exists( $user_login ) ) {
         $this->humble_lms_errors()->add('username_unavailable', __('Username already taken.', 'humble-lms'));
@@ -507,6 +514,12 @@ class Humble_LMS_Admin {
       if( $user_pass !== $user_pass_confirm ) {
         $this->humble_lms_errors()->add('password_mismatch', __('Passwords do not match.', 'humble-lms'));
       }
+
+      if( isset( $options_manager->options['email_agreement'] ) && $options_manager->options['email_agreement'] === 1 ) {
+        if( $email_agreement === 0 ) {
+          $this->humble_lms_errors()->add('email_agreement', __('Please agree to receiving essential emails from our website.', 'humble-lms'));
+        }
+      }
       
       $errors = $this->humble_lms_errors()->get_error_messages();
       
@@ -528,6 +541,7 @@ class Humble_LMS_Admin {
           if( $registration_has_country ) {
             add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
             add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
+            add_user_meta( $new_user_id, 'humble_lms_email_agreement', $email_agreement );
           }
 
           // Notify admin and user (=> 'both')

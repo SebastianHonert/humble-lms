@@ -43,6 +43,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
+      $selected_category = isset( $_GET['category'] ) ? (int)$_GET['category'] : 0;
 
       $args = array(
         'post_type' => 'humble_lms_track',
@@ -52,6 +53,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+        'cat' => $selected_category,
       );
 
       if( ! empty( $ids ) ) {
@@ -60,7 +62,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $tracks = new WP_Query( $args );
 
-      if ( $tracks->have_posts() ) {
+      if( $tracks->have_posts() ) {
+        if( isset( $this->options_manager->options['sort_tracks_by_category'] ) && $this->options_manager->options['sort_tracks_by_category'] === 1 ) {
+          $categories = $this->content_manager->get_categories('humble_lms_track', true);
+          if( ! empty( $categories ) ) {
+            $html .= '<form action="' . Humble_LMS_Public::get_nopaging_url() . '" method="get" id="humble_lms_archive_select_category"><select name="category">';
+            $html .= '<option value="0">' . __('Sort by category', 'humble-lms') . '</option>';
+            foreach( $categories as $category ) {
+              $selected = $selected_category === $category->term_id ? 'selected' : '';
+              $html .= '<option value="' . $category->term_id . '" ' . $selected . '>' . $category->name . '</option>';
+            }
+            $html .= '</select></form>';
+          }
+        }          
+
         $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
         while ( $tracks->have_posts() ) {
           $tracks->the_post();
@@ -146,17 +161,19 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $is_track = ! empty( $track_id ) && ( is_single() && $post->post_type === 'humble_lms_track' );
       $courses = $this->content_manager->get_track_courses( $track_id );
+      $selected_category = isset( $_GET['category'] ) ? (int)$_GET['category'] : 0;
 
       $args = array(
         'post_type' => 'humble_lms_course',
         'post_status' => 'publish',
         'posts_per_page' => $is_track ? -1 : $tiles_per_page,
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+        'post__in' => $courses,
         'orderby' => 'post__in',
         'order' => 'ASC',
-        'post__in' => $courses
+        'cat' => $selected_category,
       );
-
+  
       if( ! empty( $ids ) ) {
         $args['post__in'] = explode(',', str_replace(' ','', $ids));
       }
@@ -174,6 +191,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $courses = new WP_Query( $args );
 
       if ( $courses->have_posts() ) {
+        if( isset( $this->options_manager->options['sort_courses_by_category'] ) && $this->options_manager->options['sort_courses_by_category'] === 1 ) {
+          $categories = $this->content_manager->get_categories('humble_lms_course', true);
+          if( ! empty( $categories ) ) {
+            $selected_category = isset( $_GET['category'] ) ? (int)$_GET['category'] : 0;
+            $html .= '<form action="' . Humble_LMS_Public::get_nopaging_url() . '" method="get" id="humble_lms_archive_select_category"><select name="category">';
+            $html .= '<option value="0">' . __('Sort by category', 'humble-lms') . '</option>';
+            foreach( $categories as $category ) {
+              $selected = $selected_category === $category->term_id ? 'selected' : '';
+              $html .= '<option value="' . $category->term_id . '" ' . $selected . '>' . $category->name . '</option>';
+            }
+            $html .= '</select></form>';
+          }
+        }
+
         $html .= '<div class="humble-lms-flex-columns ' . $class . '" style="' . $style . '">';
         while ( $courses->have_posts() ) {
           $courses->the_post();

@@ -46,7 +46,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       }
 
       // Check for consecutive order of lessons
-      if( ! $this->reached_lesson( $lesson_id, $course_id ) ) {
+      if( ! $this->lesson_reached( $lesson_id, $course_id ) ) {
         return 'order';
       }
 
@@ -71,7 +71,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      *
      * @since    0.0.1
      */
-    public function reached_lesson( $lesson_id = null, $course_id = null ) {
+    public function lesson_reached( $lesson_id = null, $course_id = null ) {
       if( ! $lesson_id || ! $course_id ) {
         return true;
       }

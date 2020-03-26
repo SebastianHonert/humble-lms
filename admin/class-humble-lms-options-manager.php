@@ -140,6 +140,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'tiles_per_page', __('Tiles per page (track/course archive)', 'humble-lms'), array( $this, 'tiles_per_page' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'sort_tracks_by_category', __('Sort tracks by category?', 'humble-lms'), array( $this, 'sort_tracks_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'sort_courses_by_category', __('Sort courses by category?', 'humble-lms'), array( $this, 'sort_courses_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
@@ -226,6 +228,38 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $selected = $value === $tile_width_course ? 'selected' : '';
         echo '<option value="' . $value . '" ' . $selected . '>' . $key . '</option>';
       });
+      echo '</select>';
+    }
+
+    /**
+     * Option for sorting tracks by category on archive page.
+     *
+     * @since    0.0.1
+     */
+    public function sort_tracks_by_category() {
+      $sort_tracks_by_category = isset( $this->options['sort_tracks_by_category'] ) ? (int)$this->options['sort_tracks_by_category'] : 0;
+
+      echo '<select class="widefat" id="sort_tracks_by_category" name="humble_lms_options[sort_tracks_by_category]">';
+        $selected = ! isset( $sort_tracks_by_category ) || $sort_tracks_by_category === 0 ? 'selected' : '';
+        echo '<option value="0" ' . $selected . '>' . __('No') . '</option>';
+        $selected = $sort_tracks_by_category === 1 ? 'selected' : '';
+        echo '<option value="1" ' . $selected . '>' . __('Yes') . '</option>';
+      echo '</select>';
+    }
+
+    /**
+     * Option for sorting courses by category on archive page.
+     *
+     * @since    0.0.1
+     */
+    public function sort_courses_by_category() {
+      $sort_courses_by_category = isset( $this->options['sort_courses_by_category'] ) ? (int)$this->options['sort_courses_by_category'] : 0;
+
+      echo '<select class="widefat" id="sort_courses_by_category" name="humble_lms_options[sort_courses_by_category]">';
+        $selected = ! isset( $sort_courses_by_category ) || $sort_courses_by_category === 0 ? 'selected' : '';
+        echo '<option value="0" ' . $selected . '>' . __('No') . '</option>';
+        $selected = $sort_courses_by_category === 1 ? 'selected' : '';
+        echo '<option value="1" ' . $selected . '>' . __('Yes') . '</option>';
       echo '</select>';
     }
 
@@ -369,6 +403,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( isset( $input['tiles_per_page'] ) )
         $options['tiles_per_page'] = (int)$input['tiles_per_page'];
+
+      if( isset( $input['sort_tracks_by_category'] ) )
+        $options['sort_tracks_by_category'] = (int)$input['sort_tracks_by_category'];
+
+      if( isset( $input['sort_courses_by_category'] ) )
+        $options['sort_courses_by_category'] = (int)$input['sort_courses_by_category'];
 
       if( isset( $input['tile_width_track'] ) )
         $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );

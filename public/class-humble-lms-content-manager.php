@@ -21,12 +21,45 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $args = array(
         'post_type' => 'humble_lms_track',
         'posts_per_page' => -1,
-        'post_status' => $published ? 'published' : 'any',
+        'post_status' => $published ? 'publish' : 'any',
       );
   
       $tracks = get_posts( $args );
 
       return $tracks;
+    }
+
+    /**
+     * Get categories (array of terms) for post type.
+     *
+     * @param   string|bool.
+     * @return  Array
+     * @since   0.0.1
+     */
+    public function get_categories( $post_type = null, $published = false ) {
+      $categories = array();
+
+      switch( $post_type ) {
+        case 'humble_lms_course':
+          $posts = $this->get_courses( $published );
+          break;
+        case 'humble_lms_track':
+          $posts = $this->get_tracks( $published );
+          break;
+        default:
+          return $categories;
+      }
+
+      foreach( $posts as $post ) {
+        $post_categories = get_the_category( $post->ID );
+        foreach( $post_categories as $category ) {
+          if( ! in_array( $category, $categories ) ) {
+            array_push( $categories, $category );
+          }
+        }
+      }
+
+      return $categories;
     }
 
     /**
@@ -59,7 +92,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $args = array(
         'post_type' => 'humble_lms_course',
         'posts_per_page' => -1,
-        'post_status' => $published ? 'published' : 'any',
+        'post_status' => $published ? 'publish' : 'any',
       );
   
       $courses = get_posts( $args );

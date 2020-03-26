@@ -399,4 +399,19 @@ class Humble_LMS_Public {
     }
   }
 
+  /**
+   * Get clean URLs (without "/page/xyz/")
+   * 
+   * @since    0.0.1
+   */
+  public static function get_nopaging_url() {
+    global $wp;
+
+    $current_url =  home_url( $wp->request );
+    $position = strpos( $current_url , '/page' );
+    $nopaging_url = ( $position ) ? substr( $current_url, 0, $position ) : $current_url;
+
+    return trailingslashit( $nopaging_url );
+  }
+
 }

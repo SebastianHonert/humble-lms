@@ -64,6 +64,15 @@ jQuery(document).ready(function($) {
   })
 
   /**
+   * Select track/course archive category.
+   *
+   * @since   0.0.1
+   */
+  $('select[name=category]').on('change', function() {
+    $('form#humble_lms_archive_select_category').submit()
+  })
+
+  /**
    * Evaluate a quiz.
    * Humble_LMS_Quiz module generated in public/js/humble-lms-quiz.js
    * 

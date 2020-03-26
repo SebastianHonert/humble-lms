@@ -72,6 +72,19 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      * @since    0.0.1
      */
     public function reached_lesson( $lesson_id = null, $course_id = null ) {
+      if( ! $lesson_id || ! $course_id ) {
+        return true;
+      }
+
+      if( get_post_type( $course_id ) !== 'humble_lms_course' ) {
+        return true;
+      }
+
+      $courseHasConsecutiveOrder = get_post_meta( $course_id, 'humble_lms_course_consecutive_order', true );
+      if( ! $courseHasConsecutiveOrder ) {
+        return true;
+      }
+
       $lessons = $this->content_manager->get_course_lessons( $course_id );
       $current_lesson_index = array_search( $lesson_id, $lessons );
 

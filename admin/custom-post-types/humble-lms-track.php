@@ -143,7 +143,7 @@ function humble_lms_track_position_mb()
   $position = get_post_meta($post->ID, 'humble_lms_track_position', true);
   $position = ! $position ? '1' : $position;
 
-  echo '<input type="text" class="" name="humble_lms_track_position" id="humble_lms_track_position" value="' . $position . '">';
+  echo '<input type="number" class="" name="humble_lms_track_position" id="humble_lms_track_position" min="0" max="99999" step="1" value="' . $position . '">';
   
 }
 

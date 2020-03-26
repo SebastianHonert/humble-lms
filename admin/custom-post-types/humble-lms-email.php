@@ -64,18 +64,29 @@ register_post_type( 'humble_lms_email', $args );
 // Add meta boxes
 function humble_lms_email_add_meta_boxes()
 {
+  add_meta_box( 'humble_lms_email_subject_mb', __('E-Mail subject', 'humble-lms'), 'humble_lms_email_subject_mb', 'humble_lms_email', 'normal', 'default' );
   add_meta_box( 'humble_lms_email_message_mb', __('E-Mail message', 'humble-lms'), 'humble_lms_email_message_mb', 'humble_lms_email', 'normal', 'default' );
   add_meta_box( 'humble_lms_email_format_mb', __('E-Mail format', 'humble-lms'), 'humble_lms_email_format_mb', 'humble_lms_email', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_email_add_meta_boxes' );
 
-// Email message
-function humble_lms_email_message_mb()
+// Email subject
+function humble_lms_email_subject_mb()
 {
   global $post;
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
+  
+  $subject = get_post_meta( $post->ID, 'humble_lms_email_subject', true );
+
+  echo '<input type="text" name="humble_lms_email_subject" class="widefat" value="' . $subject . '">'; 
+}
+
+// Email message
+function humble_lms_email_message_mb()
+{
+  global $post;
 
   $message = get_post_meta( $post->ID, 'humble_lms_email_message', true );
 
@@ -150,6 +161,7 @@ function humble_lms_save_email_meta_boxes( $post_id, $post )
   );
 
   $email_meta['humble_lms_email_message'] = isset( $_POST['humble_lms_email_message'] ) ? wp_kses( $_POST['humble_lms_email_message'], $allowed_html ) : '';
+  $email_meta['humble_lms_email_subject'] = isset( $_POST['humble_lms_email_subject'] ) ? sanitize_text_field( $_POST['humble_lms_email_subject'] ) : '';
   $email_meta['humble_lms_email_format'] = isset( $_POST['humble_lms_email_format'] ) ? sanitize_text_field( $_POST['humble_lms_email_format'] ) : 'text/html';
 
   if( ! empty( $email_meta ) && sizeOf( $email_meta ) > 0 )

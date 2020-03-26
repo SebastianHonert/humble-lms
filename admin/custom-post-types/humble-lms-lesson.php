@@ -226,7 +226,7 @@ function humble_lms_lesson_quizzes_mb()
   
   else:
 
-    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
+    echo '<p>' . sprintf( __('No quizzes found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
 
   endif;
 }

@@ -26,6 +26,18 @@ class Humble_LMS_Widget_Progress_Bar extends WP_Widget
     if( ! $this->allowed() )
       return;
 
+    $progress = 0;
+
+    if( is_single() && get_post_type() === 'humble_lms_track' ) {
+      $progress = $this->user->track_progress( $track_id, get_current_user_id() );
+    } elseif ( is_single() && get_post_type() === 'humble_lms_course' ) {
+      $progress = $this->user->course_progress( get_the_ID(), get_current_user_id() );
+    } elseif ( is_single() && get_post_type() === 'humble_lms_lesson' ) {
+      if( isset( $_POST['course_id'] ) ) {
+        $progress = $this->user->course_progress( (int)$_POST['course_id'], get_current_user_id() );
+      }
+    }
+
     $instance_title = isset( $instance['title'] ) ? $instance['title'] : '';
     $title = apply_filters( 'widget_title', $instance_title, $instance, $this->id_base );
 
@@ -35,18 +47,6 @@ class Humble_LMS_Widget_Progress_Bar extends WP_Widget
       echo $args['before_title'];
       echo $title;
       echo $args['after_title'];
-    }
-
-    $progress = 0;
-    
-    if( is_single() && get_post_type() === 'humble_lms_track' ) {
-      $progress = $this->user->track_progress( $track_id, get_current_user_id() );
-    } elseif ( is_single() && get_post_type() === 'humble_lms_course' ) {
-      $progress = $this->user->course_progress( get_the_ID(), get_current_user_id() );
-    } elseif ( is_single() && get_post_type() === 'humble_lms_lesson' ) {
-      if( isset( $_POST['course_id'] ) ) {
-        $progress = $this->user->course_progress( (int)$_POST['course_id'], get_current_user_id() );
-      }
     }
   
     echo do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');

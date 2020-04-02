@@ -905,6 +905,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
 
+      ob_start();
+
       if( isset( $_GET['lost_password_sent'] ) ) {
         echo '<p class="humble-lms-message humble-lms-message--success">' . __( 'Check your email for a link to reset your password.', 'humble-lms' ) . '</div>';
       } elseif( isset( $_GET['errors'] ) ) {
@@ -945,6 +947,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       </div><?php
 
       echo '<p><a href="' . site_url('/wp-login.php') . '">' . __('Login', 'humble-lms') . '</a> | <a href="' . site_url('/wp-login.php?action=register') . '">' . __('Register', 'humble-lms') . '</a></p>';
+    
+      return ob_get_clean();
     }
 
     /**

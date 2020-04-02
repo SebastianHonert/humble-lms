@@ -69,7 +69,7 @@ function humble_lms_course_add_meta_boxes()
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
 
-// Sextions meta box
+// Sections meta box
 
 function humble_lms_course_sections_mb()
 {

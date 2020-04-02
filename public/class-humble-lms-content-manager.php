@@ -131,6 +131,26 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
+    public function get_course_id( $post_id = null ) {
+      $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+
+      if( ! $course_id && get_post_type( $post_id ) === 'humble_lms_lesson' ) {
+        $course_ids = $this->find_courses_by('lesson', $post_id );
+        if( is_array( $course_ids ) && sizeOf( $course_ids ) === 1 ) {
+          $course_id = $course_ids[0];
+        }
+      }
+
+      return $course_id;
+    }
+
+    /**
+     * Get sections for a single course.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
     public static function get_course_sections( $course_id = null ) {
       $course_sections = [];
 

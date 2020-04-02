@@ -466,16 +466,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function mark_complete_button( $atts = null ) {
       global $post;
-
-      $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
       
-      // Try to find course_id based on current lesson.
-      if( ! $course_id && get_post_type( $post->ID ) === 'humble_lms_lesson' ) {
-        $course_ids = $this->content_manager->find_courses_by('lesson', $post->ID );
-        if( is_array( $course_ids ) && sizeOf( $course_ids ) === 1 ) {
-          $course_id = $course_ids[0];
-        }
-      }
+      $course_id = $this->content_manager->get_course_id( $post->ID );
 
       if( ! $course_id )
         return;

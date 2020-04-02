@@ -1,5 +1,7 @@
 <?php
 
+global $multipage, $numpages, $page;
+
 if ( ! defined( 'ABSPATH' ) )
   exit;
 
@@ -28,7 +30,23 @@ if (have_posts()):
           echo do_shortcode('[humble_lms_quiz ids="' . $quiz_ids . '"]');
         }
 
-        echo do_shortcode('[humble_lms_mark_complete_button]');
+        if( ! $multipage || ( $multipage && $page === $numpages ) ) {
+          echo do_shortcode('[humble_lms_mark_complete_button]');
+        }
+
+        $args = array (
+          'before' => '<div class="humble-lms-page-links"><span class="page-link-text">' . __( 'Pages', 'humble-lms' ) . ':</span>',
+          'after' => '</div>',
+          'link_before' => '<span class="humble-lms-page-link">',
+          'link_after' => '</span>',
+          'next_or_number' => 'number',
+          'separator' => '<span class="humble-lms-page-links-separator">|</span>',
+          // 'nextpagelink' => __( 'Next &raquo', 'humble-lms' ),
+          // 'previouspagelink' => __( '&laquo Previous', 'humble-lms' ),
+      );
+       
+      wp_link_pages( $args );
+        
       ?>
 
   </div>

@@ -163,7 +163,8 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       $answers = get_post_meta( $question_id, 'humble_lms_question_answers', true );
       $answers = maybe_unserialize( $answers );
       $answers = ! isset( $answers ) || ! isset( $answers[0]['answer'] ) || empty( $answers[0]['answer'] ) ? array(['answer' => __('Please provide at least one answer.', 'humble-lms'), 'correct' => 0]) : $answers;
-
+      $answers = $this->shuffle_answers( $answers, $question_id );
+      
       return $answers;
     }
 
@@ -181,6 +182,8 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       $html = '';
       $context = uniqid();
       $completed = $this->user->completed_quiz( $quiz_id );
+      $answers = $this->shuffle_answers( $answers, $quiz_id );
+
       foreach( $answers as $answer ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
         $checked = $correct && $completed ? 'checked' : '';
@@ -206,6 +209,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       $html = '';
       $context = uniqid();
       $completed = $this->user->completed_quiz( $quiz_id );
+      $answers = $this->shuffle_answers( $answers, $quiz_id );
       foreach( $answers as $answer ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
         $checked = $correct && $completed ? 'checked' : '';
@@ -254,6 +258,27 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       
       return true;
     }
+
+    /**
+     * Shuffle answers
+     *
+     * @since    0.0.1
+     * @param    array
+     * @return   array
+     */
+    public function shuffle_answers( $answers = null, $post_id = null ) {
+      if( ! $answers || ! is_array( $answers ) || ! $post_id )
+        return [];
+
+      $shuffle = get_post_meta( $post_id, 'humble_lms_shuffle', true );
+
+      if( $shuffle === '1' )
+        shuffle( $answers );
+
+      return $answers;
+    }
+
+
 
     /**
      * Evaluate quizzes by id.

@@ -100,9 +100,9 @@ ul.humble-lms-syllabus-lessons {
 
 .humble-lms-syllabus-section-title {
   font-size: 1.25em;
-  font-style: italic;
   display: block;
-  margin: 1.5em 0 .6125em; }
+  margin: 1.5em 0 .6125em;
+  font-weight: 600; }
 
 .humble-lms-syllabus-section-title:first-of-type {
   margin-top: 0; }
@@ -166,6 +166,9 @@ li.humble-lms-syllabus-lesson span {
   display: block;
   margin-bottom: 1em; }
 
+.humble-lms-syllabus-course-title {
+  font-weight: 600; }
+
 /* Single lesson */
 .humble-lms-lesson-level {
   display: block;
@@ -180,7 +183,7 @@ li.humble-lms-syllabus-lesson span {
   margin: 1em 0 0;
   font-size: .875em; }
 
-.humble-lms-mark-complete {
+#humble-lms-mark-complete {
   margin-top: 1em; }
 
 #humble-lms-evaluate-quiz + #humble-lms-mark-complete {
@@ -873,10 +876,6 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-quiz-score {
   font-weight: 700;
   font-size: 1.875em; }
-
-/* H5P */
-.h5p-iframe-wrapper {
-  margin-bottom: 2em; }
 
 /* Responsive */
 @media screen and (max-width: 767px) {

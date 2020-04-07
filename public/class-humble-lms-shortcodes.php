@@ -386,7 +386,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $duration = $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration . '</span>' : '';
 
         $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
-          $html .= ! $course_id ? '<strong>' . __('Course', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Course', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a><br>';
+          $html .= ! $course_id ? '<strong>' . __('Course', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Course', 'humble-lms') . ':</strong> <a class="humble-lms-syllabus-course-title" href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a><br>';
           $html .= $duration;
         $html .= '</p>';
       }

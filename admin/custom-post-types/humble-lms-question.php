@@ -69,11 +69,13 @@ function humble_lms_question_add_meta_boxes()
   add_meta_box( 'humble_lms_question_type_mb', __('Question type', 'humble-lms'), 'humble_lms_question_type_mb', 'humble_lms_question', 'normal', 'default' );
   add_meta_box( 'humble_lms_question_mb', __('Question', 'humble-lms'), 'humble_lms_question_mb', 'humble_lms_question', 'normal', 'default' );
   add_meta_box( 'humble_lms_answers_mb', __('Answers to this question', 'humble-lms'), 'humble_lms_answers_mb', 'humble_lms_question', 'normal', 'default' );
+  add_meta_box( 'humble_lms_shuffle_mb', __('Randomization', 'humble-lms'), 'humble_lms_shuffle_mb', 'humble_lms_question', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_question_add_meta_boxes' );
 
 // Meta box question type
+
 function humble_lms_question_type_mb() {
   global $post;
 
@@ -88,6 +90,7 @@ function humble_lms_question_type_mb() {
 }
 
 // Meta box question
+
 function humble_lms_question_mb() {
   global $post;
 
@@ -99,6 +102,7 @@ function humble_lms_question_mb() {
 }
 
 // Meta box answers
+
 function humble_lms_answers_mb() {
   global $post;
 
@@ -133,8 +137,18 @@ function humble_lms_answers_mb() {
   <?php
 }
 
-// Save metabox data
+// Meta box randomization
 
+function humble_lms_shuffle_mb() {
+  global $post;
+
+  $shuffle = get_post_meta( $post->ID, 'humble_lms_shuffle', true );
+  $checked = $shuffle === '1' ? 'checked="checked"' : '';
+
+  echo '<input type="checkbox" name="humble_lms_shuffle" id="humble_lms_shuffle" value="1" ' . $checked . '> ' . __('Shuffle the answers for this question.', 'humble-lms');
+}
+
+// Save metabox data
 function humble_lms_save_question_meta_boxes( $post_id, $post )
 {
   $nonce = ! empty( $_POST['humble_lms_meta_nonce'] ) ? $_POST['humble_lms_meta_nonce'] : '';
@@ -176,6 +190,8 @@ function humble_lms_save_question_meta_boxes( $post_id, $post )
 
     $question_meta['humble_lms_question_answers'] = serialize( $question_meta['humble_lms_question_answers'] );
   }
+
+  $question_meta['humble_lms_shuffle'] = isset( $_POST['humble_lms_shuffle'] ) ? 1 : 0;
 
   if( ! empty( $question_meta ) && sizeOf( $question_meta ) > 0 )
   {

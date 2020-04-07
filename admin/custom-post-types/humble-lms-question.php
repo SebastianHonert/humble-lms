@@ -109,8 +109,6 @@ function humble_lms_answers_mb() {
   $question = get_post_meta( $post->ID, 'humble_lms_question', false );
   $question_type = get_post_meta( $post->ID, 'humble_lms_question_type', false );
   $answers = get_post_meta( $post->ID, 'humble_lms_question_answers', true );
-  $answers = maybe_unserialize( $answers );
-
   $answers = ! isset( $answers ) || ! isset( $answers[0]['answer'] ) || empty( $answers[0]['answer'] ) ? array(['answer' => __('Please provide at least one answer.', 'humble-lms'), 'correct' => 0]) : $answers;
 
   ?>
@@ -187,8 +185,6 @@ function humble_lms_save_question_meta_boxes( $post_id, $post )
       $question_meta['humble_lms_question_answers'][$key]['answer'] = esc_attr( $answer['answer'] );
       $question_meta['humble_lms_question_answers'][$key]['correct'] = $answer['correct'] ? 1 : 0 ;
     }
-
-    $question_meta['humble_lms_question_answers'] = serialize( $question_meta['humble_lms_question_answers'] );
   }
 
   $question_meta['humble_lms_shuffle'] = isset( $_POST['humble_lms_shuffle'] ) ? 1 : 0;

@@ -214,6 +214,12 @@ jQuery(document).ready(function($) {
     let key = elements.length
     let clone = element.clone()
 
+    // Humble LMS Answer
+    if (element.hasClass('humble-lms-answer')) {
+      clone.find('.humble-lms-answer-text').val('')
+      clone.find('.humble-lms-answer-correct').prop('checked', false)
+    }
+
 
     // Humble LMS Course Section
     if (element.hasClass('humble-lms-course-section')) {

@@ -38,7 +38,7 @@ if( ! current_user_can('manage_options') ) {
   <title>Humble LMS Certificate</title>
   <link rel="stylesheet" href="<?php echo dirname( plugin_dir_url( __FILE__ ) ) . '/css/certificate/default.css'; ?>">
 </head>
-<body><?
+<body><?php
 
   $meta = get_post_meta( $post->ID );
   $heading = isset( $meta['humble_lms_cert_heading'][0] ) && ! empty( $meta['humble_lms_cert_heading'][0] ) ? $meta['humble_lms_cert_heading'][0] : '';

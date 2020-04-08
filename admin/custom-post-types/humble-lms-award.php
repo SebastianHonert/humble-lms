@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'with_front'            => false,
+  'with_front'            => true,
   'pages'                 => false,
   'feeds'                 => false,
 );
@@ -44,7 +44,7 @@ $args = array(
   'show_in_rest'          => true,
   'taxonomies'            => array(),
   'hierarchical'          => false,
-  'public'                => false,
+  'public'                => true,
   'show_ui'               => true,
   'show_in_menu'          => true,
   'menu_position'         => 5,

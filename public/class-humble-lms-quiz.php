@@ -188,7 +188,10 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
         $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
+        $html .= '<label class="humble-lms-label-container">';
         $html .= '<input type="radio" name="single-choice-' . $context . '" value="' . $correct . '" ' . $checked  . '>' . $answer['answer'];
+        $html .= '<span class="humble-lms-radio"></span>';
+        $html .= '</label>';
         $html .= '</div>';
       }
 
@@ -214,7 +217,10 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $correct = $answer['correct'] == 1 ? '1' : '0';
         $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
+        $html .= '<label class="humble-lms-label-container">';
         $html .= '<input type="checkbox" name="multiple-choice-' . $context . '" value="' . $correct . '" ' . $checked . '>' . $answer['answer'];
+        $html .= '<span class="humble-lms-checkmark"></span>';
+        $html .= '</label>';
         $html .= '</div>';
       }
 

@@ -882,7 +882,7 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-label-container {
   display: block;
   position: relative;
-  padding-left: 1.75em;
+  padding: .125em 0 .125em 1.875em;
   margin-bottom: 0;
   cursor: pointer;
   font-size: 1em;

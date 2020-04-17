@@ -1153,6 +1153,11 @@ input[type='submit'].humble-lms-btn--error:active,
   background: white;
 }
 
+/* Google reCAPTCHA */
+.humble-lms-recaptcha {
+  margin-bottom: 1em;
+}
+
 /* Responsive */
 
 @media screen and (max-width: 767px) {

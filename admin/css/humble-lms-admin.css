@@ -191,6 +191,10 @@
   display: none !important;
 }
 
+.humble-lms-enable-recaptcha {
+  padding-bottom: .5em;
+}
+
 /* Quizzes */
 .humble-lms-question-type {
   margin-top: .25em;

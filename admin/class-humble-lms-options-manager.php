@@ -150,7 +150,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'email_welcome', __('Welcome email', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_agreement', __('Email agreement', 'humble-lms'), array( $this, 'email_agreement' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
-      
+      add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+ 
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
 
@@ -386,6 +387,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * reCAPTCHA keys.
+     *
+     * @since    0.0.1
+     */
+    function recaptcha_keys()
+    {
+      $recaptcha_enabled = isset( $this->options['recaptcha_enabled'] ) ? $this->options['recaptcha_enabled'] : '';
+      $checked = $recaptcha_enabled === 1 ? 'checked="checked"' : '';
+      $recaptcha_website_key = isset( $this->options['recaptcha_website_key'] ) ? $this->options['recaptcha_website_key'] : '';
+      $recaptcha_secret_key = isset( $this->options['recaptcha_secret_key'] ) ? $this->options['recaptcha_secret_key'] : '';
+      
+      echo '<p class="humble-lms-enable-recaptcha"><input type="checkbox" class="widefat" name="humble_lms_options[recaptcha_enabled]" value="1" ' . $checked . '"> ' . __('Enable reCAPTCHA in registration form', 'humble-lms') . '</p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[recaptcha_website_key]" value="' . $recaptcha_website_key . '" placeholder="' . __('Website key', 'humble-lms') . '&hellip;"></p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[recaptcha_secret_key]" value="' . $recaptcha_secret_key . '" placeholder="' . __('Secret key', 'humble-lms') . '&hellip;"></p>';
+      echo '<p class="description">' . __('Make sure you adjust your data privacy disclaimer to include Google reCAPTCHA.', 'humble-lms') . ' <a href="https://www.google.com/recaptcha/" target="_blank">' . __('More infos on Google reCAPTCHA', 'humble-lms') . '</a></p>';
+    }
+
+    /**
      * PayPal client ID.
      *
      * @since    0.0.1
@@ -394,7 +413,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     {
       $paypal_client_id = isset( $this->options['paypal_client_id'] ) ? $this->options['paypal_client_id'] : '';
 
-      echo '<p><input class="widefat" name="humble_lms_options[paypal_client_id]" value="' . $paypal_client_id . '"></p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[paypal_client_id]" value="' . $paypal_client_id . '"></p>';
     }
 
     /**
@@ -435,6 +454,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( $active === 'registration' ) {
         $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
         $options['email_agreement'] = isset( $input['email_agreement'] ) ? 1 : 0;
+        $options['recaptcha_website_key'] = esc_attr( trim( $input['recaptcha_website_key'] ) );
+        $options['recaptcha_secret_key'] = esc_attr( trim( $input['recaptcha_secret_key'] ) );
+        $options['recaptcha_enabled'] = isset( $input['recaptcha_enabled'] ) && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) ? 1 : 0;
       }
       
       if( isset( $input['registration_countries'] ) )
@@ -760,6 +782,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       return $users_per_page;
       
+    }
+
+    /**
+     * Check if Google reCAPTCHA is enabled.
+     *
+     * @return  int
+     * @since   0.0.1
+     */
+    public static function has_recaptcha() {
+      $options = get_option('humble_lms_options');
+      return ( $options['recaptcha_enabled'] === 1 && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) );
     }
 
     /**

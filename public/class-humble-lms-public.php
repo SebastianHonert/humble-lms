@@ -100,6 +100,8 @@ class Humble_LMS_Public {
      * class.
      */
 
+     global $post;
+
     if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
       $client_id = $this->options['paypal_client_id'];
       
@@ -107,6 +109,15 @@ class Humble_LMS_Public {
         $client_id = 'sb';
 
       wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'], false, NULL, true );
+    }
+
+    if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {
+      $website_key = $this->options['recaptcha_website_key'];
+
+      if( ! $website_key || ( ! has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) )
+        return;
+
+      wp_enqueue_script( 'humble-lms-recaptcha' , 'https://www.google.com/recaptcha/api.js', false, NULL, true );
     }
 
     wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, false );

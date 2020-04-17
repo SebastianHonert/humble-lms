@@ -958,6 +958,10 @@ input[type='submit'].humble-lms-btn--error:active,
   border-radius: 50%;
   background: white; }
 
+/* Google reCAPTCHA */
+.humble-lms-recaptcha {
+  margin-bottom: 1em; }
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .humble-lms-flex-column--half:not(.dont-break),

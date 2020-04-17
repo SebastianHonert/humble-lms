@@ -520,6 +520,26 @@ class Humble_LMS_Admin {
           $this->humble_lms_errors()->add('email_agreement', __('Please agree to receiving essential emails from our website.', 'humble-lms'));
         }
       }
+
+      // reCAPTCHA
+      if( $options_manager->has_recaptcha() ) {
+        if( isset( $_POST['g-recaptcha-response'] ) ) {
+          $captcha = $_POST['g-recaptcha-response'];
+        }
+
+        if( ! $captcha ) {
+          $this->humble_lms_errors()->add('recaptcha', __('Please check the reCAPTCHA form field.', 'humble-lms'));
+        } else {
+          $secret_key = $options_manager->options['recaptcha_secret_key'];
+          $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode( $secret_key ) .  '&response=' . urlencode( $captcha );
+          $response = file_get_contents( $url );
+          $responseKeys = json_decode( $response, true );
+  
+          if( ! $responseKeys['success'] ) {
+            $this->humble_lms_errors()->add('recaptca', __('Sorry, your registration did not pass reCAPTCHA verification.', 'humble-lms'));
+          }
+        }        
+      }
       
       $errors = $this->humble_lms_errors()->get_error_messages();
       

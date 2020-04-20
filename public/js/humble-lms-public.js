@@ -288,8 +288,7 @@ jQuery(document).ready(function($) {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: price,
-              currency: humble_lms.currency
+              value: price
             },
             reference_id: membership
           }]

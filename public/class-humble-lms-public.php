@@ -100,15 +100,18 @@ class Humble_LMS_Public {
      * class.
      */
 
-     global $post;
+    global $post;
+    $options = new Humble_LMS_Admin_Options_Manager;
+    
 
     if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
       $client_id = $this->options['paypal_client_id'];
+      $currency = $options->get_currency();
       
       if( ! $client_id )
         $client_id = 'sb';
 
-      wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'], false, NULL, true );
+      wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'] . '&amp;currency=' . $currency, false, NULL, true );
     }
 
     if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {

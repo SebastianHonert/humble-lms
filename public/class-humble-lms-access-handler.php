@@ -37,11 +37,11 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
         return 'allowed';
 
-      // Check for free/premium access
+      // Check membership access level
       $lesson_membership = get_post_meta( $lesson_id, 'humble_lms_membership', true );
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
 
-      if( $lesson_membership === 'premium' && ( $user_membership === 'free' || ! $user_membership ) ) {
+      if( $lesson_membership !== 'free' && ( $user_membership !== $lesson_membership ) ) {
         return 'membership';
       }
 

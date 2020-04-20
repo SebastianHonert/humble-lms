@@ -1233,7 +1233,49 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return false
      * @since   0.0.1
      */
-    public function humble_lms_paypal_buttons() {
+    public function humble_lms_paypal_buttons( $atts = null ) {
+      extract( shortcode_atts( array (
+        'membership' => '',
+      ), $atts ) );
+
+      $html = '';
+      $options = new Humble_LMS_Admin_Options_Manager; 
+      $currency = $options->get_currency();
+
+      // Memberships table
+      $membership_posts = Humble_LMS_Admin::get_memberships(false);
+
+      $html .= '<p>' . __('Select the membership you would like to purchase.', 'humble-lms') . '</p>';
+      $html .= '<div class="humble-lms-checkout-memberships">';
+
+      foreach( $membership_posts as $post ) {
+        $price = Humble_LMS_Admin::get_membership_price_by_slug( $post->post_name );
+        $description = get_post_meta( $post->ID, 'humble_lms_mbship_description', true );
+      
+        $html .= '<div class="humble-lms-checkout-membership">';
+          $html .= '<div class="humble-lms-checkout-membership-input">';
+            $html .= '<input type="radio" name="humble_lms_membership" value="' . $post->post_name . '">' . $post->post_title;
+            $html .= ' – <span class="humble-lms-checkout-membership-price">' . number_format( $price, 2 ) . ' ' . $currency . '</span>';
+          $html .= '</div>';
+
+          if( $description ) {
+            $html .= '<div class="humble-lms-checkout-membership-description">';
+              $html .= $description;
+            $html .= '</div>';
+          }
+        $html .= '</div>';
+      }
+
+      $html .= '</div>';
+
+      // Paypal container
+
+      $memberships = Humble_LMS_Admin::get_memberships();
+
+      if( ! $membership || ! in_array( $membership, $memberships ) ) {
+        return __('Please add an existing membership type (slug) to your PayPal shortcode first.', 'humble-lms');
+      }
+
       if( ! is_user_logged_in() ) {
         return $this->display_login_text();
       }
@@ -1246,13 +1288,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      $membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+      $price = Humble_LMS_Admin::get_membership_price_by_slug( $membership );
       
-      if( $membership !== 'premium' ) {
-        return '<div id="humble-lms-paypal-buttons"></div>';
+      if( $user_membership === 'free' || $user_membership !== $membership ) {
+        $html .= '<div id="humble-lms-paypal-buttons" data-membership="' . $membership . '" data-price="' . $price . '"></div>';
       } else {
-        return '<p>' . __('Your account has been upgraded to premium status. Enjoy the courses! 😊', 'humble-lms') . '</p><p><a class="humble-lms-btn" href="' . esc_url( site_url() ) . '">' . __('Back to home page', 'humble-lms') . '</a></p>';
+        $html .= '<p>' . __('Woohoo, your account has been upgraded! 😊', 'humble-lms') . '</p><p><a class="humble-lms-btn" href="' . esc_url( site_url() ) . '">' . __('Back to home page', 'humble-lms') . '</a></p>';
       }
+
+      return $html;
       
     }
     

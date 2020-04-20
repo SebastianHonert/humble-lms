@@ -962,6 +962,41 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-recaptcha {
   margin-bottom: 1em; }
 
+/* PayPal */
+#humble-lms-paypal-buttons {
+  z-index: 1;
+  position: relative; }
+
+/* Checkout */
+.humble-lms-checkout-memberships {
+  display: block;
+  margin-bottom: 1em;
+  border: 1px solid #ddd; }
+
+.humble-lms-checkout-membership,
+.humble-lms-checkout-membership-input {
+  display: block; }
+
+.humble-lms-checkout-membership {
+  padding: .75em;
+  background: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+  font-weight: 700; }
+
+.humble-lms-checkout-membership:nth-child(even) {
+  background: #f3f3f3; }
+
+.humble-lms-checkout-membership:last-of-type {
+  border-bottom: 0; }
+
+.humble-lms-checkout-membership-description {
+  margin-top: .5em;
+  font-weight: 400; }
+
+.humble-lms-checkout-membership-price {
+  font-weight: 600;
+  color: #188e6e; }
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .humble-lms-flex-column--half:not(.dont-break),

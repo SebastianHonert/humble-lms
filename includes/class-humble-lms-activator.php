@@ -161,6 +161,7 @@ class Humble_LMS_Activator {
         'reset_password' => $custom_page_reset_password->ID,
         'user_profile' => $custom_page_user_profile->ID,
         'checkout' => $custom_page_checkout->ID,
+        'currency' => 'USD',
       ),
       'email_welcome' => "Hi there,
 

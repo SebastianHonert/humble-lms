@@ -82,7 +82,7 @@ function humble_lms_cert_heading_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $heading = get_post_meta( $post->ID, 'humble_lms_cert_heading', true);
+  $heading = get_post_meta( $post->ID, 'humble_lms_cert_heading', true );
 
   echo '<input class="widefat" name="humble_lms_cert_heading" id="humble_lms_cert_heading" type="text" value="' . $heading . '">';
 } 
@@ -92,7 +92,7 @@ function humble_lms_cert_subheading_mb()
 {
   global $post;
 
-  $subheading = get_post_meta( $post->ID, 'humble_lms_cert_subheading', true);
+  $subheading = get_post_meta( $post->ID, 'humble_lms_cert_subheading', true );
 
   echo '<input class="widefat" name="humble_lms_cert_subheading" id="humble_lms_cert_subheading" type="text" value="' . $subheading . '">';
 }

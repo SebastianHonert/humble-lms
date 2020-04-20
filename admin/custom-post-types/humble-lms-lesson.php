@@ -66,7 +66,7 @@ register_post_type( 'humble_lms_lesson', $args );
 
 function humble_lms_lesson_add_meta_boxes() {
   add_meta_box( 'humble_lms_lesson_description_mb', __('What is this lesson about?', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
-  add_meta_box( 'humble_lms_lesson_membership_mb', __('Is this a free lesson?', 'humble-lms'), 'humble_lms_lesson_membership_mb', 'humble_lms_lesson', 'normal', 'default' );
+  add_meta_box( 'humble_lms_lesson_membership_mb', __('Membership access level', 'humble-lms'), 'humble_lms_lesson_membership_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_access_levels_mb', __('Who can access this lesson?', 'humble-lms'), 'humble_lms_lesson_access_levels_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_instructors_mb', __('Select instructor(s) for this lesson (optional)', 'humble-lms'), 'humble_lms_lesson_instructors_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_quizzes_mb', __('Quizzes attached to this lesson', 'humble-lms'), 'humble_lms_lesson_quizzes_mb', 'humble_lms_lesson', 'normal', 'default' );
@@ -92,18 +92,21 @@ function humble_lms_lesson_description_mb() {
 function humble_lms_lesson_membership_mb() {
   global $post;
 
-  $memberships = Humble_LMS_Admin_Options_Manager::$memberships;
+  $memberships = Humble_LMS_Admin::get_memberships();
   $membership = get_post_meta( $post->ID, 'humble_lms_membership', true );
   
   if( ! in_array( $membership, $memberships ) ) {
-    $membership = $memberships[0];
+    $membership = 'free';
   }
 
   echo '<select name="humble_lms_membership" id="humble_lms_membership">';
-  foreach( $memberships as $m ) {
-    $selected = $m === $membership ? 'selected' : '';
-    echo '<option value="' . $m . '" ' . $selected . '>' . ucfirst($m) . '</option>';
-  }
+    $selected = 'free' === $membership ? 'selected' : '';
+    echo '<option value="free" ' . $selected . '>Free</option>';
+
+    foreach( $memberships as $m ) {
+      $selected = $m === $membership ? 'selected' : '';
+      echo '<option value="' . $m . '" ' . $selected . '>' . ucfirst($m) . '</option>';
+    }
   echo '</select>';
 }
 

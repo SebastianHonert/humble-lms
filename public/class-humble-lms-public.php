@@ -114,10 +114,9 @@ class Humble_LMS_Public {
     if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {
       $website_key = $this->options['recaptcha_website_key'];
 
-      if( ! $website_key || ( ! has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) )
-        return;
-
-      wp_enqueue_script( 'humble-lms-recaptcha' , 'https://www.google.com/recaptcha/api.js', false, NULL, true );
+      if( $website_key && ( has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) ) {
+        wp_enqueue_script( 'humble-lms-recaptcha' , 'https://www.google.com/recaptcha/api.js', false, NULL, true );
+      }
     }
 
     wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, false );
@@ -127,6 +126,9 @@ class Humble_LMS_Public {
       'ajax_url' => admin_url( 'admin-ajax.php' ),
       'nonce' => wp_create_nonce( 'humble_lms' ),
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
+      'membership_undefined' => __('Invalid membership type, checkout cancelled.', 'humble-lms'),
+      'membership_price_undefined' => __('Invalid membership value, checkout cancelled.', 'humble-lms'),
+      'currency' => $this->options['currency'],
     ) );
   }
 

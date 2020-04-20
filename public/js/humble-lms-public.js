@@ -270,21 +270,33 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
+
   if (typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
+    let membership = $('#humble-lms-paypal-buttons').data('membership')
+    let price = $('#humble-lms-paypal-buttons').data('price')
+
+    if (typeof membership === 'undefined' || ! membership) {
+      alert(humble_lms.membership_undefined)
+    }
+
+    if (typeof price === 'undefined' || ! price) {
+      alert(humble_lms.membership_price_undefined)
+    }
+    
     paypal.Buttons({
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: '0.01'
+              value: price,
+              currency: humble_lms.currency
             },
-            reference_id: 'Premium Membership'
+            reference_id: membership
           }]
         })
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          console.log(details)
           $.ajax({
             url: humble_lms.ajax_url,
             type: 'POST',

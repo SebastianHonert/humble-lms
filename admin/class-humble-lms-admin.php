@@ -127,15 +127,16 @@ class Humble_LMS_Admin {
    * @since    0.0.1
    */
   public function register_custom_post_types() {
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-membership.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-question.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';;
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-txn.php';
   }
 
@@ -214,8 +215,8 @@ class Humble_LMS_Admin {
     echo __('This user is an instructor.', 'humble-lms') . '</p>';
 
     $options = new Humble_LMS_Admin_Options_Manager;
-    $memberships = $options::$memberships;
     $countries = $options->countries;
+    $memberships = $this::get_memberships();
 
     $user_country = get_user_meta( $user->ID, 'humble_lms_country', true);
     echo '<h4>' . __('Country', 'humble-lms') . '</h4>';
@@ -1117,6 +1118,80 @@ class Humble_LMS_Admin {
     );
 
     return wp_parse_args($custom, $columns);
+  }
+
+  /**
+   * Get memberships sorted by price.
+   * 
+   * @since   0.0.1
+   */
+  public static function get_memberships( $array = true, $publish = true ) {
+    $post_status = $publish ? 'publish' : 'any';
+
+    $memberships = get_posts( array(
+      'post_type' => 'humble_lms_mbship',
+      'post_status' => $post_status,
+      'posts_per_page' => -1,
+      'meta_key' => 'humble_lms_mbship_price',
+      'orderby' => 'meta_value_num',
+      'order' => 'ASC',
+    ) );
+
+    if( ! $array ) {
+      return $memberships;
+    }
+
+    $memberships_array = array();
+
+    foreach( $memberships as $membership ) {
+      array_push( $memberships_array, $membership->post_name );
+    }
+
+    return $memberships_array; 
+  }
+
+  /**
+   * Get memberships.
+   * 
+   * @since   0.0.1
+   */
+  public static function get_membership_by_slug( $slug = null ) {
+    if( ! $slug ) {
+      return;
+    }
+
+    $args = array(
+      'name' => $slug,
+      'post_type'   => 'humble_lms_mbship',
+      'post_status' => 'publish',
+      'numberposts' => 1
+    );
+
+    $posts = get_posts( $args );
+
+    return $posts[0];
+  }
+
+  /**
+   * Get membership price.
+   * 
+   * @since   0.0.1
+   */
+  public static function get_membership_price_by_slug( $slug = null ) {
+    if( ! $slug ) {
+      return;
+    }
+
+    $membership = self::get_membership_by_slug( $slug );
+
+    if( ! $membership ) {
+      return;
+    }
+
+    $price = get_post_meta( $membership->ID, 'humble_lms_mbship_price', true );
+    $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+
+    return $price;
   }
 
 }

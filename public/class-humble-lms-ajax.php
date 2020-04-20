@@ -174,11 +174,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
-      $membership = get_user_meta( $user_id, 'humble_lms_membership', true );
-      if( $membership === 'premium' ) {
-        die;
-      }
-
       $details = $_POST['details'];
 
       // Create new transaction post
@@ -211,7 +206,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       add_post_meta( $txn_id, 'humble_lms_order_details', $order_details );
 
       // Update user meta
-      update_user_meta( $user_id, 'humble_lms_membership', 'premium' );
+      update_user_meta( $user_id, 'humble_lms_membership', $order_details['reference_id'] );
 
       // Done
       echo json_encode($details, true);

@@ -10,8 +10,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
   class Humble_LMS_Admin_Options_Manager {
 
-    public static $memberships = array('free', 'premium');
-
     /**
      * Initialize the class and set its properties.
      *
@@ -44,6 +42,34 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'reset_password' => 0,
         'user_profile' => 0,
         'checkout' => 0,
+      );
+
+      $this->allowed_currencies = array(
+        'AUD',
+        'BRL',
+        'CAD',
+        'CHF',
+        'CZK',
+        'DKK',
+        'EUR',
+        'GBP',
+        'HKD',
+        'HUF',
+        'INR',
+        'ILS',
+        'JPY',
+        'MYR',
+        'MXN',
+        'NZD',
+        'NOK',
+        'PHP',
+        'PLN',
+        'RUB',
+        'SEK',
+        'SGD',
+        'THB',
+        'TWD',
+        'USD',
       );
 
     }
@@ -153,6 +179,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
  
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'currency', 'Currency', array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
 
     /**
@@ -417,6 +444,26 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * PayPal currency.
+     *
+     * @since    0.0.1
+     */
+    function currency()
+    {
+      $currencies = $this->allowed_currencies;
+      $currency = isset( $this->options['currency'] ) ? $this->options['currency'] : 'USD';
+
+      echo '<p><select type="select" class="widefat" name="humble_lms_options[currency]">';
+      
+      foreach( $this->allowed_currencies as $cur ) {
+        $selected = $currency === $cur ? 'selected="selected"' : '';
+        echo '<option value="' . $cur . '" ' . $selected . '">' . $cur . '</option>';
+      }
+
+      echo '</select></p>';
+    }
+
+    /**
      * Validate options on save.
      *
      * @param   array
@@ -468,8 +515,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( isset( $input['email_welcome'] ) )
         $options['email_welcome'] = esc_html( $input['email_welcome'] );
 
-      if( isset( $input['paypal_client_id'] ) )
+      if( isset( $input['paypal_client_id'] ) ) {
         $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
+      }
+
+      $options['currency'] = sanitize_text_field( $input['currency'] );
+      $options['currency'] = in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
 
       return $options;
     }
@@ -787,7 +838,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     /**
      * Check if Google reCAPTCHA is enabled.
      *
-     * @return  int
+     * @return  bool
      * @since   0.0.1
      */
     public static function has_recaptcha() {
@@ -798,12 +849,23 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     /**
      * Check if the PayPal settings are available.
      *
-     * @return  int
+     * @return  bool
      * @since   0.0.1
      */
     public static function has_paypal() {
       $options = get_option('humble_lms_options');
       return ( ! empty( $options['paypal_client_id'] ) );
+    }
+
+    /**
+     * Get currency.
+     *
+     * @return  string
+     * @since   0.0.1
+     */
+    public function get_currency() {
+      $options = get_option('humble_lms_options');
+      return in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
     }
     
   }

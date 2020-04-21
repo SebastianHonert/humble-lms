@@ -130,7 +130,7 @@ class Humble_LMS_Public {
       'nonce' => wp_create_nonce( 'humble_lms' ),
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
       'membership_undefined' => __('Invalid membership type, checkout cancelled.', 'humble-lms'),
-      'membership_price_undefined' => __('Invalid membership value, checkout cancelled.', 'humble-lms'),
+      'membership_price_undefined' => __('Invalid price value, checkout cancelled.', 'humble-lms'),
       'currency' => $this->options['currency'],
     ) );
   }

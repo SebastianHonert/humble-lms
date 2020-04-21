@@ -321,6 +321,7 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_progress_bar', $plugin_shortcodes, 'progress_bar' );
     $this->loader->add_shortcode( 'humble_lms_syllabus', $plugin_shortcodes, 'syllabus' );
     $this->loader->add_shortcode( 'humble_lms_instructors', $plugin_shortcodes, 'instructors' );
+    $this->loader->add_shortcode( 'humble_lms_providers', $plugin_shortcodes, 'providers' );
     $this->loader->add_shortcode( 'humble_lms_mark_complete_button', $plugin_shortcodes, 'mark_complete_button' );
     $this->loader->add_shortcode( 'humble_lms_user_progress', $plugin_shortcodes, 'user_progress' );
     $this->loader->add_shortcode( 'humble_lms_user_awards', $plugin_shortcodes, 'user_awards' );

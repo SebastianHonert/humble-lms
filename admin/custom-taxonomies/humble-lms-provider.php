@@ -1,9 +1,9 @@
 <?php
 
 $labels = array(
-  'name'                       => _x( 'Difficulty', 'Taxonomy General Name', 'humble-lms' ),
-  'singular_name'              => _x( 'Difficulty', 'Taxonomy Singular Name', 'humble-lms' ),
-  'menu_name'                  => __( 'Difficulties', 'humble-lms' ),
+  'name'                       => _x( 'Provider', 'Taxonomy General Name', 'humble-lms' ),
+  'singular_name'              => _x( 'Provider', 'Taxonomy Singular Name', 'humble-lms' ),
+  'menu_name'                  => __( 'Providers', 'humble-lms' ),
   'all_items'                  => __( 'All Items', 'humble-lms' ),
   'parent_item'                => __( 'Parent Item', 'humble-lms' ),
   'parent_item_colon'          => __( 'Parent Item:', 'humble-lms' ),
@@ -23,9 +23,9 @@ $labels = array(
   'items_list_navigation'      => __( 'Items list navigation', 'humble-lms' ),
 );
 $rewrite = array(
-  'slug'                       => 'level',
-  'with_front'                 => false,
-  'hierarchical'               => false,
+  'slug'                       => 'provider',
+  'with_front'                 => true,
+  'hierarchical'               => true,
 );
 $args = array(
   'labels'                     => $labels,
@@ -40,12 +40,9 @@ $args = array(
 );
 
 register_taxonomy(
-  'humble_lms_tax_course_level',
+  'humble_lms_tax_provider',
   array(
     'humble_lms_track',
     'humble_lms_course',
-    'humble_lms_lesson',
-    'humble_lms_quiz',
-    'humble_lms_question',
   ), $args
 );

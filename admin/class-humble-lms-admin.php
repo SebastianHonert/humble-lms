@@ -147,6 +147,7 @@ class Humble_LMS_Admin {
    */
   public function register_custom_taxonomies() {
     require_once plugin_dir_path( __FILE__ ) . 'custom-taxonomies/humble-lms-course-level.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-taxonomies/humble-lms-provider.php';
   }
 
   /**

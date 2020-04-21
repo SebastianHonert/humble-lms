@@ -997,6 +997,29 @@ input[type='submit'].humble-lms-btn--error:active,
   font-weight: 600;
   color: #188e6e; }
 
+/* Providers */
+.humble-lms-providers {
+  margin-bottom: 1em; }
+
+.humble-lms-provider {
+  font-weight: 400;
+  padding: .75em;
+  padding-left: 0;
+  border-bottom: 1px solid #eee; }
+
+.humble-lms-provider:first-of-type {
+  padding-top: 0; }
+
+.humble-lms-provider:last-of-type {
+  margin-bottom: 0; }
+
+.humble-lms-provider-name {
+  font-weight: 600; }
+
+.humble-lms-provider p:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0; }
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .humble-lms-flex-column--half:not(.dont-break),

@@ -294,7 +294,7 @@ class Humble_LMS_Public {
 
     // Single lesson
     if( is_single() && get_post_type( $post->ID ) === 'humble_lms_lesson' ) {
-      $level = strip_tags( get_the_term_list( $post->ID, 'humble_lms_course_level', '', ', ') );
+      $level = strip_tags( get_the_term_list( $post->ID, 'humble_lms_tax_course_level', '', ', ') );
       $level = $level ? '<span class="humble-lms-lesson-level"><strong>' . __('Level', 'humble-lms') . ':</strong> <span>' . $level . '</span></span>': '';
       $html .= $level;
     }

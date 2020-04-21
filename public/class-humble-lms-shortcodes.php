@@ -111,8 +111,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $track = get_post( $track_id );
 
       $completed = $this->user->completed_track( $track_id ) ? 'humble-lms-track-completed' : '';
-      $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile'); 
-      $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_course_level', '', ', ') );
+      $featured_img_url = get_the_post_thumbnail_url( $track_id, 'humble-lms-course-tile' );
+      $providers = get_the_terms( $track_id, 'humble_lms_tax_provider' );
+      $level = strip_tags( get_the_term_list( $track_id, 'humble_lms_tax_course_level', '', ', ' ) );
       $level_str = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $track_id, 'humble_lms_track_duration', true );
       $duration_str = $duration ? $duration : __('Not specified', 'humble-lms');
@@ -128,6 +129,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
+          if( $providers ) {
+            $providers_str = get_the_term_list( $track_id, 'humble_lms_tax_provider', '', ', ' );
+            $providers_str = strip_tags( $providers_str );
+            $html .= '<span class="humble-lms-difficulty"><strong>' . __('Provider', 'humble-lms') . ':</strong> ' . $providers_str . '</span>';
+          }
           $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
           $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
           $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
@@ -240,8 +246,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $course = get_post( $course_id );
 
       $completed = $this->user->completed_course( $course_id ) ? 'humble-lms-course-completed' : '';
-      $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile'); 
-      $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_course_level', '', ', ') );
+      $featured_img_url = get_the_post_thumbnail_url( $course_id, 'humble-lms-course-tile');
+      $providers = get_the_terms( $course_id, 'humble_lms_tax_provider' );
+      $level = strip_tags( get_the_term_list( $course_id, 'humble_lms_tax_course_level', '', ', ') );
       $level_str = $level ? $level : __('Not specified', 'humble-lms');
       $duration = get_post_meta( $course_id, 'humble_lms_course_duration', true );
       $duration_str = $duration ? $duration : __('Not specified', 'humble-lms');
@@ -257,6 +264,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
+          if( $providers ) {
+            $providers_str = get_the_term_list( $course_id, 'humble_lms_tax_provider', '', ', ' );
+            $providers_str = strip_tags( $providers_str );
+            $html .= '<span class="humble-lms-difficulty"><strong>' . __('Provider', 'humble-lms') . ':</strong> ' . $providers_str . '</span>';
+          }
           $html .= $level ? '<span class="humble-lms-difficulty"><strong>' . __('Level', 'humble-lms') . ':</strong> ' . $level_str . '</span>' : '';
           $html .= $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration_str  . '</span>' : '';
           $html .= '<span class="humble-lms-progress"><strong>' . __('Progress', 'humble-lms') . ':</strong> ' . $progress  . '%</span>';
@@ -456,7 +468,49 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $html .= '</div>';
 
       return $html;
-      
+    }
+
+    /**
+     * Display track/course providers.
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function providers( $atts = null ) {
+      global $post;
+
+      extract( shortcode_atts( array (
+        'title' => '',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
+
+      $html = '';
+
+      $title = $title ? esc_attr( $title ) : __('Providers', 'humble-lms');
+      $providers = get_the_terms( $post->ID, 'humble_lms_tax_provider' );
+
+      $html .= '<div class="humble-lms-providers">';
+        $html .= '<h2 class="humble-lms-providers-title">' . $title . '</h2>';
+
+        if( $providers ) {
+          foreach( $providers as $provider ) {
+            $html .= '<div class="humble-lms-provider">
+              <p><span class="humble-lms-provider-name">' . $provider->name . '</span></p>';
+
+              if( $provider->description ) {
+                $html .= '<p><span class="humble-lms-provider-description">' . $provider->description . '</span></p>';
+              }
+              
+            $html .= '</div>';
+          }
+        } else {
+          $html .= '<p>' . __('Providers not specified.', 'humble-lms') . '</p>';
+        }
+
+      $html .= '</div>';
+
+      return $html;
     }
 
     /**

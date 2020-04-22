@@ -116,7 +116,7 @@ function humble_lms_track_courses_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . sprintf( __('No courses found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more courses</a>' ) . '</p>';
+    echo '<p>' . __('No courses found. Please add one or more courses first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">' . __('Add courses', 'humble-lms') . '</a></p>';
 
   endif;
 }

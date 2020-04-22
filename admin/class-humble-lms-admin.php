@@ -78,6 +78,7 @@ class Humble_LMS_Admin {
      * class.
      */
 
+    wp_enqueue_style( 'jquery-ui', 'https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css', array(), '1.12.1', 'all' );
     wp_enqueue_style( 'multi-select', plugin_dir_url( __FILE__ ) . 'js/lou-multi-select/css/multi-select.css', array(), '0.9.12', 'all' );
     wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/humble-lms-admin.css', array(), $this->version, 'all' );
     wp_enqueue_style( 'wp-color-picker' );
@@ -103,6 +104,7 @@ class Humble_LMS_Admin {
      * class.
      */
 
+    wp_enqueue_script( 'jquery-ui-datepicker' );
     wp_enqueue_script( 'quicksearch', plugin_dir_url( __FILE__ ) . 'js/jquery.quicksearch.js', array( 'jquery' ), '1.0.0', true );
     wp_enqueue_script( 'sortable', plugin_dir_url( __FILE__ ) . 'js/sortable.min.js', array( 'jquery' ), '1.10.1', true );
     wp_enqueue_script( 'multi-select', plugin_dir_url( __FILE__ ) . 'js/lou-multi-select/js/jquery.multi-select.js', array( 'jquery' ), '0.9.12', true );
@@ -238,6 +240,10 @@ class Humble_LMS_Admin {
     echo '<h4>' . __('Membership', 'humble-lms') . '</h4>';
     echo '<select name="humble_lms_membership" id="humble_lms_membership">';
       echo '<option value="" disabled>' . __('Please select a membership type', 'humble-lms') . '</option>';
+
+      $selected = $user_membership === 'free' ? 'selected="selected"' : '';
+      echo '<option value="free" ' . $selected . '>' . __('Free', 'humble-lms') . '</option>';
+
       foreach( $memberships as $key => $membership ) {
         $selected = $membership === $user_membership ? 'selected' : '';
         echo '<option value="' . $membership . '" ' . $selected . '>' . ucfirst( $membership ) . '</option>';

@@ -106,7 +106,7 @@
 }
 
 .humble-lms-reporting-table th {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .humble-lms-admin-progress-bar {
@@ -149,7 +149,7 @@
 
 .humble-lms-options-lessons-completed,
 .humble-lms-options-lessons-incompleted {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .humble-lms-options-complete {
@@ -168,8 +168,9 @@
   margin-bottom: 1em;
 }
 
+label.humble-lms-label,
 .humble-lms-course-section-title-label {
-  font-weight: 700;
+  font-weight: 600;
   margin: 0 0 .375em;
   display: block;
 }
@@ -191,8 +192,20 @@
   display: none !important;
 }
 
+label[for='humble_lms_course_timeframe_to'] {
+  margin-top: 1em;
+}
+
 .humble-lms-enable-recaptcha {
   padding-bottom: .5em;
+}
+
+.humble-lms-datepicker {
+  margin-bottom: .5em;
+}
+
+label[for="humble_lms_course_timeframe_info"] {
+  margin-top: 1em;
 }
 
 /* Quizzes */

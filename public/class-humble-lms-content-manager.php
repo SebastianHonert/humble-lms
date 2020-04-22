@@ -336,6 +336,30 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       
     }
 
+    /**
+     * Get course timestamps
+     * 
+     * @return   array
+     * @since    0.0.1
+     */
+    public static function get_timestamps( $course_id = null ) {
+      if( ! $course_id || ! get_post_type( $course_id ) ) {
+        return false;
+      }
+
+      $timestamps = get_post_meta( $course_id, 'humble_lms_course_timestamps', false );
+
+      $timestamps_array = array(
+        'timestamp_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? $timestamps[0]['from'] : '',
+        'timestamp_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? $timestamps[0]['to'] : '',
+        'date_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? date('F d, Y', $timestamps[0]['from'] ) : '',
+        'date_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? date('F d, Y', $timestamps[0]['to'] ) : '',
+        'info' => isset( $timestamps[0]['info'] ) ? $timestamps[0]['info'] : '',
+      );
+
+      return $timestamps_array;
+    }
+
   }
   
 }

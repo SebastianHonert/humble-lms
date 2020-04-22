@@ -177,7 +177,7 @@ function humble_lms_lesson_instructors_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/users.php') . '">add one or more instructors</a>' ) . '</p>';
+    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '<a href="' . admin_url('/users.php') . '">' . __('Add instructor', 'humble-lms') . '</a></p>';
 
   endif;
 }
@@ -229,7 +229,7 @@ function humble_lms_lesson_quizzes_mb()
   
   else:
 
-    echo '<p>' . sprintf( __('No quizzes found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
+    echo '<p>' . __('No quizzes found. Please add one or more quizzes first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_quiz') . '">' . __('Add quiz', 'humble-lms') . '</a></p>';
 
   endif;
 }

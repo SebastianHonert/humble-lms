@@ -1020,6 +1020,19 @@ input[type='submit'].humble-lms-btn--error:active,
   padding-bottom: 0;
   margin-bottom: 0; }
 
+/* Timeframes / course dates */
+.humble-lms-timeframe {
+  margin-bottom: 1em; }
+
+.humble-lms-timeframe-content {
+  padding-bottom: 0;
+  margin-bottom: 0; }
+
+/* H5P */
+.h5p-iframe-wrapper {
+  display: block;
+  margin-bottom: 1em; }
+
 /* Responsive */
 @media screen and (max-width: 767px) {
   .humble-lms-flex-column--half:not(.dont-break),

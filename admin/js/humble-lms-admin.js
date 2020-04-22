@@ -453,13 +453,45 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Color picker
+   * Colorpicker
    * 
    * @since   0.0.1
    */
   $('.humble_lms_color_picker')
   if ($.isFunction( jQuery.fn.wpColorPicker)) {
 		$('.humble_lms_color_picker').wpColorPicker()
-	}
+  }
+  
+  /**
+   * Datepicker
+   * 
+   * @since   0.0.1
+   */
+  $('.humble-lms-datepicker').datepicker({
+    onSelect: function (selected) {
+      let date = new Date(selected)
+          date = date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+
+      let timestamp = Math.floor($.datepicker.formatDate('@', new Date(date)) / 1000)
+
+      if ($(this).attr('name') === 'humble_lms_course_timeframe[from]') {
+        $('input[name="humble_lms_course_timeframe[to]"]').datepicker('option', 'minDate', selected)
+        $('input[name="humble_lms_course_timeframe_timestamp[from]"]').val(timestamp)
+      } else if ($(this).attr('name') === 'humble_lms_course_timeframe[to]') {
+        $('input[name="humble_lms_course_timeframe[from]"]').datepicker('option', 'maxDate', selected)
+        $('input[name="humble_lms_course_timeframe_timestamp[to]"]').val(timestamp)
+      }
+    }
+  })
+
+  $('.humble-lms-clear-datepicker-from').on('click', function () {
+    $('input[name="humble_lms_course_timeframe[from]"]').datepicker('setDate', null)
+    $('input[name="humble_lms_course_timeframe_timestamp[from]"]').val('')
+  })
+
+  $('.humble-lms-clear-datepicker-to').on('click', function () {
+    $('input[name="humble_lms_course_timeframe[to]"]').datepicker('setDate', null)
+    $('input[name="humble_lms_course_timeframe_timestamp[to]"]').val('')
+  })
 
 })

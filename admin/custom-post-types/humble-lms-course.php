@@ -59,15 +59,50 @@ register_post_type( 'humble_lms_course', $args );
 
 function humble_lms_course_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_timeframe_mb', __('Timeframe', 'humble-lms'), 'humble_lms_course_timeframe_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
-  add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_color_mb', __('Select a color for the course tile (optional)', 'humble-lms'), 'humble_lms_course_color_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
+
+// Timeframe meta box
+
+function humble_lms_course_timeframe_mb()
+{
+  global $post;
+
+  $timestamps = Humble_LMS_Content_Manager::get_timestamps( $post->ID );
+
+  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_from">' . __('Course start', 'humble-lms') . '</label>';
+  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timeframe[from]" id="humble_lms_course_timeframe_from" value="' . $timestamps['date_from'] . '">';
+  echo '<input type="button" class="button humble-lms-clear-datepicker-from" value="' . __('Remove', 'humble-lms') . '">';
+  echo '<input type="hidden" class="humble-lms-datepicker-timestamp-from" name="humble_lms_course_timeframe_timestamp[from]" id="humble_lms_course_timeframe_timestamp_from" value="' . $timestamps['timestamp_from'] . '">';
+
+  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_to">' . __('Course end', 'humble-lms') . '</label>';
+  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timeframe[to]" id="humble_lms_course_timeframe_to" value="' . $timestamps['date_to'] . '">';
+  echo '<input type="button" class="button humble-lms-clear-datepicker-to" value="' . __('Remove', 'humble-lms') . '">';
+  echo '<input type="hidden" class="humble-lms-datepicker-timestamp-to" name="humble_lms_course_timeframe_timestamp[to]" id="humble_lms_course_timeframe_timestamp_to" value="' . $timestamps['timestamp_to'] . '">';
+
+  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_info">' . __('Additional information', 'humble-lms') . '</label>';
+  echo '<textarea class="widefat" type="humble-lms-timeframe-info" name="humble_lms_course_timeframe[info]" id="humble_lms_course_timeframe_info">' . $timestamps['info'] . '</textarea>';
+  echo '<p class="description">' . __('Allowed HTML tags', 'humble-lms') . ': strong, b, em, i, a' . '</p>';
+}
+
+// Duration meta box
+
+function humble_lms_course_duration_mb()
+{
+  global $post;
+
+  $duration = get_post_meta($post->ID, 'humble_lms_course_duration', true);
+
+  echo '<input type="text" class="widefat" name="humble_lms_course_duration" id="humble_lms_course_duration" value="' . $duration . '">';
+}
 
 // Sections meta box
 
@@ -78,7 +113,7 @@ function humble_lms_course_sections_mb()
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
   if( ! get_posts( array( 'post_type' => 'humble_lms_lesson') ) ) {
-    echo '<p>' . sprintf( __('No lessons found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">add one or more lessons</a>' ) . '</p>';
+    echo '<p>' . __('No lessons found. Please add one or more lessons first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">' . __('Add lessons', 'humble-lms') . '</a></p>';
     return;
   }
 
@@ -172,29 +207,6 @@ function humble_lms_course_sections_mb()
   echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section--cloneable" data-target="#humble-lms-admin-course-sections">+ ' . __('Add section', 'humble-lms') . '</a></p>';
 }
 
-// Duration meta box
-
-function humble_lms_course_duration_mb()
-{
-  global $post;
-
-  $duration = get_post_meta($post->ID, 'humble_lms_course_duration', true);
-
-  echo '<input type="text" class="widefat" name="humble_lms_course_duration" id="humble_lms_course_duration" value="' . $duration . '">';
-  
-}
-
-// Featured image meta box
-
-function humble_lms_course_show_featured_image_mb() {
-  global $post;
-
-  $show = get_post_meta($post->ID, 'humble_lms_course_show_featured_image', true);
-  $checked = $show ? 'checked' : '';
-
-  echo '<p><input type="checkbox" name="humble_lms_course_show_featured_image" id="humble_lms_course_show_featured_image" value="1" ' . $checked . '>' . __('Yes, display the featured image on the course page.', 'humble-lms') . '</p>';
-}
-
 // Course Instructor
 
 function humble_lms_course_instructors_mb()
@@ -242,7 +254,7 @@ function humble_lms_course_instructors_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . sprintf( __('No instructors found. Please %s first.', 'humble-lms'), '<a href="' . admin_url('/users.php') . '">add one or more instructors</a>' ) . '</p>';
+    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '<a href="' . admin_url('/users.php') . '">' . __('Add instructor', 'humble-lms') . '</a></p>';
 
   endif;
 }
@@ -268,6 +280,17 @@ function humble_lms_course_color_mb()
   $color = ! $color ? '' : $color;
 
   echo '<input type="text" class="humble_lms_color_picker"" name="humble_lms_course_color" id="humble_lms_course_color" value="' . $color . '">';
+}
+
+// Featured image meta box
+
+function humble_lms_course_show_featured_image_mb() {
+  global $post;
+
+  $show = get_post_meta($post->ID, 'humble_lms_course_show_featured_image', true);
+  $checked = $show ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_course_show_featured_image" id="humble_lms_course_show_featured_image" value="1" ' . $checked . '>' . __('Yes, display the featured image on the course page.', 'humble-lms') . '</p>';
 }
 
 // Save metabox data
@@ -297,6 +320,15 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
+  $allowed_html = array(
+    'a' => array(
+      'href' => array(),
+      'title' => array()
+    ),
+    'em' => array(),
+    'strong' => array(),
+  );
+
   $sections = get_post_meta( $post->ID, 'humble_lms_course_sections', true );
   $sections = json_decode( $sections, true );
   foreach( $sections as $key => $section ) {
@@ -304,14 +336,17 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
     $sections[$key]['lessons'] = sanitize_text_field( $sections[$key]['lessons'] );
   }
 
+  $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
+  $course_meta['humble_lms_course_timestamps']['from'] = (int)$_POST['humble_lms_course_timeframe_timestamp']['from'];
+  $course_meta['humble_lms_course_timestamps']['to'] = (int)$_POST['humble_lms_course_timeframe_timestamp']['to'];
+  $course_meta['humble_lms_course_timestamps']['info'] = wp_kses( $_POST['humble_lms_course_timeframe']['info'], $allowed_html );
   $course_meta['humble_lms_course_sections'] = json_encode( $sections );
   $course_meta['humble_lms_course_sections'] = $_POST['humble_lms_course_sections'];
-  $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
-  $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
   $course_meta['humble_lms_course_consecutive_order'] = (int)$_POST['humble_lms_course_consecutive_order'];
   $course_meta['humble_lms_instructors'] = isset( $_POST['humble_lms_course_instructors'] ) ? explode(',', $_POST['humble_lms_course_instructors']) : [];
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
   $course_meta['humble_lms_course_color'] = isset( $_POST['humble_lms_course_color'] ) ? sanitize_hex_color( $_POST['humble_lms_course_color'] ) : '';
+  $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

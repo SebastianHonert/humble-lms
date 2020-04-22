@@ -481,6 +481,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       extract( shortcode_atts( array (
         'title' => '',
+        'hide_title' => '',
         'style' => '',
         'class' => '',
       ), $atts ) );
@@ -490,8 +491,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $title = $title ? esc_attr( $title ) : __('Providers', 'humble-lms');
       $providers = get_the_terms( $post->ID, 'humble_lms_tax_provider' );
 
-      $html .= '<div class="humble-lms-providers">';
-        $html .= '<h2 class="humble-lms-providers-title">' . $title . '</h2>';
+      $html .= '<div class="humble-lms-providers" class="' . $class . '" style="' . $style . '">';
+        if( ! filter_var( $hide_title, FILTER_VALIDATE_BOOLEAN ) ) {
+          $html .= $title ? '<h2 class="humble-lms-providers-title">' . $title . '</h2>' : '';
+        }
 
         if( $providers ) {
           foreach( $providers as $provider ) {
@@ -505,9 +508,69 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '</div>';
           }
         } else {
-          $html .= '<p>' . __('Providers not specified.', 'humble-lms') . '</p>';
+          $html .= '<p class="last">' . __('Providers not specified.', 'humble-lms') . '</p>';
         }
 
+      $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
+     * Display course start/end date.
+     * 
+     * @return string
+     * @since   0.0.1
+     */
+    function timeframe( $atts = null ) {
+      global $post;
+
+      extract( shortcode_atts( array (
+        'course_id' => '',
+        'title' => '',
+        'hide_title' => '',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
+
+      $title = $title ? esc_attr( $title ) : __('Timeframe', 'humble-lms');
+
+      if( ! $course_id ) {
+        $course_id = $post->ID;
+      }
+
+      $course = get_post_type( $course_id );
+
+      if( ! $course ) {
+        return __('Timeframe information not available. Please provide a valid course ID.', 'humble-lms');
+      }
+
+      $timestamps = Humble_LMS_Content_Manager::get_timestamps( $course_id );
+      $has_start_date = ! empty( $timestamps['date_from'] );
+      $has_end_date = ! empty( $timestamps['date_to'] );
+      $has_start_and_end_date = $has_start_date && $has_end_date;
+
+      $html = '<div class="humble-lms-timeframe" class="' . $class . '" style="' . $style . '">';
+        if( ! filter_var( $hide_title, FILTER_VALIDATE_BOOLEAN ) ) {
+          $html .= $title ? '<h2 class="humble-lms-timeframe-title">' . $title . '</h2>' : '';
+        }
+        
+        $html .= '<p class="humble-lms-timeframe-content">';
+
+          if( ! $has_start_date && ! $has_end_date ) {
+            $html .= __('This course will be opened indefinitely.', 'humble-lms');
+          } else if( $has_start_and_end_date ) {
+            $html .= sprintf( __('This course starts on %s and ends on %s.', 'humble-lms'), $timestamps['date_from'], $timestamps['date_to'] );
+          } else if( $has_start_date && ! $has_end_date ) {
+            $html .= sprintf( __('This course starts on %s.', 'humble-lms'), $timestamps['date_from'] );
+          } else if( ! $has_start_date && $has_end_date ) {
+            $html .= sprintf( __('This course ends on %s.', 'humble-lms'), $timestamps['date_to'] );
+          }
+
+          if( ! empty( $timestamps['info'] ) )
+            $html .= ' ' . $timestamps['info'];
+  
+        $html .= '</p>';
       $html .= '</div>';
 
       return $html;

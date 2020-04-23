@@ -117,7 +117,7 @@ class Humble_LMS_Public {
     if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {
       $website_key = isset( $this->options['recaptcha_website_key'] ) ? $this->options['recaptcha_website_key'] : false;
 
-      if( $website_key && ( has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) ) {
+      if( isset( $post->post_content ) && $website_key && ( has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) ) {
         wp_enqueue_script( 'humble-lms-recaptcha' , 'https://www.google.com/recaptcha/api.js', false, NULL, true );
       }
     }

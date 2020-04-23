@@ -31,10 +31,8 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('quizzes', 'humble-lms'),
-  'with_front'            => false,
-  'pages'                 => false,
-  'feeds'                 => false,
+  'slug'                  => __('quiz', 'humble-lms'),
+  'with_front'            => true,
 );
 
 $args = array(

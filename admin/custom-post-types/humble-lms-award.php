@@ -31,9 +31,8 @@ $labels = array(
 );
 
 $rewrite = array(
+  'slug'                  => __('award', 'humble-lms'),
   'with_front'            => true,
-  'pages'                 => false,
-  'feeds'                 => false,
 );
 
 $args = array(

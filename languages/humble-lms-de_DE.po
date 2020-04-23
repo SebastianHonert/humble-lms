@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-04-23 14:37+0200\n"
-"PO-Revision-Date: 2020-04-23 15:19+0200\n"
+"POT-Creation-Date: 2020-04-23 17:05+0200\n"
+"PO-Revision-Date: 2020-04-23 17:08+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -84,8 +84,8 @@ msgstr "Bitte wähle ein Land"
 
 #: admin/class-humble-lms-admin.php:240
 #: admin/custom-post-types/humble-lms-membership.php:5
+#: admin/custom-post-types/humble-lms-membership.php:16
 #: admin/custom-post-types/humble-lms-membership.php:17
-#: admin/custom-post-types/humble-lms-membership.php:18
 #: public/class-humble-lms-shortcodes.php:1191
 #: public/class-humble-lms-shortcodes.php:1194
 #: public/class-humble-lms-shortcodes.php:1199
@@ -559,8 +559,8 @@ msgstr "Zurück"
 
 #: admin/class-humble-lms-options-manager.php:783
 #: admin/custom-post-types/humble-lms-course.php:5
-#: admin/custom-post-types/humble-lms-course.php:34
-#: admin/custom-post-types/humble-lms-course.php:35
+#: admin/custom-post-types/humble-lms-course.php:39
+#: admin/custom-post-types/humble-lms-course.php:40
 #: public/class-humble-lms-shortcodes.php:401
 msgid "Course"
 msgstr "Kurs"
@@ -580,8 +580,8 @@ msgid "Activities"
 msgstr "Aktivitäten"
 
 #: admin/custom-post-types/humble-lms-activity.php:5
+#: admin/custom-post-types/humble-lms-activity.php:39
 #: admin/custom-post-types/humble-lms-activity.php:40
-#: admin/custom-post-types/humble-lms-activity.php:41
 msgid "Activity"
 msgstr "Aktivität"
 
@@ -740,81 +740,85 @@ msgstr "Aktivitäten Navigation"
 msgid "Filter activities list"
 msgstr "Aktivitäten filtern"
 
-#: admin/custom-post-types/humble-lms-activity.php:68
+#: admin/custom-post-types/humble-lms-activity.php:34
+msgid "activity"
+msgstr "aktivitaet"
+
+#: admin/custom-post-types/humble-lms-activity.php:67
 msgid "Activity type"
 msgstr "Aktivitätstyp"
 
-#: admin/custom-post-types/humble-lms-activity.php:69
+#: admin/custom-post-types/humble-lms-activity.php:68
 msgid "Action following the activity"
 msgstr "Aktionen im Anschluss an die Aktivität"
 
-#: admin/custom-post-types/humble-lms-activity.php:112
+#: admin/custom-post-types/humble-lms-activity.php:111
 msgid "Please select an activity trigger"
 msgstr "Bitte wähle einen Auslöser für die Aktivität"
 
-#: admin/custom-post-types/humble-lms-activity.php:114
+#: admin/custom-post-types/humble-lms-activity.php:113
 msgid "Student completed a track"
 msgstr "Nutzer/in komplettiert Lernpfad"
 
-#: admin/custom-post-types/humble-lms-activity.php:116
+#: admin/custom-post-types/humble-lms-activity.php:115
 msgid "Student completed a course"
 msgstr "Nutzer/in komplettiert einen Kurs"
 
-#: admin/custom-post-types/humble-lms-activity.php:118
+#: admin/custom-post-types/humble-lms-activity.php:117
 msgid "Student completed a lesson"
 msgstr "Nutzer/in komplettiert eine Lektion"
 
-#: admin/custom-post-types/humble-lms-activity.php:120
+#: admin/custom-post-types/humble-lms-activity.php:119
 msgid "Student completed all tracks"
 msgstr "Nutzer/in komplettiert alle Lernpfade"
 
-#: admin/custom-post-types/humble-lms-activity.php:122
+#: admin/custom-post-types/humble-lms-activity.php:121
 msgid "Student completed all courses"
 msgstr "Nutzer/in komplettiert alle Kurse"
 
-#: admin/custom-post-types/humble-lms-activity.php:126
+#: admin/custom-post-types/humble-lms-activity.php:125
 msgid "Select a track"
 msgstr "Wähle einen Lernpfad"
 
-#: admin/custom-post-types/humble-lms-activity.php:134
+#: admin/custom-post-types/humble-lms-activity.php:133
 msgid "Select a course"
 msgstr "Wähle einen Kurs"
 
-#: admin/custom-post-types/humble-lms-activity.php:142
+#: admin/custom-post-types/humble-lms-activity.php:141
 msgid "Select a lesson"
 msgstr "Wähle eine Lektion"
 
-#: admin/custom-post-types/humble-lms-activity.php:162
+#: admin/custom-post-types/humble-lms-activity.php:161
 msgid "Select an action following the activity"
 msgstr "Wähle eine Aktion, die dieser Aktivität folgt"
 
-#: admin/custom-post-types/humble-lms-activity.php:166
+#: admin/custom-post-types/humble-lms-activity.php:165
 msgid "Grant an award"
 msgstr "Eine Auszeichnung verleihen"
 
-#: admin/custom-post-types/humble-lms-activity.php:167
+#: admin/custom-post-types/humble-lms-activity.php:166
 msgid "Send an email"
 msgstr "Eine E-Mail senden"
 
-#: admin/custom-post-types/humble-lms-activity.php:168
+#: admin/custom-post-types/humble-lms-activity.php:167
 msgid "Issue a certificate"
 msgstr "Ein Zertifikat ausstellen"
 
-#: admin/custom-post-types/humble-lms-activity.php:196
+#: admin/custom-post-types/humble-lms-activity.php:195
 msgid "Select an award"
 msgstr "Wähle eine Auszeichnung"
 
-#: admin/custom-post-types/humble-lms-activity.php:204
+#: admin/custom-post-types/humble-lms-activity.php:203
 msgid "Select an email"
 msgstr "Wähle eine E-Mail"
 
-#: admin/custom-post-types/humble-lms-activity.php:212
+#: admin/custom-post-types/humble-lms-activity.php:211
 msgid "Select a certificate"
 msgstr "Wähle ein Zertifikat"
 
 #: admin/custom-post-types/humble-lms-award.php:5
+#: admin/custom-post-types/humble-lms-award.php:39
 #: admin/custom-post-types/humble-lms-award.php:40
-#: admin/custom-post-types/humble-lms-award.php:41
 msgid "Award"
 msgstr "Auszeichnung"
 
@@ -879,13 +883,17 @@ msgstr "Navigation Auszeichnungen"
 msgid "Filter awards list"
 msgstr "Auszeichnungen filtern"
 
-#: admin/custom-post-types/humble-lms-award.php:67
+#: admin/custom-post-types/humble-lms-award.php:34
+msgid "award"
+msgstr "auszeichnung"
+
+#: admin/custom-post-types/humble-lms-award.php:66
 msgid "Award image (256x256)"
 msgstr "Bild für die Auszeichnung (256x256)"
 
 #: admin/custom-post-types/humble-lms-certificate.php:5
-#: admin/custom-post-types/humble-lms-certificate.php:41
-#: admin/custom-post-types/humble-lms-certificate.php:42
+#: admin/custom-post-types/humble-lms-certificate.php:39
+#: admin/custom-post-types/humble-lms-certificate.php:40
 msgid "Certificate"
 msgstr "Zertifikat"
 
@@ -951,73 +959,73 @@ msgid "Filter certificates list"
 msgstr "Zertifikate filtern"
 
 #: admin/custom-post-types/humble-lms-certificate.php:34
-msgid "certificates"
-msgstr "Zertifikate"
+msgid "certificate"
+msgstr "zertifikat"
 
-#: admin/custom-post-types/humble-lms-certificate.php:69
+#: admin/custom-post-types/humble-lms-certificate.php:67
 msgid "Heading"
 msgstr "Überschrift"
 
-#: admin/custom-post-types/humble-lms-certificate.php:70
+#: admin/custom-post-types/humble-lms-certificate.php:68
 msgid "Subtitle"
 msgstr "Untertitel"
 
-#: admin/custom-post-types/humble-lms-certificate.php:71
+#: admin/custom-post-types/humble-lms-certificate.php:69
 msgid "Date format"
 msgstr "Datumsformat"
 
-#: admin/custom-post-types/humble-lms-certificate.php:72
+#: admin/custom-post-types/humble-lms-certificate.php:70
 msgid "Content (HTML allowed)"
 msgstr "Inhalt (HTML erlaubt)"
 
-#: admin/custom-post-types/humble-lms-certificate.php:73
+#: admin/custom-post-types/humble-lms-certificate.php:71
 msgid "Template"
 msgstr "Vorlage"
 
-#: admin/custom-post-types/humble-lms-certificate.php:110
+#: admin/custom-post-types/humble-lms-certificate.php:108
 msgid "German (20. Februar 2020)"
 msgstr "Deutsch (20. Februar 2020)"
 
-#: admin/custom-post-types/humble-lms-certificate.php:111
+#: admin/custom-post-types/humble-lms-certificate.php:109
 msgid "English (March 10, 2001)"
 msgstr "Englisch (March 10, 2001)"
 
-#: admin/custom-post-types/humble-lms-certificate.php:126
-#: admin/custom-post-types/humble-lms-email.php:97
+#: admin/custom-post-types/humble-lms-certificate.php:124
+#: admin/custom-post-types/humble-lms-email.php:96
 msgid "Student name"
 msgstr "Name des Lernenden"
 
-#: admin/custom-post-types/humble-lms-certificate.php:127
+#: admin/custom-post-types/humble-lms-certificate.php:125
 msgid "Student first name"
 msgstr "Vorname des Lernenden"
 
-#: admin/custom-post-types/humble-lms-certificate.php:128
+#: admin/custom-post-types/humble-lms-certificate.php:126
 msgid "Student last name"
 msgstr "Nachname des Lernenden"
 
-#: admin/custom-post-types/humble-lms-certificate.php:129
+#: admin/custom-post-types/humble-lms-certificate.php:127
 msgid "Current date"
 msgstr "Aktuelles Datum"
 
-#: admin/custom-post-types/humble-lms-certificate.php:130
-#: admin/custom-post-types/humble-lms-email.php:98
+#: admin/custom-post-types/humble-lms-certificate.php:128
+#: admin/custom-post-types/humble-lms-email.php:97
 msgid "Website name"
 msgstr "Name der Website"
 
-#: admin/custom-post-types/humble-lms-certificate.php:131
-#: admin/custom-post-types/humble-lms-email.php:99
+#: admin/custom-post-types/humble-lms-certificate.php:129
+#: admin/custom-post-types/humble-lms-email.php:98
 msgid "Website URL"
 msgstr "URL der Website"
 
-#: admin/custom-post-types/humble-lms-certificate.php:135
+#: admin/custom-post-types/humble-lms-certificate.php:133
 msgid "You can use the following tags in the content of your certificate"
 msgstr "Du kannst folgende HTML-Tags in diesem Zertifikat verwenden"
 
-#: admin/custom-post-types/humble-lms-certificate.php:147
+#: admin/custom-post-types/humble-lms-certificate.php:145
 msgid "Default template"
 msgstr "Standard-Vorlage"
 
-#: admin/custom-post-types/humble-lms-certificate.php:148
+#: admin/custom-post-types/humble-lms-certificate.php:146
 msgid "Preview certificate"
 msgstr "Vorschau ansehen"
 
@@ -1085,108 +1093,112 @@ msgstr "Kurslisten Navigation"
 msgid "Filter courses list"
 msgstr "Kursliste filtern"
 
-#: admin/custom-post-types/humble-lms-course.php:62
+#: admin/custom-post-types/humble-lms-course.php:34
+msgid "course"
+msgstr "kurs"
+
+#: admin/custom-post-types/humble-lms-course.php:67
 #: public/class-humble-lms-shortcodes.php:536
 msgid "Timeframe"
 msgstr "Zeitfenster"
 
-#: admin/custom-post-types/humble-lms-course.php:63
-#: admin/custom-post-types/humble-lms-track.php:63
+#: admin/custom-post-types/humble-lms-course.php:68
+#: admin/custom-post-types/humble-lms-track.php:68
 msgid "Duration (approximately, e.g. 8 hours)"
 msgstr "Dauer (ungefähr, z.B. 8 Stunden)"
 
-#: admin/custom-post-types/humble-lms-course.php:64
+#: admin/custom-post-types/humble-lms-course.php:69
 msgid "Lesson(s) in this course"
 msgstr "Lektion(en) in diesem Kurs"
 
-#: admin/custom-post-types/humble-lms-course.php:65
+#: admin/custom-post-types/humble-lms-course.php:70
 msgid "Order of completion"
 msgstr "Reihenfolge der Durchführung"
 
-#: admin/custom-post-types/humble-lms-course.php:66
+#: admin/custom-post-types/humble-lms-course.php:71
 msgid "Select instructor(s) for this course (optional)"
 msgstr "Kursleiter/innen für diesen Kurs (optional)"
 
-#: admin/custom-post-types/humble-lms-course.php:67
+#: admin/custom-post-types/humble-lms-course.php:72
 msgid "Select a color for the course tile (optional)"
 msgstr "Wähle eine Farbe für dir Kurs-Kachel (optional)"
 
-#: admin/custom-post-types/humble-lms-course.php:68
+#: admin/custom-post-types/humble-lms-course.php:73
 msgid "Display featured image"
 msgstr "Beitragsbild anzeigen"
 
-#: admin/custom-post-types/humble-lms-course.php:81
+#: admin/custom-post-types/humble-lms-course.php:89
 msgid "Course start"
 msgstr "Kursbeginn"
 
-#: admin/custom-post-types/humble-lms-course.php:83
-#: admin/custom-post-types/humble-lms-course.php:88
+#: admin/custom-post-types/humble-lms-course.php:92
+#: admin/custom-post-types/humble-lms-course.php:97
 msgid "Remove"
 msgstr "Entfernen"
 
-#: admin/custom-post-types/humble-lms-course.php:86
+#: admin/custom-post-types/humble-lms-course.php:94
 msgid "Course end"
 msgstr "Kursende"
 
-#: admin/custom-post-types/humble-lms-course.php:91
+#: admin/custom-post-types/humble-lms-course.php:99
 msgid "Additional information on course timeframe"
 msgstr "Weitere Informationen zur Kurslaufzeit"
 
-#: admin/custom-post-types/humble-lms-course.php:93
+#: admin/custom-post-types/humble-lms-course.php:101
 msgid "Allowed HTML tags"
 msgstr "Erlaubte HTML-Tags"
 
-#: admin/custom-post-types/humble-lms-course.php:116
+#: admin/custom-post-types/humble-lms-course.php:124
 msgid "No lessons found. Please add one or more lessons first."
 msgstr "Keine Lektionen gefunden. Bitte füge erst eine Lektion hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:116
+#: admin/custom-post-types/humble-lms-course.php:124
 msgid "Add lessons"
 msgstr "Lektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:148
-#: admin/custom-post-types/humble-lms-course.php:184
+#: admin/custom-post-types/humble-lms-course.php:156
+#: admin/custom-post-types/humble-lms-course.php:192
 msgid "Section"
 msgstr "Sektion"
 
-#: admin/custom-post-types/humble-lms-course.php:149
-#: admin/custom-post-types/humble-lms-course.php:185
+#: admin/custom-post-types/humble-lms-course.php:157
+#: admin/custom-post-types/humble-lms-course.php:193
 msgid "Section title (optional)"
 msgstr "Titel der Sektion (optional)"
 
-#: admin/custom-post-types/humble-lms-course.php:150
-#: admin/custom-post-types/humble-lms-course.php:186
+#: admin/custom-post-types/humble-lms-course.php:158
+#: admin/custom-post-types/humble-lms-course.php:194
 msgid "Lessons in this section"
 msgstr "Lektion(en) in dieser Sektion"
 
-#: admin/custom-post-types/humble-lms-course.php:156
-#: admin/custom-post-types/humble-lms-course.php:199
+#: admin/custom-post-types/humble-lms-course.php:164
+#: admin/custom-post-types/humble-lms-course.php:207
 msgid "Remove this section"
 msgstr "Sektion entfernen"
 
-#: admin/custom-post-types/humble-lms-course.php:207
+#: admin/custom-post-types/humble-lms-course.php:215
 msgid "Add section"
 msgstr "Sektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:257
-#: admin/custom-post-types/humble-lms-lesson.php:180
+#: admin/custom-post-types/humble-lms-course.php:265
+#: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "No instructors found. Please add one or more instructors first."
 msgstr ""
 "Keine Kursleiter*innen gefunden. Bitte füge erst eine*n Kursleiter*in hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:257
-#: admin/custom-post-types/humble-lms-lesson.php:180
+#: admin/custom-post-types/humble-lms-course.php:265
+#: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "Add instructor"
 msgstr "Kursleiter*in hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:270
+#: admin/custom-post-types/humble-lms-course.php:278
 msgid ""
 "Yes, the lessons in this course need to be completed in consecutive order."
 msgstr ""
 "Ja, die Lektionen in diesem Kurs müssen in der richtigen Reihenfolge "
 "abgeschlossen werden."
 
-#: admin/custom-post-types/humble-lms-course.php:293
+#: admin/custom-post-types/humble-lms-course.php:301
 msgid "Yes, display the featured image on the course page."
 msgstr "Ja, Beitragsbild auf der Kursseite anzeigen."
 
@@ -1197,8 +1209,8 @@ msgid "Emails"
 msgstr "E-Mails"
 
 #: admin/custom-post-types/humble-lms-email.php:5
+#: admin/custom-post-types/humble-lms-email.php:39
 #: admin/custom-post-types/humble-lms-email.php:40
-#: admin/custom-post-types/humble-lms-email.php:41
 msgid "Email"
 msgstr "E-Mail"
 
@@ -1263,27 +1275,31 @@ msgstr "E-Mail-Liste Navigation"
 msgid "Filter emails list"
 msgstr "E-Mails filtern"
 
-#: admin/custom-post-types/humble-lms-email.php:67
+#: admin/custom-post-types/humble-lms-email.php:34
+msgid "email"
+msgstr "email"
+
+#: admin/custom-post-types/humble-lms-email.php:66
 msgid "E-Mail subject"
 msgstr "E-Mail-Betreff"
 
-#: admin/custom-post-types/humble-lms-email.php:68
+#: admin/custom-post-types/humble-lms-email.php:67
 msgid "E-Mail message"
 msgstr "E-Mail-Nachricht"
 
-#: admin/custom-post-types/humble-lms-email.php:69
+#: admin/custom-post-types/humble-lms-email.php:68
 msgid "E-Mail format"
 msgstr "E-Mail-Format"
 
-#: admin/custom-post-types/humble-lms-email.php:103
+#: admin/custom-post-types/humble-lms-email.php:102
 msgid "If you send emails in HTML format, you can use the following tags"
 msgstr ""
 "Falls die E-Mail im HTML-Format gesendet wird, kannst du folgende HTML-Tags "
 "verwenden"
 
 #: admin/custom-post-types/humble-lms-lesson.php:5
-#: admin/custom-post-types/humble-lms-lesson.php:41
-#: admin/custom-post-types/humble-lms-lesson.php:42
+#: admin/custom-post-types/humble-lms-lesson.php:39
+#: admin/custom-post-types/humble-lms-lesson.php:40
 msgid "Lesson"
 msgstr "Lektion"
 
@@ -1351,27 +1367,31 @@ msgstr "Lektionsliste Navigation"
 msgid "Filter lessons list"
 msgstr "Lektionen filtern"
 
-#: admin/custom-post-types/humble-lms-lesson.php:68
+#: admin/custom-post-types/humble-lms-lesson.php:34
+msgid "lesson"
+msgstr "lektion"
+
+#: admin/custom-post-types/humble-lms-lesson.php:66
 msgid "What is this lesson about?"
 msgstr "Worum geht es in dieser Lektion?"
 
-#: admin/custom-post-types/humble-lms-lesson.php:69
+#: admin/custom-post-types/humble-lms-lesson.php:67
 msgid "Membership access level"
 msgstr "Zugangslevel für Mitglieder"
 
-#: admin/custom-post-types/humble-lms-lesson.php:70
+#: admin/custom-post-types/humble-lms-lesson.php:68
 msgid "Who can access this lesson?"
 msgstr "Wer hat Zugriff auf diese Lektion?"
 
-#: admin/custom-post-types/humble-lms-lesson.php:71
+#: admin/custom-post-types/humble-lms-lesson.php:69
 msgid "Select instructor(s) for this lesson (optional)"
 msgstr "Kursleiter/innen für dies Lektion (optional)"
 
-#: admin/custom-post-types/humble-lms-lesson.php:72
+#: admin/custom-post-types/humble-lms-lesson.php:70
 msgid "Quizzes attached to this lesson"
 msgstr "Quizze, die dieser Lektion zugeordnet sind"
 
-#: admin/custom-post-types/humble-lms-lesson.php:86
+#: admin/custom-post-types/humble-lms-lesson.php:84
 msgid ""
 "Describe the content of this lesson in a few words. Allowed HTML-tags: "
 "strong, em, b, i."
@@ -1379,7 +1399,7 @@ msgstr ""
 "Beschreibe den Inhalt dieser Lektion in einigen Worten. Erlaubt HTML-Tags: "
 "strong, em, b, i."
 
-#: admin/custom-post-types/humble-lms-lesson.php:123
+#: admin/custom-post-types/humble-lms-lesson.php:121
 msgid ""
 "Select the user roles that can access this lesson. If you do not select any "
 "specific role(s), the lesson will be publicly available."
@@ -1387,15 +1407,15 @@ msgstr ""
 "Wähle die Nutzerrollen, die Zugriff auf diese Lektion haben wollen. Wenn Du "
 "keine Rollen wählst, ist die Lektion öffentlich zugänglich."
 
-#: admin/custom-post-types/humble-lms-lesson.php:130
+#: admin/custom-post-types/humble-lms-lesson.php:128
 msgid "Select/deselect all"
 msgstr "Alle auswählen/entfernen"
 
-#: admin/custom-post-types/humble-lms-lesson.php:232
+#: admin/custom-post-types/humble-lms-lesson.php:230
 msgid "No quizzes found. Please add one or more quizzes first."
 msgstr "Keine Quizze gefunden. Bitte füge erst einen Quiz hinzu."
 
-#: admin/custom-post-types/humble-lms-lesson.php:232
+#: admin/custom-post-types/humble-lms-lesson.php:230
 msgid "Add quiz"
 msgstr "Quiz hinzufügen"
 
@@ -1405,15 +1425,19 @@ msgstr "Quiz hinzufügen"
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
-#: admin/custom-post-types/humble-lms-membership.php:44
+#: admin/custom-post-types/humble-lms-membership.php:11
+msgid "membership"
+msgstr "mitgliedschaft"
+
+#: admin/custom-post-types/humble-lms-membership.php:43
 msgid "Price"
 msgstr "Preis"
 
-#: admin/custom-post-types/humble-lms-membership.php:45
+#: admin/custom-post-types/humble-lms-membership.php:44
 msgid "Description"
 msgstr "Beschreibung"
 
-#: admin/custom-post-types/humble-lms-membership.php:65
+#: admin/custom-post-types/humble-lms-membership.php:64
 msgid ""
 "Prices must be 2 digit decimals, e.g. \"14.99\", \"79.00\", \"239.49\" etc. "
 "Based on your browser language settings the saved value will sometimes be "
@@ -1423,7 +1447,7 @@ msgstr ""
 "„79.99“ „239.00“ etc. Je nach Browsersprache wird der Wert hier u.U. mit "
 "einem Komma statt Punkt angezeigt."
 
-#: admin/custom-post-types/humble-lms-membership.php:77
+#: admin/custom-post-types/humble-lms-membership.php:76
 msgid ""
 "Describe the benefits of this membership in a few words. Allowed HTML-tags: "
 "strong, em, b, i."
@@ -1437,9 +1461,9 @@ msgid "Questions"
 msgstr "Fragen"
 
 #: admin/custom-post-types/humble-lms-question.php:5
-#: admin/custom-post-types/humble-lms-question.php:41
-#: admin/custom-post-types/humble-lms-question.php:42
-#: admin/custom-post-types/humble-lms-question.php:70
+#: admin/custom-post-types/humble-lms-question.php:39
+#: admin/custom-post-types/humble-lms-question.php:40
+#: admin/custom-post-types/humble-lms-question.php:68
 msgid "Question"
 msgstr "Frage"
 
@@ -1512,28 +1536,28 @@ msgid "Filter questions list"
 msgstr "Quizfragen filtern"
 
 #: admin/custom-post-types/humble-lms-question.php:34
-msgid "questions"
-msgstr "Quizfragen"
+msgid "quiz-question"
+msgstr "quizfrage"
 
-#: admin/custom-post-types/humble-lms-question.php:69
+#: admin/custom-post-types/humble-lms-question.php:67
 msgid "Question type"
 msgstr "Fragetyp"
 
-#: admin/custom-post-types/humble-lms-question.php:71
+#: admin/custom-post-types/humble-lms-question.php:69
 msgid "Answers to this question"
 msgstr "Antworten auf diese Frage"
 
-#: admin/custom-post-types/humble-lms-question.php:72
-#: admin/custom-post-types/humble-lms-quiz.php:72
+#: admin/custom-post-types/humble-lms-question.php:70
+#: admin/custom-post-types/humble-lms-quiz.php:70
 msgid "Randomization"
 msgstr "Randomisierung"
 
-#: admin/custom-post-types/humble-lms-question.php:114
+#: admin/custom-post-types/humble-lms-question.php:112
 #: public/class-humble-lms-quiz.php:165
 msgid "Please provide at least one answer."
 msgstr "Bitte gib mindestens eine Antwort ein."
 
-#: admin/custom-post-types/humble-lms-question.php:118
+#: admin/custom-post-types/humble-lms-question.php:116
 msgid ""
 "Select more than on correct answer for a <strong>multiple choice</strong> "
 "question, and only one correct answer for a <strong>single choice</strong> "
@@ -1543,23 +1567,23 @@ msgstr ""
 "strong> Frage, und nur eine richtige Antwort für eine <strong>Single-Choice</"
 "strong> Frage."
 
-#: admin/custom-post-types/humble-lms-question.php:128
+#: admin/custom-post-types/humble-lms-question.php:126
 msgid "Correct answer"
 msgstr "Richtige Antwort"
 
-#: admin/custom-post-types/humble-lms-question.php:130
+#: admin/custom-post-types/humble-lms-question.php:128
 msgid "Delete answer"
 msgstr "Antwort löschen"
 
-#: admin/custom-post-types/humble-lms-question.php:135
+#: admin/custom-post-types/humble-lms-question.php:133
 msgid "Add answer"
 msgstr "Antwort hinzufügen"
 
-#: admin/custom-post-types/humble-lms-question.php:148
+#: admin/custom-post-types/humble-lms-question.php:146
 msgid "Shuffle the answers for this question."
 msgstr "Antworten auf diese Frage mischen."
 
-#: admin/custom-post-types/humble-lms-question.php:181
+#: admin/custom-post-types/humble-lms-question.php:179
 msgid "Please enter a question."
 msgstr "Bitte gib eine Frage ein."
 
@@ -1570,8 +1594,8 @@ msgid "Quizzes"
 msgstr "Quizze"
 
 #: admin/custom-post-types/humble-lms-quiz.php:5
-#: admin/custom-post-types/humble-lms-quiz.php:41
-#: admin/custom-post-types/humble-lms-quiz.php:42
+#: admin/custom-post-types/humble-lms-quiz.php:39
+#: admin/custom-post-types/humble-lms-quiz.php:40
 msgid "Quiz"
 msgstr "Quiz"
 
@@ -1640,44 +1664,44 @@ msgid "Filter quizzes list"
 msgstr "Quizze filtern"
 
 #: admin/custom-post-types/humble-lms-quiz.php:34
-msgid "quizzes"
-msgstr "Quizze"
+msgid "quiz"
+msgstr "quiz"
 
-#: admin/custom-post-types/humble-lms-quiz.php:69
+#: admin/custom-post-types/humble-lms-quiz.php:67
 msgid "Questions in this quiz"
 msgstr "Fragen in diesem Quiz"
 
-#: admin/custom-post-types/humble-lms-quiz.php:70
+#: admin/custom-post-types/humble-lms-quiz.php:68
 msgid "Passing grade in percent (%)"
 msgstr "Mindestpuktzahl zum Bestehen dieses Quiz in Prozent (%)"
 
-#: admin/custom-post-types/humble-lms-quiz.php:71
+#: admin/custom-post-types/humble-lms-quiz.php:69
 msgid "Passing required"
 msgstr "Erfolgreiches Bestehen erforderlich"
 
-#: admin/custom-post-types/humble-lms-quiz.php:125
+#: admin/custom-post-types/humble-lms-quiz.php:123
 msgid "No quiz questions found. Please add one or more question first."
 msgstr ""
 "Keine Quizfragen gefunden. Bitte füge erst eine oder mehrere Quizfragen "
 "hinzu."
 
-#: admin/custom-post-types/humble-lms-quiz.php:125
+#: admin/custom-post-types/humble-lms-quiz.php:123
 msgid "Add question"
 msgstr "Quizfrage hinzufügen"
 
-#: admin/custom-post-types/humble-lms-quiz.php:148
+#: admin/custom-post-types/humble-lms-quiz.php:146
 msgid "Students have to pass this quiz in order to complete the lesson."
 msgstr ""
 "Lerner/innen müssen dieses Quiz bestehen, um die Lektion erfolgreich "
 "abzuschließen."
 
-#: admin/custom-post-types/humble-lms-quiz.php:159
+#: admin/custom-post-types/humble-lms-quiz.php:157
 msgid "Shuffle all answers in this quiz."
 msgstr "Alle Antworten in diesem Quiz mischen."
 
 #: admin/custom-post-types/humble-lms-track.php:5
-#: admin/custom-post-types/humble-lms-track.php:34
-#: admin/custom-post-types/humble-lms-track.php:35
+#: admin/custom-post-types/humble-lms-track.php:39
+#: admin/custom-post-types/humble-lms-track.php:40
 msgid "Track"
 msgstr "Lernpfad"
 
@@ -1745,23 +1769,27 @@ msgstr "Lernpfadliste Navigation"
 msgid "Filter tracks list"
 msgstr "Lernpfade filtern"
 
-#: admin/custom-post-types/humble-lms-track.php:62
+#: admin/custom-post-types/humble-lms-track.php:34
+msgid "track"
+msgstr "lernpfad"
+
+#: admin/custom-post-types/humble-lms-track.php:67
 msgid "Courses in this track"
 msgstr "Kurse in diesem Lernpfad"
 
-#: admin/custom-post-types/humble-lms-track.php:64
+#: admin/custom-post-types/humble-lms-track.php:69
 msgid "Position on track archive page (low = first)"
 msgstr "Position auf Lernpfad-Archivseite (niedrigste = zuerst)"
 
-#: admin/custom-post-types/humble-lms-track.php:65
+#: admin/custom-post-types/humble-lms-track.php:70
 msgid "Select a color for the track tile (optional)"
 msgstr "Wähle eine Farbe für die Lernpfad-Kachel (optional)"
 
-#: admin/custom-post-types/humble-lms-track.php:119
+#: admin/custom-post-types/humble-lms-track.php:124
 msgid "No courses found. Please add one or more courses first."
 msgstr "Keine Kurse gefunden. Bitte füge erst einen Kurs hinzu."
 
-#: admin/custom-post-types/humble-lms-track.php:119
+#: admin/custom-post-types/humble-lms-track.php:124
 msgid "Add courses"
 msgstr "Kurs hinzufügen"
 
@@ -1772,8 +1800,8 @@ msgid "Transactions"
 msgstr "Transaktionen"
 
 #: admin/custom-post-types/humble-lms-txn.php:5
-#: admin/custom-post-types/humble-lms-txn.php:41
-#: admin/custom-post-types/humble-lms-txn.php:42
+#: admin/custom-post-types/humble-lms-txn.php:39
+#: admin/custom-post-types/humble-lms-txn.php:40
 msgid "Transaction"
 msgstr "Transaktion"
 
@@ -1841,89 +1869,93 @@ msgstr "Transaktionsliste Navigation"
 msgid "Filter transactions list"
 msgstr "Transaktionen filtern"
 
-#: admin/custom-post-types/humble-lms-txn.php:68
+#: admin/custom-post-types/humble-lms-txn.php:34
+msgid "transaction"
+msgstr "transaktion"
+
+#: admin/custom-post-types/humble-lms-txn.php:66
 msgid "Order details for this transaction"
 msgstr "Details für diese Transaktion"
 
-#: admin/custom-post-types/humble-lms-txn.php:102
+#: admin/custom-post-types/humble-lms-txn.php:100
 msgid "User details"
 msgstr "Nutzerdetails"
 
-#: admin/custom-post-types/humble-lms-txn.php:103
+#: admin/custom-post-types/humble-lms-txn.php:101
 msgid "Login name"
 msgstr "Login-Kennung"
 
-#: admin/custom-post-types/humble-lms-txn.php:104
+#: admin/custom-post-types/humble-lms-txn.php:102
 msgid "First name"
 msgstr "Vorname"
 
-#: admin/custom-post-types/humble-lms-txn.php:105
+#: admin/custom-post-types/humble-lms-txn.php:103
 msgid "Last name"
 msgstr "Nachname"
 
-#: admin/custom-post-types/humble-lms-txn.php:106
+#: admin/custom-post-types/humble-lms-txn.php:104
 msgid "Registered at"
 msgstr "Registriert am"
 
-#: admin/custom-post-types/humble-lms-txn.php:107
+#: admin/custom-post-types/humble-lms-txn.php:105
 msgid "User roles"
 msgstr "Benutzerrollen"
 
-#: admin/custom-post-types/humble-lms-txn.php:110
+#: admin/custom-post-types/humble-lms-txn.php:108
 msgid "The user ID of this transaction does not match an existing user."
 msgstr "Mit der Nutzer-ID dieser Transaktion ist kein/e Benutzer/in verknüpft."
 
-#: admin/custom-post-types/humble-lms-txn.php:113
+#: admin/custom-post-types/humble-lms-txn.php:111
 msgid "User ID"
 msgstr "Nutzer-ID"
 
-#: admin/custom-post-types/humble-lms-txn.php:116
+#: admin/custom-post-types/humble-lms-txn.php:114
 msgid "Order ID"
 msgstr "Order-ID"
 
-#: admin/custom-post-types/humble-lms-txn.php:119
+#: admin/custom-post-types/humble-lms-txn.php:117
 #: public/class-humble-lms-shortcodes.php:978
 #: public/class-humble-lms-shortcodes.php:1230
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: admin/custom-post-types/humble-lms-txn.php:122
+#: admin/custom-post-types/humble-lms-txn.php:120
 msgid "Payer ID"
 msgstr "Payer ID"
 
-#: admin/custom-post-types/humble-lms-txn.php:125
+#: admin/custom-post-types/humble-lms-txn.php:123
 msgid "Transaction status"
 msgstr "Transaktionsstatus"
 
-#: admin/custom-post-types/humble-lms-txn.php:128
+#: admin/custom-post-types/humble-lms-txn.php:126
 msgid "Payment service provider"
 msgstr "Bezahldienstleister"
 
-#: admin/custom-post-types/humble-lms-txn.php:131
+#: admin/custom-post-types/humble-lms-txn.php:129
 msgid "Create time"
 msgstr "Create time"
 
-#: admin/custom-post-types/humble-lms-txn.php:134
+#: admin/custom-post-types/humble-lms-txn.php:132
 msgid "Update time"
 msgstr "Update time"
 
-#: admin/custom-post-types/humble-lms-txn.php:137
+#: admin/custom-post-types/humble-lms-txn.php:135
 msgid "Given name"
 msgstr "Vorname"
 
-#: admin/custom-post-types/humble-lms-txn.php:140
+#: admin/custom-post-types/humble-lms-txn.php:138
 msgid "Surname"
 msgstr "Nachname"
 
-#: admin/custom-post-types/humble-lms-txn.php:143
+#: admin/custom-post-types/humble-lms-txn.php:141
 msgid "Reference ID"
 msgstr "Referenz ID"
 
-#: admin/custom-post-types/humble-lms-txn.php:146
+#: admin/custom-post-types/humble-lms-txn.php:144
 msgid "Currency code"
 msgstr "Währungscode"
 
-#: admin/custom-post-types/humble-lms-txn.php:149
+#: admin/custom-post-types/humble-lms-txn.php:147
 msgid "Value"
 msgstr "Wert"
 
@@ -2032,6 +2064,34 @@ msgstr "Kursanbieter"
 #: public/class-humble-lms-shortcodes.php:491
 msgid "Providers"
 msgstr "Kursanbieter"
+
+#: includes/class-humble-lms-activator.php:45
+msgid "courses"
+msgstr "kurse"
+
+#: includes/class-humble-lms-activator.php:54
+msgid "tracks"
+msgstr "lernpfade"
+
+#: includes/class-humble-lms-activator.php:72
+msgid "registration"
+msgstr "registrierung"
+
+#: includes/class-humble-lms-activator.php:81
+msgid "lost-password"
+msgstr "passwort-verloren"
+
+#: includes/class-humble-lms-activator.php:90
+msgid "reset-password"
+msgstr "passwort-zuruecksetzen"
+
+#: includes/class-humble-lms-activator.php:99
+msgid "account"
+msgstr "account"
+
+#: includes/class-humble-lms-activator.php:108
+msgid "checkout"
+msgstr "kasse"
 
 #: public/class-humble-lms-public.php:131
 msgid ""
@@ -2542,6 +2602,9 @@ msgstr "Seiten"
 #: public/partials/humble-lms-track-archive.php:10
 msgid "Course Tracks"
 msgstr "Lernpfade"
+
+#~ msgid "questions"
+#~ msgstr "Quizfragen"
 
 #, php-format
 #~ msgid "No instructors found. Please %s first."

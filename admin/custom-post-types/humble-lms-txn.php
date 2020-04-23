@@ -31,10 +31,8 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => 'transaction',
-  'with_front'            => false,
-  'pages'                 => false,
-  'feeds'                 => false,
+  'slug'                  => __('transaction', 'humble-lms'),
+  'with_front'            => true,
 );
 
 $args = array(

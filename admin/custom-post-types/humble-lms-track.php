@@ -30,6 +30,11 @@ $labels = array(
   'filter_items_list'     => __( 'Filter tracks list', 'humble-lms' ),
 );
 
+$rewrite = array(
+  'slug'                  => __('track', 'humble-lms'),
+  'with_front'            => true,
+);
+
 $args = array(
   'label'                 => __( 'Track', 'humble-lms' ),
   'description'           => __( 'Track', 'humble-lms' ),
@@ -49,7 +54,7 @@ $args = array(
   'has_archive'           => true,
   'exclude_from_search'   => false,
   'publicly_queryable'    => true,
-  'rewrite'               => false,
+  'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );
 

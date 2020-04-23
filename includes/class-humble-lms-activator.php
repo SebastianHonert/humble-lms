@@ -42,7 +42,7 @@ class Humble_LMS_Activator {
   public function add_custom_pages() {
     $custom_page_course_archive = array(
       'post_title' => 'Humble LMS Course Archive',
-      'post_name' => 'courses',
+      'post_name' => __('courses', 'humble-lms'),
       'post_content' => '[humble_lms_course_archive]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -51,7 +51,7 @@ class Humble_LMS_Activator {
 
     $custom_page_track_archive = array(
       'post_title' => 'Humble LMS Track Archive',
-      'post_name' => 'tracks',
+      'post_name' => __('tracks', 'humble-lms')
       'post_content' => '[humble_lms_track_archive]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -69,7 +69,7 @@ class Humble_LMS_Activator {
     
     $custom_page_registration = array(
       'post_title' => 'Humble LMS Registration',
-      'post_name' => 'registration',
+      'post_name' => __('registration', 'humble-lms')
       'post_content' => '[humble_lms_registration_form]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -78,7 +78,7 @@ class Humble_LMS_Activator {
 
     $custom_page_lost_password = array(
       'post_title' => 'Humble LMS Lost Password',
-      'post_name' => 'lost-password',
+      'post_name' => __('lost-password', 'humble-lms')
       'post_content' => '[humble_lms_lost_password_form]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -87,7 +87,7 @@ class Humble_LMS_Activator {
 
     $custom_page_reset_password = array(
       'post_title' => 'Humble LMS Reset Password',
-      'post_name' => 'reset-password',
+      'post_name' => __('reset-password', 'humble-lms')
       'post_content' => '[humble_lms_reset_password_form]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -96,7 +96,7 @@ class Humble_LMS_Activator {
 
     $custom_page_user_profile = array(
       'post_title' => 'Humble LMS User Profile',
-      'post_name' => 'account',
+      'post_name' => __('account', 'humble-lms')
       'post_content' => '[humble_lms_user_profile]',
       'post_status' => 'publish',
       'post_author' => 1,
@@ -105,7 +105,7 @@ class Humble_LMS_Activator {
 
     $custom_page_checkout = array(
       'post_title' => 'Humble LMS Checkout',
-      'post_name' => 'checkout',
+      'post_name' => __('checkout', 'humble-lms')
       'post_content' => '[humble_lms_paypal_buttons]',
       'post_status' => 'publish',
       'post_author' => 1,

@@ -8,9 +8,8 @@ $labels = array(
 );
 
 $rewrite = array(
-  'with_front'            => false,
-  'pages'                 => false,
-  'feeds'                 => false,
+  'slug'                  => __('membership', 'humble-lms'),
+  'with_front'            => true,
 );
 
 $args = array(

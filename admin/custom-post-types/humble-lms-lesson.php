@@ -31,10 +31,8 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => 'lesson',
+  'slug'                  => __('lesson', 'humble-lms'),
   'with_front'            => true,
-  'pages'                 => true,
-  'feeds'                 => true,
 );
 
 $args = array(

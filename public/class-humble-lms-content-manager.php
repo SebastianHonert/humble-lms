@@ -347,17 +347,60 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return false;
       }
 
-      $timestamps = get_post_meta( $course_id, 'humble_lms_course_timestamps', false );
+      $locale = get_locale();
+      if( $locale === 'de_DE_formal' ) {
+        $locale = 'de_DE';
+      }
 
+      setlocale(LC_ALL, $locale);
+
+      $date_format = get_option('date_format');
+      $date_format = self::dateFormatToStrftime( $date_format );
+      
+      $timestamps = get_post_meta( $course_id, 'humble_lms_course_timestamps', false );
       $timestamps_array = array(
         'timestamp_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? $timestamps[0]['from'] : '',
         'timestamp_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? $timestamps[0]['to'] : '',
-        'date_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? date('F d, Y', $timestamps[0]['from'] ) : '',
-        'date_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? date('F d, Y', $timestamps[0]['to'] ) : '',
+        'date_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? strftime( $date_format, $timestamps[0]['from'] ) : '',
+        'date_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? strftime( $date_format, $timestamps[0]['to'] ) : '',
         'info' => isset( $timestamps[0]['info'] ) ? $timestamps[0]['info'] : '',
       );
 
+      setlocale(LC_ALL, 0);
+
       return $timestamps_array;
+    }
+
+    /**
+    * Convert a date format to a strftime format
+    *
+    * Timezone conversion is done for unix. Windows users must exchange %z and %Z.
+    *
+    * Unsupported date formats : S, n, t, L, B, G, u, e, I, P, Z, c, r
+    * Unsupported strftime formats : %U, %W, %C, %g, %r, %R, %T, %X, %c, %D, %F, %x
+    *
+    * @param string $dateFormat a date format
+    * @return string
+    */
+    public static function dateFormatToStrftime( $date_format ) {
+      $chars = array(
+          // Day - no strf eq : S
+          'd' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'w' => '%w', 'z' => '%j',
+          // Week - no date eq : %U, %W
+          'W' => '%V', 
+          // Month - no strf eq : n, t
+          'F' => '%B', 'm' => '%m', 'M' => '%b',
+          // Year - no strf eq : L; no date eq : %C, %g
+          'o' => '%G', 'Y' => '%Y', 'y' => '%y',
+          // Time - no strf eq : B, G, u; no date eq : %r, %R, %T, %X
+          'a' => '%P', 'A' => '%p', 'g' => '%l', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S',
+          // Timezone - no strf eq : e, I, P, Z
+          'O' => '%z', 'T' => '%Z',
+          // Full Date / Time - no strf eq : c, r; no date eq : %c, %D, %F, %x 
+          'U' => '%s'
+      );
+    
+      return strtr((string)$date_format, $chars);
     }
 
   }

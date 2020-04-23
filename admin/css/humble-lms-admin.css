@@ -192,7 +192,7 @@ label.humble-lms-label,
   display: none !important;
 }
 
-label[for='humble_lms_course_timeframe_to'] {
+label[for='humble_lms_course_timestamps_to'] {
   margin-top: 1em;
 }
 
@@ -204,7 +204,7 @@ label[for='humble_lms_course_timeframe_to'] {
   margin-bottom: .5em;
 }
 
-label[for="humble_lms_course_timeframe_info"] {
+label[for="humble_lms_course_timestamps_info"] {
   margin-top: 1em;
 }
 

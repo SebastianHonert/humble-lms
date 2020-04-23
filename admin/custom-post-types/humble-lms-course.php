@@ -59,7 +59,7 @@ register_post_type( 'humble_lms_course', $args );
 
 function humble_lms_course_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_course_timeframe_mb', __('Timeframe', 'humble-lms'), 'humble_lms_course_timeframe_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_timestamps_mb', __('Timeframe', 'humble-lms'), 'humble_lms_course_timestamps_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
@@ -72,24 +72,27 @@ add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
 
 // Timeframe meta box
 
-function humble_lms_course_timeframe_mb()
+function humble_lms_course_timestamps_mb()
 {
   global $post;
 
-  $timestamps = Humble_LMS_Content_Manager::get_timestamps( $post->ID );
+  $timestamps = get_post_meta( $post->ID, 'humble_lms_course_timestamps', false);
+  $from = isset( $timestamps[0]['from'] ) ? date('Y-m-d', (int)$timestamps[0]['from'] ) : ''; 
+  $to = isset( $timestamps[0]['to'] ) ? date('Y-m-d', (int)$timestamps[0]['to'] ) : ''; 
+  $info = isset( $timestamps[0]['info'] ) ? $timestamps[0]['info'] : ''; 
 
-  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_from">' . __('Course start', 'humble-lms') . '</label>';
-  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timeframe[from]" id="humble_lms_course_timeframe_from" value="' . $timestamps['date_from'] . '">';
+  echo '<label class="humble-lms-label" for="humble_lms_course_timestamps_from">' . __('Course start', 'humble-lms') . '</label>';
+  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timestamps[from]" id="humble_lms_course_timestamps_from" value="' . $from . '">';
+  echo '<input type="hidden" name="humble_lms_course_timestamps[timestampFrom]" value="' . $from . '">';
   echo '<input type="button" class="button humble-lms-clear-datepicker-from" value="' . __('Remove', 'humble-lms') . '">';
-  echo '<input type="hidden" class="humble-lms-datepicker-timestamp-from" name="humble_lms_course_timeframe_timestamp[from]" id="humble_lms_course_timeframe_timestamp_from" value="' . $timestamps['timestamp_from'] . '">';
 
-  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_to">' . __('Course end', 'humble-lms') . '</label>';
-  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timeframe[to]" id="humble_lms_course_timeframe_to" value="' . $timestamps['date_to'] . '">';
+  echo '<label class="humble-lms-label" for="humble_lms_course_timestamps_to">' . __('Course end', 'humble-lms') . '</label>';
+  echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timestamps[to]" id="humble_lms_course_timestamps_to" value="' . $to . '">';
+  echo '<input type="hidden" name="humble_lms_course_timestamps[timestampTo]" value="' . $to . '">';
   echo '<input type="button" class="button humble-lms-clear-datepicker-to" value="' . __('Remove', 'humble-lms') . '">';
-  echo '<input type="hidden" class="humble-lms-datepicker-timestamp-to" name="humble_lms_course_timeframe_timestamp[to]" id="humble_lms_course_timeframe_timestamp_to" value="' . $timestamps['timestamp_to'] . '">';
 
-  echo '<label class="humble-lms-label" for="humble_lms_course_timeframe_info">' . __('Additional information', 'humble-lms') . '</label>';
-  echo '<textarea class="widefat" type="humble-lms-timeframe-info" name="humble_lms_course_timeframe[info]" id="humble_lms_course_timeframe_info">' . $timestamps['info'] . '</textarea>';
+  echo '<label class="humble-lms-label" for="humble_lms_course_timestamps_info">' . __('Additional information on course timeframe', 'humble-lms') . '</label>';
+  echo '<textarea class="widefat" type="humble-lms-timestamps-info" name="humble_lms_course_timestamps[info]" id="humble_lms_course_timestamps_info">' . $timestamps[0]['info'] . '</textarea>';
   echo '<p class="description">' . __('Allowed HTML tags', 'humble-lms') . ': strong, b, em, i, a' . '</p>';
 }
 
@@ -337,9 +340,9 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   }
 
   $course_meta['humble_lms_course_duration'] = sanitize_text_field( $_POST['humble_lms_course_duration'] );
-  $course_meta['humble_lms_course_timestamps']['from'] = (int)$_POST['humble_lms_course_timeframe_timestamp']['from'];
-  $course_meta['humble_lms_course_timestamps']['to'] = (int)$_POST['humble_lms_course_timeframe_timestamp']['to'];
-  $course_meta['humble_lms_course_timestamps']['info'] = wp_kses( $_POST['humble_lms_course_timeframe']['info'], $allowed_html );
+  $course_meta['humble_lms_course_timestamps']['from'] = isset( $_POST['humble_lms_course_timestamps']['timestampFrom'] ) ? (int)$_POST['humble_lms_course_timestamps']['timestampFrom'] : '';
+  $course_meta['humble_lms_course_timestamps']['to'] = isset( $_POST['humble_lms_course_timestamps']['timestampTo'] ) ? (int)$_POST['humble_lms_course_timestamps']['timestampTo'] : '';
+  $course_meta['humble_lms_course_timestamps']['info'] = wp_kses( $_POST['humble_lms_course_timestamps']['info'], $allowed_html );
   $course_meta['humble_lms_course_sections'] = json_encode( $sections );
   $course_meta['humble_lms_course_sections'] = $_POST['humble_lms_course_sections'];
   $course_meta['humble_lms_course_consecutive_order'] = (int)$_POST['humble_lms_course_consecutive_order'];

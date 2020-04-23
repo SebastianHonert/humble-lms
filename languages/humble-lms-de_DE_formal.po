@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-04-22 18:46+0200\n"
-"PO-Revision-Date: 2020-04-22 18:49+0200\n"
+"POT-Creation-Date: 2020-04-23 14:36+0200\n"
+"PO-Revision-Date: 2020-04-23 15:19+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1133,8 +1133,8 @@ msgid "Course end"
 msgstr "Kursende"
 
 #: admin/custom-post-types/humble-lms-course.php:91
-msgid "Additional information"
-msgstr "Zusätzliche Informationen"
+msgid "Additional information on course timeframe"
+msgstr "Weitere Informationen zur Kurslaufzeit"
 
 #: admin/custom-post-types/humble-lms-course.php:93
 msgid "Allowed HTML tags"
@@ -2028,12 +2028,12 @@ msgstr "Elemente Navigation"
 #: public/class-humble-lms-shortcodes.php:135
 #: public/class-humble-lms-shortcodes.php:270
 msgid "Provider"
-msgstr "Anbieter"
+msgstr "Kursanbieter"
 
 #: admin/custom-taxonomies/humble-lms-provider.php:6
 #: public/class-humble-lms-shortcodes.php:491
 msgid "Providers"
-msgstr "Anbieter"
+msgstr "Kursanbieter"
 
 #: public/class-humble-lms-public.php:131
 msgid ""
@@ -2195,7 +2195,7 @@ msgstr "Keine Kursleiter/innen vorhanden."
 
 #: public/class-humble-lms-shortcodes.php:511
 msgid "Providers not specified."
-msgstr "Anbieter nicht angegeben."
+msgstr "Kursanbieter nicht angegeben."
 
 #: public/class-humble-lms-shortcodes.php:545
 msgid "Timeframe information not available. Please provide a valid course ID."

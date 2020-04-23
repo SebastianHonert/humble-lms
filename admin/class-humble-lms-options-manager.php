@@ -843,7 +843,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public static function has_recaptcha() {
       $options = get_option('humble_lms_options');
-      return ( $options['recaptcha_enabled'] === 1 && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) );
+      return ( isset( $options['recaptcha_enabled'] ) && $options['recaptcha_enabled'] === 1 && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) );
     }
 
     /**
@@ -865,7 +865,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function get_currency() {
       $options = get_option('humble_lms_options');
-      return in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
+      return isset( $options['currency'] ) && in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
     }
     
   }

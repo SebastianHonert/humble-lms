@@ -38,7 +38,7 @@ if( ! current_user_can('manage_options') ) {
   <title>Humble LMS Certificate</title>
   <link rel="stylesheet" href="<?php echo dirname( plugin_dir_url( __FILE__ ) ) . '/css/certificate/default.css'; ?>">
 </head>
-<body><?php
+<body class="humble-lms-certificate"><?php
 
   $meta = get_post_meta( $post->ID );
   $heading = isset( $meta['humble_lms_cert_heading'][0] ) && ! empty( $meta['humble_lms_cert_heading'][0] ) ? $meta['humble_lms_cert_heading'][0] : '';
@@ -56,14 +56,14 @@ if( ! current_user_can('manage_options') ) {
 
   echo '<div id="certificate">';
 
-    echo $heading ? '<h1>' . $heading . '</h1>' : '';
-    echo $subheading ? '<h2>' . $subheading . '</h2>' : '';
+    echo $heading ? '<h1 class="humble-lms-certificate-title">' . $heading . '</h1>' : '';
+    echo $subheading ? '<h2 class="humble-lms-certificate-subtitle">' . $subheading . '</h2>' : '';
 
-    echo $content ? '<div class="content">' . wpautop( do_shortcode( $content ) ) . '</div>' : '';
+    echo $content ? '<div class="humble-lms-certificate-content">' . wpautop( do_shortcode( $content ) ) . '</div>' : '';
 
   echo '</div>';
 
-  echo '<p class="back"><a href="' . get_bloginfo('url') . '">← ' . __('Back to home page', 'humble-lms') . '</a></p>';
+  echo '<p class="humble-lms-certificate-back-link"><a href="' . get_bloginfo('url') . '">← ' . __('Back to home page', 'humble-lms') . '</a></p>';
 
 ?></body>
 </html>

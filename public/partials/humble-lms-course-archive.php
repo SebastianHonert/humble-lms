@@ -7,7 +7,7 @@ get_header();
 
 do_action( 'humble_lms_before_course_archive_title' );
 
-echo '<h1>' . __('Courses', 'humble-lms') . '</h1>';
+echo '<h1 class="humble-lms-course-archive-title">' . __('Courses', 'humble-lms') . '</h1>';
 
 do_action( 'humble_lms_before_course_archive' );
 

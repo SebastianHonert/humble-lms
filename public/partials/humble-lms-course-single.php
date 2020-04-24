@@ -17,7 +17,7 @@ if (have_posts()):
       
       do_action( 'humble_lms_before_course_title' );
       
-      echo '<h1>' . get_the_title() . '</h1>';
+      echo '<h1 class="humble-lms-course-single-title">' . get_the_title() . '</h1>';
 
       the_content();
 

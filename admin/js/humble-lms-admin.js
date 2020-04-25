@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
   'use strict'
 
   /**
-   * Searchable multi-select.
+   * Searchable/sortable multi-select.
    * 
    * @since   0.0.1
    */
@@ -107,14 +107,6 @@ jQuery(document).ready(function($) {
     section.fadeOut(500, function() {
       $(this).remove()
 
-      sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
-      sections.each(function(index, el) {
-        $(el).attr('data-id', (index+1))
-        $(el).find('.humble-lms-course-section-number').text(index+1)
-        $(el).find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (index+1))
-        $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
-      })
-
       updateCourseSectionsInput()
     })
 
@@ -128,7 +120,14 @@ jQuery(document).ready(function($) {
   function updateCourseSectionsInput() {
     let section_array = []
     let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
-    
+
+    sections.each(function(index, el) {
+      $(el).attr('data-id', (index+1))
+      $(el).find('.humble-lms-course-section-number').text(index+1)
+      $(el).find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (index+1))
+      $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
+    })
+
     sections.each(function(index, section) {
       let section_object = {}
       let lessons = $(section).find('.ms-selection .ms-elem-selection.ms-selected')
@@ -148,6 +147,18 @@ jQuery(document).ready(function($) {
       $('#humble_lms_course_sections').val(JSON.stringify(section_array))
     })
   }
+
+  /**
+   * Sort course sections.
+   * 
+   * @since   0.0.1
+   */
+  let el = document.getElementById('humble-lms-admin-course-sections')
+  let sortable = Sortable.create(el, {
+    onSort: function(evt) {
+      updateCourseSectionsInput()
+    }
+  })
 
   /**
    * Pre-select an activity.

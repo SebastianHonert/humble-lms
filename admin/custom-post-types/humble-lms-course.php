@@ -164,7 +164,7 @@ function humble_lms_course_sections_mb()
     echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
   echo '</div>';
 
-  echo '<div id="humble-lms-admin-course-sections">';
+  echo '<div id="humble-lms-admin-course-sections" class="list-group">';
 
     foreach( $sections as $key => $section ) {
       $selected_lessons = [];
@@ -188,7 +188,7 @@ function humble_lms_course_sections_mb()
         }
       }
 
-      echo '<div class="humble-lms-course-section" data-id="' . ($key + 1) . '">';
+      echo '<div class="humble-lms-course-section" class="list-group-item" data-id="' . ($key + 1) . '">';
         echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . ' <span class="humble-lms-course-section-number">' . ($key + 1) . '</span></label>';
         echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="' . $section['title'] . '" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
         echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';

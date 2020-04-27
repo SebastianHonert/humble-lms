@@ -97,7 +97,7 @@ function humble_lms_course_timestamps_mb()
   echo '<input type="button" class="button humble-lms-clear-datepicker-to" value="' . __('Remove', 'humble-lms') . '">';
 
   echo '<label class="humble-lms-label" for="humble_lms_course_timestamps_info">' . __('Additional information on course timeframe', 'humble-lms') . '</label>';
-  echo '<textarea class="widefat" type="humble-lms-timestamps-info" name="humble_lms_course_timestamps[info]" id="humble_lms_course_timestamps_info">' . $timestamps[0]['info'] . '</textarea>';
+  echo '<textarea class="widefat" type="humble-lms-timestamps-info" name="humble_lms_course_timestamps[info]" id="humble_lms_course_timestamps_info">' . $info . '</textarea>';
   echo '<p class="description">' . __('Allowed HTML tags', 'humble-lms') . ': strong, b, em, i, a' . '</p>';
 }
 

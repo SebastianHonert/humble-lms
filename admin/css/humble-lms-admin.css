@@ -208,6 +208,18 @@ label[for="humble_lms_course_timestamps_info"] {
   margin-top: 1em;
 }
 
+.humble-lms-course-is-closed {
+  font-weight: 600;
+  color: rgb(121, 10, 10);
+}
+
+.humble-lms-course-is-open {
+  font-weight: 600;
+  color: rgb(10, 92, 38);
+}
+
+
+
 /* Quizzes */
 .humble-lms-question-type {
   margin-top: .25em;

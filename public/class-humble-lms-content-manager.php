@@ -359,8 +359,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       
       $timestamps = get_post_meta( $course_id, 'humble_lms_course_timestamps', false );
       $timestamps_array = array(
-        'timestamp_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? $timestamps[0]['from'] : '',
-        'timestamp_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? $timestamps[0]['to'] : '',
+        'from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? $timestamps[0]['from'] : '',
+        'to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? $timestamps[0]['to'] : '',
         'date_from' => isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? strftime( $date_format, $timestamps[0]['from'] ) : '',
         'date_to' => isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? strftime( $date_format, $timestamps[0]['to'] ) : '',
         'info' => isset( $timestamps[0]['info'] ) ? $timestamps[0]['info'] : '',
@@ -401,6 +401,50 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       );
     
       return strtr((string)$date_format, $chars);
+    }
+
+    /**
+     * Check if course has started.
+     * 
+     * 0 => open
+     * 1 => not open yet
+     * 2 => closed
+     * 
+     * @return   int
+     * @since    0.0.1
+     */
+    public function course_is_open( $course_id = null ) {
+      if( get_post_type( $course_id ) !== 'humble_lms_course' )
+        return 3;
+
+      $current_time = time();
+      $timestamps = self::get_timestamps( $course_id );
+
+      // Start and end not set
+      if( empty( $timestamps['from'] ) && empty( $timestamps['to'] ) ) {
+        return 0;
+      }
+
+      // Start and end set
+      elseif( ! empty( $timestamps['from'] ) && ! empty( $timestamps['to'] ) ) {
+        if( $timestamps['from'] <= $current_time && $timestamps['to'] >= $current_time ) {
+          return 0;
+        } elseif( $timestamps['from'] > $current_time ) {
+          return 1;
+        } elseif( $timestamps['to'] < $current_time ) {
+          return 2;
+        }
+      }
+
+      // Start set, end not set
+      elseif( ! empty( $timestamps['from'] ) && empty( $timestamps['to'] ) ) {
+        return $timestamps['from'] <= $current_time ? 0 : 1;
+      }
+
+      // Start not set, end set
+      elseif( empty( $timestamps['from'] ) && ! empty( $timestamps['to'] ) ) {
+        return $timestamps['to'] >= $current_time ? 0 : 2;
+      }
     }
 
   }

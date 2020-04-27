@@ -222,6 +222,7 @@ class Humble_LMS_Public {
 
     $html = '';
     $options = get_option('humble_lms_options');
+    $content_manager = new Humble_LMS_Content_Manager;
 
     if( ! is_admin() ) {
       $html .= '<div class="humble-lms-loading-layer"><div class="humble-lms-loading"></div></div>';
@@ -245,8 +246,39 @@ class Humble_LMS_Public {
       return $content;
     }
 
-    $course_id = null;
     $lesson_id = null;
+    $course_id = null;
+
+    // Course ID
+    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
+      $course_id = $post->ID;
+    } elseif( isset( $_POST['course_id'] ) ) {
+      $course_id = (int)$_POST['course_id'];
+    }
+
+    // Course has ended / not started yet
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'timeframe' ) && ! current_user_can('manage_options' ) ) {
+      $course_is_open = $content_manager->course_is_open( $course_id );
+
+      if( $course_is_open !== 0 ) {
+        $timestamps = $content_manager->get_timestamps( $course_id );
+        $msg = __('This course is currently closed.', 'humble-lms');
+
+        switch( $course_is_open ) {
+          case 1:
+            $msg = sprintf( __('This course will open on %s.', 'humble-lms'), $timestamps['date_from'] );
+            break;
+          case 2:
+            $msg = sprintf( __('This course has already been closed on %s.', 'humble-lms' ), $timestamps['date_to'] );
+            break;
+        }
+      
+        $html .= '<div class="humble-lms-message humble-lms-message--error">';
+        $html .= '<span class="humble-lms-message-title">' . __('Course closed', 'humble-lms') . '</span>';
+        $html .= '<span class="humble-lms-message-content">' . $msg . '</span>';
+        $html .= '</div>';
+      }
+    }
 
     // Access denied
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'denied' ) && ! current_user_can('manage_options' ) ) {
@@ -279,12 +311,6 @@ class Humble_LMS_Public {
     }
 
     // Message user completed course
-    if ( is_single() && get_post_type( $post->ID ) === 'humble_lms_course' ) {
-      $course_id = $post->ID;
-    } elseif( isset( $_POST['course_id'] ) ) {
-      $course_id = (int)$_POST['course_id'];
-    }
-
     if( isset( $course_id ) && $this->user->completed_course( $course_id ) ) {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
@@ -390,6 +416,9 @@ class Humble_LMS_Public {
 
     if( is_single() && $post->post_type == 'humble_lms_lesson' && $access !== 'allowed' ) {
       switch( $access ) {
+        case 'timeframe':
+          wp_redirect( add_query_arg( 'access', 'timeframe', $url ) );
+          break;
         case 'order':
           wp_redirect( add_query_arg( 'access', 'order', $url ) );
           break;

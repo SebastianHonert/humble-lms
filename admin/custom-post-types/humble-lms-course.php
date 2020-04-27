@@ -80,11 +80,23 @@ add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
 function humble_lms_course_timestamps_mb()
 {
   global $post;
-
+  
+  $content_manager = new Humble_LMS_Content_Manager();
   $timestamps = get_post_meta( $post->ID, 'humble_lms_course_timestamps', false);
-  $from = isset( $timestamps[0]['from'] ) ? date('Y-m-d', (int)$timestamps[0]['from'] ) : ''; 
-  $to = isset( $timestamps[0]['to'] ) ? date('Y-m-d', (int)$timestamps[0]['to'] ) : ''; 
+  $from = isset( $timestamps[0]['from'] ) && ! empty( $timestamps[0]['from'] ) ? date('Y-m-d', (int)$timestamps[0]['from'] ) : ''; 
+  $to = isset( $timestamps[0]['to'] ) && ! empty( $timestamps[0]['to'] ) ? date('Y-m-d', (int)$timestamps[0]['to'] ) : ''; 
   $info = isset( $timestamps[0]['info'] ) ? $timestamps[0]['info'] : ''; 
+
+  switch( $content_manager->course_is_open( $post->ID ) ) {
+    case 1:
+      echo '<p class="humble-lms-course-is-closed">' . __('This course has not started yet.', 'humble-lms') . '</p>';
+      break;
+    case 2:
+      echo '<p class="humble-lms-course-is-closed">' . __('This course has been closed.', 'humble-lms') . '</p>';
+      break;
+    default:
+      echo '<p class="humble-lms-course-is-open">' . __('This course is open.', 'humble-lms') . '</p>';
+  }
 
   echo '<label class="humble-lms-label" for="humble_lms_course_timestamps_from">' . __('Course start', 'humble-lms') . '</label>';
   echo '<input type="text" class="widefat humble-lms-datepicker" name="humble_lms_course_timestamps[from]" id="humble_lms_course_timestamps_from" value="' . $from . '">';

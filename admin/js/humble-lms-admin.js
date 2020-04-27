@@ -500,7 +500,7 @@ jQuery(document).ready(function($) {
   })
 
   $('.humble-lms-clear-datepicker-from').on('click', function () {
-    $('input[name="humble_lms_course_timestamps[from]"]').datepicker('setDate', null)
+    $('input[name="humble_lms_course_timestamps[from]"]').datepicker('setDate', null).val()
     $('input[name="humble_lms_course_timestamps[timestampFrom]"]').val('')
   })
 

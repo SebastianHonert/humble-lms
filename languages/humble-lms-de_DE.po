@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-04-23 17:05+0200\n"
-"PO-Revision-Date: 2020-04-27 09:58+0200\n"
+"POT-Creation-Date: 2020-04-27 12:22+0200\n"
+"PO-Revision-Date: 2020-04-27 12:23+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1127,78 +1127,96 @@ msgstr "Wähle eine Farbe für dir Kurs-Kachel (optional)"
 msgid "Display featured image"
 msgstr "Beitragsbild anzeigen"
 
-#: admin/custom-post-types/humble-lms-course.php:89
+#: admin/custom-post-types/humble-lms-course.php:92
+#, fuzzy
+#| msgid "This course starts on %s."
+msgid "This course has not started yet."
+msgstr "Dieser Kurs beginnt am %s."
+
+#: admin/custom-post-types/humble-lms-course.php:95
+#, fuzzy
+#| msgid "This course starts on %s."
+msgid "This course has been closed."
+msgstr "Dieser Kurs beginnt am %s."
+
+#: admin/custom-post-types/humble-lms-course.php:98
+#, fuzzy
+#| msgid "This course ends on %s."
+msgid "This course is open."
+msgstr "Dieser Kurs endet am %s."
+
+#: admin/custom-post-types/humble-lms-course.php:101
 msgid "Course start"
 msgstr "Kursbeginn"
 
-#: admin/custom-post-types/humble-lms-course.php:92
-#: admin/custom-post-types/humble-lms-course.php:97
+#: admin/custom-post-types/humble-lms-course.php:104
+#: admin/custom-post-types/humble-lms-course.php:109
 msgid "Remove"
 msgstr "Entfernen"
 
-#: admin/custom-post-types/humble-lms-course.php:94
+#: admin/custom-post-types/humble-lms-course.php:106
 msgid "Course end"
 msgstr "Kursende"
 
-#: admin/custom-post-types/humble-lms-course.php:99
+#: admin/custom-post-types/humble-lms-course.php:111
 msgid "Additional information on course timeframe"
 msgstr "Weitere Informationen zur Kurslaufzeit"
 
-#: admin/custom-post-types/humble-lms-course.php:101
+#: admin/custom-post-types/humble-lms-course.php:113
 msgid "Allowed HTML tags"
 msgstr "Erlaubte HTML-Tags"
 
-#: admin/custom-post-types/humble-lms-course.php:124
+#: admin/custom-post-types/humble-lms-course.php:136
 msgid "No lessons found. Please add one or more lessons first."
 msgstr "Keine Lektionen gefunden. Bitte füge erst eine Lektion hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:124
+#: admin/custom-post-types/humble-lms-course.php:136
 msgid "Add lessons"
 msgstr "Lektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:156
-#: admin/custom-post-types/humble-lms-course.php:192
+#: admin/custom-post-types/humble-lms-course.php:168
+#: admin/custom-post-types/humble-lms-course.php:204
 msgid "Section"
 msgstr "Sektion"
 
-#: admin/custom-post-types/humble-lms-course.php:157
-#: admin/custom-post-types/humble-lms-course.php:193
+#: admin/custom-post-types/humble-lms-course.php:169
+#: admin/custom-post-types/humble-lms-course.php:205
 msgid "Section title (optional)"
 msgstr "Titel der Sektion (optional)"
 
-#: admin/custom-post-types/humble-lms-course.php:158
-#: admin/custom-post-types/humble-lms-course.php:194
+#: admin/custom-post-types/humble-lms-course.php:170
+#: admin/custom-post-types/humble-lms-course.php:206
 msgid "Lessons in this section"
 msgstr "Lektion(en) in dieser Sektion"
 
-#: admin/custom-post-types/humble-lms-course.php:164
-#: admin/custom-post-types/humble-lms-course.php:207
+#: admin/custom-post-types/humble-lms-course.php:176
+#: admin/custom-post-types/humble-lms-course.php:219
 msgid "Remove this section"
 msgstr "Sektion entfernen"
 
-#: admin/custom-post-types/humble-lms-course.php:215
+#: admin/custom-post-types/humble-lms-course.php:227
 msgid "Add section"
 msgstr "Sektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:265
+#: admin/custom-post-types/humble-lms-course.php:277
 #: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "No instructors found. Please add one or more instructors first."
 msgstr ""
 "Keine Kursleiter*innen gefunden. Bitte füge erst eine*n Kursleiter*in hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:265
+#: admin/custom-post-types/humble-lms-course.php:277
 #: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "Add instructor"
 msgstr "Kursleiter*in hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:278
+#: admin/custom-post-types/humble-lms-course.php:290
 msgid ""
 "Yes, the lessons in this course need to be completed in consecutive order."
 msgstr ""
 "Ja, die Lektionen in diesem Kurs müssen in der richtigen Reihenfolge "
 "abgeschlossen werden."
 
-#: admin/custom-post-types/humble-lms-course.php:301
+#: admin/custom-post-types/humble-lms-course.php:313
 msgid "Yes, display the featured image on the course page."
 msgstr "Ja, Beitragsbild auf der Kursseite anzeigen."
 
@@ -2109,11 +2127,11 @@ msgstr "Ungültige Mitgliedschaft, der Vorgang wurde abgebrochen."
 msgid "Invalid price value, checkout cancelled."
 msgstr "Ungültiger Preis, der Vorgang wurde abgebrochen."
 
-#: public/class-humble-lms-public.php:233
+#: public/class-humble-lms-public.php:234
 msgid "Registration successful"
 msgstr "Registrierung erfolgreich"
 
-#: public/class-humble-lms-public.php:234
+#: public/class-humble-lms-public.php:235
 #, php-format
 msgid ""
 "Welcome on board! %s We just sent you a welcome email with further "
@@ -2122,13 +2140,31 @@ msgstr ""
 "Willkommen an Bord! %s Wir haben dir soeben eine Willkommensnachricht mit "
 "weiteren Anweisungen an deine E-Mail-Adresse gesendet."
 
-#: public/class-humble-lms-public.php:254
-#: public/class-humble-lms-public.php:262
-#: public/class-humble-lms-public.php:276
+#: public/class-humble-lms-public.php:265
+msgid "This course is currently closed."
+msgstr "Dieser Kurs ist aktuell geschlossen."
+
+#: public/class-humble-lms-public.php:269
+#, php-format
+msgid "This course will open on %s."
+msgstr "Dieser Kurs beginnt am %s."
+
+#: public/class-humble-lms-public.php:272
+#, php-format
+msgid "This course has already been closed on %s."
+msgstr "Dieser Kurs wurde bereits am %s geschlossen."
+
+#: public/class-humble-lms-public.php:277
+msgid "Course closed"
+msgstr "Kurs geschlossen"
+
+#: public/class-humble-lms-public.php:286
+#: public/class-humble-lms-public.php:294
+#: public/class-humble-lms-public.php:308
 msgid "Access denied"
 msgstr "Kein Zugang"
 
-#: public/class-humble-lms-public.php:255
+#: public/class-humble-lms-public.php:287
 #, php-format
 msgid ""
 "You need to be <a href=\"%s\">logged in</a> and have the required "
@@ -2137,7 +2173,7 @@ msgstr ""
 "Du musst <a href=\"%s\">angemeldet</a> sein und die erforderlichen Rechte "
 "besitzen, um auf diesen Inhalt zugreifen zu können."
 
-#: public/class-humble-lms-public.php:263
+#: public/class-humble-lms-public.php:295
 msgid ""
 "You need to upgrade your account to premium status in order to access the "
 "requested content."
@@ -2145,11 +2181,11 @@ msgstr ""
 "Um Zugriff auf diesen Inhalt zu haben, benötigst Du einen kostenpflichtigen "
 "Account."
 
-#: public/class-humble-lms-public.php:266
+#: public/class-humble-lms-public.php:298
 msgid "Upgrade your account now."
 msgstr "Premium-Zugriff jetzt erhalten."
 
-#: public/class-humble-lms-public.php:277
+#: public/class-humble-lms-public.php:309
 msgid ""
 "The lessons of this course need to be completed in a consecutive order. "
 "Please complete the previous lessons first."
@@ -2157,37 +2193,37 @@ msgstr ""
 "Die Lektionen in diesem Kurs müssen in der richtigen Reihenfolge "
 "abgeschlossen werden. Bitte bearbeite zuerst die vorangehende Lektion."
 
-#: public/class-humble-lms-public.php:290
+#: public/class-humble-lms-public.php:316
 msgid "Congratulations"
 msgstr "Glückwunsch"
 
-#: public/class-humble-lms-public.php:291
+#: public/class-humble-lms-public.php:317
 msgid "You successfully completed this course."
 msgstr "Du hast diesen Kurs erfolgreich abgeschlossen."
 
-#: public/class-humble-lms-public.php:298
+#: public/class-humble-lms-public.php:324
 #: public/class-humble-lms-shortcodes.php:137
 #: public/class-humble-lms-shortcodes.php:272
 msgid "Level"
 msgstr "Schwierigkeitsgrad"
 
-#: public/class-humble-lms-public.php:324
+#: public/class-humble-lms-public.php:350
 msgid "Lesson completed"
 msgstr "Lektion abgeschlossen"
 
-#: public/class-humble-lms-public.php:325
+#: public/class-humble-lms-public.php:351
 msgid "Course completed"
 msgstr "Kurs abgeschlossen"
 
-#: public/class-humble-lms-public.php:326
+#: public/class-humble-lms-public.php:352
 msgid "Track completed"
 msgstr "Lernpfad abgeschlossen"
 
-#: public/class-humble-lms-public.php:327
+#: public/class-humble-lms-public.php:353
 msgid "You received an award"
 msgstr "Auszeichnung erhalten"
 
-#: public/class-humble-lms-public.php:328
+#: public/class-humble-lms-public.php:354
 msgid "You have been issued a certificate"
 msgstr "Du hast ein Zertifikat erworben"
 

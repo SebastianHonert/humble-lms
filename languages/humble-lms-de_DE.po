@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-04-23 17:05+0200\n"
-"PO-Revision-Date: 2020-04-23 17:08+0200\n"
+"PO-Revision-Date: 2020-04-27 09:58+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -51,7 +51,7 @@ msgstr "Bitte gib eine Frage ein."
 
 #: admin/class-humble-lms-admin.php:121
 msgid "Please mark at least one answer as correct."
-msgstr "Bitte gib mindestens eine Antwort ein."
+msgstr "Bitte markiere mindest eine Antwort als korrekt."
 
 #: admin/class-humble-lms-admin.php:179
 msgid "Humble LMS Sidebar"

@@ -154,11 +154,14 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   let el = document.getElementById('humble-lms-admin-course-sections')
-  let sortable = Sortable.create(el, {
-    onSort: function(evt) {
-      updateCourseSectionsInput()
-    }
-  })
+
+  if (el) {
+    Sortable.create(el, {
+      onSort: function() {
+        updateCourseSectionsInput()
+      }
+    })
+  }
 
   /**
    * Pre-select an activity.

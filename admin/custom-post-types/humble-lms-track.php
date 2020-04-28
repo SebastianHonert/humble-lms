@@ -124,6 +124,18 @@ function humble_lms_track_courses_mb()
     echo '<p>' . __('No courses found. Please add one or more courses first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">' . __('Add courses', 'humble-lms') . '</a></p>';
 
   endif;
+
+  // Add course lightbox
+  echo '<div class="humble-lms-add-content-lightbox-wrapper">';
+    echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_course">';
+      echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add course', 'humble-lms') . '</div>';
+      echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Course title', 'humble-lms') . '&hellip;">';
+      echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a course title.', 'humble-lms') . '"></p>';
+      echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Cancel') . '</a>';
+      echo '<p class="humble-lms-add-content-success"><a target="_blank">' . __('Content added – click to edit.', 'humble-lms') . '</a></p>';
+    echo '</div>';
+  echo '</div>';
+  echo '<p class="humble-lms-add-course-to-section"><a class="humble-lms-open-admin-lightbox humble-lms-add-course-to-section button button-primary">' . __('Add course', 'humble-lms') . '</a>';
 }
 
 // Duration meta box

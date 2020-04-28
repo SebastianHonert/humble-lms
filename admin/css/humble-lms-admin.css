@@ -299,3 +299,7 @@ a.button.humble-lms-add-content-edit {
   padding-bottom: 0;
   margin-bottom: 0;
 }
+
+p.humble-lms-add-course-to-section {
+  margin-top: .5em;
+}

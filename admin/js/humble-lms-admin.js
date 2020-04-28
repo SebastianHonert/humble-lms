@@ -572,10 +572,17 @@ jQuery(document).ready(function($) {
           // Set data attribute for new option (index 0, see above)
           // Select new option in current section
           // Refresh sections and re-initialize searchable MultiSelect
-          $('.humble-lms-course-section').find('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id)
-          $('.humble-lms-course-section[data-id="' + id + '"]').find('.humble-lms-searchable option:first').attr('selected', 'selected')
-          $('.humble-lms-course-section').find('.humble-lms-searchable').multiSelect('refresh')
-          initMultiselect($('.humble-lms-course-section').find('.humble-lms-searchable'))
+          if (response.post_type === 'humble_lms_lesson') {
+            $('.humble-lms-course-section').find('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id)
+            $('.humble-lms-course-section[data-id="' + id + '"]').find('.humble-lms-searchable option:first').attr('selected', 'selected')
+            $('.humble-lms-course-section').find('.humble-lms-searchable').multiSelect('refresh')
+            initMultiselect($('.humble-lms-course-section').find('.humble-lms-searchable'))
+          } else if (response.post_type === 'humble_lms_course') {
+            $('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
+            $('.humble-lms-searchable').multiSelect('refresh')
+            initMultiselect($('.humble-lms-searchable'))
+            console.log('course')
+          }
 
           // Add link to edit new content
           response.post_edit_link = response.post_edit_link.replace('&#038;', '&')

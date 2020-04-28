@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-04-28 11:36+0200\n"
-"PO-Revision-Date: 2020-04-28 11:38+0200\n"
+"POT-Creation-Date: 2020-04-28 15:52+0200\n"
+"PO-Revision-Date: 2020-04-28 15:52+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1173,27 +1173,27 @@ msgid "Add lessons"
 msgstr "Lektion hinzufügen"
 
 #: admin/custom-post-types/humble-lms-course.php:168
-#: admin/custom-post-types/humble-lms-course.php:216
+#: admin/custom-post-types/humble-lms-course.php:217
 msgid "Section"
 msgstr "Sektion"
 
 #: admin/custom-post-types/humble-lms-course.php:169
-#: admin/custom-post-types/humble-lms-course.php:217
+#: admin/custom-post-types/humble-lms-course.php:218
 msgid "Section title (optional)"
 msgstr "Titel der Sektion (optional)"
 
 #: admin/custom-post-types/humble-lms-course.php:170
-#: admin/custom-post-types/humble-lms-course.php:218
+#: admin/custom-post-types/humble-lms-course.php:219
 msgid "Lessons in this section"
 msgstr "Lektion(en) in dieser Sektion"
 
 #: admin/custom-post-types/humble-lms-course.php:176
-#: admin/custom-post-types/humble-lms-course.php:231
+#: admin/custom-post-types/humble-lms-course.php:232
 msgid "Remove this section"
 msgstr "Sektion entfernen"
 
 #: admin/custom-post-types/humble-lms-course.php:185
-#: admin/custom-post-types/humble-lms-course.php:231
+#: admin/custom-post-types/humble-lms-course.php:232
 msgid "Add lesson"
 msgstr "Lektion hinzufügen"
 
@@ -1206,36 +1206,43 @@ msgid "Please add a lesson title."
 msgstr "Bitte geben Sie einen Titel ein."
 
 #: admin/custom-post-types/humble-lms-course.php:188
+#: admin/custom-post-types/humble-lms-track.php:134
 msgid "Create and add"
 msgstr "Erzeugen und hinzufügen"
 
 #: admin/custom-post-types/humble-lms-course.php:188
+#: admin/custom-post-types/humble-lms-track.php:134
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: admin/custom-post-types/humble-lms-course.php:239
+#: admin/custom-post-types/humble-lms-course.php:189
+#: admin/custom-post-types/humble-lms-track.php:135
+msgid "Content added – click to edit."
+msgstr ""
+
+#: admin/custom-post-types/humble-lms-course.php:240
 msgid "Add section"
 msgstr "Sektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:289
+#: admin/custom-post-types/humble-lms-course.php:290
 #: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "No instructors found. Please add one or more instructors first."
 msgstr ""
 "Keine Kursleiter*innen gefunden. Fügen Sie zuerst eine*n Kursleiter*in hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:289
+#: admin/custom-post-types/humble-lms-course.php:290
 #: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "Add instructor"
 msgstr "Kursleiter*in hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:302
+#: admin/custom-post-types/humble-lms-course.php:303
 msgid ""
 "Yes, the lessons in this course need to be completed in consecutive order."
 msgstr ""
 "Ja, die Lektionen in diesem Kurs müssen in der richtigen Reihenfolge "
 "abgeschlossen werden."
 
-#: admin/custom-post-types/humble-lms-course.php:325
+#: admin/custom-post-types/humble-lms-course.php:326
 msgid "Yes, display the featured image on the course page."
 msgstr "Ja, Beitragsbild auf der Kursseite anzeigen."
 
@@ -1827,6 +1834,19 @@ msgstr "Keine Kurse gefunden. Fügen Sie zuerst einen Kurs hinzu."
 #: admin/custom-post-types/humble-lms-track.php:124
 msgid "Add courses"
 msgstr "Kurs hinzufügen"
+
+#: admin/custom-post-types/humble-lms-track.php:131
+#: admin/custom-post-types/humble-lms-track.php:138
+msgid "Add course"
+msgstr "Kurs hinzufügen"
+
+#: admin/custom-post-types/humble-lms-track.php:132
+msgid "Course title"
+msgstr "Kurstitel"
+
+#: admin/custom-post-types/humble-lms-track.php:133
+msgid "Please add a course title."
+msgstr "Bitte geben Sie einen Kurstitel ein."
 
 #: admin/custom-post-types/humble-lms-txn.php:4
 #: admin/custom-post-types/humble-lms-txn.php:6

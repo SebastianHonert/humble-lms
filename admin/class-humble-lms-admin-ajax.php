@@ -91,6 +91,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
           array(
             'post_id' => $post_id,
             'post_title' => $post['post_title'],
+            'post_type' => $post_type,
             'post_edit_link' => esc_url( get_edit_post_link( $post_id ) )
           )
         );

@@ -286,3 +286,16 @@ label[for="humble_lms_course_timestamps_info"] {
   color: rgb(121, 10, 10);
   font-weight: 600;
 }
+
+a.button.humble-lms-add-content-edit {
+  display: none;
+}
+
+.humble-lms-add-content-success {
+  display: none;
+}
+
+.humble-lms-add-content-success {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}

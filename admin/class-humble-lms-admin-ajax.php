@@ -90,7 +90,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
         echo json_encode(
           array(
             'post_id' => $post_id,
-            'post_title' => $post['post_title']
+            'post_title' => $post['post_title'],
+            'post_edit_link' => esc_url( get_edit_post_link( $post_id ) )
           )
         );
       } else  {

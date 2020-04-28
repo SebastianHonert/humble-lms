@@ -514,63 +514,77 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('.humble-lms-open-admin-lightbox').on('click', function() {
-    $('.humble-lms-add-content-lightbox-wrapper').css('display', 'flex')
-    $('.humble-lms-add-content-name').focus()
-  })
+  let adminLightbox = (function() {
+    let id
 
-  $('.humble-lms-add-content-cancel').on('click', function() {
-    $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
-  })
+    $('.humble-lms-open-admin-lightbox').on('click', function() {
+      id = $(this).data('id')
 
-  $('.humble-lms-add-content-submit').on('click', function() {
-    let post_type = $('.humble-lms-add-content-lightbox').data('post_type')
-    let title = $('.humble-lms-add-content-name').val()
-
-    if (!post_type || !title) {
-      $('.humble-lms-add-content-error').text($('.humble-lms-add-content-error').data('message')).css('display', 'block')
-      return
-    }
-
-    loadingLayer(true)
-
-    $.ajax({
-      url: humble_lms.ajax_url,
-      type: 'POST',
-      data: {
-        action: 'add_content',
-        title: title,
-        post_type: post_type,
-        nonce: humble_lms.nonce
-      },
-      dataType: 'json',
-      error: function(MLHttpRequest, textStatus, errorThrown) {
-        console.error(errorThrown)
-        loadingLayer(false)
-        $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
-      },
-      success: function(response, textStatus, XMLHttpRequest) {
-        loadingLayer(false)
-        if (response === 'error') {
-          alert('Hm, something went wrong.')
-          return
-        }
-
-        $('.humble-lms-searchable').multiSelect('addOption', {
-          value: response.post_id,
-          text: response.post_title + ' (ID ' + response.post_id + ')',
-          index: 0 // first element
-        })
-
-        // Set data attribute for new option (index 0, see above)
-        $('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
-
-        $('.humble-lms-searchable').multiSelect('refresh')
-        initMultiselect('.humble-lms-searchable')
-        $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
-        $('.humble-lms-add-content-name').val('')
-      },
+      $('.humble-lms-add-content-lightbox-wrapper').css('display', 'flex')
+      $('.humble-lms-add-content-name').focus()
     })
-  })
+  
+    $('.humble-lms-add-content-cancel').on('click', function() {
+      $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
+      $('.humble-lms-add-content-error').fadeOut(200)
+      $('.humble-lms-add-content-success').fadeOut(200)
+    })
+  
+    $('.humble-lms-add-content-submit').on('click', function() {
+      let post_type = $('.humble-lms-add-content-lightbox').data('post_type')
+      let title = $('.humble-lms-add-content-name').val()
+  
+      if (!post_type || !title) {
+        $('.humble-lms-add-content-error').text($('.humble-lms-add-content-error').data('message')).css('display', 'block')
+        return
+      }
+
+      loadingLayer(true)
+  
+      $.ajax({
+        url: humble_lms.ajax_url,
+        type: 'POST',
+        data: {
+          action: 'add_content',
+          title: title,
+          post_type: post_type,
+          nonce: humble_lms.nonce
+        },
+        dataType: 'json',
+        error: function(MLHttpRequest, textStatus, errorThrown) {
+          console.error(errorThrown)
+          loadingLayer(false)
+          $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
+        },
+        success: function(response, textStatus, XMLHttpRequest) {
+          loadingLayer(false)
+          if (response === 'error') {
+            alert('Hm, something went wrong.')
+            return
+          }
+  
+          $('.humble-lms-searchable').multiSelect('addOption', {
+            value: response.post_id,
+            text: response.post_title + ' (ID ' + response.post_id + ')',
+            index: 0
+          })
+  
+          // Set data attribute for new option (index 0, see above)
+          // Select new option in current section
+          // Refresh sections and re-initialize searchable MultiSelect
+          $('.humble-lms-course-section').find('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id)
+          $('.humble-lms-course-section[data-id="' + id + '"]').find('.humble-lms-searchable option:first').attr('selected', 'selected')
+          $('.humble-lms-course-section').find('.humble-lms-searchable').multiSelect('refresh')
+          initMultiselect($('.humble-lms-course-section').find('.humble-lms-searchable'))
+
+          // Add link to edit new content
+          response.post_edit_link = response.post_edit_link.replace('&#038;', '&')
+          $('.humble-lms-add-content-success a').attr('href', response.post_edit_link)
+          $('.humble-lms-add-content-success').fadeIn(200)
+          $('.humble-lms-add-content-name').val('')
+        },
+      })
+    })
+  })()
 
 })

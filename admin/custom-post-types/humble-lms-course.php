@@ -186,6 +186,7 @@ function humble_lms_course_sections_mb()
         echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Lesson title', 'humble-lms') . '&hellip;">';
         echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a lesson title.', 'humble-lms') . '"></p>';
         echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Cancel') . '</a>';
+        echo '<p class="humble-lms-add-content-success"><a target="_blank">' . __('Content added – click to edit.', 'humble-lms') . '</a></p>';
       echo '</div>';
     echo '</div>';
 
@@ -228,7 +229,7 @@ function humble_lms_course_sections_mb()
             echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
           }
         echo '</select>';
-        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary">' . __('Add lesson', 'humble-lms') . '</a></p>';
+        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary" data-id="' . ($key + 1) . '">' . __('Add lesson', 'humble-lms') . '</a></p>';
       echo '</div>';
     }
 

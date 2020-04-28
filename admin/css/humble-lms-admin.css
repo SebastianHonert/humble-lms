@@ -218,8 +218,6 @@ label[for="humble_lms_course_timestamps_info"] {
   color: rgb(10, 92, 38);
 }
 
-
-
 /* Quizzes */
 .humble-lms-question-type {
   margin-top: .25em;
@@ -248,4 +246,43 @@ label[for="humble_lms_course_timestamps_info"] {
 
 .humble-lms-less-margin {
   margin: .125em 0 .5em;
+}
+
+/* Add content lightbox */
+.humble-lms-add-content-lightbox-wrapper {
+  position: fixed;
+  z-index: 99;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.7);
+}
+
+.humble-lms-add-content-lightbox {
+  box-sizing: border-box;
+  width: 480px;
+  max-width: 96%;
+  padding: 1em;
+  background: #fff;
+  box-shadow: 1px 3px 6px rgba(0,0,0,.4);
+}
+
+.humble-lms-add-content-lightbox-title {
+  font-size: 1.5em;
+  padding: 0 0 .5em;
+}
+
+.humble-lms-add-content-name {
+  display: block;
+  margin-bottom: .5em;
+}
+
+.humble-lms-add-content-error {
+  display: none;
+  color: rgb(121, 10, 10);
+  font-weight: 600;
 }

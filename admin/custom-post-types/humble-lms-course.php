@@ -176,8 +176,20 @@ function humble_lms_course_sections_mb()
     echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
   echo '</div>';
 
+  // Course sections wrapper
   echo '<div id="humble-lms-admin-course-sections" class="list-group">';
 
+    // Add lesson lightbox
+    echo '<div class="humble-lms-add-content-lightbox-wrapper">';
+      echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_lesson">';
+        echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add lesson', 'humble-lms') . '</div>';
+        echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Lesson title', 'humble-lms') . '&hellip;">';
+        echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a lesson title.', 'humble-lms') . '"></p>';
+        echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Cancel') . '</a>';
+      echo '</div>';
+    echo '</div>';
+
+    // Sections
     foreach( $sections as $key => $section ) {
       $selected_lessons = [];
       $section_lessons = ! is_array( $section['lessons'] ) ? explode(',', $section['lessons'] ) : [];
@@ -216,7 +228,7 @@ function humble_lms_course_sections_mb()
             echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
           }
         echo '</select>';
-        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
+        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary">' . __('Add lesson', 'humble-lms') . '</a></p>';
       echo '</div>';
     }
 
@@ -224,7 +236,7 @@ function humble_lms_course_sections_mb()
 
   echo '<input type="hidden" name="humble_lms_course_sections" id="humble_lms_course_sections" value="">';
 
-  echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section--cloneable" data-target="#humble-lms-admin-course-sections">+ ' . __('Add section', 'humble-lms') . '</a></p>';
+  echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section--cloneable" data-target="#humble-lms-admin-course-sections">' . __('Add section', 'humble-lms') . '</a></p>';
 }
 
 // Course Instructor

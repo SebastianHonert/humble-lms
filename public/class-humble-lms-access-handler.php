@@ -37,7 +37,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
         return 'allowed';
 
-      // Check timeframe
+      // Check course timeframe
       $course_is_open = $this->content_manager->course_is_open( $course_id );
 
       if( $course_is_open !== 0 ) {

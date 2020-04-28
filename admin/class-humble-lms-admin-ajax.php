@@ -55,6 +55,50 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
 
       die;
     }
+
+    /**
+     * Add content.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function add_content() {
+      $allowed_post_types = array(
+        'humble_lms_lesson',
+        'humble_lms_course',
+      );
+  
+      if( ! isset( $_POST['title'] ) || empty( $_POST['title'] ) || ! isset( $_POST['post_type'] ) || empty( $_POST['post_type'] ) || ! in_array( $_POST['post_type'], $allowed_post_types ) ) {
+        echo json_encode('error');
+        die;
+      }
+
+      $title = sanitize_text_field( $_POST['title'] );
+      $post_type = sanitize_text_field( $_POST['post_type'] );
+
+      $post = array(
+        'post_title' => $title,
+        'post_type' => $post_type,
+        'post_content'  => '',
+        'post_status'   => 'publish',
+        'post_author' => get_current_user_id()
+      );
+
+      $post_id = wp_insert_post( $post );
+
+      if( $post_id ) {
+        echo json_encode(
+          array(
+            'post_id' => $post_id,
+            'post_title' => $post['post_title']
+          )
+        );
+      } else  {
+        echo json_encode('error');
+      }
+
+      die;
+    }
     
   }
   

@@ -509,4 +509,68 @@ jQuery(document).ready(function($) {
     $('input[name="humble_lms_course_timestamps[timestampTo]"]').val('')
   })
 
+  /**
+   * Add content with lightbox.
+   * 
+   * @since   0.0.1
+   */
+  $('.humble-lms-open-admin-lightbox').on('click', function() {
+    $('.humble-lms-add-content-lightbox-wrapper').css('display', 'flex')
+    $('.humble-lms-add-content-name').focus()
+  })
+
+  $('.humble-lms-add-content-cancel').on('click', function() {
+    $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
+  })
+
+  $('.humble-lms-add-content-submit').on('click', function() {
+    let post_type = $('.humble-lms-add-content-lightbox').data('post_type')
+    let title = $('.humble-lms-add-content-name').val()
+
+    if (!post_type || !title) {
+      $('.humble-lms-add-content-error').text($('.humble-lms-add-content-error').data('message')).css('display', 'block')
+      return
+    }
+
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'add_content',
+        title: title,
+        post_type: post_type,
+        nonce: humble_lms.nonce
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown)
+        loadingLayer(false)
+        $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        loadingLayer(false)
+        if (response === 'error') {
+          alert('Hm, something went wrong.')
+          return
+        }
+
+        $('.humble-lms-searchable').multiSelect('addOption', {
+          value: response.post_id,
+          text: response.post_title + ' (ID ' + response.post_id + ')',
+          index: 0 // first element
+        })
+
+        // Set data attribute for new option (index 0, see above)
+        $('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
+
+        $('.humble-lms-searchable').multiSelect('refresh')
+        initMultiselect('.humble-lms-searchable')
+        $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
+        $('.humble-lms-add-content-name').val('')
+      },
+    })
+  })
+
 })

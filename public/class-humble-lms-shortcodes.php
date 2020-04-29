@@ -332,21 +332,21 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $lesson_id = null;
       }
 
-      $lessons = $this->content_manager->get_course_lessons( $course_id );
+      // $lessons = $this->content_manager->get_course_lessons( $course_id );
       $sections = $this->content_manager->get_course_sections( $course_id );
 
-      if( is_single() && get_post_type() === 'humble_lms_course' && empty( $lessons ) ) {
+      if( is_single() && get_post_type() === 'humble_lms_course' && empty( $sections ) ) {
         return '<p>' . __('There are no lessons attached to this course', 'humble-lms') . '</p>';
       }
       
-      $lessons = get_posts( array(
-        'post_type' => 'humble_lms_lesson',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        'orderby' => 'post__in',
-        'order' => 'ASC',
-        'post__in' => $lessons
-      ));
+      // $lessons = get_posts( array(
+      //   'post_type' => 'humble_lms_lesson',
+      //   'post_status' => 'publish',
+      //   'posts_per_page' => -1,
+      //   'orderby' => 'post__in',
+      //   'order' => 'ASC',
+      //   'post__in' => $lessons
+      // ));
 
       // Course Syllabus
       $html .= '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';

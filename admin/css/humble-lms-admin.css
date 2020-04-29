@@ -188,10 +188,6 @@ label.humble-lms-label,
   margin-bottom: 0;
 }
 
-.humble-lms-course-section--cloneable {
-  display: none !important;
-}
-
 label[for='humble_lms_course_timestamps_to'] {
   margin-top: 1em;
 }

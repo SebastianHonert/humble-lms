@@ -119,6 +119,7 @@ class Humble_LMS_Admin {
       'uncheckUserIsInstructor' => __('Please note: This user is currently marked as an instructor. Removing instructor status and saving this user\'s settings will also result in removing this user as an instructor from all courses and lessons.', 'humble-lms'),
       'questionMissing' => __('Please enter a question first.', 'humble-lms'),
       'correctAnswerMissing' => __('Please mark at least one answer as correct.', 'humble-lms'),
+      'oneSectionMessage' => __('This section cannot be removed. Courses consist of at least one section.', 'humble-lms'),
       'nonce' => wp_create_nonce( 'humble_lms' ),
     ) );
   }

@@ -16,8 +16,8 @@ jQuery(document).ready(function($) {
         let that = this,
             $selectableSearch = that.$selectableUl.prev(),
             $selectionSearch = that.$selectionUl.prev(),
-            selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-            selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected'
+            selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+            selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected'
 
         $('.humble-lms-course-section-title').on('keyup', function() {
           that.sortable.options.onEnd()
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
     })
   }
 
-  initMultiselect('.humble-lms-searchable')
+  initMultiselect($('.humble-lms-searchable'))
 
   /**
    * Multiselect: select/deselect all
@@ -97,10 +97,11 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   $(document).on('click', '.humble-lms-course-section-remove', function() {
-    let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
+    let sections = $('.humble-lms-course-section')
     let section = $(this).parent().parent('.humble-lms-course-section')
 
     if (sections.length === 1) {
+      alert(humble_lms.oneSectionMessage)
       return
     }
 
@@ -119,13 +120,14 @@ jQuery(document).ready(function($) {
    */
   function updateCourseSectionsInput() {
     let section_array = []
-    let sections = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable')
+    let sections = $('.humble-lms-course-section')
 
     sections.each(function(index, el) {
       $(el).attr('data-id', (index+1))
       $(el).find('.humble-lms-course-section-number').text(index+1)
       $(el).find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (index+1))
       $(el).find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (index+1))
+      $(el).find('.humble-lms-open-admin-lightbox').attr('data-id', (index+1))
     })
 
     sections.each(function(index, section) {
@@ -232,36 +234,32 @@ jQuery(document).ready(function($) {
     if (element.hasClass('humble-lms-answer')) {
       clone.find('.humble-lms-answer-text').val('')
       clone.find('.humble-lms-answer-correct').prop('checked', false)
-    }
+      clone.appendTo(target)
 
-
-    // Humble LMS Course Section
-    if (element.hasClass('humble-lms-course-section')) {
-      key = $('.humble-lms-course-section:not(.humble-lms-course-section--cloneable)').length
-
-      clone.attr('data-id', (key+1))
-      clone.find('.humble-lms-course-section-number').text((key+1))
-      clone.find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (key+1))
-      clone.removeClass('humble-lms-course-section--cloneable')
-      clone.find('.humble-lms-searchable--cloneable').addClass('humble-lms-searchable').removeClass('humble-lms-searchable--cloneable')
-      clone.find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (key+1))
-      clone.css('display', 'none').appendTo(target).fadeIn(400)
-
-      initMultiselect(clone.find('.humble-lms-searchable'))
-      clone.find('.humble-lms-searchable').multiSelect('deselect_all')
+      elements = $($(this).data('element'))
+      reindex(elements)
 
       return
     }
 
-    // Append clone
-    clone.appendTo(target)
+    // Humble LMS Course Section
+    if (element.hasClass('humble-lms-course-section')) {
+      key = $('.humble-lms-course-section').length
 
-    // Humble LMS Answer
-    if (element.hasClass('humble-lms-answer')) {
-      elements = $($(this).data('element'))
-      reindex(elements)
+      // Remove multiSelect container from clone because it needs to be re-initialized
+      clone.find('.ms-container').remove()
+      clone.attr('data-id', (key+1))
+      clone.find('.humble-lms-open-admin-lightbox').attr('data-id', (key+1))
+      clone.find('.humble-lms-course-section-number').text((key+1))
+      clone.find('.humble-lms-course-section-title').val('')
+      clone.find('.humble-lms-multiselect-value').prop('id', 'humble_lms_course_lessons-' + (key+1))
+      clone.find('.humble-lms-searchable').attr('data-content', 'course_lessons-' + (key+1))
+      clone.find('.humble-lms-searchable').removeAttr('id')
+      clone.css('display', 'none').appendTo(target).fadeIn(400)
+
+      initMultiselect(clone.find('.humble-lms-searchable'))
+      clone.find('.humble-lms-searchable').multiSelect('deselect_all')
     }
-
   })
 
   /**
@@ -514,23 +512,23 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  let adminLightbox = (function() {
+  const adminLightbox = (function() {
     let id
 
-    $('.humble-lms-open-admin-lightbox').on('click', function() {
+    $(document).on('click', '.humble-lms-open-admin-lightbox', function() {
       id = $(this).data('id')
 
       $('.humble-lms-add-content-lightbox-wrapper').css('display', 'flex')
       $('.humble-lms-add-content-name').focus()
     })
   
-    $('.humble-lms-add-content-cancel').on('click', function() {
+    $(document).on('click', '.humble-lms-add-content-cancel', function() {
       $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
       $('.humble-lms-add-content-error').fadeOut(200)
       $('.humble-lms-add-content-success').fadeOut(200)
     })
   
-    $('.humble-lms-add-content-submit').on('click', function() {
+    $(document).on('click', '.humble-lms-add-content-submit', function() {
       let post_type = $('.humble-lms-add-content-lightbox').data('post_type')
       let title = $('.humble-lms-add-content-name').val()
   
@@ -562,26 +560,28 @@ jQuery(document).ready(function($) {
             alert('Hm, something went wrong.')
             return
           }
-  
-          $('.humble-lms-searchable').multiSelect('addOption', {
-            value: response.post_id,
-            text: response.post_title + ' (ID ' + response.post_id + ')',
-            index: 0
-          })
-  
-          // Set data attribute for new option (index 0, see above)
-          // Select new option in current section
-          // Refresh sections and re-initialize searchable MultiSelect
+
+          // Select new option in current section and re-initialize searchable multiSelect
           if (response.post_type === 'humble_lms_lesson') {
-            $('.humble-lms-course-section').find('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id)
-            $('.humble-lms-course-section[data-id="' + id + '"]').find('.humble-lms-searchable option:first').attr('selected', 'selected')
-            $('.humble-lms-course-section').find('.humble-lms-searchable').multiSelect('refresh')
-            initMultiselect($('.humble-lms-course-section').find('.humble-lms-searchable'))
+            $('.humble-lms-course-section').find('.humble-lms-searchable').multiSelect('addOption', {
+              value: response.post_id,
+              text: response.post_title
+            })
+
+            let currentSection = $('.humble-lms-course-section[data-id="' + id + '"]')
+            currentSection.find('.humble-lms-searchable option:last').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
+            currentSection.find('.ms-container').remove()
+            currentSection.find('.humble-lms-searchable').multiSelect('refresh')
+            initMultiselect($('.humble-lms-searchable'))
           } else if (response.post_type === 'humble_lms_course') {
-            $('.humble-lms-searchable option:first').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
+            $('.humble-lms-searchable').multiSelect('addOption', {
+              value: response.post_id,
+              text: response.post_title
+            })
+
+            $('.humble-lms-searchable option:last').val(response.post_id).attr('data-id', response.post_id).attr('selected', 'selected')
             $('.humble-lms-searchable').multiSelect('refresh')
             initMultiselect($('.humble-lms-searchable'))
-            console.log('course')
           }
 
           // Add link to edit new content

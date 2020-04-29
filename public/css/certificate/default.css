@@ -86,6 +86,7 @@ h1 {
 h2 {
   font-size: 1.5em;
   text-align: center;
+  padding-bottom: 2em;
 }
 
 h3 {
@@ -110,9 +111,9 @@ strong, b {
   font-weight: 700;
 }
 
-.back {
+.humble-lms-certificate-back-link {
   text-align: center;
-  margin-top: 2em;
+  padding: 2em 0;
 }
 
 a {

@@ -138,7 +138,6 @@ function humble_lms_course_sections_mb()
   }
 
   $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
-  $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $post->ID );
 
   if( ! $sections ) {
     $sections = array(
@@ -158,23 +157,6 @@ function humble_lms_course_sections_mb()
   );
 
   $lessons = get_posts( $args );
-
-  /**
-   * This container is the cloneable instance of the section wrapper.
-   * The class "humble-lms-course-section--cloneable" will prevent the
-   * JS multiselect function from getting triggered on this container.
-   */
-  echo '<div class="humble-lms-course-section humble-lms-course-section--cloneable" data-id="">';
-    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . ' <span class="humble-lms-course-section-number"></span></label>';
-    echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
-    echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
-    echo '<select class="humble-lms-searchable--cloneable" data-content="course_lessons-"  multiple="multiple">';
-      foreach( $lessons as $lesson ) {
-        echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '">' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
-      }
-    echo '</select>';
-    echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a></p>';
-  echo '</div>';
 
   // Course sections wrapper
   echo '<div id="humble-lms-admin-course-sections" class="list-group">';
@@ -221,12 +203,12 @@ function humble_lms_course_sections_mb()
           foreach( $lessons as $lesson ) {
             echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
               if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-            echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+            echo '>' . $lesson->post_title . '</option>';
           }
           foreach( $selected_lessons as $lesson ) {
             echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
               if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-            echo '>' . $lesson->post_title . ' (ID ' . $lesson->ID . ')</option>';
+            echo '>' . $lesson->post_title . '</option>';
           }
         echo '</select>';
         echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary" data-id="' . ($key + 1) . '">' . __('Add lesson', 'humble-lms') . '</a></p>';
@@ -237,7 +219,7 @@ function humble_lms_course_sections_mb()
 
   echo '<input type="hidden" name="humble_lms_course_sections" id="humble_lms_course_sections" value="">';
 
-  echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section--cloneable" data-target="#humble-lms-admin-course-sections">' . __('Add section', 'humble-lms') . '</a></p>';
+  echo '<p><a class="button button-primary humble-lms-repeater" data-element=".humble-lms-course-section" data-target="#humble-lms-admin-course-sections">' . __('Add section', 'humble-lms') . '</a></p>';
 }
 
 // Course Instructor

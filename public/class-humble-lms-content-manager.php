@@ -348,11 +348,11 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       }
 
       $locale = get_locale();
-      if( $locale === 'de_DE_formal' ) {
-        $locale = 'de_DE';
+      if( $locale === 'de_DE_formal' || $locale === 'de_DE' ) {
+        setlocale(LC_ALL, 'de_DE', 'de', 'de_DE.utf8', 'de_DE@euro');
+      } else {
+        setlocale(LC_ALL, $locale, 'en_GB', 'en_US');
       }
-
-      setlocale(LC_ALL, $locale);
 
       $date_format = get_option('date_format');
       $date_format = self::dateFormatToStrftime( $date_format );

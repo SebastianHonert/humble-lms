@@ -22,6 +22,7 @@ jQuery(document).ready(function($) {
    */
   function redirectForm( response ) {
     if (!response.redirect_url) {
+      loadingLayer(false)
       return
     }
 

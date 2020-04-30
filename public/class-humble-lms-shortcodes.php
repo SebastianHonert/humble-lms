@@ -332,21 +332,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $lesson_id = null;
       }
 
-      // $lessons = $this->content_manager->get_course_lessons( $course_id );
+      $lessons = $this->content_manager->get_course_lessons( $course_id );
       $sections = $this->content_manager->get_course_sections( $course_id );
 
       if( is_single() && get_post_type() === 'humble_lms_course' && empty( $sections ) ) {
         return '<p>' . __('There are no lessons attached to this course', 'humble-lms') . '</p>';
       }
-      
-      // $lessons = get_posts( array(
-      //   'post_type' => 'humble_lms_lesson',
-      //   'post_status' => 'publish',
-      //   'posts_per_page' => -1,
-      //   'orderby' => 'post__in',
-      //   'order' => 'ASC',
-      //   'post__in' => $lessons
-      // ));
 
       // Course Syllabus
       $html .= '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
@@ -360,8 +351,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $lesson_index = 0;
   
           foreach( $sections as $key => $section ) {
+
             $set_title = true;
             $section_title = ! empty( $section['title'] ) ? $section['title'] : '';
+
+            if( empty( $section['lessons'] ) ) {
+              continue;
+            }
+
             $section_lessons = explode(',', $section['lessons']);
             if( ! is_array( $section_lessons ) || empty( $section_lessons ) ) {
               continue;
@@ -405,8 +402,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // View course/lesson
       if( $context === 'course' ) {
-        $lesson_id = isset( $lessons[0]->ID ) ? $lessons[0]->ID : 0;
-        $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn-start-course humble-lms-open-lesson" data-lesson-id="' . $lesson_id . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+        if( isset( $lessons[0] ) && ! empty( $lessons[0] ) ) {
+          $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn-start-course humble-lms-open-lesson" data-lesson-id="' . $lessons[0] . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+        }
       }
 
       return $html;

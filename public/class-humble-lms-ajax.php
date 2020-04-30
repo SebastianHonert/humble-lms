@@ -53,7 +53,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $course_id = isset( $_POST['courseId'] ) ? (int)$_POST['courseId'] : null;
       $lesson_id = isset( $_POST['lessonId'] ) ? (int)$_POST['lessonId'] : null;
       $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
-      $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN);
+      $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN );
 
       if( ! $course_id ) {
         if( ! $lesson_id ) {

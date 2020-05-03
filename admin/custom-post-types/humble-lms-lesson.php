@@ -175,7 +175,7 @@ function humble_lms_lesson_instructors_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '<a href="' . admin_url('/users.php') . '">' . __('Add instructor', 'humble-lms') . '</a></p>';
+    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '</p>';
 
   endif;
 }

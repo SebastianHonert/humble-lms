@@ -102,28 +102,21 @@ function humble_lms_track_courses_mb()
     }
   }
 
-  if( $courses || $selected_courses ):
-
-    echo '<div id="humble-lms-admin-track-courses humble_lms_multiselect_track_courses">';
-      echo '<select class="humble-lms-searchable" data-content="track_courses" multiple="multiple">';
-        foreach( $selected_courses as $course ) {
-          echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
-            if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
-          echo '>' . $course->post_title . ' (ID ' . $course->ID . ')</option>';
-        }
-        foreach( $courses as $course ) {
-          echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
-            if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
-          echo '>' . $course->post_title . ' (ID ' . $course->ID . ')</option>';
-        }
-      echo '</select>';
-      echo '<input class="humble-lms-multiselect-value" id="humble_lms_track_courses" name="humble_lms_track_courses" type="hidden" value="' . implode(',', $track_courses) . '">';
-    echo '</div>';
-  else:
-
-    echo '<p>' . __('No courses found. Please add one or more courses first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">' . __('Add courses', 'humble-lms') . '</a></p>';
-
-  endif;
+  echo '<div id="humble-lms-admin-track-courses humble_lms_multiselect_track_courses">';
+    echo '<select class="humble-lms-searchable" data-content="track_courses" multiple="multiple">';
+      foreach( $selected_courses as $course ) {
+        echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
+          if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
+        echo '>' . $course->post_title . '</option>';
+      }
+      foreach( $courses as $course ) {
+        echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
+          if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
+        echo '>' . $course->post_title . '</option>';
+      }
+    echo '</select>';
+    echo '<input class="humble-lms-multiselect-value" id="humble_lms_track_courses" name="humble_lms_track_courses" type="hidden" value="' . implode(',', $track_courses) . '">';
+  echo '</div>';
 
   // Add course lightbox
   echo '<div class="humble-lms-add-content-lightbox-wrapper">';

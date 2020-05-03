@@ -132,11 +132,6 @@ function humble_lms_course_sections_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  if( ! get_posts( array( 'post_type' => 'humble_lms_lesson') ) ) {
-    echo '<p>' . __('No lessons found. Please add one or more lessons first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_lesson') . '">' . __('Add lessons', 'humble-lms') . '</a></p>';
-    return;
-  }
-
   $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
 
   if( ! $sections ) {
@@ -269,7 +264,7 @@ function humble_lms_course_instructors_mb()
     echo '</div>';
   else:
 
-    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '<a href="' . admin_url('/users.php') . '">' . __('Add instructor', 'humble-lms') . '</a></p>';
+    echo '<p>' . __('No instructors found. Please add one or more instructors first.', 'humble-lms') . '</p>';
 
   endif;
 }

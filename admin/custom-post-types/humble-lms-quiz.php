@@ -120,7 +120,7 @@ function humble_lms_quiz_questions_mb() {
   
   else:
 
-    echo '<p>' . __('No quiz questions found. Please add one or more question first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_question') . '">' . __('Add question', 'humble-lms') . '</a></p>';
+    echo '<p>' . __('No quiz questions found. Please add one or more question first.', 'humble-lms') . '</p>';
 
   endif;
 }

@@ -979,7 +979,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function column_users_sort( $vars ) {
-    if( isset( $vars['orderby'] ) && 'country' === $vars['orderby'] ) {    
+    if( isset( $vars->orderby ) && 'country' === $vars->orderby ) {    
       $vars = array_merge( $vars, array(
         'orderby' => 'meta_key',
       ));

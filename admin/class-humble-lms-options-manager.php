@@ -89,10 +89,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function humble_lms_options_page() {
-      echo '<div class="humble-lms-loading-layer">
-        <div class="humble-lms-loading"></div>
-      </div>';
-
       echo '<div class="wrap">';
         echo '<h1> ' . __('Humble LMS', 'humble-lms') . '</h1>';
         

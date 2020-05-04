@@ -231,6 +231,7 @@ class Humble_LMS {
     $this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_user_profile_fields' );
     $this->loader->add_action( 'personal_options_update', $plugin_admin, 'update_user_profile' );
     $this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'update_user_profile' );
+    $this->loader->add_action( 'admin_footer', $plugin_admin, 'footer_content' );
 
     if( is_admin() && 'users.php' === $pagenow ) {
       $this->loader->add_action( 'manage_users_columns', $plugin_admin, 'add_user_column_country' );

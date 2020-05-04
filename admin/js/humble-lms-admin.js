@@ -555,11 +555,12 @@ jQuery(document).ready(function($) {
           $('.humble-lms-add-content-lightbox-wrapper').fadeOut(200)
         },
         success: function(response, textStatus, XMLHttpRequest) {
-          loadingLayer(false)
-          if (response === 'error') {
-            alert('Hm, something went wrong.')
-            return
-          }
+          loadingLayer(false, function() {
+            if (response === 'error') {
+              alert('Hm, something went wrong.')
+              return
+            }
+          })
 
           // Select new option in current section and re-initialize searchable multiSelect
           if (response.post_type === 'humble_lms_lesson') {

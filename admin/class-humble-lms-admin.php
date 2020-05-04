@@ -1202,4 +1202,13 @@ class Humble_LMS_Admin {
     return $price;
   }
 
+  /**
+   * Add content to admin edit screen.
+   * 
+   * @since   0.0.1
+   */
+  public static function footer_content( $slug = null ) {
+    echo '<div class="humble-lms-loading-layer"><div class="humble-lms-loading"></div></div>';
+  }
+
 }

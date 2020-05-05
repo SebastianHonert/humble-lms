@@ -192,21 +192,23 @@ function humble_lms_course_sections_mb()
 
       echo '<div class="humble-lms-course-section" class="list-group-item" data-id="' . ($key + 1) . '">';
         echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . ' <span class="humble-lms-course-section-number">' . ($key + 1) . '</span></label>';
-        echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="' . $section['title'] . '" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
-        echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
-        echo '<select class="humble-lms-searchable" data-content="course_lessons-' . ($key + 1) . '"  multiple="multiple">';
-          foreach( $lessons as $lesson ) {
-            echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-              if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-            echo '>' . $lesson->post_title . '</option>';
-          }
-          foreach( $selected_lessons as $lesson ) {
-            echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
-              if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-            echo '>' . $lesson->post_title . '</option>';
-          }
-        echo '</select>';
-        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary" data-id="' . ($key + 1) . '">' . __('Add lesson', 'humble-lms') . '</a></p>';
+        echo '<div class="humble-lms-section-toggle-wrapper">';  
+          echo '<input type="text" name="humble_lms_course_section_title" class="widefat humble-lms-course-section-title" value="' . $section['title'] . '" placeholder="' . __('Section title (optional)', 'humble-lms') . '&hellip;">';
+          echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
+          echo '<select class="humble-lms-searchable" data-content="course_lessons-' . ($key + 1) . '"  multiple="multiple">';
+            foreach( $lessons as $lesson ) {
+              echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+                if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
+              echo '>' . $lesson->post_title . '</option>';
+            }
+            foreach( $selected_lessons as $lesson ) {
+              echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
+                if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
+              echo '>' . $lesson->post_title . '</option>';
+            }
+          echo '</select>';
+        echo '</div>';
+        echo '<p class="humble-lms-course-section-remove-wrapper"><a class="button humble-lms-course-section-remove">' . __('Remove this section', 'humble-lms') . '</a> <a class="button humble-lms-toggle-section">' . __('Hide/Show', 'humble-lms') . '</a> <a class="humble-lms-open-admin-lightbox humble-lms-add-lesson-to-section button button-primary" data-id="' . ($key + 1) . '">' . __('Add lesson', 'humble-lms') . '</a></p>';
       echo '</div>';
     }
 

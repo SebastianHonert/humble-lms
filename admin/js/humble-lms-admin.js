@@ -595,4 +595,9 @@ jQuery(document).ready(function($) {
     })
   })()
 
+  // Toggle sections
+  $(document).on('click', '.humble-lms-toggle-section', function() {
+    $(this).parent().parent().find('.humble-lms-section-toggle-wrapper').toggle(200)
+  })
+
 })

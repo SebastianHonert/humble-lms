@@ -166,6 +166,22 @@
   background: rgba(139, 139, 150, .1);
   border: 1px solid #e2e4e7;
   margin-bottom: 1em;
+  
+}
+
+.humble-lms-course-section,
+.humble-lms-course-section-title-label {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.humble-lms-course-section:active,
+.humble-lms-course-section:active .humble-lms-course-section-title-label {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
 }
 
 label.humble-lms-label,
@@ -173,6 +189,11 @@ label.humble-lms-label,
   font-weight: 600;
   margin: 0 0 .375em;
   display: block;
+}
+
+.sortable-ghost {
+  border: 1px solid #007cba;
+  background: #ecf5f9;
 }
 
 .humble-lms-course-section-title-label:not(:first-of-type) {

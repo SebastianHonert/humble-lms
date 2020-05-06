@@ -218,6 +218,7 @@ class Humble_LMS_Admin {
     echo '<input type="hidden" name="humble_lms_was_instructor" value="' . $was_instructor . '" />';
     echo __('This user is an instructor.', 'humble-lms') . '</p>';
 
+    $content_manager = new Humble_LMS_Content_Manager;
     $options = new Humble_LMS_Admin_Options_Manager;
     $countries = $options->countries;
     $memberships = $this::get_memberships();
@@ -254,6 +255,35 @@ class Humble_LMS_Admin {
     $checked = get_user_meta( $user->ID, 'humble_lms_email_agreement', true ) === '1' ? 'checked' : '';
     echo '<h4>' . __('Email agreement', 'humble-lms') . '</h4>';
     echo '<input type="checkbox" name="humble_lms_email_agreement" id="humble_lms_email_agreement" value="1" ' . $checked . '> ' . __('Yes, I wish to receive emails from this website which are essential for participating in the online courses.', 'humble-lms');
+  
+    // Purchased content
+    $tracks = $content_manager->get_tracks();
+    $courses = $content_manager->get_courses();
+    $purchased = get_user_meta( $user->ID, 'humble_lms_purchased_content', false );
+
+    $content = array();
+
+    foreach( $tracks as $track ) {
+      array_push( $content, array(
+        'post_id' => $track->ID,
+        'post_title' => $track->post_title . ' (' . __('Track', 'humble-lms') . ', ID ' . $track->ID . ')',
+      ));
+    }
+
+    foreach( $courses as $course ) {
+      array_push( $content, array(
+        'post_id' => $course->ID,
+        'post_title' => $course->post_title . ' (' . __('Course', 'humble-lms') . ', ID ' . $course->ID . ')',
+      ));
+    }
+
+    echo '<h4>' . __('Purchased content', 'humble-lms') . '</h4>';
+    echo '<select name="humble_lms_purchased_content[]" id="humble_lms_purchased_content" class="humble-lms-user-purchased-courses humble-lms-searchable" multiple="multiple">';
+      foreach( $content as $item ) {
+        $selected = in_array( $item['post_id'], $purchased[0] ) ? 'selected="selected"' : '';
+        echo '<option name="humble_lms_purchased_content[]"  value="' . $item['post_id'] . '" ' . $selected . '>' . $item['post_title'] . '</option>';
+      }
+    echo '</select>';
   }
 
   /**
@@ -266,16 +296,18 @@ class Humble_LMS_Admin {
     $is_instructor = isset( $_POST['humble_lms_is_instructor'] );
     $was_instructor = isset( $_POST['humble_lms_was_instructor'] );
     $email_agreement = isset( $_POST['humble_lms_email_agreement'] );
+    $purchased_content = isset( $_POST['humble_lms_purchased_content'] ) ? $_POST['humble_lms_purchased_content'] : [];
     
     if( ! $is_instructor && $was_instructor ) {
       $user->remove_instructor_status( $user_id );
     }
 
     if( current_user_can('edit_user', $user_id) ) {
-      update_user_meta( $user_id, 'humble_lms_is_instructor', isset( $_POST['humble_lms_is_instructor'] ) );
+      update_user_meta( $user_id, 'humble_lms_is_instructor', $is_instructor );
       update_user_meta( $user_id, 'humble_lms_country', sanitize_text_field( $_POST['humble_lms_country'] ) );
       update_user_meta( $user_id, 'humble_lms_membership', sanitize_text_field( $_POST['humble_lms_membership'] ) );
-      update_user_meta( $user_id, 'humble_lms_email_agreement', isset( $_POST['humble_lms_email_agreement'] ) );
+      update_user_meta( $user_id, 'humble_lms_email_agreement', $email_agreement );
+      update_user_meta( $user_id, 'humble_lms_purchased_content', $purchased_content );
     }
   }
 
@@ -1177,7 +1209,7 @@ class Humble_LMS_Admin {
 
     $posts = get_posts( $args );
 
-    return $posts[0];
+    return $posts ? $posts[0] : false;
   }
 
   /**

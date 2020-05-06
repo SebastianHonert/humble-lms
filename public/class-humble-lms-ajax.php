@@ -175,6 +175,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $details = $_POST['details'];
+      $context = sanitize_text_field( $_POST['context'] );
 
       // Create new transaction post
       $txn = array(
@@ -206,7 +207,33 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       add_post_meta( $txn_id, 'humble_lms_order_details', $order_details );
 
       // Update user meta
-      update_user_meta( $user_id, 'humble_lms_membership', $order_details['reference_id'] );
+      switch( $context )
+      {
+        // Purchased membership
+        case 'membership':
+          update_user_meta( $order_details['user_id'], 'humble_lms_membership', $order_details['reference_id'] );
+          break;
+  
+        // Purchased single item
+        default:
+          $post_id = (int)$order_details['reference_id'];
+          $purchased = get_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', false );
+          $post_type = get_post_type( $post_id );
+
+          // Course & track
+          array_push( $purchased[0], $post_id );
+
+          // Tracks only
+          if( $post_type === 'humble_lms_track' ) {
+            $courses = Humble_LMS_Content_Manager::get_track_courses( $post_id );
+            foreach( $courses as $course_id ) {
+              array_push( $purchased[0], $course_id );
+            }
+          }
+          
+          update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased[0] );
+          break;
+      }
 
       // Done
       echo json_encode($details, true);

@@ -447,6 +447,71 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       }
     }
 
+    /**
+     * Get price of items that can be sold for a fixed price.
+     * 
+     * @return  float
+     * @since   0.0.1
+     */
+    public static function get_price( $post_id ) {
+      $price = 0.00;
+
+      if( ! get_post( $post_id ) )
+        return $price;
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course'
+      );
+
+      if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
+        return $price;
+
+      $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
+      $price = number_format((float)$price, 2, '.', '');
+
+      if( $price ) {
+        $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+      }
+
+      return $price;
+    }
+
+    /**
+     * Check if user can upgrade membership
+     * 
+     * @return  bool
+     * @since   0.0.1
+     */
+    public static function user_can_upgrade_membership( $user_id = null ) {
+      if( ! $user_id ) {
+        if( is_user_logged_in() ) {
+          $user_id = get_current_user_id();
+        } else {
+          return false;
+        }
+      }
+
+      $args = array(
+        'post_type' => 'humble_lms_mbship',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+      );
+
+      $memberships = get_posts( $args );
+      $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
+      $user_membership_price = Humble_LMS_Admin::get_membership_price_by_slug( $user_membership );
+
+      foreach( $memberships as $membership ) {
+        $membership_price = Humble_LMS_Admin::get_membership_price_by_slug( $membership->post_name );
+        if( floatval($membership_price) > $user_membership_price ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
   }
   
 }

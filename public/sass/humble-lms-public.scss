@@ -69,7 +69,7 @@
   width: 100%;
   height: 100%;
   background: $color-primary;
-  opacity: .75;
+  opacity: .825;
 }
 
 .humble-lms-16-9 {
@@ -91,6 +91,7 @@
   position: absolute;
   bottom: 1em;
   text-shadow: 1px 1px 0 rgba(0,0,0,.4);
+  max-width: 90%;
 }
 
 .humble-lms-course-tile-meta {
@@ -105,6 +106,12 @@
 
 .humble-lms-course-tile-meta span {
   display: block;
+}
+
+.humble-lms-course-tile-meta span.humble-lms-price span {
+  display: inline-block;
+  font-weight: 700;
+  color: $color-success;
 }
 
 /* Syllabus */
@@ -144,8 +151,17 @@ li.humble-lms-syllabus-lesson {
   transition: all .3s ease-in-out;
 }
 
-li.humble-lms-syllabus-lesson:hover {
+li.humble-lms-syllabus-lesson:hover,
+li.humble-lms-syllabus-lesson--current {
   background: desaturate(lighten($color-primary, 44%), 25%);
+}
+
+li.humble-lms-syllabus-lesson--current {
+  box-shadow: inset 2px 0 0 $color-primary;
+}
+
+li.humble-lms-syllabus-lesson--completed.humble-lms-syllabus-lesson--current {
+  box-shadow: inset 2px 0 0 $color-success;
 }
 
 li.humble-lms-syllabus-lesson--completed {
@@ -157,23 +173,6 @@ li.humble-lms-syllabus-lesson--completed {
   .humble-lms-syllabus-title {
     color: darken($color-success, 25%);
   }
-  .humble-lms-syllabus-title::before {
-    display: inline-block;
-    margin-right: .15em;
-    font-family: 'themify';
-    content: '\e64c';
-    font-size: .75em;
-    font-weight: 700;
-  }
-}
-
-li.humble-lms-syllabus-lesson--current .humble-lms-syllabus-title::before {
-  display: inline-block;
-  margin-right: .25em;
-  font-family: 'themify';
-  content: '\e63d';
-  font-size: .75em;
-  font-weight: 400;
 }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
@@ -395,8 +394,14 @@ input[type='submit'].humble-lms-btn--error:active,
   top: 1px;
 }
 
-.humble-lms-btn-start-course {
+.humble-lms-btn--start-course {
   margin-top: 1em;
+}
+
+.humble-lms-btn--disabled {
+  opacity: .6125;
+  pointer-events: none;
+  filter: grayscale(100%);
 }
 
 /* Messages */
@@ -429,12 +434,12 @@ input[type='submit'].humble-lms-btn--error:active,
   font-weight: 600;
 }
 
-.humble-lms-message--success .humble-lms-message-title::before {
-  display: inline-block;
-  content: '\e64c';
-  font-family: 'themify';
-  margin-right: .15em;
-}
+// .humble-lms-message--success .humble-lms-message-title::before {
+//   display: inline-block;
+//   content: '\e64c';
+//   font-family: 'themify';
+//   margin-right: .15em;
+// }
 
 .humble-lms-message--success {
   color: darken($color-success, 25%);
@@ -449,7 +454,7 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-message--success a:visited {
   color: darken($color-success, 25%);
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 67%, desaturate(lighten($color-success, 45%), 15%) 72%);
+  background: linear-gradient(180deg, rgba(255,255,255,0) 67%, desaturate(lighten($color-success, 45%), 20%) 72%);
 }
 
 .humble-lms-message--error {
@@ -1159,9 +1164,38 @@ input[type='submit'].humble-lms-btn--error:active,
 }
 
 /* PayPal */
-#humble-lms-paypal-buttons {
+#humble-lms-paypal-buttons,
+#humble-lms-paypal-buttons-single-item {
   z-index: 1;
   position: relative;
+}
+
+/* Lightbox */
+.humble-lms-lightbox-wrapper {
+  position: fixed;
+  z-index: 99;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.7);
+}
+
+.humble-lms-lightbox {
+  box-sizing: border-box;
+  width: 480px;
+  max-width: 90%;
+  padding: 1em;
+  background: #fff;
+  box-shadow: 1px 3px 6px rgba(0,0,0,.4);
+}
+
+.humble-lms-lightbox-title {
+  font-size: 1.5em;
+  padding: 0 0 .5em;
 }
 
 /* Checkout */
@@ -1177,14 +1211,14 @@ input[type='submit'].humble-lms-btn--error:active,
 }
 
 .humble-lms-checkout-membership {
-  padding: .75em;
-  background: #f7f7f7;
+  padding: .875em;
+  background: #fafafa;
   border-bottom: 1px solid #ddd;
   font-weight: 700;
 }
 
-.humble-lms-checkout-membership:nth-child(even){
-  background: #f3f3f3;
+.humble-lms-checkout-membership.checked {
+  background: desaturate(lighten($color-success, 62%), 35%);
 }
 
 .humble-lms-checkout-membership:last-of-type {
@@ -1199,6 +1233,13 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-checkout-membership-price {
   font-weight: 600;
   color: $color-success;
+  margin-left: .375em;
+}
+
+.humble-lms-checkout-membership.disabled,
+.humble-lms-checkout-membership.disabled input[name="humble_lms_membership"] {
+  pointer-events: none;
+  opacity: .5;
 }
 
 /* Providers */
@@ -1227,6 +1268,28 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-provider p:last-of-type {
   padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* User transactions */
+.humble-lms-user-transaction {
+  box-sizing: border-box;
+  padding: 1em;
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+  margin-bottom: 1em;
+}
+
+.humble-lms-user-transaction:last-of-type {
+  margin-bottom: 0;
+}
+
+.humble-lms-user-transaction p {
+  padding: 0 0;
+  margin: 0 0 .25em;
+}
+
+.humble-lms-user-transaction p:last-of-type{
   margin-bottom: 0;
 }
 

@@ -29,13 +29,18 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      * @since    0.0.1
      * @return   string
      */
-    public function can_access_lesson( $lesson_id = null, $course_id = null ) {
+    public function can_access_lesson( $lesson_id = null, $course_id = null, $track_id = null ) {
       // Administrators can access all content
       if( current_user_can('manage_options') )
         return 'allowed';
 
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
         return 'allowed';
+
+      // Check if track/course is sold for a fixed price and user has bought the item
+      if( ! $this->user->purchased( $course_id ) ) {
+        return 'purchase';
+      }
 
       // Check course timeframe
       $course_is_open = $this->content_manager->course_is_open( $course_id );

@@ -335,8 +335,11 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_lost_password_form', $plugin_shortcodes, 'humble_lms_custom_lost_password_form' );
     $this->loader->add_shortcode( 'humble_lms_reset_password_form', $plugin_shortcodes, 'humble_lms_custom_reset_password_form' );
     $this->loader->add_shortcode( 'humble_lms_user_profile', $plugin_shortcodes, 'humble_lms_custom_user_profile' );
+    $this->loader->add_shortcode( 'humble_lms_user_purchases', $plugin_shortcodes, 'humble_lms_user_purchases' );
+    $this->loader->add_shortcode( 'humble_lms_user_transactions', $plugin_shortcodes, 'humble_lms_user_transactions' );
     $this->loader->add_shortcode( 'humble_lms_quiz', $plugin_shortcodes, 'humble_lms_quiz' );
     $this->loader->add_shortcode( 'humble_lms_paypal_buttons', $plugin_shortcodes, 'humble_lms_paypal_buttons' );
+    $this->loader->add_shortcode( 'humble_lms_paypal_buttons_single_item', $plugin_shortcodes, 'humble_lms_paypal_buttons_single_item' );
 
     // AJAX
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );
@@ -349,6 +352,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_reset_user_progress', $plugin_ajax, 'reset_user_progress' );
     $this->loader->add_action( 'wp_ajax_nopriv_save_paypal_transaction', $plugin_ajax, 'save_paypal_transaction' );
     $this->loader->add_action( 'wp_ajax_save_paypal_transaction', $plugin_ajax, 'save_paypal_transaction' );
+    $this->loader->add_action( 'wp_ajax_nopriv_save_paypal_transaction_single', $plugin_ajax, 'save_paypal_transaction_single' );
+    $this->loader->add_action( 'wp_ajax_save_paypal_transaction_single', $plugin_ajax, 'save_paypal_transaction_single' );
 
   }
 

@@ -68,6 +68,7 @@ function humble_lms_track_add_meta_boxes()
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_color_mb', __('Select a color for the track tile (optional)', 'humble-lms'), 'humble_lms_track_color_mb', 'humble_lms_track', 'normal', 'default' );
+  add_meta_box( 'humble_lms_track_fixed_price_mb', __('Sell this track for a fixed price', 'humble-lms'), 'humble_lms_track_fixed_price_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_track_add_meta_boxes' );
@@ -124,7 +125,7 @@ function humble_lms_track_courses_mb()
       echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add course', 'humble-lms') . '</div>';
       echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Course title', 'humble-lms') . '&hellip;">';
       echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a course title.', 'humble-lms') . '"></p>';
-      echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Cancel') . '</a>';
+      echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Close') . '</a>';
       echo '<p class="humble-lms-add-content-success"><a target="_blank">' . __('Content added – click to edit.', 'humble-lms') . '</a></p>';
     echo '</div>';
   echo '</div>';
@@ -169,6 +170,23 @@ function humble_lms_track_color_mb()
   echo '<input type="text" class="humble_lms_color_picker"" name="humble_lms_track_color" id="humble_lms_track_color" value="' . $color . '">';
 }
 
+// Sell for a fixed price meta box
+
+function humble_lms_track_fixed_price_mb() {
+  global $post;
+
+  $sell = get_post_meta($post->ID, 'humble_lms_is_for_sale', true);
+  $price = Humble_LMS_Content_Manager::get_price( $post->ID );
+
+  $options = get_option('humble_lms_options');
+  $currency = $options['currency'];
+  $checked = $sell ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_is_for_sale" id="humble_lms_is_for_sale" value="1" ' . $checked . '>' . __('Yes, sell this track for a fixed price.', 'humble-lms') . '</p>';
+  echo '<p><label class="humble-lms-label">' . __('Price', 'humble-lms') . ' (' . $currency . ')</label><input type="number" min="0.00" max="9999999999.99" step="0.01" name="humble_lms_fixed_price" id="humble_lms_fixed_price" placeholder="0.00" value="' . $price . '"></p>';
+  echo '<p class="description">' . __('Prices must be 2 digit decimals, e.g. "14.99", "79.00", "239.49" etc. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot. Don\'t worry, that\'s fine.', 'humble-lms') . '</p>';
+}
+
 // Save metabox data
 
 function humble_lms_save_track_meta_boxes( $post_id, $post )
@@ -200,6 +218,8 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
   $track_meta['humble_lms_track_color'] = isset( $_POST['humble_lms_track_color'] ) ? sanitize_hex_color( $_POST['humble_lms_track_color'] ) : '';
+  $track_meta['humble_lms_is_for_sale'] = isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
+  $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) : 0.00;
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

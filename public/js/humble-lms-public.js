@@ -267,45 +267,64 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Render PayPal buttons.
+   * Render PayPal buttons (checkout/memberships).
    * 
    * @since   0.0.1
    */
+  $('input[name="humble_lms_membership"]').on('click', function() {
+    $('.humble-lms-checkout-membership').removeClass('checked')
+    $(this).parent().parent().addClass('checked')
+    $('#humble-lms-paypal-buttons').data('price', $(this).data('price'))
+    $('#humble-lms-paypal-buttons').data('membership', $(this).val())
 
-  if (typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
     let membership = $('#humble-lms-paypal-buttons').data('membership')
-    let price = $('#humble-lms-paypal-buttons').data('price')
+    membership = membership.charAt(0).toUpperCase() + membership.slice(1)
+    $('.humble-lms-lightbox p').html(membership + ', <strong>' + humble_lms.currency + ' ' + $('#humble-lms-paypal-buttons').data('price') + '</strong>')
+    $('.humble-lms-btn--purchase-membership').removeClass('humble-lms-btn--disabled').addClass('humble-lms-toggle-lightbox')
+  })
 
-    if (typeof membership === 'undefined' || ! membership) {
-      alert(humble_lms.membership_undefined)
-    }
-
-    if (typeof price === 'undefined' || ! price) {
-      alert(humble_lms.membership_price_undefined)
-    }
-    
+  if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
     paypal.Buttons({
       createOrder: function(data, actions) {
+        let membership = $('#humble-lms-paypal-buttons').data('membership')
+        let price = $('#humble-lms-paypal-buttons').data('price')
+
+        if (typeof membership === 'undefined' || ! membership) {
+          alert(humble_lms.membership_undefined)
+          return
+        }
+
+        if (typeof price === 'undefined' || ! price) {
+          alert(humble_lms.membership_price_undefined)
+          return
+        }
+
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: price
+              value: price,
             },
             reference_id: membership
           }]
         })
       },
       onApprove: function(data, actions) {
+        let context = $('#humble-lms-paypal-buttons').data('context')
+
         return actions.order.capture().then(function(details) {
+          loadingLayer(true)
+
           $.ajax({
             url: humble_lms.ajax_url,
             type: 'POST',
             data: {
               action: 'save_paypal_transaction',
+              context: context,
               details: details
             },
             dataType: 'json',
             error: function(MLHttpRequest, textStatus, errorThrown) {
+              loadingLayer(false)
               alert('Sorry, there has been an error processing your transaction.')
               console.error(errorThrown)
             },
@@ -317,5 +336,84 @@ jQuery(document).ready(function($) {
       }
     }).render('#humble-lms-paypal-buttons')
   }
+
+  /**
+   * Render PayPal buttons (single courses/tracks).
+   * 
+   * @since   0.0.1
+   */
+
+  if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons-single-item').length !== 0) {
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
+        let price = $('#humble-lms-paypal-buttons-single-item').data('price')
+
+        if (typeof post_id === 'undefined' || ! post_id) {
+          alert(humble_lms.post_id_undefined)
+        }
+    
+        if (typeof price === 'undefined' || ! price) {
+          alert(humble_lms.membership_price_undefined)
+        }
+  
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: price
+            },
+            reference_id: post_id
+          }]
+        })
+      },
+      onApprove: function(data, actions) {
+        let context = $('#humble-lms-paypal-buttons-single-item').data('context')
+
+        return actions.order.capture().then(function(details) {
+          loadingLayer(true)
+
+          $.ajax({
+            url: humble_lms.ajax_url,
+            type: 'POST',
+            data: {
+              action: 'save_paypal_transaction',
+              context: context,
+              details: details
+            },
+            dataType: 'json',
+            error: function(MLHttpRequest, textStatus, errorThrown) {
+              loadingLayer(false)
+              alert('Sorry, there has been an error processing your transaction.')
+              console.error(errorThrown)
+            },
+            success: function(response, textStatus, XMLHttpRequest) {
+              loadingLayer(true)
+              location.reload()
+            }
+          })
+        })
+      }
+    }).render('#humble-lms-paypal-buttons-single-item')
+  }
+
+  /**
+   * Toggle lightbox.
+   * 
+   * @since   0.0.1
+   */
+  $(document).on('click', '.humble-lms-toggle-lightbox', function() {
+    if ($('.humble-lms-lightbox-wrapper').css('display') === 'none') {
+      $('.humble-lms-lightbox-wrapper').css('display', 'flex')
+    } else {
+      $('.humble-lms-lightbox-wrapper').fadeOut(200)
+    }
+  })
+
+  $(document).click(function(event) {
+    let $target = $(event.target);
+    if(!$target.closest('.humble-lms-toggle-lightbox').length && !$target.closest('.humble-lms-lightbox').length && !$('.humble-lms-lighbox').is(':visible') && $('.humble-lms-lightbox').is(":visible")) {
+      $('.humble-lms-lightbox-wrapper').fadeOut(200)
+    }        
+  })
 
 })

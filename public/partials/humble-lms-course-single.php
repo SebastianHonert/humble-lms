@@ -25,6 +25,8 @@ if (have_posts()):
 
     echo '</section>';
 
+    echo do_shortcode('[humble_lms_paypal_buttons_single_item]');
+
     echo do_shortcode('[humble_lms_syllabus]');
 
   endwhile;

@@ -131,6 +131,10 @@ class Humble_LMS_Public {
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
       'membership_undefined' => __('Invalid membership type, checkout cancelled.', 'humble-lms'),
       'membership_price_undefined' => __('Invalid price value, checkout cancelled.', 'humble-lms'),
+      'post_id_undefined' => __('Invalid content ID, checkout cancelled.', 'humble-lms'),
+      'is_user_logged_in' => is_user_logged_in() ? true : false,
+      'current_user_id' => get_current_user_id(),
+      'buy_now_text' => __('Buy now', 'humble-lms'),
       'currency' => $options->get_currency(),
     ) );
   }
@@ -254,6 +258,14 @@ class Humble_LMS_Public {
       $course_id = $post->ID;
     } elseif( isset( $_POST['course_id'] ) ) {
       $course_id = (int)$_POST['course_id'];
+    }
+
+    // Content needs to be purchased first
+    if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'purchase' ) && ! current_user_can('manage_options' ) ) {
+      $html .= '<div class="humble-lms-message humble-lms-message--error">';
+      $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
+      $html .= '<span class="humble-lms-message-content">' . sprintf( __('You need to purchase this course first.', 'humble-lms' ), wp_login_url() ) . '</span>';
+      $html .= '</div>';
     }
 
     // Course has ended / not started yet
@@ -416,6 +428,9 @@ class Humble_LMS_Public {
 
     if( is_single() && $post->post_type == 'humble_lms_lesson' && $access !== 'allowed' ) {
       switch( $access ) {
+        case 'purchase':
+          wp_redirect( add_query_arg( 'access', 'purchase', $url ) );
+          break;
         case 'timeframe':
           wp_redirect( add_query_arg( 'access', 'timeframe', $url ) );
           break;

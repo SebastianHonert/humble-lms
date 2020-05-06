@@ -703,7 +703,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * TODO: Remove user instructor status.
+     * Remove user instructor status.
      *
      * @since 1.0.0
      * @return void
@@ -734,6 +734,34 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         }
       }
       
+    }
+
+    /**
+     * Check if user has purchased a track/course.
+     *
+     * @since 1.0.0
+     * @return bool
+     */
+    public function purchased( $post_id = null ) {
+      if( ! get_post( $post_id ) )
+        return;
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course',
+      );
+
+      if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
+        return false;
+
+      // TODO => courses added to tracks that have already been purchased?
+      if( ! get_post_meta( $post_id, 'humble_lms_is_for_sale', true ) )
+        return true;
+
+      $purchases = get_user_meta( get_current_user_id(), 'humble_lms_purchased_content', false );
+      $purchases = isset( $purchases[0] ) && ! empty( $purchases[0] ) ? $purchases[0] : [];
+
+      return in_array( $post_id, $purchases );
     }
 
   }

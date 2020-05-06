@@ -133,8 +133,6 @@ function humble_lms_course_sections_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  echo get_post_meta( $post->ID, 'humble_lms_is_for_sale', true );
-
   $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
 
   if( ! $sections ) {

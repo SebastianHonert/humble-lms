@@ -75,6 +75,8 @@ function humble_lms_order_details_mb() {
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
+  $user_id_txn = get_post_meta( $post->ID, 'humble_lms_txn_user_id', true );
+
   $order_details = get_post_meta( $post->ID, 'humble_lms_order_details', false );
   $order_details = isset( $order_details[0] ) ? $order_details[0] : $order_details;
 
@@ -146,6 +148,10 @@ function humble_lms_order_details_mb() {
 
   echo '<label for="surname">' . __('Value', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $value . '"></p>';
+
+  // User ID meta
+  echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';
+  echo '<input class="widefat" type="number" name="humble_lms_txn_user_id" value="' . $user_id_txn . '" disabled="disabled">';
 }
 
 // Save metabox data
@@ -189,6 +195,8 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
     'currency_code' => sanitize_text_field( $_POST['currency_code'] ),
     'value' => sanitize_text_field( $_POST['value'] ),
   );
+
+  $txn_meta['humble_lms_txn_user_id'] = (int)$_POST['user_id'];
 
   if( ! empty( $txn_meta ) && sizeOf( $txn_meta ) > 0 )
   {

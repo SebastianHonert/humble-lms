@@ -1331,14 +1331,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return string
      * @since   0.0.1
      */
-    public function humble_lms_user_transactions( $user_id = null ) {
-      if ( ! $user_id ) {
-        if( is_user_logged_in() ) {
-          $user_id = get_current_user_id();
-        } else {
-          return '';
-        }
-      }
+    public function humble_lms_user_transactions() {
+      if( ! is_user_logged_in() )
+        return;
+
+      $user_id = get_current_user_id();
 
       $html = '';
 
@@ -1346,14 +1343,24 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'post_type' => 'humble_lms_txn',
         'post_status' => 'publish',
         'posts_per_page' => -1,
-        // 'meta_key' => 'user_id',
-        // 'meta_value' => $user_id,
+        'meta_query' => array(
+          array(
+            'key' => 'humble_lms_txn_user_id',
+            'value' => $user_id,
+            'compare' => '=',
+          ),
+        ),
         'order' => 'ASC',
       );
 
       $transactions = get_posts( $args );
 
+      if( ! $transactions ) {
+        return '<p>' . __('No transactions found.', 'humble-lms') . '</p>';
+      }
+
       foreach( $transactions as $txn ) {
+        $user_id_txn = get_post_meta( $txn->ID, 'humble_lms_txn_user_id', true );
         $order_details = get_post_meta( $txn->ID, 'humble_lms_order_details', false );
         $order_details = isset( $order_details[0] ) ? $order_details[0] : $order_details;
 
@@ -1371,8 +1378,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $amount = isset( $order_details['value'] ) ? $order_details['value'] : '';
 
         $html .= '<div class="humble-lms-user-transaction">';
-
           $html .= '<p><strong>' . __('Transaction ID', 'humble-lms') . ':</strong> ' . $txn->ID . '</p>';
+          $html .= '<p><strong>' . __('User ID', 'humble-lms') . ':</strong> ' . $user_id_txn . '</p>';
           $html .= '<p><strong>' . __('Amount', 'humble-lms') . ':</strong> ' . $amount . '</p>';
           $html .= '<p><strong>' . __('Currency code', 'humble-lms') . ':</strong> ' . $currency_code . '</p>';
           $html .= '<p><strong>' . __('Order ID', 'humble-lms') . ':</strong> ' . $order_id . '</p>';
@@ -1385,7 +1392,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '<p><strong>' . __('Update time', 'humble-lms') . ':</strong> ' . $update_time . '</p>';
           $html .= '<p><strong>' . __('Given name', 'humble-lms') . ':</strong> ' . $given_name . '</p>';
           $html .= '<p><strong>' . __('Surname', 'humble-lms') . ':</strong> ' . $surname . '</p>';
-
         $html .= '</div>';
       }
 

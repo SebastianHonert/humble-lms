@@ -152,6 +152,7 @@ class Humble_LMS_Activator {
 
     update_option('humble_lms_options', array(
       'tiles_per_page' => 10,
+      'syllabus_max_height' => 640,
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
       'registration_countries' => array(),
       'custom_pages' => array(

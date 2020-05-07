@@ -322,6 +322,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $context = 'lesson';
 
       if( $context === 'lesson' ) {
+        $syllabus_class = 'humble-lms-syllabus--lesson';
         $lesson_id = $post->ID;
         $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
         
@@ -334,6 +335,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           }
         }
       } else {
+        $syllabus_class = '';
         $lesson_id = null;
       }
 
@@ -345,7 +347,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Course Syllabus
-      $html .= '<nav class="humble-lms-syllabus ' . $class . '" style="' . $style . '">';
+      $html .= '<nav class="humble-lms-syllabus ' . $class . ' ' . $syllabus_class . '" style="' . $style . '">';
         $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
         if( ! $course_id ) {
@@ -393,6 +395,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
 
       $html .= '</nav>';
+      $html .= '<a class="humble-lms-toggle-syllabus">' . __('+/- Toggle syllabus', 'humble-lms') . '</a>';
 
       // Meta information
       if( $lesson_id ) {

@@ -135,6 +135,7 @@ class Humble_LMS_Public {
       'is_user_logged_in' => is_user_logged_in() ? true : false,
       'current_user_id' => get_current_user_id(),
       'buy_now_text' => __('Buy now', 'humble-lms'),
+      'syllabus_max_height' => isset( $this->options['syllabus_max_height'] ) ? $this->options['syllabus_max_height'] : 640,
       'currency' => $options->get_currency(),
     ) );
   }

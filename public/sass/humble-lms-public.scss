@@ -118,6 +118,26 @@
 
 nav.humble-lms-syllabus {
   display: block;
+  overflow: auto;
+}
+
+.humble-lms-toggle-syllabus {
+  position: relative;
+  display: none;
+  font-size: .75em;
+  letter-spacing: 1px;
+  padding: .5em;
+  margin-top: .25em;
+  text-align: center;
+  background: #f3f3f3;
+  color: #777;
+  text-transform: uppercase;
+  transition: color .2s linear, background-color .2s linear;
+}
+
+.humble-lms-toggle-syllabus:hover {
+  background: #eee;
+  color: #555;
 }
 
 ul.humble-lms-syllabus-lessons {

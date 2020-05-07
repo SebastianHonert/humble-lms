@@ -416,4 +416,34 @@ jQuery(document).ready(function($) {
     }        
   })
 
+  /**
+   * Toggle syllabus.
+   * 
+   * @since   0.0.1
+   */
+  const handleSyllabus = (function() {
+    let syllabus = $('.humble-lms-syllabus--lesson')
+    let toggleButton = $('.humble-lms-toggle-syllabus')
+    let syllabus_max_height = humble_lms.syllabus_max_height;
+    let syllabus_height = syllabus.innerHeight()
+
+    if (syllabus_height > syllabus_max_height) {
+      toggleButton.css('display', 'block')
+    }
+
+    function toggleSyllabusHeight() {
+      if (syllabus.innerHeight() <= syllabus_max_height) {
+        syllabus.css({'height':'auto'})
+      } else {
+        syllabus.css({'height':syllabus_max_height + 'px'})
+      }
+    }
+
+    toggleButton.on('click', function() {
+      toggleSyllabusHeight()
+    })
+
+    toggleSyllabusHeight()
+  })()
+
 })

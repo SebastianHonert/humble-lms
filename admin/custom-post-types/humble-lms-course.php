@@ -171,7 +171,7 @@ function humble_lms_course_sections_mb()
     // Sections
     foreach( $sections as $key => $section ) {
       $selected_lessons = [];
-      $section_lessons = ! is_array( $section['lessons'] ) ? explode(',', $section['lessons'] ) : [];
+      $section_lessons = $section['lessons'];
 
       $args = array(
         'post_type' => 'humble_lms_lesson',
@@ -320,7 +320,7 @@ function humble_lms_fixed_price_mb() {
 
   echo '<p><input type="checkbox" name="humble_lms_is_for_sale" id="humble_lms_is_for_sale" value="1" ' . $checked . '>' . __('Yes, sell this course for a fixed price.', 'humble-lms') . '</p>';
   echo '<p><label class="humble-lms-label">' . __('Price', 'humble-lms') . ' (' . $currency . ')</label><input type="number" min="0.00" max="9999999999.99" step="0.01" name="humble_lms_fixed_price" id="humble_lms_fixed_price" placeholder="0.00" value="' . $price . '"></p>';
-  echo '<p class="description">' . __('Prices must be 2 digit decimals, e.g. "14.99", "79.00", "239.49" etc. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot. Don\'t worry, that\'s fine.', 'humble-lms') . '</p>';
+  echo '<p class="description">' . __('Prices must be 2 digit decimals. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot.', 'humble-lms') . '</p>';
 }
 
 // Save metabox data

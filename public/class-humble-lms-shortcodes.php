@@ -364,7 +364,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               continue;
             }
 
-            $section_lessons = explode(',', $section['lessons']);
+            $section_lessons = $section['lessons'];
             if( ! is_array( $section_lessons ) || empty( $section_lessons ) ) {
               continue;
             }

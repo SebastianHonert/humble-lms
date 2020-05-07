@@ -61,7 +61,7 @@ function humble_lms_mbship_price_mb()
   }
 
   echo '<input lang="en" class="widefat" type="number" min="0.00" max="9999999999.99" step="0.01" name="humble_lms_mbship_price" id="humble_lms_mbship_price" value="' . $price . '">';
-  echo '<p class="description">' . __('Prices must be 2 digit decimals, e.g. "14.99", "79.00", "239.49" etc. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot. Don\'t worry, that\'s fine.', 'humble-lms') . '</p>';
+  echo '<p class="description">' . __('Prices must be 2 digit decimals. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot.', 'humble-lms') . '</p>';
 }
 
 // Description

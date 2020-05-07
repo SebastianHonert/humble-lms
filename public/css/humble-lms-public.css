@@ -143,7 +143,7 @@ li.humble-lms-syllabus-lesson--completed {
     color: #06211a; }
 
 li.humble-lms-syllabus-lesson:not(:first-child) {
-  margin-top: .5em; }
+  margin-top: .25em; }
 
 li.humble-lms-syllabus-lesson span {
   display: block; }

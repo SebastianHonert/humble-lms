@@ -115,7 +115,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $course_sections = self::get_course_sections( $course_id );
       foreach( $course_sections as $section ) {
-        $lesson_ids = ! is_array( $section['lessons'] ) ? explode( ',', $section['lessons'] ) : [];
+        $lesson_ids = $section['lessons'];
         foreach( $lesson_ids as $lesson_id ) {
           array_push( $course_lessons, (int)$lesson_id );
         }
@@ -151,7 +151,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
-    public static function get_course_sections( $course_id = null ) {
+    public static function get_course_sections( $course_id = null, $published = true ) {
+      $post_status = $published ? 'publish' : 'any';
       $course_sections = [];
 
       if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
@@ -167,6 +168,21 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
             'lessons' => array(),
           ),
         );
+      }
+
+      foreach( $course_sections as $section_key => $section ) {
+        // Turn comma separated string into array of IDs
+        $lessons = ! is_array( $section['lessons'] ) ? explode(',', $section['lessons'] ) : [];
+
+        foreach( $lessons as $lesson ) {
+          if( ! get_post( $lesson ) || get_post_status( $lesson ) !== $post_status ) {
+            if( ( $key = array_search($lesson, $lessons ) ) !== false ) {
+              unset($lessons[$key]);
+            }
+          }
+        }
+
+        $course_sections[$section_key]['lessons'] = $lessons;
       }
 
       return $course_sections;

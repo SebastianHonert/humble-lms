@@ -127,7 +127,7 @@ nav.humble-lms-syllabus {
   font-size: .75em;
   letter-spacing: 1px;
   padding: .5em;
-  margin-top: .25em;
+  margin-top: .75em;
   text-align: center;
   background: #f3f3f3;
   color: #777;
@@ -1294,10 +1294,37 @@ input[type='submit'].humble-lms-btn--error:active,
 /* User transactions */
 .humble-lms-user-transaction {
   box-sizing: border-box;
-  padding: 1em;
   border: 1px solid #ddd;
-  background: #f7f7f7;
   margin-bottom: 1em;
+  box-shadow: 1px 2px 3px rgba(0,0,0,.2)
+}
+
+.humble-lms-user-transaction__title {
+  padding: .5em;
+  background: #f7f7f7;
+  cursor: pointer;
+}
+
+.humble-lms-user-transaction__title_name {
+  display: block;
+  font-size: 1.125em;
+  font-weight: 600;
+}
+
+.humble-lms-user-transaction__title_name span {
+  font-weight: 400;
+  font-size: .75em;
+}
+
+.humble-lms-user-transaction__amount {
+  font-weight: 700;
+  color: green;
+}
+
+.humble-lms-user-transaction__content {
+  display: none;
+  background: #fff;
+  padding: .5em;
 }
 
 .humble-lms-user-transaction:last-of-type {

@@ -488,7 +488,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
 
       if( isset( $input['tiles_per_page'] ) )
-        $options['tiles_per_page'] = (int)$input['syllabus_max_height'];
+        $options['tiles_per_page'] = (int)$input['tiles_per_page'];
 
       if( isset( $input['syllabus_max_height'] ) )
         $options['syllabus_max_height'] = (int)$input['syllabus_max_height'];

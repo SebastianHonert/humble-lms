@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-05-07 15:58+0200\n"
-"PO-Revision-Date: 2020-05-07 15:58+0200\n"
+"PO-Revision-Date: 2020-05-08 11:54+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -2351,7 +2351,7 @@ msgstr ""
 
 #: public/class-humble-lms-shortcodes.php:398
 msgid "+/- Toggle syllabus"
-msgstr "Kursplan ein-/ausklappen"
+msgstr "Ein-/Ausklappen"
 
 #: public/class-humble-lms-shortcodes.php:406
 msgid "not selected"

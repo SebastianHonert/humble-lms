@@ -1353,7 +1353,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             'compare' => '=',
           ),
         ),
-        'order' => 'ASC',
+        'order' => 'DESC',
       );
 
       $transactions = get_posts( $args );
@@ -1379,22 +1379,56 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $reference_id = isset( $order_details['reference_id'] ) ? $order_details['reference_id'] : '';
         $currency_code = isset( $order_details['currency_code'] ) ? $order_details['currency_code'] : '';
         $amount = isset( $order_details['value'] ) ? $order_details['value'] : '';
+        $content_link = '';
+        $post_type = get_post_type( $reference_id );
+
+        $created = new DateTime($create_time);
+        $created = $created->format('Y-m-d H:i:s');
+
+        $updated = new DateTime($update_time);
+        $updated = $updated->format('Y-m-d H:i:s');
 
         $html .= '<div class="humble-lms-user-transaction">';
-          $html .= '<p><strong>' . __('Transaction ID', 'humble-lms') . ':</strong> ' . $txn->ID . '</p>';
-          $html .= '<p><strong>' . __('User ID', 'humble-lms') . ':</strong> ' . $user_id_txn . '</p>';
-          $html .= '<p><strong>' . __('Amount', 'humble-lms') . ':</strong> ' . $amount . '</p>';
-          $html .= '<p><strong>' . __('Currency code', 'humble-lms') . ':</strong> ' . $currency_code . '</p>';
-          $html .= '<p><strong>' . __('Order ID', 'humble-lms') . ':</strong> ' . $order_id . '</p>';
-          $html .= '<p><strong>' . __('Email adress', 'humble-lms') . ':</strong> ' . $email_address . '</p>';
-          $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
-          $html .= '<p><strong>' . __('Status', 'humble-lms') . ':</strong> ' . $status . '</p>';
-          $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
-          $html .= '<p><strong>' . __('Payment service provider', 'humble-lms') . ':</strong> ' . $payment_service_provider . '</p>';
-          $html .= '<p><strong>' . __('Create time', 'humble-lms') . ':</strong> ' . $create_time . '</p>';
-          $html .= '<p><strong>' . __('Update time', 'humble-lms') . ':</strong> ' . $update_time . '</p>';
-          $html .= '<p><strong>' . __('Given name', 'humble-lms') . ':</strong> ' . $given_name . '</p>';
-          $html .= '<p><strong>' . __('Surname', 'humble-lms') . ':</strong> ' . $surname . '</p>';
+          $html .= '<div class="humble-lms-user-transaction__title">';
+            $html .= '<div class="humble-lms-user-transaction__title_name">';
+              
+              if( $post_type === 'humble_lms_track' ) {
+                $content_type = __('Track', 'humble-lms');
+              } elseif( $post_type === 'humble_lms_course' ) {
+                $content_type = __('Course', 'humble-lms');
+              } else {
+                $content_type = __('Unknown', 'humble-lms');
+              }
+
+              if( get_post( $reference_id ) ) {
+                $content = get_post( $reference_id );
+                $content_link = '<a href="' . esc_url( get_permalink( $reference_id ) ) . '">' . esc_url( get_permalink( $reference_id ) ) . '</a>';
+                $html .= $content->post_title . ' <span>(' . $content_type . ')</span>';
+              } else {
+                echo __('Unknown content', 'humbl-lms');
+                $content_link = __('not available', 'humble-lms');
+              }
+            $html .= '</div>';
+            $html .= '<span class="humble-lms-user-transaction__amount">' . $currency_code . ' ' . $amount . '</span> | ' . $created . ' | ID ' . $txn->ID;
+          $html .= '</div>';
+          $html .= '<div class="humble-lms-user-transaction__content">';
+            $html .= '<p><strong>' . __('Transaction ID', 'humble-lms') . ':</strong> ' . $txn->ID . '</p>';
+            $html .= '<p><strong>' . __('Reference ID', 'humble-lms') . ':</strong> ' . $reference_id . '</p>';
+            $html .= '<p><strong>' . __('URL', 'humble-lms') . ':</strong> ' . $content_link . '</p>';
+            $html .= '<p><strong>' . __('User ID', 'humble-lms') . ':</strong> ' . $user_id_txn . '</p>';
+            $html .= '<p><strong>' . __('Amount', 'humble-lms') . ':</strong> ' . $amount . '</p>';
+            $html .= '<p><strong>' . __('Currency code', 'humble-lms') . ':</strong> ' . $currency_code . '</p>';
+            $html .= '<p><strong>' . __('Order ID', 'humble-lms') . ':</strong> ' . $order_id . '</p>';
+            $html .= '<p><strong>' . __('Email adress', 'humble-lms') . ':</strong> ' . $email_address . '</p>';
+            $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
+            $html .= '<p><strong>' . __('Status', 'humble-lms') . ':</strong> ' . $status . '</p>';
+            $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
+            $html .= '<p><strong>' . __('Payment service provider', 'humble-lms') . ':</strong> ' . $payment_service_provider . '</p>';
+            $html .= '<p><strong>' . __('Create time', 'humble-lms') . ':</strong> ' . $created . '</p>';
+            $html .= '<p><strong>' . __('Update time', 'humble-lms') . ':</strong> ' . $updated . '</p>';
+            $html .= '<p><strong>' . __('Given name', 'humble-lms') . ':</strong> ' . $given_name . '</p>';
+            $html .= '<p><strong>' . __('Surname', 'humble-lms') . ':</strong> ' . $surname . '</p>';
+          $html .= '</div>';
         $html .= '</div>';
       }
 

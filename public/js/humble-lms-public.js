@@ -446,4 +446,12 @@ jQuery(document).ready(function($) {
     toggleSyllabusHeight()
   })()
 
+  /**
+   * Toggle user transactions.
+   */
+  $('.humble-lms-user-transaction__title').on('click', function() {
+    let that = $(this)
+    $(this).parent().find($('.humble-lms-user-transaction__content')).slideToggle()
+  })
+
 })

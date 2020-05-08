@@ -522,7 +522,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      */
     public function granted_awards( $user_id = null, $published = false ) {
       if( ! $user_id ) {
-        if( ! is_current_user_logged_in() ) {
+        if( ! is_user_logged_in() ) {
           return [];
         } else {
           $user_id = get_current_user_id();
@@ -580,7 +580,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      */
     public function issued_certificates( $user_id = null, $published = false ) {
       if( ! $user_id ) {
-        if( ! is_current_user_logged_in() ) {
+        if( ! is_user_logged_in() ) {
           return [];
         } else {
           $user_id = get_current_user_id();
@@ -737,6 +737,40 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Get user purchases.
+     *
+     * @since 1.0.0
+     * @return array
+     */
+    public function purchases( $user_id = null ) {
+      // $users = get_users();
+      // foreach( $users as $user ) {
+      //   update_user_meta( $user->ID, 'humble_lms_purchased_content', [] );
+      // }
+
+      if( ! $user_id ) {
+        if( ! is_user_logged_in() ) {
+          return [];
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+  
+      $purchases = get_user_meta( get_current_user_id(), 'humble_lms_purchased_content', false );
+      $purchases = isset( $purchases[0] ) && ! empty( $purchases[0] ) && $purchases[0] !== '' ? $purchases[0] : [];
+
+      foreach( $purchases as $post_id ) {
+        if( get_post_type( $post_id ) === 'humble_lms_track') {
+          $track_courses = $this->content_manager->get_track_courses( $post_id );
+          array_push( $purchases, $track_courses );
+        }
+      }
+
+      $array = array_unique( $purchases, SORT_REGULAR ); 
+
+      return $purchases;
+    }
+    /**
      * Check if user has purchased a track/course.
      *
      * @since 1.0.0
@@ -754,12 +788,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
         return false;
 
-      // TODO => courses added to tracks that have already been purchased?
       if( ! get_post_meta( $post_id, 'humble_lms_is_for_sale', true ) )
         return true;
 
-      $purchases = get_user_meta( get_current_user_id(), 'humble_lms_purchased_content', false );
-      $purchases = isset( $purchases[0] ) && ! empty( $purchases[0] ) ? $purchases[0] : [];
+      $purchases = $this->purchases();
 
       return in_array( $post_id, $purchases );
     }

@@ -186,6 +186,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       );
 
       $txn_id = wp_insert_post( $txn, $wp_error );
+      update_post_meta( $txn_id, 'humble_lms_txn_user_id', (int)$user_id );
 
       // Update transaction meta
       $order_details = array (
@@ -221,17 +222,22 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           $post_type = get_post_type( $post_id );
 
           // Course & track
-          array_push( $purchased[0], $post_id );
+          if( ! in_array( $post_id, $purchased[0] ) ) {
+            array_push( $purchased[0], $post_id );
+          }
 
           // Tracks only
           if( $post_type === 'humble_lms_track' ) {
             $courses = Humble_LMS_Content_Manager::get_track_courses( $post_id );
             foreach( $courses as $course_id ) {
-              array_push( $purchased[0], $course_id );
+              if( ! in_array( $course_id, $purchased[0] ) ) {
+                array_push( $purchased[0], $course_id );
+              }
             }
           }
           
           update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased[0] );
+
           break;
       }
 

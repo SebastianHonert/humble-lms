@@ -1275,24 +1275,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_user_purchases( $user_id = null ) {
-      if ( ! $user_id ) {
-        if( is_user_logged_in() ) {
-          $user_id = get_current_user_id();
-        } else {
-          return '';
-        }
-      }
+      $purchases = $this->user->purchases( $user_id );
 
-      $purchases = get_user_meta( $user_id, 'humble_lms_purchased_content', false );
-
-      if( ! isset( $purchases[0] ) || empty( $purchases[0] ) ) {
-        return __('You have not purchased any courses yet.', 'humble-lms');
+      if( ! isset( $purchases ) || empty( $purchases ) ) {
+        return '<p>' . __('You have not purchased any courses yet.', 'humble-lms') . '</p>';
       }
 
       $purchased_tracks = array();
       $purchased_courses = array();
 
-      foreach( $purchases[0] as $item ) {
+      foreach( $purchases as $item ) {
         $post_type = get_post_type( $item );
         if( $post_type === 'humble_lms_track' ) {
           array_push( $purchased_tracks, $item );

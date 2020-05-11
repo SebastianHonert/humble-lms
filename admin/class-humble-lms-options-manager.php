@@ -871,9 +871,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function users_per_page() {
       $users_per_page = isset( $this->options['users_per_page'] ) ? $this->options['users_per_page'] : 50;
       if( $users_per_page === 0 ) $users_per_page = 50;
-
       return $users_per_page;
-      
     }
 
     /**
@@ -907,6 +905,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function get_currency() {
       $options = get_option('humble_lms_options');
       return isset( $options['currency'] ) && in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
+    }
+
+    /**
+     * Get button labels.
+     *
+     * @return  string
+     * @since   0.0.1
+     */
+    public function get_button_labels() {
+      $options = get_option('humble_lms_options');
+      return isset( $options['button_labels'] ) ? $options['button_labels'] : $this->default_button_labels;
     }
     
   }

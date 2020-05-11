@@ -154,6 +154,10 @@ class Humble_LMS_Activator {
       'tiles_per_page' => 10,
       'syllabus_max_height' => 640,
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
+      'button_labels' => array(
+        __('Mark complete and continue', 'humble-lms'),
+        __('Mark incomplete and continue', 'humble-lms'),
+      ),
       'registration_countries' => array(),
       'custom_pages' => array(
         'login' => $custom_page_login->ID,

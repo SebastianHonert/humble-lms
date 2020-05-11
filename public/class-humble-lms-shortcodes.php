@@ -637,7 +637,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
   
       // Evaluate quiz button
-      $button_text = ! $user_completed_quizzes ? __('Check your answers', 'humble-lms') : __('Quiz passed. Try again?', 'humble-lms');
+      $button_label = ! $user_completed_quizzes ? __('Check your answers', 'humble-lms') : __('Quiz passed. Try again?', 'humble-lms');
       $button_class = $user_completed_quizzes ? 'humble-lms-btn--success' : '';
       if( $lesson_has_quiz ) {
         $html .= '<form method="post" id="humble-lms-evaluate-quiz" class="' . $quiz_class . '">';
@@ -646,7 +646,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '<input type="hidden" name="quiz-ids" value="' . $quiz_ids_string . '">';
           $html .= '<input type="hidden" name="lesson-completed" value="' . $lesson_completed . '">';
           $html .= '<input type="hidden" name="try-again" value="' . ( $user_completed_quizzes ? 1 : 0 ) . '">';
-          $html .= '<input type="submit" class="humble-lms-btn ' . $button_class . '" value="' . $button_text . '">';
+          $html .= '<input type="submit" class="humble-lms-btn ' . $button_class . '" value="' . $button_label . '">';
         $html .= '</form>';
       }
 
@@ -659,9 +659,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $lesson_completed . '">';
 
         if( $lesson_completed ) {
-          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark incomplete and continue', 'humble-lms') . '">';
+          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . $this->options_manager->options['button_labels'][0] . '">';
         } else {
-          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark complete and continue', 'humble-lms') . '">';
+          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . $this->options_manager->options['button_labels'][1] . '">';
         }
       $html .= '</form>';
 
@@ -1276,6 +1276,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function humble_lms_user_purchases( $user_id = null ) {
       $purchases = $this->user->purchases( $user_id );
+
+      // TODO
 
       if( ! isset( $purchases ) || empty( $purchases ) ) {
         return '<p>' . __('You have not purchased any courses yet.', 'humble-lms') . '</p>';

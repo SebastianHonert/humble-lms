@@ -527,13 +527,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( isset( $input['button_labels'] ) ) {
         $options['button_labels'][0] = sanitize_text_field( $input['button_labels'][0] );
-        if( empty( $options['button_labels'][0] ) ) {
-          $options['button_labels'][0] = $this->default_button_labels[0];
-        }
         $options['button_labels'][1] = sanitize_text_field( $input['button_labels'][1] );
-        if( empty( $options['button_labels'][1] ) ) {
-          $options['button_labels'][1] = $this->default_button_labels[1];
-        }
       }
       
       if( isset( $input['custom_pages'] ) )
@@ -915,7 +909,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     public function get_button_labels() {
       $options = get_option('humble_lms_options');
-      return isset( $options['button_labels'] ) ? $options['button_labels'] : $this->default_button_labels;
+      $button_labels = array();
+      $button_labels[0] = isset( $options['button_labels'][0] ) && ! empty( $options['button_labels'][0] ) && $options['button_labels'][0] !== '' ? $options['button_labels'][0] : $this->default_button_labels[0];
+      $button_labels[1] = isset( $options['button_labels'][1] ) && ! empty( $options['button_labels'][1] ) && $options['button_labels'][1] !== '' ? $options['button_labels'][1] : $this->default_button_labels[1];
+      return $button_labels;
     }
     
   }

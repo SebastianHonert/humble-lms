@@ -77,6 +77,8 @@ add_action( 'add_meta_boxes', 'humble_lms_question_add_meta_boxes' );
 function humble_lms_question_type_mb() {
   global $post;
 
+  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
+
   $question_type = get_post_meta( $post->ID, 'humble_lms_question_type', false );
   $question_type = isset( $question_type[0] ) && ! empty( $question_type[0] ) ? $question_type[0] : 'multiple_choice'; 
 
@@ -91,8 +93,6 @@ function humble_lms_question_type_mb() {
 
 function humble_lms_question_mb() {
   global $post;
-
-  wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
   
   $question = get_post_meta( $post->ID, 'humble_lms_question', true );
 
@@ -107,9 +107,8 @@ function humble_lms_answers_mb() {
   $question = get_post_meta( $post->ID, 'humble_lms_question', false );
   $question_type = get_post_meta( $post->ID, 'humble_lms_question_type', false );
   $answers = get_post_meta( $post->ID, 'humble_lms_question_answers', true );
-  $answers = maybe_unserialize( $answers );
-
-  $answers = ! isset( $answers ) || ! isset( $answers[0]['answer'] ) || empty( $answers[0]['answer'] ) ? array(['answer' => __('Please provide at least one answer.', 'humble-lms'), 'correct' => 0]) : $answers;
+  $answers = is_serialized( $answers ) ? maybe_unserialize( $answers ) : $answers;
+  $answers = ! isset( $answers ) || ! isset( $answers[0]['answer'] ) ? array(['answer' => __('Please provide at least one answer.', 'humble-lms'), 'correct' => 0]) : $answers;
 
   ?>
 
@@ -119,7 +118,7 @@ function humble_lms_answers_mb() {
     <?php foreach( $answers as $key => $answer ): ?>
       <?php $checked = isset( $answer['correct'] ) && $answer['correct'] === 1 ? 'checked' : ''; ?>
       <div class="humble-lms-answer">
-        <input type="text" name="humble_lms_question_answers[<?php echo $key; ?>][answer]" data-key="<?php echo $key; ?>" class="humble-lms-answer-text widefat" value="<?php echo $answers[$key]['answer']; ?>">
+        <input type="text" name="humble_lms_question_answers[<?php echo $key; ?>][answer]" data-key="<?php echo $key; ?>" class="humble-lms-answer-text widefat" value="<?php echo htmlspecialchars( $answers[$key]['answer'] ); ?>">
         <div class="humble-lms-correct-answer-wrapper">
           <span>
             <input type="checkbox" name="humble_lms_question_answers[<?php echo $key; ?>][correct]" data-key="<?php echo $key; ?>" class="humble-lms-answer-correct" value="1" <?php echo $checked; ?>></span>
@@ -176,17 +175,15 @@ function humble_lms_save_question_meta_boxes( $post_id, $post )
   );
 
   $question_meta['humble_lms_question_type'] = ! empty( $_POST['humble_lms_question_type'] ) && in_array( $_POST['humble_lms_question_type'], $allowed_question_types ) ? $_POST['humble_lms_question_type'] : 'multiple_choice';
-  $question_meta['humble_lms_question'] = ! empty( $_POST['humble_lms_question'] ) ? esc_attr( $_POST['humble_lms_question'] ) : __('Please enter a question.', 'humble-lms');
+  $question_meta['humble_lms_question'] = ! empty( $_POST['humble_lms_question'] ) ? sanitize_text_field( $_POST['humble_lms_question'] ) : __('Please enter a question.', 'humble-lms');
   
   if( is_array( $_POST['humble_lms_question_answers'] ) ) {
     foreach( $_POST['humble_lms_question_answers'] as $key => $answer ) {
-      if( empty( $answer['answer'] ) ) continue;
+      if( ! isset( $answer['answer'] ) ) continue;
 
-      $question_meta['humble_lms_question_answers'][$key]['answer'] = esc_attr( $answer['answer'] );
+      $question_meta['humble_lms_question_answers'][$key]['answer'] = sanitize_text_field( $answer['answer'] );
       $question_meta['humble_lms_question_answers'][$key]['correct'] = $answer['correct'] ? 1 : 0 ;
     }
-
-    $question_meta['humble_lms_question_answers'] = serialize( $question_meta['humble_lms_question_answers'] );
   }
 
   $question_meta['humble_lms_shuffle'] = isset( $_POST['humble_lms_shuffle'] ) ? 1 : 0;

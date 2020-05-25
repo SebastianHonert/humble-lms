@@ -130,6 +130,11 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-options-manager.php';
 
     /**
+     * The class providing translation functionalities.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-translator.php';
+
+    /**
      * The class responsible for handling admin ajax requests
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-admin-ajax.php';

@@ -10,6 +10,10 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
   class Humble_LMS_Content_Manager {
 
+    public function __construct() {
+      $this->translator = new Humble_LMS_Translator;
+    }
+
     /**
      * Get tracks (published / unpublished)
      *
@@ -22,6 +26,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         'post_type' => 'humble_lms_track',
         'posts_per_page' => -1,
         'post_status' => $published ? 'publish' : 'any',
+        'lang' => $this->translator->current_language(),
       );
   
       $tracks = get_posts( $args );
@@ -93,6 +98,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         'post_type' => 'humble_lms_course',
         'posts_per_page' => -1,
         'post_status' => $published ? 'publish' : 'any',
+        $this->translator->current_language(),
       );
   
       $courses = get_posts( $args );

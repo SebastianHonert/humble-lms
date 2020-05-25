@@ -22,6 +22,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $this->options_manager = new Humble_LMS_Admin_Options_Manager;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->quiz = new Humble_LMS_Quiz;
+      $this->translator = new Humble_LMS_Translator;
 
     }
 
@@ -728,6 +729,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'meta_key' => 'humble_lms_track_position',
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
+        'lang' => $this->translator->current_language(),
       );
 
       $tracks = get_posts( $args );
@@ -1520,6 +1522,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_paypal_buttons( $atts = null ) {
+      if( ! Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+        return;
+      }
+
       if( ! is_user_logged_in() ) {
         $options = get_option('humble_lms_options');
         $login_url = esc_url( get_permalink( $options['custom_pages']['login'] ) );
@@ -1613,6 +1619,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function humble_lms_paypal_buttons_single_item( $atts = null ) {
       global $post;
+
+      if( ! Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+        return;
+      }
 
       if( ! is_user_logged_in() ) {
         return $this->purchase_message();

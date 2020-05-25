@@ -53,7 +53,7 @@ class Humble_LMS_Public {
     $this->version = $version;
     $this->user = new Humble_LMS_Public_User;
     $this->access_handler = new Humble_LMS_Public_Access_Handler;
-    $this->options = get_option('humble_lms_options');
+    $this->options_manager = new Humble_LMS_Admin_Options_Manager;
 
   }
 
@@ -101,21 +101,20 @@ class Humble_LMS_Public {
      */
 
     global $post;
-    $options = new Humble_LMS_Admin_Options_Manager;
     
-
+    $options = get_option('humble_lms_options');
     if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
-      $client_id = $this->options['paypal_client_id'];
-      $currency = $options->get_currency();
+      $client_id = $options['paypal_client_id'];
+      $currency = $this->options_manager->get_currency();
       
       if( ! $client_id )
         $client_id = 'sb';
 
-      wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $this->options['paypal_client_id'] . '&amp;currency=' . $currency, false, NULL, true );
+      wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $client_id . '&currency=' . $currency, false, NULL, true );
     }
 
     if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {
-      $website_key = isset( $this->options['recaptcha_website_key'] ) ? $this->options['recaptcha_website_key'] : false;
+      $website_key = isset( $options['recaptcha_website_key'] ) ? $options['recaptcha_website_key'] : false;
 
       if( isset( $post->post_content ) && $website_key && ( has_shortcode( $post->post_content, 'humble_lms_registration_form' ) ) ) {
         wp_enqueue_script( 'humble-lms-recaptcha' , 'https://www.google.com/recaptcha/api.js', false, NULL, true );
@@ -135,8 +134,9 @@ class Humble_LMS_Public {
       'is_user_logged_in' => is_user_logged_in() ? true : false,
       'current_user_id' => get_current_user_id(),
       'buy_now_text' => __('Buy now', 'humble-lms'),
-      'syllabus_max_height' => isset( $this->options['syllabus_max_height'] ) ? $this->options['syllabus_max_height'] : 640,
-      'currency' => $options->get_currency(),
+      'syllabus_max_height' => isset( $options['syllabus_max_height'] ) ? $options['syllabus_max_height'] : 640,
+      'currency' => $this->options_manager->get_currency(),
+      'has_paypal' => Humble_LMS_Admin_Options_Manager::has_paypal(),
     ) );
   }
 

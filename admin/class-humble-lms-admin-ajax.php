@@ -16,8 +16,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
      * Initialize the class and set its properties.
      *
      * @since    0.0.1
-     * @param      string    $humble_lms       The name of the plugin.
-     * @param      string    $version    The version of this plugin.
      */
     public function __construct() {
 

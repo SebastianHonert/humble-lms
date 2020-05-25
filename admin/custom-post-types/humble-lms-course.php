@@ -134,6 +134,7 @@ function humble_lms_course_sections_mb()
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
   $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
+  $translator = new Humble_LMS_Translator;
 
   if( ! $sections ) {
     $sections = array(
@@ -150,6 +151,7 @@ function humble_lms_course_sections_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   );
 
   $lessons = get_posts( $args );
@@ -179,7 +181,8 @@ function humble_lms_course_sections_mb()
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
-        'exclude' => $section_lessons
+        'exclude' => $section_lessons,
+        'lang' => $translator->current_language(),
       );
     
       $lessons = get_posts( $args );

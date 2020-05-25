@@ -22,6 +22,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
     public function __construct() {
 
       $this->user = new Humble_LMS_Public_User;
+      $this->translator = new Humble_LMS_Translator;
 
     }
 
@@ -49,7 +50,8 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
-        'post__in' => $quiz_ids
+        'post__in' => $quiz_ids,
+        'lang' => $this->translator->current_language(),
       );
 
       $quizzes = get_posts( $args );
@@ -64,7 +66,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @param    int
      * @return   array
      */
-    public static function questions( $quiz_id = null ) {
+    public function questions( $quiz_id = null ) {
       if ( ! $quiz_id )
         return [];
 
@@ -85,6 +87,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         'order' => 'ASC',
         'post__in' => $question_ids,
         'orderby' => 'post__in',
+        'lang' => $this->translator->current_language(),
       );
     
       $questions = get_posts( $args );

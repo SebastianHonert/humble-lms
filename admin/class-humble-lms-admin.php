@@ -334,6 +334,7 @@ class Humble_LMS_Admin {
         $tracks = get_posts( array(
           'post_type' => 'humble_lms_track',
           'posts_per_page' => -1,
+          'lang' => '',
         ) );
 
         foreach( $tracks as $track ) {
@@ -354,6 +355,7 @@ class Humble_LMS_Admin {
           'post_type' => 'humble_lms_course',
           'post_status' => 'any',
           'posts_per_page' => -1,
+          'lang' => '',
         ) );
 
         foreach( $courses as $course ) {
@@ -1175,6 +1177,7 @@ class Humble_LMS_Admin {
       'meta_key' => 'humble_lms_mbship_price',
       'orderby' => 'meta_value_num',
       'order' => 'ASC',
+      'lang' =>  '',
     ) );
 
     if( ! $array ) {
@@ -1204,7 +1207,8 @@ class Humble_LMS_Admin {
       'name' => $slug,
       'post_type'   => 'humble_lms_mbship',
       'post_status' => 'publish',
-      'numberposts' => 1
+      'numberposts' => 1,
+      'lang' => '',
     );
 
     $posts = get_posts( $args );

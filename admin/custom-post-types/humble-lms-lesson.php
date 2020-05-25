@@ -186,6 +186,7 @@ function humble_lms_lesson_quizzes_mb()
 {
   global $post;
 
+  $translator = new Humble_LMS_Translator;
   $lesson_quizzes = Humble_LMS_Content_Manager::get_lesson_quizzes( $post->ID );
 
   $args = array(
@@ -194,7 +195,8 @@ function humble_lms_lesson_quizzes_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
-    'exclude' => $lesson_quizzes
+    'exclude' => $lesson_quizzes,
+    'lang' => $translator->current_language(),
   );
 
   $quizzes = get_posts( $args );

@@ -78,6 +78,8 @@ function humble_lms_activity_trigger_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
+  $translator = new Humble_LMS_Translator;
+
   $type = get_post_meta($post->ID, 'humble_lms_activity_trigger', true);
   $type_track = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_track', true);
   $type_course = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_course', true);
@@ -89,6 +91,7 @@ function humble_lms_activity_trigger_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   $courses = get_posts( array(
@@ -97,6 +100,7 @@ function humble_lms_activity_trigger_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   $lessons = get_posts( array(
@@ -105,6 +109,7 @@ function humble_lms_activity_trigger_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   echo '<select class="widefat" name="humble_lms_activity_trigger" id="humble_lms_activity_trigger">';
@@ -152,6 +157,8 @@ function humble_lms_activity_action_mb()
 {
   global $post;
 
+  $translator = new Humble_LMS_Translator;
+
   $action = get_post_meta($post->ID, 'humble_lms_activity_action', true);
   $action_award = (int)get_post_meta($post->ID, 'humble_lms_activity_action_award', true);
   $action_email = (int)get_post_meta($post->ID, 'humble_lms_activity_action_email', true);
@@ -173,6 +180,7 @@ function humble_lms_activity_action_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   $emails = get_posts( array(
@@ -181,6 +189,7 @@ function humble_lms_activity_action_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   $certificates = get_posts( array(
@@ -189,6 +198,7 @@ function humble_lms_activity_action_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'lang' => $translator->current_language(),
   ) );
 
   echo '<select class="widefat humble-lms-activity-action-select" name="humble_lms_activity_action_award" id="humble_lms_activity_action_award">';

@@ -81,6 +81,7 @@ function humble_lms_track_courses_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
+  $translator = new Humble_LMS_Translator;
   $track_courses = Humble_LMS_Content_Manager::get_track_courses( $post->ID );
 
   $args = array(
@@ -89,7 +90,8 @@ function humble_lms_track_courses_mb()
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
-    'exclude' => $track_courses
+    'exclude' => $track_courses,
+    'lang' => $translator->current_language(),
   );
 
   $courses = get_posts( $args );

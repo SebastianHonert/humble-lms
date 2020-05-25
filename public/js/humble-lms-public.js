@@ -271,130 +271,133 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  $('input[name="humble_lms_membership"]').on('click', function() {
-    $('.humble-lms-checkout-membership').removeClass('checked')
-    $(this).parent().parent().addClass('checked')
-    $('#humble-lms-paypal-buttons').data('price', $(this).data('price'))
-    $('#humble-lms-paypal-buttons').data('membership', $(this).val())
+  const paypalButtonsMembership = (function() {
+    $('input[name="humble_lms_membership"]').on('click', function() {
+      $('.humble-lms-checkout-membership').removeClass('checked')
+      $(this).parent().parent().addClass('checked')
+      $('#humble-lms-paypal-buttons').data('price', $(this).data('price'))
+      $('#humble-lms-paypal-buttons').data('membership', $(this).val())
 
-    let membership = $('#humble-lms-paypal-buttons').data('membership')
-    membership = membership.charAt(0).toUpperCase() + membership.slice(1)
-    $('.humble-lms-lightbox p').html(membership + ', <strong>' + humble_lms.currency + ' ' + $('#humble-lms-paypal-buttons').data('price') + '</strong>')
-    $('.humble-lms-btn--purchase-membership').removeClass('humble-lms-btn--disabled').addClass('humble-lms-toggle-lightbox')
-  })
+      let membership = $('#humble-lms-paypal-buttons').data('membership')
+      membership = membership.charAt(0).toUpperCase() + membership.slice(1)
+      $('.humble-lms-lightbox p').html(membership + ', <strong>' + humble_lms.currency + ' ' + $('#humble-lms-paypal-buttons').data('price') + '</strong>')
+      $('.humble-lms-btn--purchase-membership').removeClass('humble-lms-btn--disabled').addClass('humble-lms-toggle-lightbox')
+    })
 
-  if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        let membership = $('#humble-lms-paypal-buttons').data('membership')
-        let price = $('#humble-lms-paypal-buttons').data('price')
+    if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          let membership = $('#humble-lms-paypal-buttons').data('membership')
+          let price = $('#humble-lms-paypal-buttons').data('price')
 
-        if (typeof membership === 'undefined' || ! membership) {
-          alert(humble_lms.membership_undefined)
-          return
-        }
+          if (typeof membership === 'undefined' || ! membership) {
+            alert(humble_lms.membership_undefined)
+            return
+          }
 
-        if (typeof price === 'undefined' || ! price) {
-          alert(humble_lms.membership_price_undefined)
-          return
-        }
+          if (typeof price === 'undefined' || ! price) {
+            alert(humble_lms.membership_price_undefined)
+            return
+          }
 
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: price,
-            },
-            reference_id: membership
-          }]
-        })
-      },
-      onApprove: function(data, actions) {
-        let context = $('#humble-lms-paypal-buttons').data('context')
-
-        return actions.order.capture().then(function(details) {
-          loadingLayer(true)
-
-          $.ajax({
-            url: humble_lms.ajax_url,
-            type: 'POST',
-            data: {
-              action: 'save_paypal_transaction',
-              context: context,
-              details: details
-            },
-            dataType: 'json',
-            error: function(MLHttpRequest, textStatus, errorThrown) {
-              loadingLayer(false)
-              alert('Sorry, there has been an error processing your transaction.')
-              console.error(errorThrown)
-            },
-            success: function(response, textStatus, XMLHttpRequest) {
-              location.reload()
-            }
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: price,
+              },
+              reference_id: membership
+            }]
           })
-        })
-      }
-    }).render('#humble-lms-paypal-buttons')
-  }
+        },
+        onApprove: function(data, actions) {
+          let context = $('#humble-lms-paypal-buttons').data('context')
+
+          return actions.order.capture().then(function(details) {
+            loadingLayer(true)
+
+            $.ajax({
+              url: humble_lms.ajax_url,
+              type: 'POST',
+              data: {
+                action: 'save_paypal_transaction',
+                context: context,
+                details: details
+              },
+              dataType: 'json',
+              error: function(MLHttpRequest, textStatus, errorThrown) {
+                loadingLayer(false)
+                alert('Sorry, there has been an error processing your transaction.')
+                console.error(errorThrown)
+              },
+              success: function(response, textStatus, XMLHttpRequest) {
+                location.reload()
+              }
+            })
+          })
+        }
+      }).render('#humble-lms-paypal-buttons')
+    }
+  })()
 
   /**
    * Render PayPal buttons (single courses/tracks).
    * 
    * @since   0.0.1
    */
+  const paypalButtonsSingle = (function() {
+    if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons-single-item').length !== 0) {
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
+          let price = $('#humble-lms-paypal-buttons-single-item').data('price')
 
-  if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons-single-item').length !== 0) {
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
-        let price = $('#humble-lms-paypal-buttons-single-item').data('price')
-
-        if (typeof post_id === 'undefined' || ! post_id) {
-          alert(humble_lms.post_id_undefined)
-        }
+          if (typeof post_id === 'undefined' || ! post_id) {
+            alert(humble_lms.post_id_undefined)
+          }
+      
+          if (typeof price === 'undefined' || ! price) {
+            alert(humble_lms.membership_price_undefined)
+          }
     
-        if (typeof price === 'undefined' || ! price) {
-          alert(humble_lms.membership_price_undefined)
-        }
-  
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: price
-            },
-            reference_id: post_id
-          }]
-        })
-      },
-      onApprove: function(data, actions) {
-        let context = $('#humble-lms-paypal-buttons-single-item').data('context')
-
-        return actions.order.capture().then(function(details) {
-          loadingLayer(true)
-
-          $.ajax({
-            url: humble_lms.ajax_url,
-            type: 'POST',
-            data: {
-              action: 'save_paypal_transaction',
-              context: context,
-              details: details
-            },
-            dataType: 'json',
-            error: function(MLHttpRequest, textStatus, errorThrown) {
-              loadingLayer(false)
-              alert('Sorry, there has been an error processing your transaction.')
-              console.error(errorThrown)
-            },
-            success: function(response, textStatus, XMLHttpRequest) {
-              loadingLayer(true)
-              location.reload()
-            }
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: price
+              },
+              reference_id: post_id
+            }]
           })
-        })
-      }
-    }).render('#humble-lms-paypal-buttons-single-item')
-  }
+        },
+        onApprove: function(data, actions) {
+          let context = $('#humble-lms-paypal-buttons-single-item').data('context')
+
+          return actions.order.capture().then(function(details) {
+            loadingLayer(true)
+
+            $.ajax({
+              url: humble_lms.ajax_url,
+              type: 'POST',
+              data: {
+                action: 'save_paypal_transaction',
+                context: context,
+                details: details
+              },
+              dataType: 'json',
+              error: function(MLHttpRequest, textStatus, errorThrown) {
+                loadingLayer(false)
+                alert('Sorry, there has been an error processing your transaction.')
+                console.error(errorThrown)
+              },
+              success: function(response, textStatus, XMLHttpRequest) {
+                loadingLayer(true)
+                location.reload()
+              }
+            })
+          })
+        }
+      }).render('#humble-lms-paypal-buttons-single-item')
+    }
+  })()
 
   /**
    * Toggle lightbox.

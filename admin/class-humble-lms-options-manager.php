@@ -14,7 +14,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * Initialize the class and set its properties.
      *
      * @since    0.0.1
-     * @param      class    $access       Public access class
+     * @param    class    $access   Public access class
      */
     public function __construct() {
 
@@ -332,7 +332,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       echo '<p><strong>' . __('Mark lesson complete', 'humble-lms') . '</strong></p>';
       echo '<p><input type="text" maxlength="32" id="button_labels_complete" name="humble_lms_options[button_labels][]" value="' . $button_labels[0] . '" placeholder="' . $this->default_button_labels[0] . '"></p>';
-      echo '<p><strong>' . __('Mark lesson complete', 'humble-lms') . '</strong></p>';
+      echo '<p><strong>' . __('Mark lesson incomplete', 'humble-lms') . '</strong></p>';
       echo '<p><input type="text" maxlength="32" id="button_labels_incomplete" name="humble_lms_options[button_labels][]" value="' . $button_labels[1] . '" placeholder="' . $this->default_button_labels[1] . '"></p>';
     }
 
@@ -683,30 +683,35 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           'post_type' => 'humble_lms_track',
           'post_status' => 'publish',
           'posts_per_page' => -1,
+          'lang' => '',
       ) );
 
       $courses = get_posts( array(
         'post_type' => 'humble_lms_course',
         'post_status' => 'publish',
         'posts_per_page' => -1,
+        'lang' => '',
       ) );
 
       $lessons = get_posts( array(
         'post_type' => 'humble_lms_lesson',
         'post_status' => 'publish',
         'posts_per_page' => -1,
+        'lang' => '',
       ) );
 
       $awards = get_posts( array(
         'post_type' => 'humble_lms_award',
         'post_status' => 'publish',
         'posts_per_page' => -1,
+        'lang' => '',
       ) );
 
       $certificates = get_posts( array(
         'post_type' => 'humble_lms_cert',
         'post_status' => 'publish',
         'posts_per_page' => -1,
+        'lang' => '',
       ) );
 
       // Tracks

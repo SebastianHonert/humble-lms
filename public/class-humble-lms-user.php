@@ -18,9 +18,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since    0.0.1
      */
     public function __construct() {
-
       $this->content_manager = new Humble_LMS_Content_Manager;
-
+      $this->translator = new Humble_LMS_Translator;
     }
 
     /**
@@ -391,7 +390,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                 'key' => 'humble_lms_activity_trigger_' . $content_type,
                 'value' => $id,
               )
-            )
+            ),
+            'lang' => $this->translator->current_language(),
           );
     
           $activities = get_posts( $args );
@@ -409,7 +409,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                     'key' => 'humble_lms_activity_trigger',
                     'value' => 'user_completed_all_tracks',
                   ),
-                )
+                ),
+                'lang' => $this->translator->current_language(),
               );
 
               $activities_completed_all_tracks = get_posts( $args );
@@ -430,7 +431,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                     'key' => 'humble_lms_activity_trigger',
                     'value' => 'user_completed_all_courses',
                   ),
-                )
+                ),
+                'lang' => $this->translator->current_language(),
               );
 
               $activities_completed_all_courses = get_posts( $args );

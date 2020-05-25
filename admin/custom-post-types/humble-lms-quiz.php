@@ -78,6 +78,7 @@ function humble_lms_quiz_questions_mb() {
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
+  $translator = new Humble_LMS_Translator;
   $quiz_questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', false );
   $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
 
@@ -87,7 +88,8 @@ function humble_lms_quiz_questions_mb() {
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
-    'exclude' => $quiz_questions
+    'exclude' => $quiz_questions,
+    'lang' => $translator->current_language(),
   );
 
   $questions = get_posts( $args );

@@ -229,7 +229,7 @@ function humble_lms_lesson_quizzes_mb()
   
   else:
 
-    echo '<p>' . __('No quizzes found. Please add one or more quizzes first.', 'humble-lms') . '<a href="' . admin_url('/edit.php?post_type=humble_lms_quiz') . '">' . __('Add quiz', 'humble-lms') . '</a></p>';
+    echo '<p>' . __('No quizzes found. Please add one or more quizzes first.', 'humble-lms') . '</p>';
 
   endif;
 }

@@ -104,6 +104,8 @@ class Humble_LMS_Admin {
      * class.
      */
 
+    $translator = new Humble_LMS_Translator;
+
     wp_enqueue_script( 'jquery-ui-datepicker' );
     wp_enqueue_script( 'quicksearch', plugin_dir_url( __FILE__ ) . 'js/jquery.quicksearch.js', array( 'jquery' ), '1.0.0', true );
     wp_enqueue_script( 'sortable', plugin_dir_url( __FILE__ ) . 'js/sortable.min.js', array( 'jquery' ), '1.10.1', true );
@@ -121,6 +123,7 @@ class Humble_LMS_Admin {
       'correctAnswerMissing' => __('Please mark at least one answer as correct.', 'humble-lms'),
       'oneSectionMessage' => __('This section cannot be removed. Courses consist of at least one section.', 'humble-lms'),
       'nonce' => wp_create_nonce( 'humble_lms' ),
+      'current_language' => $translator->current_language(),
     ) );
   }
 

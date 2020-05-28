@@ -33,7 +33,7 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
     }
 
     /**
-     * Get the current language
+     * Get the current language.
      * 
      * @since    0.0.1
      * @return   string
@@ -44,6 +44,85 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
       }
 
       return pll_current_language();
+    }
+
+    /**
+     * Get language of a single post.
+     * 
+     * @since    0.0.1
+     * @return   string
+     */
+    public function get_post_language( $post_id, $field = 'slug' ) {
+      if( ! function_exists('pll_get_post_language') || ! get_post_status( $post_id ) ) {
+        return '';
+      }
+
+      return pll_get_post_language( $post_id, $field );
+    }
+    
+    /**
+     * Get language of a single post.
+     * 
+     * @since    0.0.1
+     * @return   string
+     */
+    public function flush_rewrite_rules() {
+      $options = get_option('humble_lms_options');
+      $current_language = $this->current_language();
+
+      if( ! isset( $options['current_language'] ) || empty( $options['current_language'] ) || ( $options['current_language'] !== $current_language ) ) {
+        update_option('humble_lms_options', array(
+          'current_language' => $current_language
+        ));
+
+        flush_rewrite_rules();
+      }
+    }
+
+    /**
+     * Set post language.
+     * 
+     * @since    0.0.1
+     * @return   bool
+     */
+    public function set_post_language( $post_id, $lang = null ) {
+      if( ! function_exists('pll_set_post_language') || ! get_post_status( $post_id ) || empty( $lang ) ) {
+        return;
+      }
+
+      pll_set_post_language( $post_id, $lang );
+    }
+
+    /**
+     * Get translated post id.
+     * 
+     * @since    0.0.1
+     * @return   bool
+     */
+    public function get_translated_post_id( $post_id = null ) {
+      if( ! function_exists('pll_get_post') || ! get_post_status( $post_id ) ) {
+        return;
+      }
+
+      $translated_post_id = pll_get_post( $post_id, $this->current_language() );
+
+      return get_post_status( $translated_post_id ) ? $translated_post_id : null; 
+    }
+
+    /**
+     * Check if custom field synchronization is active.
+     * 
+     * @since    0.0.1
+     * @return   bool
+     */
+    public function pll_is_synchronizing_custom_fields() {
+      if( ! $this->has_polylang() ) {
+        return '';
+      }
+
+      $pll_options = get_option('polylang');
+      
+      return isset( $pll_options['sync'] ) && in_array( 'post_meta', $pll_options['sync'] );
     }
     
   }

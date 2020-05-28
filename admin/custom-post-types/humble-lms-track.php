@@ -123,7 +123,7 @@ function humble_lms_track_courses_mb()
 
   // Add course lightbox
   echo '<div class="humble-lms-add-content-lightbox-wrapper">';
-    echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_course">';
+    echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_course" data-lang="' . $translator->current_language() . '">';
       echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add course', 'humble-lms') . '</div>';
       echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Course title', 'humble-lms') . '&hellip;">';
       echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a course title.', 'humble-lms') . '"></p>';

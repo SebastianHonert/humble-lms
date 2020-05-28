@@ -30,6 +30,8 @@ class Humble_LMS_Activator {
    * @since    0.0.1
    */
   public function activate() {
+    flush_rewrite_rules();
+
     $this->add_custom_pages();
     $this->init_options();
   }

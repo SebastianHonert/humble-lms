@@ -82,6 +82,21 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', false );
       $track_courses = isset( $track_courses[0] ) && is_array( $track_courses[0] ) && ! empty( $track_courses[0] ) && ( isset( $track_courses[0][0] ) && $track_courses[0][0] !== '' ) ? $track_courses[0] : [];
+
+      // Get translated post ids if custom fields are synchronized
+      $translator = new Humble_LMS_Translator;
+
+      if( $translator->pll_is_synchronizing_custom_fields() ) {
+        foreach( $track_courses as $key => $course_id ) {
+          $translated_post_id = $translator->get_translated_post_id( $course_id );
+  
+          if( $translated_post_id ) {
+            $track_courses[$key] = $translated_post_id;
+          } else {
+            $track_courses = array_diff( $track_courses, array( $course_id ) );
+          }
+        }
+      }
       
       return $track_courses;
     }
@@ -114,16 +129,26 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @since   0.0.1
      */
     public static function get_course_lessons( $course_id = null ) {
+      $translator = new Humble_LMS_Translator;
       $course_lessons = [];
 
       if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
         return $course_lessons;
 
       $course_sections = self::get_course_sections( $course_id );
+
       foreach( $course_sections as $section ) {
         $lesson_ids = $section['lessons'];
         foreach( $lesson_ids as $lesson_id ) {
-          array_push( $course_lessons, (int)$lesson_id );
+          if( ! $translator->pll_is_synchronizing_custom_fields() ) {
+            array_push( $course_lessons, (int)$lesson_id );
+          } else {
+            $translated_post_id = $translator->get_translated_post_id( (int)$lesson_id );
+            
+            if( $translated_post_id ) {
+              array_push( $course_lessons, $translated_post_id );
+            }
+          }
         }
       }
 
@@ -174,15 +199,31 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
             'lessons' => array(),
           ),
         );
+
+        return $course_sections;
       }
+
+      $translator = new Humble_LMS_Translator;
 
       foreach( $course_sections as $section_key => $section ) {
         // Turn comma separated string into array of IDs
         $lessons = ! is_array( $section['lessons'] ) ? explode(',', $section['lessons'] ) : [];
 
-        foreach( $lessons as $lesson ) {
-          if( ! get_post( $lesson ) || get_post_status( $lesson ) !== $post_status ) {
-            if( ( $key = array_search($lesson, $lessons ) ) !== false ) {
+        if( $translator->pll_is_synchronizing_custom_fields() ) {
+          foreach( $lessons as $key => $lesson_id ) {
+            $translated_post_id = $translator->get_translated_post_id( $lesson_id );
+
+            if( $translated_post_id ) {
+              $lessons[$key] = $translated_post_id;
+            } else {
+              $lessons = array_diff( $lessons, array( $lesson_id ) );
+            }
+          }
+        }
+
+        foreach( $lessons as $key => $lesson_id ) {
+          if( ! get_post( $lesson_id ) || get_post_status( $lesson_id ) !== $post_status ) {
+            if( ( $key = array_search($lesson_id, $lessons ) ) !== false ) {
               unset($lessons[$key]);
             }
           }
@@ -274,6 +315,40 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get questions for a single quiz.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_quiz_questions( $quiz_id, $published = false ) {
+      $quiz_questions = [];
+
+      if( ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
+        return $quiz_questions;
+
+      $quiz_questions = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', false );
+      $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
+
+      // Get translated post ids if custom fields are synchronized
+      $translator = new Humble_LMS_Translator;
+
+      if( $translator->pll_is_synchronizing_custom_fields() ) {
+        foreach( $quiz_questions as $key => $quiz_id ) {
+          $translated_post_id = $translator->get_translated_post_id( $quiz_id );
+  
+          if( $translated_post_id ) {
+            $quiz_questions[$key] = $translated_post_id;
+          } else {
+            $quiz_questions = array_diff( $quiz_questions, array( $quiz_id ) );
+          }
+        }
+      }
+      
+      return $quiz_questions;
+    }
+
+    /**
      * Get instructors by post ID.
      * 
      * @param   int
@@ -317,6 +392,21 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', false );
       $lesson_quizzes = isset( $lesson_quizzes[0] ) && ! empty( $lesson_quizzes[0] ) && ( isset( $lesson_quizzes[0][0] ) && $lesson_quizzes[0][0] !== '' ) ? $lesson_quizzes[0] : [];
+
+      // Get translated post ids if custom fields are synchronized
+      $translator = new Humble_LMS_Translator;
+
+      if( $translator->pll_is_synchronizing_custom_fields() ) {
+        foreach( $lesson_quizzes as $key => $quiz_id ) {
+          $translated_post_id = $translator->get_translated_post_id( $quiz_id );
+  
+          if( $translated_post_id ) {
+            $lesson_quizzes[$key] = $translated_post_id;
+          } else {
+            $lesson_quizzes = array_diff( $lesson_quizzes, array( $quiz_id ) );
+          }
+        }
+      }
 
       return $lesson_quizzes;
     }

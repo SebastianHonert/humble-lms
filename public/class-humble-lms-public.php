@@ -54,6 +54,7 @@ class Humble_LMS_Public {
     $this->user = new Humble_LMS_Public_User;
     $this->access_handler = new Humble_LMS_Public_Access_Handler;
     $this->options_manager = new Humble_LMS_Admin_Options_Manager;
+    $this->translator = new Humble_LMS_Translator;
 
   }
 
@@ -473,6 +474,15 @@ class Humble_LMS_Public {
     $nopaging_url = ( $position ) ? substr( $current_url, 0, $position ) : $current_url;
 
     return trailingslashit( $nopaging_url );
+  }
+
+  /**
+   * Flush rewrite rules when language changes
+   * 
+   * @since    0.0.1
+   */
+  public function flush_rewrite_rules() {
+    $this->translator->flush_rewrite_rules();
   }
 
 }

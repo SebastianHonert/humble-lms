@@ -530,6 +530,7 @@ jQuery(document).ready(function($) {
   
     $(document).on('click', '.humble-lms-add-content-submit', function() {
       let post_type = $('.humble-lms-add-content-lightbox').data('post_type')
+      let lang = $('.humble-lms-add-content-lightbox').data('lang')
       let title = $('.humble-lms-add-content-name').val()
   
       if (!post_type || !title) {
@@ -546,6 +547,7 @@ jQuery(document).ready(function($) {
           action: 'add_content',
           title: title,
           post_type: post_type,
+          lang: lang,
           nonce: humble_lms.nonce
         },
         dataType: 'json',

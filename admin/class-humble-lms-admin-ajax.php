@@ -19,7 +19,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
      */
     public function __construct() {
 
-      // ...
+      $this->translator = new Humble_LMS_Translator;
 
     }
     
@@ -61,17 +61,19 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
      * @return void
      */
     public function add_content() {
+
       $allowed_post_types = array(
         'humble_lms_lesson',
         'humble_lms_course',
       );
   
-      if( ! isset( $_POST['title'] ) || empty( $_POST['title'] ) || ! isset( $_POST['post_type'] ) || empty( $_POST['post_type'] ) || ! in_array( $_POST['post_type'], $allowed_post_types ) ) {
+      if( ! isset( $_POST['title'] ) || empty( $_POST['title'] ) || ! isset( $_POST['post_type'] ) || empty( $_POST['post_type'] || empty( $_POST['lang'] ) ) || ! in_array( $_POST['post_type'], $allowed_post_types ) ) {
         echo json_encode('error');
         die;
       }
 
       $title = sanitize_text_field( $_POST['title'] );
+      $lang = sanitize_text_field( $_POST['lang'] );
       $post_type = sanitize_text_field( $_POST['post_type'] );
 
       $post = array(
@@ -79,12 +81,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
         'post_type' => $post_type,
         'post_content'  => '',
         'post_status'   => 'publish',
-        'post_author' => get_current_user_id()
+        'post_author' => get_current_user_id(),
       );
 
       $post_id = wp_insert_post( $post );
 
       if( $post_id ) {
+        $this->translator->set_post_language( $post_id, $lang );
+
         echo json_encode(
           array(
             'post_id' => $post_id,

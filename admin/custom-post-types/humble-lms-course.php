@@ -133,9 +133,9 @@ function humble_lms_course_sections_mb()
 
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
-  $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
   $translator = new Humble_LMS_Translator;
-
+  $sections = Humble_LMS_Content_Manager::get_course_sections( $post->ID );
+  
   if( ! $sections ) {
     $sections = array(
       array(
@@ -161,7 +161,7 @@ function humble_lms_course_sections_mb()
 
     // Add lesson lightbox
     echo '<div class="humble-lms-add-content-lightbox-wrapper">';
-      echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_lesson">';
+      echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_lesson" data-lang="' . $translator->current_language() . '">';
         echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add lesson', 'humble-lms') . '</div>';
         echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Lesson title', 'humble-lms') . '&hellip;">';
         echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a lesson title.', 'humble-lms') . '"></p>';

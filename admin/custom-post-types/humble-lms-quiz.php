@@ -79,8 +79,7 @@ function humble_lms_quiz_questions_mb() {
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
   $translator = new Humble_LMS_Translator;
-  $quiz_questions = get_post_meta( $post->ID, 'humble_lms_quiz_questions', false );
-  $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
+  $quiz_questions = Humble_LMS_Content_Manager::get_quiz_questions( $post->ID );
 
   $args = array(
     'post_type' => 'humble_lms_question',
@@ -97,6 +96,10 @@ function humble_lms_quiz_questions_mb() {
   $selected_questions = [];
   foreach( $quiz_questions as $id ) {
     if( get_post_status( $id ) ) {
+      if( $translator->get_post_language( $id ) !== $translator->current_language() ) {
+        continue;
+      }
+
       $question = get_post( $id );
       array_push( $selected_questions, $question );
     }

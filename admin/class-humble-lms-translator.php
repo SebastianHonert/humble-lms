@@ -96,33 +96,19 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
     /**
      * Get translated post id.
      * 
+     * pll_get_post will return the original post ID if no translated post exists.
+     * 
      * @since    0.0.1
-     * @return   bool
+     * @return   integer
      */
     public function get_translated_post_id( $post_id = null ) {
       if( ! function_exists('pll_get_post') || ! get_post_status( $post_id ) ) {
-        return;
+        return $post_id;
       }
 
       $translated_post_id = pll_get_post( $post_id, $this->current_language() );
 
-      return get_post_status( $translated_post_id ) ? $translated_post_id : null; 
-    }
-
-    /**
-     * Check if custom field synchronization is active.
-     * 
-     * @since    0.0.1
-     * @return   bool
-     */
-    public function pll_is_synchronizing_custom_fields() {
-      if( ! $this->has_polylang() ) {
-        return '';
-      }
-
-      $pll_options = get_option('polylang');
-      
-      return isset( $pll_options['sync'] ) && in_array( 'post_meta', $pll_options['sync'] );
+      return $translated_post_id; 
     }
     
   }

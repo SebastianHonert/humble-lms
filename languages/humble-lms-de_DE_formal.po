@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-05-29 15:23+0200\n"
-"PO-Revision-Date: 2020-05-29 15:23+0200\n"
+"PO-Revision-Date: 2020-05-29 15:43+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -2714,7 +2714,7 @@ msgstr "Schade"
 
 #: public/class-humble-lms-shortcodes.php:1466
 msgid "You failed this quiz with a score of"
-msgstr "Sie haben den Quiz nicht bestanden mit"
+msgstr "Sie haben das Quiz nicht bestanden mit"
 
 #: public/class-humble-lms-shortcodes.php:1510
 msgid "No quizzes found."

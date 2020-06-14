@@ -511,7 +511,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<option value="1" ' . $selected . '">' . __('Inclusive of VAT', 'humble-lms') . '</option>';
         $selected = $hasVAT === 2 ? 'selected="selected"' : '';
         echo '<option value="2" ' . $selected . '">' . __('Exclusive of VAT', 'humble-lms') . '</option>';
-      echo '</select></p><p class="description">' . __('Would you like to list your prices inclusive of, exclusive or, or without value added taxes?', 'humble-lms') . '</p>';
+      echo '</select></p><p class="description">' . __('Would you like to list your prices inclusive of, exclusive of, or without value added taxes?', 'humble-lms') . '</p>';
     }
 
     /**

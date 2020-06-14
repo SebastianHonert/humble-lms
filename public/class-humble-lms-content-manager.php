@@ -562,7 +562,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  float
      * @since   0.0.1
      */
-    public static function get_price( $post_id ) {
+    public static function get_price( $post_id, $vat = false ) {
       $price = 0.00;
 
       if( ! get_post( $post_id ) )
@@ -582,6 +582,23 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( $price ) {
         $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
       }
+
+      // Value added tax
+      if( ! $vat ) {
+        return $price;
+      }
+
+      $options = get_option('humble_lms_options');
+
+      if(! empty( $options['hasVAT'] ) && ! empty( $options['VAT'] ) ) {
+        if( $options['hasVAT'] === 1 ) { // Inclusive of VAT
+          $price = $price / (100 + (int)$options['VAT'] ) * 100;
+        } else if( $options['hasVAT'] === 2 ) { // Exclusive of VAT
+          $price = $price + ( $price / 100 * 19 );
+        }
+      }
+
+      $price = number_format((float)$price, 2, '.', '');
 
       return $price;
     }

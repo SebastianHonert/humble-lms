@@ -94,6 +94,11 @@
   font-weight: 700;
   color: #188e6e; }
 
+.humble-lms-price-vat {
+  font-weight: 400;
+  color: #999;
+  font-size: .75em; }
+
 /* Syllabus */
 nav.humble-lms-syllabus {
   display: block;

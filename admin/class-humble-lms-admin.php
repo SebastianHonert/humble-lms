@@ -1224,7 +1224,7 @@ class Humble_LMS_Admin {
    * 
    * @since   0.0.1
    */
-  public static function get_membership_price_by_slug( $slug = null ) {
+  public static function get_membership_price_by_slug( $slug = null, $vat = false ) {
     if( ! $slug ) {
       return;
     }
@@ -1237,6 +1237,23 @@ class Humble_LMS_Admin {
 
     $price = get_post_meta( $membership->ID, 'humble_lms_mbship_price', true );
     $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+
+    // Value added tax
+    if( ! $vat ) {
+      return $price;
+    }
+
+    $options = get_option('humble_lms_options');
+
+    if( ! empty( $options['hasVAT'] ) && ! empty( $options['VAT'] ) ) {
+      if( $options['hasVAT'] === 1 ) { // Inclusive of VAT
+        $price = $price / (100 + (int)$options['VAT'] ) * 100;
+      } else if( $options['hasVAT'] === 2 ) { // Exclusive of VAT
+        $price = $price + ( $price / 100 * 19 );
+      }
+    }
+
+    $price = number_format((float)$price, 2, '.', '');
 
     return $price;
   }

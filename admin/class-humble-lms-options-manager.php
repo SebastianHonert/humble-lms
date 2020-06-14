@@ -101,8 +101,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
         settings_errors();
 
-        update_option( 'humble_lms_options', $this->options );
-
         $this->active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
         $active = $this->active;
 

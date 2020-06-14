@@ -64,6 +64,4 @@ if (have_posts()):
 
 endif;
 
-print_r( get_option('humble_lms_options') );
-
 get_footer();

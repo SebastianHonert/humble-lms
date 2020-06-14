@@ -380,8 +380,8 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
   $course_meta['humble_lms_course_color'] = isset( $_POST['humble_lms_course_color'] ) ? sanitize_hex_color( $_POST['humble_lms_course_color'] ) : '';
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
-  $course_meta['humble_lms_is_for_sale'] = isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
-  $course_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) : 0.00;
+  $course_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? abs( round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) ) : 0.00;
+  $course_meta['humble_lms_is_for_sale'] = $course_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

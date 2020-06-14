@@ -330,7 +330,7 @@ jQuery(document).ready(function($) {
                 console.error(errorThrown)
               },
               success: function(response, textStatus, XMLHttpRequest) {
-                location.reload()
+                window.location = window.location.pathname
               }
             })
           })
@@ -390,7 +390,7 @@ jQuery(document).ready(function($) {
               },
               success: function(response, textStatus, XMLHttpRequest) {
                 loadingLayer(true)
-                location.reload()
+                window.location = window.location.pathname
               }
             })
           })

@@ -241,10 +241,64 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           break;
       }
 
+      // Send email notifications
+      $this->send_email_notifications( $order_details, $context );
+
       // Done
       echo json_encode($details, true);
       die;
     }
+
+    /**
+     * Send email notifications for completed transactions.
+     * 
+     * @since   1.0.0
+     * @return   void
+     */
+    public function send_email_notifications( $order_details, $context = '' ) {
+      $options = get_option('humble_lms_options');
+      $user_info = get_userdata( $order_details['user_id'] );
+
+      $to = array( get_option( 'admin_email' ), $user_info->user_email );
+      $subject = 'Your purchase (' . get_option( 'blogname' ) . ')';
+      $body = '<p>Hi there,</p>';
+      $body .= '<p>thank you very much for your purchase. Please find your transaction details below.</p>';
+      
+      $body .= '<p><strong>Account information</strong></p>';
+      $body .= '<p>Login: ' . $user_info->user_login . '<br>';
+      $body .= 'Display name: ' . $user_info->display_name . '<br>';
+      $body .= 'First name: ' . $user_info->first_name . '<br>';
+      $body .= 'Username: ' . $user_info->last_name . '<br>';
+      $body .= 'Email: ' . $user_info->user_email . '<br>';
+
+      $body .= '<p><strong>PayPal transaction details</strong></p>';
+      $body .= 'Payer ID: ' . $order_details['payer_id'] . '<br>';
+      $body .= 'Email: ' . $order_details['email_address'] . '<br>';
+      $body .= 'Given name: ' . $order_details['given_name'] . '<br>';
+      $body .= ' Surname: ' . $order_details['surname'] . '<br>';
+      $body .= 'Payer ID: ' . $order_details['payer_id'] . '<br>';
+      $body .= 'Create time: ' . $order_details['create_time'] . '<br>';
+      $body .= 'Update time: ' . $order_details['update_time'] . '<br>';
+      $body .= 'Reference ID: ' . $order_details['reference_id'] . '<br>';
+      $body .= 'Value: ' . $order_details['currency_code'] . ' ' . $order_details['value'];
+
+      if( $context !== 'membership' ) {
+        $body .= '<br>Link to content: ' . esc_url( get_permalink( $order_details['reference_id'] ) );
+      }
+
+      $body .= '</p>';
+
+      $account_page_html = ! empty( $options['custom_pages']['user_profile'] ) ? esc_url( get_permalink( $options['custom_pages']['user_profile'] ) ) : esc_url( site_url() );
+
+      $body .= '<p>You can now access the purchased content. A list of all your transactions and purchases is available on your account page of our website:</p>';
+      $body .= '<p><a href="' . $account_page_html . '">' . $account_page_html . '</a></p>';
+      $body .= '<p>We will send you another email including the invoice shortly.</p>';
+      $body .= '<p>Enjoy our courses!</p>';
+
+      $headers = array('Content-Type: text/html; charset=UTF-8');
+        
+      wp_mail( $to, $subject, $body, $headers );
+     }
     
   }
   

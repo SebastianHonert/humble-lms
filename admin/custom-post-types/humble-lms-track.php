@@ -220,13 +220,8 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
   $track_meta['humble_lms_track_color'] = isset( $_POST['humble_lms_track_color'] ) ? sanitize_hex_color( $_POST['humble_lms_track_color'] ) : '';
-  $track_meta['humble_lms_is_for_sale'] = isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
-  $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) : 0.00;
-
-  if( $track_meta['humble_lms_is_for_sale'] === 1 && $track_meta['humble_lms_fixed_price'] <= 0.00 ) {
-    $track_meta['humble_lms_is_for_sale'] = 0;
-    $track_meta['humble_lms_fixed_price'] = 0.00;
-  }
+  $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? abs( round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) ) : 0.00;
+  $track_meta['humble_lms_is_for_sale'] = $track_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

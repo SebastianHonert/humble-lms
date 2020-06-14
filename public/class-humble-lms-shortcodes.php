@@ -131,7 +131,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
-          $html .= $is_for_sale && $price ? '<span class="humble-lms-price"><strong>' . __('Price', 'humble-lms') . ':</strong> <span>' . $price . '</span></span>' : '';
+          $html .= $is_for_sale && $price ? '<span class="humble-lms-price"><strong>' . __('Price', 'humble-lms') . ':</strong> <span>' . $price . '*</span></span>' : '';
           if( $providers ) {
             $providers_str = get_the_term_list( $track_id, 'humble_lms_tax_provider', '', ', ' );
             $providers_str = strip_tags( $providers_str );
@@ -269,7 +269,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
-          $html .= $is_for_sale && $price ? '<span class="humble-lms-price"><strong>' . __('Price', 'humble-lms') . ':</strong> <span>' . $price . '</span></span>' : '';
+          $html .= $is_for_sale && $price ? '<span class="humble-lms-price"><strong>' . __('Price', 'humble-lms') . ':</strong> <span>' . $price . '*</span></span>' : '';
           if( $providers ) {
             $providers_str = get_the_term_list( $course_id, 'humble_lms_tax_provider', '', ', ' );
             $providers_str = strip_tags( $providers_str );
@@ -1651,7 +1651,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-lightbox-wrapper">';
           $html .= '<div class="humble-lms-lightbox">';
             $html .= '<div class="humble-lms-lightbox-title">' . __('Purchase now', 'humble-lms') . '</div>';
-            $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $price . '</strong></p>';
+            $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $price . '*</strong></p>';
             $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $price . '" data-context="single"></div>';
           $html .= '</div>';
         $html .= '</div>';
@@ -1710,7 +1710,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this course', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this course.', 'humble-lms') . '</p>';
-              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . Humble_LMS_Content_Manager::get_price( $post->ID ) . '</a></div>';
+              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . Humble_LMS_Content_Manager::get_price( $post->ID ) . '*</a></div>';
             $html .= '</div>';
           $html .= '</div>';
           break;
@@ -1719,7 +1719,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this track', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this track and all its containing courses.', 'humble-lms') . '</p>';
-              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . Humble_LMS_Content_Manager::get_price( $post->ID ) . '</a></div>';
+              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . Humble_LMS_Content_Manager::get_price( $post->ID ) . '*</a></div>';
             $html .= '</div>';
           $html .= '</div>';
           break;

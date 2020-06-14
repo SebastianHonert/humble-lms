@@ -21,10 +21,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->translator = new Humble_LMS_Translator;
+      $this->options = get_option('humble_lms_options');
       $this->active = 'reporting-users';
       $this->page_sections = array();
       $this->login_url = wp_login_url();
-      $this->options = get_option('humble_lms_options');
       $this->admin_url = add_query_arg( 'page', 'humble_lms_options', esc_url( admin_url('options.php') ) );
       $this->countries = array_map('trim', explode(',', 'Afghanistan, Albania, Algeria, Andorra, Angola, Antigua & Deps, Argentina, Armenia, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bhutan, Bolivia, Bosnia Herzegovina, Botswana, Brazil, Brunei, Bulgaria, Burkina, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Central African Rep, Chad, Chile, China, Colombia, Comoros, Congo, Congo {Democratic Rep}, Costa Rica, Croatia, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon, Gambia, Georgia, Germany, Ghana, Greece, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland {Republic}, Israel, Italy, Ivory Coast, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea North, Korea South, Kosovo, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Mauritania, Mauritius, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, {Burma}, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russian Federation, Rwanda, St Kitts & Nevis, St Lucia, Saint Vincent & the Grenadines, Samoa, San Marino, Sao Tome & Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe'));
       $this->current_language = null;
@@ -98,8 +98,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_page() {
       echo '<div class="wrap">';
         echo '<h1> ' . __('Humble LMS', 'humble-lms') . '</h1>';
-        
+
         settings_errors();
+
+        update_option( 'humble_lms_options', $this->options );
 
         $this->active = isset( $_GET['active'] ) ? sanitize_text_field( $_GET['active'] ) : 'reporting-users';
         $active = $this->active;
@@ -129,9 +131,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               do_settings_sections('humble_lms_options_reporting_courses');
               break;
             case 'options':
-                settings_fields('humble_lms_options');
-                do_settings_sections('humble_lms_options');
-                submit_button();
+              settings_fields('humble_lms_options');
+              do_settings_sections('humble_lms_options');
+              submit_button();
               break;
             case 'registration':
               settings_fields('humble_lms_options_registration');
@@ -184,7 +186,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
  
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
-      add_settings_field( 'currency', 'Currency', array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'hasVAT', __('Prices include value added tax (VAT)', 'humble-lms'), array( $this, 'hasVAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'VAT', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'VAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
 
     /**
@@ -229,6 +233,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $tiles_per_page = isset( $this->options['tiles_per_page'] ) ? (int)$this->options['tiles_per_page'] : 10;
 
       echo '<input type="number" step="1" min="1" max="100" name="humble_lms_options[tiles_per_page]" value="' . $tiles_per_page . '">';
+      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 
     /**
@@ -470,6 +475,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $paypal_client_id = isset( $this->options['paypal_client_id'] ) ? $this->options['paypal_client_id'] : '';
 
       echo '<p><input type="text" class="widefat" name="humble_lms_options[paypal_client_id]" value="' . $paypal_client_id . '"></p>';
+      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 
     /**
@@ -493,6 +499,36 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Prices including value added taxes (VAT)
+     *
+     * @since    0.0.1
+     */
+    public function hasVAT() {
+      $hasVAT = isset( $this->options['hasVAT'] ) ? $this->options['hasVAT'] : 0;
+
+      echo '<p><select id="hasVAT" name="humble_lms_options[hasVAT]">';
+        $selected = $hasVAT === 0 ? 'selected="selected"' : '';
+        echo '<option value="0" ' . $selected . '">' . __('Without VAT', 'humble-lms') . '</option>';
+        $selected = $hasVAT === 1 ? 'selected="selected"' : '';
+        echo '<option value="1" ' . $selected . '">' . __('Inclusive of VAT', 'humble-lms') . '</option>';
+        $selected = $hasVAT === 2 ? 'selected="selected"' : '';
+        echo '<option value="2" ' . $selected . '">' . __('Exclusive of VAT', 'humble-lms') . '</option>';
+      echo '</select></p><p class="description">' . __('Would you like to list your prices inclusive of, exclusive or, or without value added taxes?', 'humble-lms') . '</p>';
+    }
+
+    /**
+     * VAT amount in percent.
+     *
+     * @since    0.0.1
+     */
+    function VAT()
+    {
+      $VAT = isset( $this->options['VAT'] ) ? (int)$this->options['VAT'] : 0;
+
+      echo '<p><input type="number" min="0" max="100" step="1" class="widefat" name="humble_lms_options[VAT]" value="' . $VAT . '"></p>';
+    }
+
+    /**
      * Validate options on save.
      *
      * @param   array
@@ -503,37 +539,39 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $options = $this->options;
       $active = isset( $input['active'] ) ? sanitize_text_field( $input['active'] ) : '';
 
-      if( isset( $input['users_per_page'] ) )
-        $options['users_per_page'] = (int)$input['users_per_page'];
+      if( $active === 'options' ) {
+        if( isset( $input['users_per_page'] ) )
+          $options['users_per_page'] = (int)$input['users_per_page'];
 
-      if( isset( $input['tile_width_course'] ) )
-        $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
+        if( isset( $input['tile_width_course'] ) )
+          $options['tile_width_course'] = sanitize_text_field( $input['tile_width_course'] );
 
-      if( isset( $input['tiles_per_page'] ) )
-        $options['tiles_per_page'] = (int)$input['tiles_per_page'];
+        if( isset( $input['tiles_per_page'] ) )
+          $options['tiles_per_page'] = (int)$input['tiles_per_page'];
 
-      if( isset( $input['syllabus_max_height'] ) )
-        $options['syllabus_max_height'] = (int)$input['syllabus_max_height'];
+        if( isset( $input['syllabus_max_height'] ) )
+          $options['syllabus_max_height'] = (int)$input['syllabus_max_height'];
 
-      if( isset( $input['sort_tracks_by_category'] ) )
-        $options['sort_tracks_by_category'] = (int)$input['sort_tracks_by_category'];
+        if( isset( $input['sort_tracks_by_category'] ) )
+          $options['sort_tracks_by_category'] = (int)$input['sort_tracks_by_category'];
 
-      if( isset( $input['sort_courses_by_category'] ) )
-        $options['sort_courses_by_category'] = (int)$input['sort_courses_by_category'];
+        if( isset( $input['sort_courses_by_category'] ) )
+          $options['sort_courses_by_category'] = (int)$input['sort_courses_by_category'];
 
-      if( isset( $input['tile_width_track'] ) )
-        $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );
-      
-      if( isset( $input['messages'] ) )
-        $options['messages'] = $input['messages'];
+        if( isset( $input['tile_width_track'] ) )
+          $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );
+        
+        if( isset( $input['messages'] ) )
+          $options['messages'] = $input['messages'];
 
-      if( isset( $input['button_labels'] ) ) {
-        $options['button_labels'][0] = sanitize_text_field( $input['button_labels'][0] );
-        $options['button_labels'][1] = sanitize_text_field( $input['button_labels'][1] );
+        if( isset( $input['button_labels'] ) ) {
+          $options['button_labels'][0] = sanitize_text_field( $input['button_labels'][0] );
+          $options['button_labels'][1] = sanitize_text_field( $input['button_labels'][1] );
+        }
+        
+        if( isset( $input['custom_pages'] ) )
+          $options['custom_pages'] = $input['custom_pages'];
       }
-      
-      if( isset( $input['custom_pages'] ) )
-        $options['custom_pages'] = $input['custom_pages'];
 
       if( $active === 'registration' ) {
         $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
@@ -541,23 +579,43 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['recaptcha_website_key'] = esc_attr( trim( $input['recaptcha_website_key'] ) );
         $options['recaptcha_secret_key'] = esc_attr( trim( $input['recaptcha_secret_key'] ) );
         $options['recaptcha_enabled'] = isset( $input['recaptcha_enabled'] ) && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) ? 1 : 0;
+        
+        if( isset( $input['registration_countries'] ) ) {
+          $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : [];
+        }
+  
+        if( empty( $options['registration_countries'] ) ) {
+          $options['registration_has_country'] = 0;
+        }
+  
+        if( isset( $input['email_welcome'] ) ) {
+          $options['email_welcome'] = esc_html( $input['email_welcome'] );
+        }
+
+        if( isset( $input['email_lost_password'] ) ) {
+          $options['email_lost_password'] = esc_html( $input['email_lost_password'] );
+        }
       }
-      
-      if( isset( $input['registration_countries'] ) )
-        $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : [];
 
-      if( empty( $options['registration_countries'] ) )
-        $options['registration_has_country'] = 0;
+      if( $active === 'paypal' ) {
+        if( isset( $input['paypal_client_id'] ) ) {
+          $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
+        }
 
-      if( isset( $input['email_welcome'] ) )
-        $options['email_welcome'] = esc_html( $input['email_welcome'] );
+        $options['currency'] = sanitize_text_field( $input['currency'] );
+        $options['currency'] = in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
 
-      if( isset( $input['paypal_client_id'] ) ) {
-        $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
+        if( isset( $input['hasVAT'] ) ) {
+          $options['hasVAT'] = (int)$input['hasVAT'];
+        }
+
+        if( isset( $input['VAT'] ) ) {
+          $options['VAT'] = absint( $input['VAT'] );
+          if( $options['VAT'] > 100 ) {
+            $options['VAT'] = 100;
+          }
+        }
       }
-
-      $options['currency'] = sanitize_text_field( $input['currency'] );
-      $options['currency'] = in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
 
       return $options;
     }

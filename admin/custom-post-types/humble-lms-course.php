@@ -318,7 +318,7 @@ function humble_lms_fixed_price_mb() {
   $price = Humble_LMS_Content_Manager::get_price( $post->ID );
 
   $options = get_option('humble_lms_options');
-  $currency = $options['currency'];
+  $currency = isset( $options['currency'] ) ? $options['currency'] : 'USD';
   $checked = $sell ? 'checked' : '';
 
   echo '<p><input type="checkbox" name="humble_lms_is_for_sale" id="humble_lms_is_for_sale" value="1" ' . $checked . '>' . __('Yes, sell this course for a fixed price.', 'humble-lms') . '</p>';

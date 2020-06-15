@@ -33,7 +33,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $message = nl2br( stripslashes( htmlspecialchars( $_POST['message'] ) ) );
       $to = sanitize_email( $_POST['recipient'] );
       $subject = htmlspecialchars( $_POST['subject'] );
-      $headers = 'From: '. get_option('admin_email') . "\r\n" . 'Reply-To: ' . get_option('admin_email') . "\r\n";
+      $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
       $user = wp_get_current_user();
       $date_format = 'F j, Y';
       $date = current_time( $date_format );

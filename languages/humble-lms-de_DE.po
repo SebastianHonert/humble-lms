@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-06-14 17:50+0200\n"
-"PO-Revision-Date: 2020-06-14 17:52+0200\n"
+"POT-Creation-Date: 2020-06-15 19:46+0200\n"
+"PO-Revision-Date: 2020-06-15 19:48+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -78,8 +78,8 @@ msgstr "Kurstrainer/in"
 msgid "This user is an instructor."
 msgstr "Dieser Nutzer ist ein/e Kurstrainer/in."
 
-#: admin/class-humble-lms-admin.php:230 admin/class-humble-lms-admin.php:982
-#: admin/class-humble-lms-admin.php:1008
+#: admin/class-humble-lms-admin.php:230 admin/class-humble-lms-admin.php:983
+#: admin/class-humble-lms-admin.php:1009
 #: public/class-humble-lms-shortcodes.php:972
 #: public/class-humble-lms-shortcodes.php:1225
 msgid "Country"
@@ -149,8 +149,8 @@ msgid "Username already taken."
 msgstr "Nutzername ist bereits vergeben."
 
 #: admin/class-humble-lms-admin.php:513
-msgid "Invalid username."
-msgstr "Ungültiger Nutzername."
+msgid "Invalid username. Please user letters and numbers only."
+msgstr "Ungültiger Benutzername. Bitte verwende nur Buchstaben und Ziffern."
 
 #: admin/class-humble-lms-admin.php:515
 msgid "Please enter a username."
@@ -291,7 +291,7 @@ msgstr "Bis bald!"
 msgid "Your credentials"
 msgstr "Deine Anmeldedaten"
 
-#: admin/class-humble-lms-admin.php:1037
+#: admin/class-humble-lms-admin.php:1038
 #: admin/class-humble-lms-options-manager.php:34
 #: admin/class-humble-lms-options-manager.php:115
 #: admin/custom-post-types/humble-lms-course.php:4
@@ -302,7 +302,7 @@ msgstr "Deine Anmeldedaten"
 msgid "Courses"
 msgstr "Kurse"
 
-#: admin/class-humble-lms-admin.php:1107
+#: admin/class-humble-lms-admin.php:1108
 #: admin/class-humble-lms-options-manager.php:35
 #: admin/class-humble-lms-options-manager.php:777
 #: admin/custom-post-types/humble-lms-track.php:4
@@ -2328,28 +2328,40 @@ msgid "You successfully completed this course."
 msgstr "Du hast diesen Kurs erfolgreich abgeschlossen."
 
 #: public/class-humble-lms-public.php:338
+msgid "Purchase completed"
+msgstr "Transaktion abgeschlossen"
+
+#: public/class-humble-lms-public.php:339
+msgid ""
+"Thank you for your purchase. A confirmation email is on it's way to your "
+"inbox. Enjoy our online courses!"
+msgstr ""
+"Vielen Dank für deinen Einkauf. Eine Bestätigungsmail ist unterwegs zu "
+"deinem Posteingang. Viel Freude mit unseren Online-Kursen!"
+
+#: public/class-humble-lms-public.php:346
 #: public/class-humble-lms-shortcodes.php:140
 #: public/class-humble-lms-shortcodes.php:278
 msgid "Level"
 msgstr "Schwierigkeitsgrad"
 
-#: public/class-humble-lms-public.php:364
+#: public/class-humble-lms-public.php:372
 msgid "Lesson completed"
 msgstr "Lektion abgeschlossen"
 
-#: public/class-humble-lms-public.php:365
+#: public/class-humble-lms-public.php:373
 msgid "Course completed"
 msgstr "Kurs abgeschlossen"
 
-#: public/class-humble-lms-public.php:366
+#: public/class-humble-lms-public.php:374
 msgid "Track completed"
 msgstr "Lernpfad abgeschlossen"
 
-#: public/class-humble-lms-public.php:367
+#: public/class-humble-lms-public.php:375
 msgid "You received an award"
 msgstr "Auszeichnung erhalten"
 
-#: public/class-humble-lms-public.php:368
+#: public/class-humble-lms-public.php:376
 msgid "You have been issued a certificate"
 msgstr "Du hast ein Zertifikat erworben"
 
@@ -2814,7 +2826,7 @@ msgid "If you would like to purchase this course please %s and %s."
 msgstr "Wenn du diesen Kurs kaufen möchtest, %s und %s."
 
 #: public/class-humble-lms-shortcodes.php:1742
-#: public/class-humble-lms-shortcodes.php:1765
+#: public/class-humble-lms-shortcodes.php:1773
 msgid "Purchase this track"
 msgstr "Diesen Lernpfad kaufen"
 
@@ -2831,12 +2843,20 @@ msgid ""
 msgstr ""
 "Bitte klicke den Button weiter unten, wenn du diesen Kurs kaufen möchtest."
 
-#: public/class-humble-lms-shortcodes.php:1759
-#: public/class-humble-lms-shortcodes.php:1768
+#: public/class-humble-lms-shortcodes.php:1764
+#, php-format
+msgid ""
+"You can also purchase the complete course track %s instead of the single "
+"course."
+msgstr ""
+"Du kannst diesen Kurs auch als Teil des vollständigen Lernpfads %s erwerben."
+
+#: public/class-humble-lms-shortcodes.php:1767
+#: public/class-humble-lms-shortcodes.php:1776
 msgid "Buy now for"
 msgstr "Jetzt kaufen für"
 
-#: public/class-humble-lms-shortcodes.php:1767
+#: public/class-humble-lms-shortcodes.php:1775
 msgid ""
 "Please click the button below if your would like to purchase this track and "
 "all its containing courses."
@@ -2860,6 +2880,9 @@ msgstr "Seiten"
 #: public/partials/humble-lms-track-archive.php:10
 msgid "Course Tracks"
 msgstr "Lernpfade"
+
+#~ msgid "Invalid username."
+#~ msgstr "Ungültiger Nutzername."
 
 #~ msgid "Add quiz"
 #~ msgstr "Quiz hinzufügen"

@@ -330,7 +330,7 @@ jQuery(document).ready(function($) {
                 console.error(errorThrown)
               },
               success: function(response, textStatus, XMLHttpRequest) {
-                window.location = window.location.pathname
+                window.location = window.location.pathname + '?purchase=success'
               }
             })
           })
@@ -392,7 +392,7 @@ jQuery(document).ready(function($) {
               },
               success: function(response, textStatus, XMLHttpRequest) {
                 loadingLayer(true)
-                window.location = window.location.pathname
+                window.location = window.location.pathname + '?purchase=success'
               }
             })
           })

@@ -219,7 +219,7 @@ class Humble_LMS_Public {
   }
 
   /**
-   * Add syllabus to single course page
+   * Add content to pages.
    *
    * @since    0.0.1
    */
@@ -329,6 +329,14 @@ class Humble_LMS_Public {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
         <span class="humble-lms-message-content">' . __('You successfully completed this course.', 'humble-lms') . '</span> 
+      </div>';
+    }
+
+    // Purchase completed
+    if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success') {
+      $html .= '<div class="humble-lms-message humble-lms-message--success">
+        <span class="humble-lms-message-title">' . __('Purchase completed', 'humble-lms') . '</span>
+        <span class="humble-lms-message-content">' . __('Thank you for your purchase. A confirmation email is on it\'s way to your inbox. Enjoy our online courses!', 'humble-lms') . '</span> 
       </div>';
     }
 

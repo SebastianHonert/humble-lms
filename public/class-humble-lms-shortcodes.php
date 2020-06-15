@@ -1756,6 +1756,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this course', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this course.', 'humble-lms') . '</p>';
+
+              $track_ids = $this->content_manager->find_tracks_by('course', $post->ID );
+              if( is_array( $track_ids ) && sizeOf( $track_ids ) === 1 ) {
+                $track_title = get_the_title( $track_ids[0] );
+                $track_permalink = esc_url( get_permalink( $track_ids[0] ) );
+                $html .= '<p>' . sprintf( __('You can also purchase the complete course track %s instead of the single course.', 'humble-lms'), '<a href="' . $track_permalink . '">' . $track_title . '</a>') . '</p>';
+              }
+
               $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</a></div>';
             $html .= '</div>';
           $html .= '</div>';

@@ -323,8 +323,9 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $body .= '<p>We will send you another email including the invoice shortly.</p>';
       $body .= '<p>Enjoy our courses!</p>';
 
-      $headers = array('Content-Type: text/html; charset=UTF-8');
-        
+      $headers[] = 'Content-Type: text/html; charset=UTF-8';
+      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
+
       wp_mail( $to, $subject, $body, $headers );
      }
     

@@ -313,6 +313,49 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get track IDs by parameter.
+     * 
+     * @return  array
+     * @since   0.0.1
+     */
+    public function find_tracks_by( $by = null, $id = null ) {
+      if( ( ! $by ) || ( ! $id ) ) {
+        return [];
+      }
+
+      $track_ids = [];
+      $allowed_by = array(
+        'course'
+      );
+
+      if( ! in_array( $by, $allowed_by ) ) {
+        return $track_ids;
+      }
+
+      switch( $by ) {
+        case 'course':
+          if( get_post_type( $id ) !== 'humble_lms_course' ) {
+            return $track_ids;
+          }
+
+          $tracks = $this->get_tracks( true );
+
+          foreach( $tracks as $track ) {
+            $track_courses = $this->get_track_courses( $track->ID );
+            if( in_array( $id, $track_courses ) ) {
+              array_push( $track_ids, $track->ID );
+            }
+          }
+
+          return $track_ids;
+
+        default:
+          return $track_ids;
+      }
+
+    }
+
+    /**
      * Get questions for a single quiz.
      *
      * @param   int|bool

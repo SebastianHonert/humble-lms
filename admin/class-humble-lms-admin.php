@@ -510,7 +510,7 @@ class Humble_LMS_Admin {
       }
 
       if( ! validate_username( $user_login ) ) {
-        $this->humble_lms_errors()->add('username_invalid', __('Invalid username.', 'humble-lms'));
+        $this->humble_lms_errors()->add('username_invalid', __('Invalid username. Please user letters and numbers only.', 'humble-lms'));
       } else if( $user_login === '' ) {
         $this->humble_lms_errors()->add('username_empty', __('Please enter a username.', 'humble-lms'));
       }
@@ -967,7 +967,8 @@ class Humble_LMS_Admin {
     }
 
     $msg['subject'] = __('Your credentials');
-    $msg['headers'] = array('Content-Type: text/plain; charset=UTF-8');
+    $msg['headers'] = array('From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>', 'Content-Type: text/plain; charset=UTF-8');
+      
     $msg['message'] = $message;
 
     return $msg;

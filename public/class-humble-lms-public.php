@@ -270,6 +270,14 @@ class Humble_LMS_Public {
       $html .= '</div>';
     }
 
+    // Purchase completed
+    if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success') {
+      $html .= '<div class="humble-lms-message humble-lms-message--success">
+        <span class="humble-lms-message-title">' . __('Purchase completed', 'humble-lms') . '</span>
+        <span class="humble-lms-message-content">' . __('Thank you for your purchase. A confirmation email is on it\'s way to your inbox. Enjoy our online courses!', 'humble-lms') . '</span> 
+      </div>';
+    }
+
     // Course has ended / not started yet
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'timeframe' ) && ! current_user_can('manage_options' ) ) {
       $course_is_open = $content_manager->course_is_open( $course_id );
@@ -329,14 +337,6 @@ class Humble_LMS_Public {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Congratulations', 'humble-lms') . '</span>
         <span class="humble-lms-message-content">' . __('You successfully completed this course.', 'humble-lms') . '</span> 
-      </div>';
-    }
-
-    // Purchase completed
-    if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success') {
-      $html .= '<div class="humble-lms-message humble-lms-message--success">
-        <span class="humble-lms-message-title">' . __('Purchase completed', 'humble-lms') . '</span>
-        <span class="humble-lms-message-content">' . __('Thank you for your purchase. A confirmation email is on it\'s way to your inbox. Enjoy our online courses!', 'humble-lms') . '</span> 
       </div>';
     }
 

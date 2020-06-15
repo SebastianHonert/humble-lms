@@ -271,7 +271,7 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  const paypalButtonsMembership = (function() {
+  const paypalButtonsMembership = (function () {
     $('input[name="humble_lms_membership"]').on('click', function() {
       $('.humble-lms-checkout-membership').removeClass('checked')
       $(this).parent().parent().addClass('checked')
@@ -344,21 +344,23 @@ jQuery(document).ready(function($) {
    * 
    * @since   0.0.1
    */
-  const paypalButtonsSingle = (function() {
+  const paypalButtonsSingle = (function () {
     if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons-single-item').length !== 0) {
+      let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
+      let price = $('#humble-lms-paypal-buttons-single-item').data('price')
+
       paypal.Buttons({
         createOrder: function(data, actions) {
-          let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
-          let price = $('#humble-lms-paypal-buttons-single-item').data('price')
-
           if (typeof post_id === 'undefined' || ! post_id) {
             alert(humble_lms.post_id_undefined)
+            return
           }
       
           if (typeof price === 'undefined' || ! price) {
             alert(humble_lms.membership_price_undefined)
+            return
           }
-    
+
           return actions.order.create({
             purchase_units: [{
               amount: {

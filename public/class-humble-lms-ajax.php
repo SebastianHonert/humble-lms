@@ -157,6 +157,33 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
 
     /**
+     * Validate frontend price
+     * 
+     * @since   1.0.0
+     * @return  boolean
+     */
+    public function validate_frontend_price() {
+      $post_id = sanitize_text_field( $_POST['post_id'] );
+      $is_for_sale = get_post_meta( $post_id, 'humble_lms_is_for_sale', true );
+
+      if( (int)$is_for_sale !== 1 ) {
+        echo json_encode('not for sale');
+        die;
+      }
+
+      $price_frontend = sanitize_text_field( $_POST['price'] );
+      $price_backend = Humble_LMS_Content_Manager::get_price( $post_id, true );
+
+      if( $price_frontend !== $price_backend ) {
+        echo json_encode('prices do not match');
+        die;
+      }
+
+      echo json_encode('valid');
+      die;
+    }
+
+    /**
      * Save PayPal transaction.
      *
      * @since 1.0.0
@@ -219,24 +246,25 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         default:
           $post_id = (int)$order_details['reference_id'];
           $purchased = get_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', false );
+          $purchased = is_array( $purchased[0] ) ? $purchased[0] : [];
           $post_type = get_post_type( $post_id );
 
           // Course & track
-          if( ! in_array( $post_id, $purchased[0] ) ) {
-            array_push( $purchased[0], $post_id );
+          if( ! in_array( $post_id, $purchased ) ) {
+            array_push( $purchased, $post_id );
           }
 
           // Tracks only
           if( $post_type === 'humble_lms_track' ) {
             $courses = Humble_LMS_Content_Manager::get_track_courses( $post_id );
             foreach( $courses as $course_id ) {
-              if( ! in_array( $course_id, $purchased[0] ) ) {
-                array_push( $purchased[0], $course_id );
+              if( ! in_array( $course_id, $purchased ) ) {
+                array_push( $purchased, $course_id );
               }
             }
           }
           
-          update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased[0] );
+          update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased );
 
           break;
       }
@@ -275,8 +303,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $body .= 'Payer ID: ' . $order_details['payer_id'] . '<br>';
       $body .= 'Email: ' . $order_details['email_address'] . '<br>';
       $body .= 'Given name: ' . $order_details['given_name'] . '<br>';
-      $body .= ' Surname: ' . $order_details['surname'] . '<br>';
-      $body .= 'Payer ID: ' . $order_details['payer_id'] . '<br>';
+      $body .= 'Surname: ' . $order_details['surname'] . '<br>';
+      $body .= 'Order ID: ' . $order_details['order_id'] . '<br>';
       $body .= 'Create time: ' . $order_details['create_time'] . '<br>';
       $body .= 'Update time: ' . $order_details['update_time'] . '<br>';
       $body .= 'Reference ID: ' . $order_details['reference_id'] . '<br>';

@@ -34,3 +34,20 @@ if (have_posts()):
 endif;
 
 get_footer();
+
+// Compare prices on server – cancel transaction if different
+$post_id = get_the_ID();
+$is_for_sale = get_post_meta( $post_id, 'humble_lms_is_for_sale', true );
+
+echo $is_for_sale;
+
+if( (int)$is_for_sale !== 1 ) {
+  echo 'NOT FOR SALE';
+}
+
+$price_frontend = sanitize_text_field( 23.79 );
+$price_backend = Humble_LMS_Content_Manager::get_price( $post_id, true );
+
+if( $price_frontend !== $price_backend ) {
+  echo 'PRICES DO NOT MATCH';
+}

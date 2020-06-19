@@ -287,10 +287,11 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $options = get_option('humble_lms_options');
       $user_info = get_userdata( $order_details['user_id'] );
 
-      $to = array( get_option( 'admin_email' ), $user_info->user_email );
+      $to = $user_info->user_email;
       $subject = __('Order details', 'humble-lms') . ' (' . get_option( 'blogname' ) . ')';
       $headers[] = 'Content-Type: text/html; charset=UTF-8';
       $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
+      $headers[] = 'Cc: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
 
       // Order details
       $order_html = '<p><strong>' . __('Account information', 'humble-lms') . '</strong></p>';
@@ -332,7 +333,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       else {
-        $body = $options['email_checkout'];
+        $body = wp_kses_post( $options['email_checkout'] );
         $body = str_replace( 'ORDER_DETAILS', $order_html, $body );
         $body = str_replace( 'USER_NAME', $user_info->display_name, $body );
         $body = str_replace( 'ADMIN_EMAIL', get_option( 'admin_email' ), $body );

@@ -319,7 +319,6 @@ class Humble_LMS {
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_archive_templates' );
     $this->loader->add_filter( 'single_template', $plugin_public, 'humble_lms_single_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
-    $this->loader->add_filter( 'get_the_content', $plugin_public, 'humble_lms_add_content_to_pages' );
     $this->loader->add_filter( 'template_redirect', $plugin_public, 'humble_lms_template_redirect' );
 
     // Shortcodes

@@ -270,7 +270,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Send email notifications
-      $this->send_email_notifications( $order_details, $context );
+      $this->send_checkout_email( $order_details, $context );
 
       // Done
       echo json_encode($details, true);
@@ -283,48 +283,63 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @since   1.0.0
      * @return   void
      */
-    public function send_email_notifications( $order_details, $context = '' ) {
+    public function send_checkout_email( $order_details, $context = '' ) {
       $options = get_option('humble_lms_options');
       $user_info = get_userdata( $order_details['user_id'] );
 
       $to = array( get_option( 'admin_email' ), $user_info->user_email );
-      $subject = 'Your purchase (' . get_option( 'blogname' ) . ')';
-      $body = '<p>Hi there,</p>';
-      $body .= '<p>thank you very much for your purchase. Please find your transaction details below.</p>';
-      
-      $body .= '<p><strong>Account information</strong></p>';
-      $body .= '<p>Login: ' . $user_info->user_login . '<br>';
-      $body .= 'Display name: ' . $user_info->display_name . '<br>';
-      $body .= 'First name: ' . $user_info->first_name . '<br>';
-      $body .= 'Username: ' . $user_info->last_name . '<br>';
-      $body .= 'Email: ' . $user_info->user_email . '<br>';
-
-      $body .= '<p><strong>PayPal transaction details</strong></p>';
-      $body .= 'Payer ID: ' . $order_details['payer_id'] . '<br>';
-      $body .= 'Email: ' . $order_details['email_address'] . '<br>';
-      $body .= 'Given name: ' . $order_details['given_name'] . '<br>';
-      $body .= 'Surname: ' . $order_details['surname'] . '<br>';
-      $body .= 'Order ID: ' . $order_details['order_id'] . '<br>';
-      $body .= 'Create time: ' . $order_details['create_time'] . '<br>';
-      $body .= 'Update time: ' . $order_details['update_time'] . '<br>';
-      $body .= 'Reference ID: ' . $order_details['reference_id'] . '<br>';
-      $body .= 'Value: ' . $order_details['currency_code'] . ' ' . $order_details['value'];
-
-      if( $context !== 'membership' ) {
-        $body .= '<br>Link to content: ' . esc_url( get_permalink( $order_details['reference_id'] ) );
-      }
-
-      $body .= '</p>';
-
-      $account_page_html = ! empty( $options['custom_pages']['user_profile'] ) ? esc_url( get_permalink( $options['custom_pages']['user_profile'] ) ) : esc_url( site_url() );
-
-      $body .= '<p>You can now access the purchased content. A list of all your transactions and purchases is available on your account page of our website:</p>';
-      $body .= '<p><a href="' . $account_page_html . '">' . $account_page_html . '</a></p>';
-      $body .= '<p>We will send you another email including the invoice shortly.</p>';
-      $body .= '<p>Enjoy our courses!</p>';
-
+      $subject = __('Order details', 'humble-lms') . ' (' . get_option( 'blogname' ) . ')';
       $headers[] = 'Content-Type: text/html; charset=UTF-8';
       $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
+
+      // Order details
+      $order_html = '<p><strong>' . __('Account information', 'humble-lms') . '</strong></p>';
+      $order_html .= '<p>' . __('Login', 'humble-lms') . ': ' . $user_info->user_login . '<br>';
+      $order_html .= __('Display name', 'humble-lms') . ': ' . $user_info->display_name . '<br>';
+      $order_html .= __('First name', 'humble-lms') . ': ' . $user_info->first_name . '<br>';
+      $order_html .= __('Username', 'humble-lms') . ': ' . $user_info->last_name . '<br>';
+      $order_html .= __('Email', 'humble-lms') . ': ' . $user_info->user_email . '</p>';
+
+      $order_html .= '<p><strong>' . __('PayPal transaction details', 'humble-lms') . '</strong></p>';
+      $order_html .= __('Payer ID', 'humble-lms') . ': ' . $order_details['payer_id'] . '<br>';
+      $order_html .= __('Email', 'humble-lms') . ': ' . $order_details['email_address'] . '<br>';
+      $order_html .= __('Given name', 'humble-lms') . ': ' . $order_details['given_name'] . '<br>';
+      $order_html .= __('Surname', 'humble-lms') . ': ' . $order_details['surname'] . '<br>';
+      $order_html .= __('Order ID', 'humble-lms') . ': ' . $order_details['order_id'] . '<br>';
+      $order_html .= __('Create time', 'humble-lms') . ': ' . $order_details['create_time'] . '<br>';
+      $order_html .= __('Update time', 'humble-lms') . ': ' . $order_details['update_time'] . '<br>';
+      $order_html .= __('Reference ID', 'humble-lms') . ': ' . $order_details['reference_id'] . '<br>';
+      $order_html .= __('Value', 'humble-lms') . ': ' . $order_details['currency_code'] . ' ' . $order_details['value'];
+
+      if( $context !== 'membership' ) {
+        $order_html .= '<br>' . __('Link to content', 'humble-lms') . ': ' . esc_url( get_permalink( $order_details['reference_id'] ) );
+      }
+
+      $order_html .= '</p>';
+
+      // Use default content if option is not set
+      if( ! isset( $options['email_checkout'] ) || empty( $options['email_checkout'] ) ) {
+        $body = '<p>' . sprintf( __('Hello %s!', 'humble-lms'), $user_info->user_login ) . '</p>';
+        $body .= '<p>' . __('Thank you very much for your purchase. Please find the details of your order below.', 'humble-lms') . '</p>';
+        $body .= $order_html;
+
+        $account_page_html = ! empty( $options['custom_pages']['user_profile'] ) ? esc_url( get_permalink( $options['custom_pages']['user_profile'] ) ) : esc_url( site_url() );
+
+        $body .= '<p>' . __('You can now access the purchased content. A list of all your transactions and purchases is available on your account page of our website:', 'humble-lms') . '</p>';
+        $body .= '<p><a href="' . $account_page_html . '">' . $account_page_html . '</a></p>';
+        $body .= '<p>' . __('We will send you another email including the invoice shortly.', 'humble-lms') . '</p>';
+        $body .= '<p>' . __('Enjoy our courses!', 'humble-lms') . '</p>';
+      }
+
+      else {
+        $body = $options['email_checkout'];
+        $body = str_replace( 'ORDER_DETAILS', $order_html, $body );
+        $body = str_replace( 'USER_NAME', $user_info->display_name, $body );
+        $body = str_replace( 'ADMIN_EMAIL', get_option( 'admin_email' ), $body );
+        $body = str_replace( 'CURRENT_DATE', $date, $body );
+        $body = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $body );
+        $body = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $body );
+      }
 
       wp_mail( $to, $subject, $body, $headers );
      }

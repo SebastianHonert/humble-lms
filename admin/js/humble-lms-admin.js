@@ -324,6 +324,7 @@ jQuery(document).ready(function($) {
     let subject = container.find('input[name=subject]').val()
     let message = container.find('textarea').val()
     let recipient = container.find('#humble-lms-test-email-recipient').val()
+    let format = $(this).data('format')
 
     if (!message || !recipient) {
       alert(humble_lms.sendTestEmailValidation)
@@ -340,6 +341,7 @@ jQuery(document).ready(function($) {
         subject: subject,
         message: message,
         recipient: recipient,
+        format: format,
         nonce: humble_lms.nonce
       },
       dataType: 'json',

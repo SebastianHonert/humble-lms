@@ -30,10 +30,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
      * @return void
      */
     public function send_test_email() {
-      $message = nl2br( stripslashes( htmlspecialchars( $_POST['message'] ) ) );
+      $format = sanitize_text_field( $_POST['format'] );
+      $message = wp_kses_post( $_POST['message'] );
+      // $message = $format = 'text/plain' ? nl2br( stripslashes( htmlspecialchars( $_POST['message'] ) ) ) : wp_kses_post( $_POST['message'] );
       $to = sanitize_email( $_POST['recipient'] );
       $subject = htmlspecialchars( $_POST['subject'] );
-      $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+      $headers[] = 'Content-Type: ' . $format . '; charset=UTF-8';
       $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
       $user = wp_get_current_user();
       $date_format = 'F j, Y';
@@ -46,7 +48,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
       $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
 
-      if( wp_mail( $to, $subject, strip_tags( $message ), $headers ) ) {
+      if( wp_mail( $to, $subject, $message, $headers ) ) {
         echo json_encode('success');
       } else  {
         echo json_encode('error');

@@ -187,6 +187,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'hasVAT', __('Prices include value added tax (VAT)', 'humble-lms'), array( $this, 'hasVAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'VAT', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'VAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
     }
 
     /**
@@ -410,7 +411,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<p><textarea class="widefat" id="email_welcome" name="humble_lms_options[email_welcome]" rows="7">' . $message . '</textarea></p>';
         echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';
         echo '<input type="hidden" name="subject" value="' . __('Test email: Welcome', 'humble-lms') . '" />';
-        echo '<p><a class="button humble-lms-send-test-email">' . __('Send a test email', 'humble-lms') . '</a></p>';
+        echo '<p><a class="button humble-lms-send-test-email" data-format="text/plain">' . __('Send a test email', 'humble-lms') . '</a></p>';
       echo '</div>';
     }
 
@@ -429,7 +430,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<p><textarea class="widefat" id="email_lost_password" name="humble_lms_options[email_lost_password]" rows="7">' . $message . '</textarea></p>';
         echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';
         echo '<input type="hidden" name="subject" value="' . __('Test email: Lost password', 'humble-lms') . '" />';
-        echo '<p><a class="button humble-lms-send-test-email">' . __('Send a test email', 'humble-lms') . '</a></p>';
+        echo '<p><a class="button humble-lms-send-test-email" data-format="text/plain">' . __('Send a test email', 'humble-lms') . '</a></p>';
       echo '</div>';
     }
 
@@ -527,6 +528,25 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Custom checkout email.
+     *
+     * @since    0.0.1
+     */
+    function email_checkout()
+    {
+      $message = isset( $this->options['email_checkout'] ) ? $this->options['email_checkout'] : '';
+
+      echo '<p>' . __('This email will be send in HTML format. You can use the following strings to include specific information in your email:', 'humble-lms') . '</p>';
+      echo '<p><strong>ORDER_DETAILS</strong>, <strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>USER_NAME</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
+      echo '<div class="humble-lms-test-email" id="humble-lms-test-email-checkout">';
+        echo '<p><textarea class="widefat" id="email_checkout" name="humble_lms_options[email_checkout]" rows="7">' . $message . '</textarea></p>';
+        echo '<p><input id="humble-lms-test-email-recipient" type="email" class="widefat" value="' . get_bloginfo( 'admin_email' ) . '" /></p>';
+        echo '<input type="hidden" name="subject" value="' . __('Test email: Checkout', 'humble-lms') . '" />';
+        echo '<p><a class="button humble-lms-send-test-email" data-format="text/html">' . __('Send a test email', 'humble-lms') . '</a></p>';
+      echo '</div>';
+    }
+
+    /**
      * Validate options on save.
      *
      * @param   array
@@ -612,6 +632,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           if( $options['VAT'] > 100 ) {
             $options['VAT'] = 100;
           }
+        }
+
+        if( isset( $input['email_checkout'] ) ) {
+          $options['email_checkout'] = esc_html( $input['email_checkout'] );
         }
       }
 

@@ -884,6 +884,72 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       echo '</table>';
 
+      // Quizzes
+      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+        <th width="25%">' . __('Quizzes', 'humble-lms') . '</th>
+        <th width="75%">' . __('Trys', 'humble-lms') . '</th>
+      </tr></thead>';
+
+      $evaluations = get_user_meta( $user->ID, 'humble_lms_quiz_evaluations' );
+
+      if( ! isset( $evaluations[0] ) || ! is_array( $evaluations[0] ) ) {
+        $evaluations[0] = array();
+      }
+
+      $quiz_evaluations = $evaluations[0];
+      $quizzes = array();
+  
+      foreach( $quiz_evaluations as $evaluation ) {
+        if( empty( $evaluation ) || ! is_array( $evaluation ) ) {
+          continue;
+        }
+
+        $quiz_ids = implode( ',', $evaluation['quizIds'] );
+        
+        if( array_key_exists( $quiz_ids, $quizzes ) ) {
+          array_push( $quizzes[$quiz_ids], $evaluation );
+        } else {
+          $quizzes[$quiz_ids][0] = $evaluation;
+        }
+      }
+
+      foreach( $quizzes as $quiz ) {
+
+        echo '<tr class="humble-lms-reporting-quizzes">';
+          echo '<td>';
+            $quiz_ids = $quiz[0]['quizIds'];
+            foreach( $quiz_ids as $quiz_id ) {
+              echo '<strong><a href="' . esc_url( get_edit_post_link( $quiz_id ) ) . '">' . sanitize_text_field( get_the_title( $quiz_id ) ) . '</a></strong>';
+              if( $quiz_id !== end( $quiz_ids ) ) {
+                echo ' / ';
+              }
+            }
+          echo '</td>';
+          
+          echo '<td><select class="widefat">';
+            foreach( $quiz as $evaluation ) {
+              if( empty( $evaluation ) || ! is_array( $evaluation ) ) {
+                continue;
+              }
+
+              array_multisort( array_column( $evaluation, 'datetime'), SORT_DESC, $evaluation );
+      
+              $completed = isset( $evaluation['completed'] ) && (int)$evaluation['completed'] === 1 ? '&check;' : '&times;';
+              echo '<option>' . $completed . ' (' .  (int)$evaluation['grade'] . '%) ' . date("d-m-Y H:i:s", ($evaluation['datetime'] / 1000) ) . '</option>'; 
+            }
+          echo '</select></td>';
+        echo '</tr>';
+      }
+
+      if( ! $quizzes ) {
+        echo '<tr class="humble-lms-reporting-quizzes">';
+          echo '<td>' . __('No quiz evaluations available.', 'humble-lms') . '</td>';
+          echo '<td>–</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
+
       echo '<p><a class="button button-primary humble-lms-reset-user-progress" data-user-id="' . $user->ID . '">' . __('Reset learning progress for this user?', 'humble-lms') . '</a></p>';
   
       $users_per_page = $this->users_per_page();

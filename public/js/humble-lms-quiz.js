@@ -30,7 +30,7 @@ var Humble_LMS_Quiz
         grade: 0,
         passing_grade: passing_grade,
         passing_required: passing_required,
-        completed: false
+        completed: 0
       }
 
       if (tryAgain === 1) {
@@ -63,7 +63,7 @@ var Humble_LMS_Quiz
         evaluation.grade = 100;
       }
 
-      evaluation.completed = evaluation.grade >= evaluation.passing_grade ? true : false
+      evaluation.completed = evaluation.grade >= evaluation.passing_grade ? 1 : 0
 
       return evaluation
     }

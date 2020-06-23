@@ -925,6 +925,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               }
             }
           echo '</td>';
+
+          array_multisort( array_column( $quiz, 'datetime'), SORT_DESC, $quiz );
           
           echo '<td><select class="widefat">';
             foreach( $quiz as $evaluation ) {
@@ -932,8 +934,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
                 continue;
               }
 
-              array_multisort( array_column( $evaluation, 'datetime'), SORT_DESC, $evaluation );
-      
               $completed = isset( $evaluation['completed'] ) && (int)$evaluation['completed'] === 1 ? '&check;' : '&times;';
               echo '<option>' . $completed . ' (' .  (int)$evaluation['grade'] . '%) ' . date("d-m-Y H:i:s", ($evaluation['datetime'] / 1000) ) . '</option>'; 
             }

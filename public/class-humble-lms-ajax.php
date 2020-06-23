@@ -119,7 +119,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       if( $completed === 1 ) {
         foreach( $evaluation['quizIds'] as $id ) {
           if( ! in_array( $id, $completed_quizzes ) ) {
-            if( sizeof( $completed_quizzes < 10 ) ) { // Max. 25 trials
+            if( sizeof( $completed_quizzes < 10 ) ) { // Max. 10 trials evaluated
               array_push( $completed_quizzes, $id );
             } else {
               array_shift( $completed_quizzes );

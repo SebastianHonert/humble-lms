@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-06-23 19:49+0200\n"
-"PO-Revision-Date: 2020-06-23 19:50+0200\n"
+"POT-Creation-Date: 2020-06-25 16:07+0200\n"
+"PO-Revision-Date: 2020-06-25 16:08+0200\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -489,7 +489,7 @@ msgid "Mark lesson incomplete"
 msgstr "Lektion als unbearbeitet markieren"
 
 #: admin/class-humble-lms-options-manager.php:353
-#: public/class-humble-lms-ajax.php:321
+#: public/class-humble-lms-ajax.php:375
 #: public/class-humble-lms-shortcodes.php:904
 #: public/class-humble-lms-shortcodes.php:1028
 #: public/class-humble-lms-shortcodes.php:1085
@@ -870,67 +870,75 @@ msgstr "Aktivitätstyp"
 msgid "Action following the activity"
 msgstr "Aktionen im Anschluss an die Aktivität"
 
-#: admin/custom-post-types/humble-lms-activity.php:116
+#: admin/custom-post-types/humble-lms-activity.php:126
 msgid "Please select an activity trigger"
 msgstr "Bitte wählen Sie einen Auslöser für die Aktivität"
 
-#: admin/custom-post-types/humble-lms-activity.php:118
+#: admin/custom-post-types/humble-lms-activity.php:128
 msgid "Student completed a track"
 msgstr "Nutzer/in komplettiert Lernpfad"
 
-#: admin/custom-post-types/humble-lms-activity.php:120
+#: admin/custom-post-types/humble-lms-activity.php:130
 msgid "Student completed a course"
 msgstr "Nutzer/in komplettiert einen Kurs"
 
-#: admin/custom-post-types/humble-lms-activity.php:122
+#: admin/custom-post-types/humble-lms-activity.php:132
 msgid "Student completed a lesson"
 msgstr "Nutzer/in komplettiert eine Lektion"
 
-#: admin/custom-post-types/humble-lms-activity.php:124
+#: admin/custom-post-types/humble-lms-activity.php:134
 msgid "Student completed all tracks"
 msgstr "Nutzer/in komplettiert alle Lernpfade"
 
-#: admin/custom-post-types/humble-lms-activity.php:126
+#: admin/custom-post-types/humble-lms-activity.php:136
 msgid "Student completed all courses"
 msgstr "Nutzer/in komplettiert alle Kurse"
 
-#: admin/custom-post-types/humble-lms-activity.php:130
+#: admin/custom-post-types/humble-lms-activity.php:138
+msgid "Student completed a quiz"
+msgstr "Nutzer/in komplettiert ein Quiz"
+
+#: admin/custom-post-types/humble-lms-activity.php:142
 msgid "Select a track"
 msgstr "Wählen Sie einen Lernpfad"
 
-#: admin/custom-post-types/humble-lms-activity.php:138
+#: admin/custom-post-types/humble-lms-activity.php:150
 msgid "Select a course"
 msgstr "Wählen Sie einen Kurs"
 
-#: admin/custom-post-types/humble-lms-activity.php:146
+#: admin/custom-post-types/humble-lms-activity.php:158
 msgid "Select a lesson"
 msgstr "Wählen Sie eine Lektion"
 
-#: admin/custom-post-types/humble-lms-activity.php:168
+#: admin/custom-post-types/humble-lms-activity.php:166
+msgid "Select a quiz"
+msgstr "Wählen Sie ein Quiz"
+
+#: admin/custom-post-types/humble-lms-activity.php:188
 msgid "Select an action following the activity"
 msgstr "Wählen Sie eine Aktion, die dieser Aktivität folgt"
 
-#: admin/custom-post-types/humble-lms-activity.php:172
+#: admin/custom-post-types/humble-lms-activity.php:192
 msgid "Grant an award"
 msgstr "Eine Auszeichnung verleihen"
 
-#: admin/custom-post-types/humble-lms-activity.php:173
+#: admin/custom-post-types/humble-lms-activity.php:193
 msgid "Send an email"
 msgstr "Eine E-Mail senden"
 
-#: admin/custom-post-types/humble-lms-activity.php:174
+#: admin/custom-post-types/humble-lms-activity.php:194
 msgid "Issue a certificate"
 msgstr "Ein Zertifikat ausstellen"
 
-#: admin/custom-post-types/humble-lms-activity.php:205
+#: admin/custom-post-types/humble-lms-activity.php:225
 msgid "Select an award"
 msgstr "Wählen Sie eine Auszeichnung"
 
-#: admin/custom-post-types/humble-lms-activity.php:213
+#: admin/custom-post-types/humble-lms-activity.php:233
 msgid "Select an email"
 msgstr "Wählen Sie eine E-Mail"
 
-#: admin/custom-post-types/humble-lms-activity.php:221
+#: admin/custom-post-types/humble-lms-activity.php:241
 msgid "Select a certificate"
 msgstr "Wählen Sie ein Zertifikat"
 
@@ -1382,7 +1390,7 @@ msgstr "E-Mails"
 #: admin/custom-post-types/humble-lms-email.php:5
 #: admin/custom-post-types/humble-lms-email.php:39
 #: admin/custom-post-types/humble-lms-email.php:40
-#: public/class-humble-lms-ajax.php:325 public/class-humble-lms-ajax.php:329
+#: public/class-humble-lms-ajax.php:379 public/class-humble-lms-ajax.php:383
 msgid "Email"
 msgstr "E-Mail"
 
@@ -2035,7 +2043,7 @@ msgid "Login name"
 msgstr "Login-Kennung"
 
 #: admin/custom-post-types/humble-lms-txn.php:104
-#: public/class-humble-lms-ajax.php:323
+#: public/class-humble-lms-ajax.php:377
 msgid "First name"
 msgstr "Vorname"
 
@@ -2062,7 +2070,7 @@ msgid "User ID"
 msgstr "Nutzer-ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:116
-#: public/class-humble-lms-ajax.php:332
+#: public/class-humble-lms-ajax.php:386
 #: public/class-humble-lms-shortcodes.php:1418
 msgid "Order ID"
 msgstr "Order ID"
@@ -2074,7 +2082,7 @@ msgid "Email address"
 msgstr "E-Mail-Adresse"
 
 #: admin/custom-post-types/humble-lms-txn.php:122
-#: public/class-humble-lms-ajax.php:328
+#: public/class-humble-lms-ajax.php:382
 #: public/class-humble-lms-shortcodes.php:1420
 #: public/class-humble-lms-shortcodes.php:1422
 msgid "Payer ID"
@@ -2090,31 +2098,31 @@ msgid "Payment service provider"
 msgstr "Bezahldienstleister"
 
 #: admin/custom-post-types/humble-lms-txn.php:131
-#: public/class-humble-lms-ajax.php:333
+#: public/class-humble-lms-ajax.php:387
 #: public/class-humble-lms-shortcodes.php:1424
 msgid "Create time"
 msgstr "Erstellt"
 
 #: admin/custom-post-types/humble-lms-txn.php:134
-#: public/class-humble-lms-ajax.php:334
+#: public/class-humble-lms-ajax.php:388
 #: public/class-humble-lms-shortcodes.php:1425
 msgid "Update time"
 msgstr "Aktualisiert"
 
 #: admin/custom-post-types/humble-lms-txn.php:137
-#: public/class-humble-lms-ajax.php:330
+#: public/class-humble-lms-ajax.php:384
 #: public/class-humble-lms-shortcodes.php:1426
 msgid "Given name"
 msgstr "Vorname"
 
 #: admin/custom-post-types/humble-lms-txn.php:140
-#: public/class-humble-lms-ajax.php:331
+#: public/class-humble-lms-ajax.php:385
 #: public/class-humble-lms-shortcodes.php:1427
 msgid "Surname"
 msgstr "Nachname"
 
 #: admin/custom-post-types/humble-lms-txn.php:143
-#: public/class-humble-lms-ajax.php:335
+#: public/class-humble-lms-ajax.php:389
 #: public/class-humble-lms-shortcodes.php:1413
 msgid "Reference ID"
 msgstr "Referenz-ID"
@@ -2125,7 +2133,7 @@ msgid "Currency code"
 msgstr "Währungscode"
 
 #: admin/custom-post-types/humble-lms-txn.php:149
-#: public/class-humble-lms-ajax.php:336
+#: public/class-humble-lms-ajax.php:390
 msgid "Value"
 msgstr "Wert"
 
@@ -2263,39 +2271,47 @@ msgstr "account"
 msgid "checkout"
 msgstr "kasse"
 
-#: public/class-humble-lms-ajax.php:314
+#: public/class-humble-lms-ajax.php:166 public/class-humble-lms-public.php:375
+msgid "You received an award"
+msgstr "Auszeichnung erhalten"
+
+#: public/class-humble-lms-ajax.php:188 public/class-humble-lms-public.php:376
+msgid "You have been issued a certificate"
+msgstr "Sie haben ein Zertifikat erworben"
+
+#: public/class-humble-lms-ajax.php:368
 msgid "Order details"
 msgstr "Bestelldetails"
 
-#: public/class-humble-lms-ajax.php:320
+#: public/class-humble-lms-ajax.php:374
 msgid "Account information"
 msgstr "Informationen zum Benutzerprofil"
 
-#: public/class-humble-lms-ajax.php:322
+#: public/class-humble-lms-ajax.php:376
 msgid "Display name"
 msgstr "Angezeigter Name"
 
-#: public/class-humble-lms-ajax.php:324
+#: public/class-humble-lms-ajax.php:378
 #: public/class-humble-lms-shortcodes.php:901
 #: public/class-humble-lms-shortcodes.php:958
 #: public/class-humble-lms-shortcodes.php:1212
 msgid "Username"
 msgstr "Nutzername"
 
-#: public/class-humble-lms-ajax.php:327
+#: public/class-humble-lms-ajax.php:381
 msgid "PayPal transaction details"
 msgstr "PayPal Transaktionsdetails"
 
-#: public/class-humble-lms-ajax.php:339
+#: public/class-humble-lms-ajax.php:393
 msgid "Link to content"
 msgstr "Link zum Inhalt"
 
-#: public/class-humble-lms-ajax.php:346
+#: public/class-humble-lms-ajax.php:400
 #, php-format
 msgid "Hello %s!"
 msgstr "Hallo %s!"
 
-#: public/class-humble-lms-ajax.php:347
+#: public/class-humble-lms-ajax.php:401
 msgid ""
 "Thank you very much for your purchase. Please find the details of your order "
 "below."
@@ -2303,7 +2319,7 @@ msgstr ""
 "Vielen Dank für Ihren Einkauf. Nachfolgend finden Sie die Informationen zu "
 "Ihrer Bestellung:"
 
-#: public/class-humble-lms-ajax.php:352
+#: public/class-humble-lms-ajax.php:406
 msgid ""
 "You can now access the purchased content. A list of all your transactions "
 "and purchases is available on your account page of our website:"
@@ -2312,11 +2328,11 @@ msgstr ""
 "Transaktionen und Einkäufe ist auf der Account-Seite unserer Website "
 "verfügbar:"
 
-#: public/class-humble-lms-ajax.php:354
+#: public/class-humble-lms-ajax.php:408
 msgid "We will send you another email including the invoice shortly."
 msgstr "Eine Rechnung zu Ihren Einkauf schicken wir Ihnen in Kürze."
 
-#: public/class-humble-lms-ajax.php:355
+#: public/class-humble-lms-ajax.php:409
 msgid "Enjoy our courses!"
 msgstr "Viel Vergnügen mit unseren Kursen!"
 
@@ -2453,14 +2469,6 @@ msgstr "Kurs abgeschlossen"
 #: public/class-humble-lms-public.php:374
 msgid "Track completed"
 msgstr "Lernpfad abgeschlossen"
-
-#: public/class-humble-lms-public.php:375
-msgid "You received an award"
-msgstr "Auszeichnung erhalten"
-
-#: public/class-humble-lms-public.php:376
-msgid "You have been issued a certificate"
-msgstr "Sie haben ein Zertifikat erworben"
 
 #: public/class-humble-lms-shortcodes.php:71
 #: public/class-humble-lms-shortcodes.php:208

@@ -338,10 +338,13 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Perform activities based on the completed content.
      * 
-     * humble_lms_activity_trigger = lesson, course, track
+     * array( [], [], [], [], [], [] ) => lesson, courses, tracks, awards, certificates, quizzes
+     * 
+     * humble_lms_activity_trigger = lesson, course, track, quiz
      * humble_lms_activity_trigger_lesson = lesson ID
      * humble_lms_activity_trigger_course = course ID
      * humble_lms_activity_trigger_track = track ID
+     * humble_lms_activity_trigger_quiz = quiz ID
      * 
      * humble_lms_activity_action = award, email
      * humble_lms_activity_action_award = award ID
@@ -373,6 +376,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             case 2:
               $humble_lms_activity_trigger = 'user_completed_track';
               $content_type = 'track';
+              break;
+            case 5:
+              $humble_lms_activity_trigger = 'user_completed_quiz';
+              $content_type = 'quiz';
               break;
           }
 

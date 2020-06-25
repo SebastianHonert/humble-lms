@@ -108,8 +108,9 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $evaluation = $_POST['evaluation'];
-      $completed = (int)$evaluation['completed'];
       $tryAgain = (int)$evaluation['tryAgain'];
+      $completed = (int)$evaluation['completed'];
+      
       foreach( $evaluation['quizIds'] as $key => $id ) {
         $evaluation['quizIds'][$key] = (int)$id;
       }
@@ -139,9 +140,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       update_user_meta( get_current_user_ID(), 'humble_lms_quizzes_completed', $completed_quizzes );
 
+      // Reset quiz
       if( $tryAgain === 1 ) {
+        echo json_encode($evaluation);
         die;
       }
+
+      // Perform activities
+      $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ) );
 
       // Add quiz evaluation to user meta
       $user_evaluations = get_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', false );
@@ -153,10 +159,13 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $evaluations = $user_evaluations[0];
       $evaluation['datetime'] = round(microtime(true) * 1000);
       $evaluation['completed'] = $completed;
-      array_push( $evaluations, $evaluation );
+      $evaluation['completed_quizzes'] = $completed_quizzes;
 
+      array_push( $evaluations, $evaluation );
       update_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', $evaluations );
 
+      // Done.
+      echo json_encode( $evaluation );
       die;
     }
 

@@ -445,16 +445,11 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-award-message > div {
   position: relative;
   display: block;
-  width: 100%;
-  height: 100%;
   overflow: hidden; }
 
 .humble-lms-award-message-inner {
   position: relative;
   display: flex;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 0.125em 1em rgba(0, 0, 0, 0.4);
   padding: .5em;
   text-align: center;
   align-items: center;

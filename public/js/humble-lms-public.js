@@ -127,6 +127,8 @@ jQuery(document).ready(function($) {
           $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(500)
           $('#humble-lms-mark-complete').fadeIn(500)
         }
+
+        console.log(response)
       },
       complete: function(reply, textStatus) {
         // ... 
@@ -455,10 +457,43 @@ jQuery(document).ready(function($) {
 
   /**
    * Toggle user transactions.
+   *
+   * @since   0.0.1
    */
   $('.humble-lms-user-transaction__title').on('click', function() {
     let that = $(this)
     $(this).parent().find($('.humble-lms-user-transaction__content')).slideToggle()
   })
+
+  /**
+   * Add award message.
+   *
+   * @since   0.0.1
+   */
+  // function addMessage(title = 'TITLE', name = 'NAME', image_url = 'IMAGE URL') {
+  //   if (!title || !name || !image_url ) {
+  //     return
+  //   }
+  
+  //   let awardHTML = `<div class="humble-lms-award-message humble-lms-award-message--quiz">
+  //     <div class="humble-lms-award-message-inner">
+  //       <div>
+  //         <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+  //           <i class="ti-close"></i>
+  //         </div>
+  //         <h3 class=humble-lms-award-message-title">` + title + `</h3>
+  //         <p class="humble-lms-award-message-content-name">` + name + `</p>
+  //         <img class="humble-lms-award-image humble-lms-bounce-in" src="` + image_url + `" alt="" />
+  //       </div>
+  //     </div>
+  //   <div>`
+  
+  //   $('.humble-lms-award-message').remove()
+  //   $('body').append(awardHTML)
+  //   showMessages()
+  //   console.log($('.humble-lms-award-message').length)
+  // }
+
+  // addMessage()
 
 })

@@ -1,6 +1,8 @@
 jQuery(document).ready(function($) {
   'use strict'
 
+  const animSpeed = 400
+
   /**
    * Show/hide loading layer/spinner
    * 
@@ -110,25 +112,32 @@ jQuery(document).ready(function($) {
         loadingLayer(false)
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        if (evaluation.tryAgain === 1) {
+        if (response.tryAgain === 1) {
           location.reload(true)
           return
         }
         
         loadingLayer(false)
 
-        if (evaluation.completed === 0) {
+        if (response.completed === 0) {
           $('.humble-lms-quiz-message-image').html('<i class="ti-face-sad"></i>')
           $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--success').addClass('humble-lms-quiz-message--failed')
-          $('.humble-lms-quiz-message, .humble-lms-message-quiz--failed').fadeIn(500)
-        } else if (evaluation.completed === 1) {
+          $('.humble-lms-quiz-message, .humble-lms-message-quiz--failed').fadeIn(animSpeed)
+        } else if (response.completed === 1) {
           $('.humble-lms-quiz-message-image').html('<i class="ti-face-smile"></i>')
           $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--failed').addClass('humble-lms-quiz-message--success')
-          $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(500)
-          $('#humble-lms-mark-complete').fadeIn(500)
-        }
+          $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(animSpeed)
+          $('#humble-lms-mark-complete').fadeIn(animSpeed)
 
-        console.log(response)
+          // Add message if exists
+          $('.humble-lms-quiz-message').on('click', function() {
+            if (typeof response.awards !== 'undefined' && response.awards.length > 0) {
+              setTimeout(function () {
+                addMessages(response.awards)
+              })
+            }
+          })
+        }
       },
       complete: function(reply, textStatus) {
         // ... 
@@ -136,8 +145,8 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('.humble-lms-quiz-message').on('click', function() {
-    $(this).fadeOut(500)
+  $(document).on('click touch', '.humble-lms-quiz-message', function() {
+    $(this).fadeOut(animSpeed)
   })
 
   /**
@@ -185,7 +194,7 @@ jQuery(document).ready(function($) {
 
     function closeMessages () {
       if (messages.length && messages.length === 1) {
-        messageContainer.fadeOut(500, function() {
+        messageContainer.fadeOut(animSpeed, function() {
           messages.remove()
         })
         return
@@ -193,33 +202,33 @@ jQuery(document).ready(function($) {
       
       messages.eq(0).animate({
         opacity: 0,
-      }, 500, function () {
+      }, animSpeed, function () {
         $(this).remove()
         messages = $('.humble-lms-award-message-inner')
         if (messages.length) {
           messages.eq(0).animate({
             opacity: 1,
-          }, 500)
+          }, animSpeed)
         }
       })
     }
 
-    $('.humble-lms-award-message-close').on('click touch', function () {
+    $(document).on('click touch', '.humble-lms-award-message-close', function () {
       closeMessages()
     })
 
-    $('.humble-lms-award-message-inner').on('click touch', function () {
+    $(document).on('click touch', '.humble-lms-award-message', function () {
       closeMessages()
     })
 
-    messageContainer.fadeIn(500)
+    messageContainer.fadeIn(animSpeed)
     messages.first().animate({
       opacity: 1,
-    }, 500)
+    }, animSpeed)
 
     $(document).keyup( function (e) {
       if (e.key === 'Escape') {
-        messageContainer.fadeOut(500, function() {
+        messageContainer.fadeOut(animSpeed, function() {
           messages.remove()
         })
       }
@@ -414,14 +423,14 @@ jQuery(document).ready(function($) {
     if ($('.humble-lms-lightbox-wrapper').css('display') === 'none') {
       $('.humble-lms-lightbox-wrapper').css('display', 'flex')
     } else {
-      $('.humble-lms-lightbox-wrapper').fadeOut(200)
+      $('.humble-lms-lightbox-wrapper').fadeOut(animSpeed)
     }
   })
 
   $(document).click(function(event) {
     let $target = $(event.target);
     if(!$target.closest('.humble-lms-toggle-lightbox').length && !$target.closest('.humble-lms-lightbox').length && !$('.humble-lms-lighbox').is(':visible') && $('.humble-lms-lightbox').is(":visible")) {
-      $('.humble-lms-lightbox-wrapper').fadeOut(200)
+      $('.humble-lms-lightbox-wrapper').fadeOut(animSpeed)
     }        
   })
 
@@ -470,30 +479,34 @@ jQuery(document).ready(function($) {
    *
    * @since   0.0.1
    */
-  // function addMessage(title = 'TITLE', name = 'NAME', image_url = 'IMAGE URL') {
-  //   if (!title || !name || !image_url ) {
-  //     return
-  //   }
-  
-  //   let awardHTML = `<div class="humble-lms-award-message humble-lms-award-message--quiz">
-  //     <div class="humble-lms-award-message-inner">
-  //       <div>
-  //         <div class="humble-lms-award-message-close" aria-label="Close award overlay">
-  //           <i class="ti-close"></i>
-  //         </div>
-  //         <h3 class=humble-lms-award-message-title">` + title + `</h3>
-  //         <p class="humble-lms-award-message-content-name">` + name + `</p>
-  //         <img class="humble-lms-award-image humble-lms-bounce-in" src="` + image_url + `" alt="" />
-  //       </div>
-  //     </div>
-  //   <div>`
-  
-  //   $('.humble-lms-award-message').remove()
-  //   $('body').append(awardHTML)
-  //   showMessages()
-  //   console.log($('.humble-lms-award-message').length)
-  // }
+  function addMessages(messages) {
+    let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz">'
 
-  // addMessage()
+    messages.forEach(function (message) {
+      if (!message.title || !message.name || !message.image_url ) {
+        return
+      }
+
+      let imageHTML = message.image_url ? '<img class="humble-lms-award-image humble-lms-bounce-in" src="' + message.image_url + '" alt="" />' : ''
+
+      awardHTML += `<div class="humble-lms-award-message-inner">
+        <div>
+          <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+            <i class="ti-close"></i>
+          </div>
+          <h3 class=humble-lms-award-message-title">` + message.title + `</h3>
+          <p class="humble-lms-award-message-content-name">` + message.name + `</p>` + imageHTML + `
+        </div>
+      </div>
+    <div>`
+  
+    }, animSpeed)
+
+    awardHTML += '</div>';
+  
+    $('.humble-lms-award-message').remove()
+    $('body').append(awardHTML)
+    showMessages()
+  }
 
 })

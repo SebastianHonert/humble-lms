@@ -142,12 +142,33 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       // Reset quiz
       if( $tryAgain === 1 ) {
+        $evaluation['tryAgain'] = 1;
         echo json_encode($evaluation);
         die;
       }
 
-      // Perform activities
+      // Perform activities => array( [], [], [], [], [], [] ) => lesson, courses, tracks, awards, certificates, quizzes
       $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ) );
+
+      // Awards
+      if( ! empty( $evaluation['activities'][3] ) ) {
+        $evaluation['awards'] = array();
+        $awards = $evaluation['activities'][3];
+
+        foreach( $awards as $award_id ) {
+          $tmp = array(
+            'title' => '',
+            'name' => '',
+            'image_url' => ''
+          );
+
+          $tmp['title'] = __('You received an award', 'humble-lms');
+          $tmp['name'] = get_the_title( $award_id );
+          $tmp['image_url'] = get_the_post_thumbnail_url( $award_id );
+
+          array_push( $evaluation['awards'], $tmp );
+        }
+      }
 
       // Add quiz evaluation to user meta
       $user_evaluations = get_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', false );

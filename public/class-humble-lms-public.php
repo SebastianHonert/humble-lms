@@ -388,7 +388,13 @@ class Humble_LMS_Public {
                     <i class="' . $icon .'"></i>
                   </div>';
                   } elseif ( $key === 3 ) {
-                    $html .= '<img class="humble-lms-award-image humble-lms-bounce-in" src="' . get_the_post_thumbnail_url( $id ) . '" alt="" />';
+                    if( get_the_post_thumbnail_url( $id ) ) {
+                      $html .= '<img class="humble-lms-award-image humble-lms-bounce-in" src="' . get_the_post_thumbnail_url( $id ) . '" alt="" />';
+                    } else {
+                      $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
+                        <i class="' . $icon .'"></i>
+                      </div>';
+                    }
                   } elseif ( $key === 4 ) {
                     $html .= '<div class="humble-lms-award-message-image humble-lms-bounce-in">
                       <i class="' . $icon .'"></i>

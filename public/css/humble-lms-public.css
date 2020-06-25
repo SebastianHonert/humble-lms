@@ -445,16 +445,23 @@ input[type='submit'].humble-lms-btn--error:active,
 .humble-lms-award-message > div {
   position: relative;
   display: block;
+  width: 100%;
+  height: 100%;
   overflow: hidden; }
 
 .humble-lms-award-message-inner {
   position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   padding: .5em;
   text-align: center;
   align-items: center;
   justify-content: center;
-  opacity: 0; }
+  opacity: 0;
+  z-index: 1000; }
 
 .humble-lms-award-message-inner h3 {
   margin: 0 0;
@@ -464,7 +471,8 @@ input[type='submit'].humble-lms-btn--error:active,
   font-size: 2em; }
 
 .humble-lms-award-message-content-name {
-  font-style: italic; }
+  font-style: italic;
+  color: #fff; }
 
 .humble-lms-award-message-image {
   line-height: 1;
@@ -540,7 +548,6 @@ input[type='submit'].humble-lms-btn--error:active,
   display: flex;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0.125em 1em rgba(0, 0, 0, 0.4);
   padding: .5em;
   text-align: center;
   align-items: center;

@@ -129,12 +129,24 @@ jQuery(document).ready(function($) {
           $('.humble-lms-quiz-message, .humble-lms-message-quiz--completed').fadeIn(animSpeed)
           $('#humble-lms-mark-complete').fadeIn(animSpeed)
 
-          // Add message if exists
+          // Add messages for awards and certificates
           $('.humble-lms-quiz-message').on('click', function() {
+            let messages = []
+            
             if (typeof response.awards !== 'undefined' && response.awards.length > 0) {
-              setTimeout(function () {
-                addMessages(response.awards)
+              response.awards.forEach(function(award) {
+                messages.push(award)
               })
+            }
+
+            if (typeof response.certificates !== 'undefined' && response.certificates.length > 0) {
+              response.certificates.forEach(function(certificate) {
+                messages.push(certificate)
+              })
+            }
+
+            if (messages.length > 0 ) {
+              addMessages(messages)
             }
           })
         }
@@ -217,7 +229,7 @@ jQuery(document).ready(function($) {
       closeMessages()
     })
 
-    $(document).on('click touch', '.humble-lms-award-message', function () {
+    $(document).on('click touch', '.humble-lms-award-message-inner', function () {
       closeMessages()
     })
 
@@ -480,31 +492,29 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   function addMessages(messages) {
-    let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz">'
+    let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div>'
 
     messages.forEach(function (message) {
       if (!message.title || !message.name || !message.image_url ) {
         return
       }
 
-      let imageHTML = message.image_url ? '<img class="humble-lms-award-image humble-lms-bounce-in" src="' + message.image_url + '" alt="" />' : ''
-
-      awardHTML += `<div class="humble-lms-award-message-inner">
-        <div>
-          <div class="humble-lms-award-message-close" aria-label="Close award overlay">
-            <i class="ti-close"></i>
-          </div>
-          <h3 class=humble-lms-award-message-title">` + message.title + `</h3>
-          <p class="humble-lms-award-message-content-name">` + message.name + `</p>` + imageHTML + `
+      let imageHTML
+      imageHTML = message.icon ? '<div class="humble-lms-award-message-image humble-lms-bounce-in"><i class="' + message.icon + '"></i></div>' : ''
+      imageHTML = message.image_url ? '<img class="humble-lms-award-image humble-lms-bounce-in" src="' + message.image_url + '" alt="" />' : ''
+      
+      awardHTML += `<div class="humble-lms-award-message-inner"><div>
+        <div class="humble-lms-award-message-close" aria-label="Close award overlay">
+          <i class="ti-close"></i>
         </div>
-      </div>
-    <div>`
+        <h3 class=humble-lms-award-message-title">` + message.title + `</h3>
+        <p class="humble-lms-award-message-content-name">` + message.name + `</p>` + imageHTML + `
+      </div></div>`
   
     }, animSpeed)
 
-    awardHTML += '</div>';
-  
-    $('.humble-lms-award-message').remove()
+    awardHTML += '</div></div>';
+
     $('body').append(awardHTML)
     showMessages()
   }

@@ -159,14 +159,38 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           $tmp = array(
             'title' => '',
             'name' => '',
-            'image_url' => ''
+            'image_url' => '',
+            'icon' => ''
           );
 
           $tmp['title'] = __('You received an award', 'humble-lms');
           $tmp['name'] = get_the_title( $award_id );
           $tmp['image_url'] = get_the_post_thumbnail_url( $award_id );
+          $tmp['icon'] = 'ti-medall';
 
           array_push( $evaluation['awards'], $tmp );
+        }
+      }
+
+      // Awards
+      if( ! empty( $evaluation['activities'][4] ) ) {
+        $evaluation['certificates'] = array();
+        $certificates = $evaluation['activities'][4];
+
+        foreach( $certificates as $certificate_id ) {
+          $tmp = array(
+            'title' => '',
+            'name' => '',
+            'image_url' => '',
+            'icon' => ''
+          );
+
+          $tmp['title'] = __('You have been issued a certificate', 'humble-lms');
+          $tmp['name'] = get_the_title( $certificate_id );
+          $tmp['image_url'] = get_the_post_thumbnail_url( $award_id );
+          $tmp['icon'] = 'ti-clipboard';
+
+          array_push( $evaluation['certificates'], $tmp );
         }
       }
 

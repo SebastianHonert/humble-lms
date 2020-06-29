@@ -112,12 +112,19 @@ jQuery(document).ready(function($) {
         loadingLayer(false)
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        if (response.tryAgain === 1) {
+        if (response.tryAgain === 1 ) {
           location.reload(true)
           return
         }
         
         loadingLayer(false)
+
+        if (response.max_attempts_exceeded) {
+          $('.humble-lms-quiz, .humble-lms-quiz-submit').hide(0)
+          $('.humble-lms-message--max-attempts-exceeded').show(0)
+        }
+
+        $('.humble-lms-quiz-remaining-attempts').text(response.remaining_attempts)
 
         if (response.completed === 0) {
           $('.humble-lms-quiz-message-image').html('<i class="ti-face-sad"></i>')

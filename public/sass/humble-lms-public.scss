@@ -721,6 +721,11 @@ input[type='submit'].humble-lms-btn--error:active,
   margin-right: .25em;
 }
 
+.humble-lms-quiz-max-attempts,
+.humble-lms-quiz-remaining-attempts {
+  font-weight: 600;
+}
+
 /* Bounce-In animation */
 
 .humble-lms-bounce-in {
@@ -1184,6 +1189,10 @@ input[type='submit'].humble-lms-btn--error:active,
   height: .5em;
   border-radius: 50%;
   background: white;
+}
+
+.humble-lms-message--max-attempts-exceeded {
+  display: none;
 }
 
 /* Google reCAPTCHA */

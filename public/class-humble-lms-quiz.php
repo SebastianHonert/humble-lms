@@ -287,8 +287,6 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       return $answers;
     }
 
-
-
     /**
      * Evaluate quizzes by id.
      * 
@@ -313,6 +311,93 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
     public function evaluate( $quiz_ids = [] ) {
       if( empty( $quiz_ids ) )
         return [];      
+    }
+
+    /**
+     * Check if user exceeded max. attempts for a set of quizzes.
+     * 
+     * @since    0.0.1
+     * @param    array // quiz IDs
+     * @return   bool
+     */
+    public function max_attempts_exceeded( $quiz_ids = [] ) {
+      if( empty( $quiz_ids ) || ! get_current_user_id() ) {
+        return false;
+      }
+
+      $remaining_attempts = $this->remaining_attempts( $quiz_ids );
+
+      return $remaining_attempts === 0;
+    }
+
+    /**
+     * Get number of remaining attempts.
+     * 
+     * @since    0.0.1
+     * @param    array
+     * @return   int
+     */
+    public function remaining_attempts( $quiz_ids = [] ) {
+      if( empty( $quiz_ids ) || ! get_current_user_id() ) {
+        return 0;
+      }
+      
+      foreach( $quiz_ids as $id ) {
+        $max_attempts = get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
+        $max_attempts = ! isset( $max_attempts[0] ) ? 0 : (int)$max_attempts[0];
+
+        if( $max_attempts === 0 ) {
+          return 9999999; // TODO
+        }
+
+        $user_evaluations = get_user_meta( get_current_user_id(), 'humble_lms_quiz_evaluations' );
+        $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];
+
+        $attempts = array();
+
+        foreach( $evaluations as $evaluation ) {
+          if( ! isset( $evaluation['quizIds'] ) ) {
+            continue;
+          }
+
+          foreach( $evaluation['quizIds'] as $quiz_id ) {
+            if( $quiz_id === $id ) {
+              array_push( $attempts, $evaluation );
+            }
+          }
+        }
+      }
+
+      $remaining_attempts = $max_attempts - sizeof( $attempts );
+
+      if( $remaining_attempts < 0 ) {
+        $remaining_attempts = 0;
+      }
+
+      return $remaining_attempts;
+    }
+
+    /**
+     * Get max. number of attempts for multiple quizzes.
+     * 
+     * @since    0.0.1
+     * @param    array
+     * @return   int
+     */
+    public function max_attempts( $quiz_ids = [] ) {
+      if( empty( $quiz_ids ) || ! get_current_user_id() ) {
+        return 0;
+      }
+
+      $max_attempts = 0;
+      foreach( $quiz_ids as $id ) {
+        $quiz_max_attempts = get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
+        if( absint( $quiz_max_attempts ) > $max_attempts ) {
+          $max_attempts = absint( $quiz_max_attempts );
+        }
+      }
+
+      return $max_attempts;
     }
     
   }

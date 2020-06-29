@@ -887,7 +887,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       // Quizzes
       echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
         <th width="25%">' . __('Quizzes', 'humble-lms') . '</th>
-        <th width="75%">' . __('Trials', 'humble-lms') . '</th>
+        <th width="75%">' . __('Attempts', 'humble-lms') . '</th>
       </tr></thead>';
 
       $evaluations = get_user_meta( $user->ID, 'humble_lms_quiz_evaluations' );

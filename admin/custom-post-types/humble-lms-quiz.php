@@ -67,6 +67,7 @@ function humble_lms_quiz_add_meta_boxes()
   add_meta_box( 'humble_lms_quiz_questions_mb', __('Questions in this quiz', 'humble-lms'), 'humble_lms_quiz_questions_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_passing_grade_mb', __('Passing grade in percent (%)', 'humble-lms'), 'humble_lms_quiz_passing_grade_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_passing_required_mb', __('Passing required', 'humble-lms'), 'humble_lms_quiz_passing_required_mb', 'humble_lms_quiz', 'normal', 'default' );
+  add_meta_box( 'humble_lms_quiz_max_attempts_mb', __('Max. number of attempts', 'humble-lms'), 'humble_lms_quiz_max_attempts_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_shuffle_mb', __('Randomization', 'humble-lms'), 'humble_lms_quiz_shuffle_mb', 'humble_lms_quiz', 'normal', 'default' );
 }
 
@@ -151,6 +152,21 @@ function humble_lms_quiz_passing_required_mb() {
   echo '<p><input type="checkbox" name="humble_lms_quiz_passing_required" id="humble_lms_quiz_passing_required" value="1" ' . $checked . '>' . __('Students have to pass this quiz in order to complete the lesson.', 'humble-lms') . '</p>';
 }
 
+// Meta box maxiumum number of attempts
+
+function humble_lms_quiz_max_attempts_mb() {
+  global $post;
+
+  $num_attempts = get_post_meta($post->ID, 'humble_lms_quiz_max_attempts', true);
+
+  if( ! isset( $num_attempts ) ) {
+    $num_attempts = 0;
+  }
+
+  echo '<p><input type="number" min="0" max="9999" name="humble_lms_quiz_max_attempts" id="humble_lms_quiz_max_attempts" value="' . absint( $num_attempts ) . '"></p>';
+  echo '<p class="description">' . __('A value of "0" means that the number of attempts per user is not limited.', 'humble-lms') . '</p>';
+}
+
 // Meta box randomization
 
 function humble_lms_quiz_shuffle_mb() {
@@ -197,6 +213,7 @@ function humble_lms_save_quiz_meta_boxes( $post_id, $post )
     $quiz_meta['humble_lms_quiz_passing_grade'] = 100;
 
   $quiz_meta['humble_lms_quiz_passing_required'] = isset( $_POST['humble_lms_quiz_passing_required'] ) ? 1 : 0;
+  $quiz_meta['humble_lms_quiz_max_attempts'] = isset( $_POST['humble_lms_quiz_max_attempts'] ) ? absint( $_POST['humble_lms_quiz_max_attempts'] ) : 0;
   $quiz_meta['humble_lms_shuffle'] = isset( $_POST['humble_lms_shuffle'] ) ? 1 : 0;
   
   if( ! empty( $quiz_meta ) && sizeOf( $quiz_meta ) > 0 )

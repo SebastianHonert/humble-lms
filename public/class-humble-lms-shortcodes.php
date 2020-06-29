@@ -637,18 +637,24 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
   
-      // Evaluate quiz button
-      $button_label = ! $user_completed_quizzes ? __('Check your answers', 'humble-lms') : __('Quiz passed. Try again?', 'humble-lms');
-      $button_class = $user_completed_quizzes ? 'humble-lms-btn--success' : '';
-      if( $lesson_has_quiz ) {
-        $html .= '<form method="post" id="humble-lms-evaluate-quiz" class="' . $quiz_class . '">';
-          $html .= '<input type="hidden" name="course-id" value="' . $course_id . '">';
-          $html .= '<input type="hidden" name="lesson-id" value="' . $post->ID . '">';
-          $html .= '<input type="hidden" name="quiz-ids" value="' . $quiz_ids_string . '">';
-          $html .= '<input type="hidden" name="lesson-completed" value="' . $lesson_completed . '">';
-          $html .= '<input type="hidden" name="try-again" value="' . ( $user_completed_quizzes ? 1 : 0 ) . '">';
-          $html .= '<input type="submit" class="humble-lms-btn ' . $button_class . '" value="' . $button_label . '">';
-        $html .= '</form>';
+      // Evaluate quiz button: TODO
+      $max_attempts = $this->quiz->max_attempts( $quizzes );
+      $remaining_attempts = $this->quiz->remaining_attempts( $quizzes );
+      $max_attempts_exceeded = $this->quiz->max_attempts_exceeded( $quizzes );
+
+      if( ! $max_attempts_exceeded ) {
+        $button_label = ! $user_completed_quizzes ? __('Check your answers', 'humble-lms') : __('Quiz passed. Try again?', 'humble-lms');
+        $button_class = $user_completed_quizzes ? 'humble-lms-btn--success' : '';
+        if( $lesson_has_quiz ) {
+          $html .= '<form method="post" id="humble-lms-evaluate-quiz" class="' . $quiz_class . '">';
+            $html .= '<input type="hidden" name="course-id" value="' . $course_id . '">';
+            $html .= '<input type="hidden" name="lesson-id" value="' . $post->ID . '">';
+            $html .= '<input type="hidden" name="quiz-ids" value="' . $quiz_ids_string . '">';
+            $html .= '<input type="hidden" name="lesson-completed" value="' . $lesson_completed . '">';
+            $html .= '<input type="hidden" name="try-again" value="' . ( $user_completed_quizzes ? 1 : 0 ) . '">';
+            $html .= '<input type="submit" class="humble-lms-quiz-submit humble-lms-btn ' . $button_class . '" value="' . $button_label . '">';
+          $html .= '</form>';
+        }
       }
 
       // Mark complete button
@@ -1450,67 +1456,100 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return '<p>' . __('Please enter at least one valid quiz ID.', 'humble-lms') . '</p>';
       }
 
-      $quizzes = $this->quiz->get( $ids );
-      
       $html = '';
-      $html .= '<div class="humble-lms-quiz-message"><div><div class="humble-lms-quiz-message-inner"><div>
-        <div class="humble-lms-quiz-message-close" aria-label="Close quiz overlay">
-          <i class="ti-close"></i>
-        </div>
-        <div class="humble-lms-message-quiz humble-lms-message-quiz--completed">
-          <h3 class="humble-lms-quiz-message-title">' . __('Well done!', 'humble-lms') . '</h3>
-          <p>' . __('You passed this quiz with a score of', 'humble-lms') . '</p><p><span class="humble-lms-quiz-score"></span></p>
-        </div>
-        <div class="humble-lms-message-quiz humble-lms-message-quiz--failed">
-          <h3 class="humble-lms-quiz-message-title">' . __('Bummer', 'humble-lms') . '</h3>
-          <p>' . __('You failed this quiz with a score of', 'humble-lms') . '</p>
-          <p><span class="humble-lms-quiz-score"></span></p>
-        </div>
-        <div class="humble-lms-quiz-message-image humble-lms-bounce-in"></div>
-      </div></div></div></div>';
-      $html .= '<div class="humble-lms-quiz ' . $class . '" style="' . $style . '">';
+      $quizzes = $this->quiz->get( $ids ); // TODO see below
 
-      if ( $quizzes ) {
-        
-        foreach( $quizzes as $quiz ) {
-          $questions = $this->quiz->questions( $quiz->ID );
-          $passing_grade = $this->quiz->get_passing_grade( $quiz->ID );
-          $passing_required = $this->quiz->get_passing_required( $quiz->ID ) ? '1' : '0';
-
-          $html .= '<div class="humble-lms-quiz-single" data-passing-grade="' . $passing_grade . '" data-passing-required="' . $passing_required . '">';
-  
-          foreach( $questions as $question ) {
-            $question_type = $this->quiz->question_type( $question->ID );
-  
-            $html .= '<div class="humble-lms-quiz-question ' . $question_type . '" data-id="' . $question->ID . '">';
-              $title = get_post_meta( $question->ID, 'humble_lms_question', true );
-              $html .= '<h3 class="humble-lms-quiz-question-title">' . htmlspecialchars( $title ) . '</h3>';
-              
-              switch( $question_type ) {
-                case 'single_choice':
-                  $answers = $this->quiz->answers( $question->ID );
-                  $html .= $this->quiz->single_choice( $quiz->ID, $answers );
-                  break;
-
-                case 'multiple_choice':
-                  $answers = $this->quiz->answers( $question->ID );
-                  $html .= $this->quiz->multiple_choice( $quiz->ID, $answers );
-                  break;
-
-                default:
-                  break;
-              }
-            $html .= '</div>';
-          }
-
-          $html .= '</div>';
-
-        }
-      } else {
-        $html .= '<p>' . __('No quizzes found.', 'humble-lms') . '</p>';
+      foreach( $quizzes as $quiz ) {
+        $quiz_ids[] = $quiz->ID; 
       }
 
-      $html .= '</div>';
+      // Check if student exceeded max. attempts for each quiz: TODO
+      $max_attempts = $this->quiz->max_attempts( $quiz_ids );
+      $remaining_attempts = $this->quiz->remaining_attempts( $quiz_ids );
+      $max_attempts_exceeded = $this->quiz->max_attempts_exceeded( $quiz_ids );
+
+      $html .= '<div class="humble-lms-message humble-lms-message--error humble-lms-message--max-attempts-exceeded">
+        <div class="humble-lms-message-title">' . __('Attention, limited attempts!', 'humble-lms') . '</div>
+        <div class="humble-lms-message-content">' . __('Maximum attempts', 'humble-lms') . ': <span class="humble-lms-quiz-max-attempts">' . absint( $max_attempts ) . '</span><br>
+          ' . __('Remaining attempts', 'humble-lms') . ': <span class="humble-lms-quiz-remaining-attempts">' . $this->quiz->remaining_attempts( $quiz_ids ) . '</span>
+        </div>
+      </div>';
+
+      if( is_user_logged_in() && $max_attempts_exceeded ) { // TODO
+        return '<div class="humble-lms-message humble-lms-message--error">
+          <div class="humble-lms-message-title">' . __('Attempts exceeded', 'humble-lms') . '</div>
+          <div class="humble-lms-message-content">' . __('You exceeded the maximum number of attempts for this quiz.', 'humble-lms') . '</div>
+        </div>';
+      } else {
+        if ( $quizzes ) {
+          $html .= '<div class="humble-lms-quiz-message"><div><div class="humble-lms-quiz-message-inner"><div>
+            <div class="humble-lms-quiz-message-close" aria-label="Close quiz overlay">
+              <i class="ti-close"></i>
+            </div>
+            <div class="humble-lms-message-quiz humble-lms-message-quiz--completed">
+              <h3 class="humble-lms-quiz-message-title">' . __('Well done!', 'humble-lms') . '</h3>
+              <p>' . __('You passed this quiz with a score of', 'humble-lms') . '</p><p><span class="humble-lms-quiz-score"></span></p>
+            </div>
+            <div class="humble-lms-message-quiz humble-lms-message-quiz--failed">
+              <h3 class="humble-lms-quiz-message-title">' . __('Bummer', 'humble-lms') . '</h3>
+              <p>' . __('You failed this quiz with a score of', 'humble-lms') . '</p>
+              <p><span class="humble-lms-quiz-score"></span></p>
+            </div>
+            <div class="humble-lms-quiz-message-image humble-lms-bounce-in"></div>
+          </div></div></div></div>';
+          $html .= '<div class="humble-lms-quiz ' . $class . '" style="' . $style . '">';
+
+          // Limited attempts info: TODO
+          if( is_user_logged_in() && ! $max_attempts_exceeded) {
+            $html .= '<div class="humble-lms-message humble-lms-message--success">
+              <div class="humble-lms-message-title">' . __('Attention, limited attempts!', 'humble-lms') . '</div>
+              <div class="humble-lms-message-content">' . __('Maximum attempts', 'humble-lms') . ': <span class="humble-lms-quiz-max-attempts">' . absint( $max_attempts ) . '</span><br>
+                ' . __('Remaining attempts', 'humble-lms') . ': <span class="humble-lms-quiz-remaining-attempts">' . $this->quiz->remaining_attempts( $quiz_ids ) . '</span>
+              </div>
+            </div>';
+          }
+          
+          foreach( $quizzes as $quiz ) {
+            $questions = $this->quiz->questions( $quiz->ID );
+            $passing_grade = $this->quiz->get_passing_grade( $quiz->ID );
+            $passing_required = $this->quiz->get_passing_required( $quiz->ID ) ? '1' : '0';
+
+            $html .= '<div class="humble-lms-quiz-single" data-passing-grade="' . $passing_grade . '" data-passing-required="' . $passing_required . '">';
+    
+            foreach( $questions as $question ) {
+              $question_type = $this->quiz->question_type( $question->ID );
+    
+              $html .= '<div class="humble-lms-quiz-question ' . $question_type . '" data-id="' . $question->ID . '">';
+                $title = get_post_meta( $question->ID, 'humble_lms_question', true );
+                $html .= '<h3 class="humble-lms-quiz-question-title">' . htmlspecialchars( $title ) . '</h3>';
+                
+                switch( $question_type ) {
+                  case 'single_choice':
+                    $answers = $this->quiz->answers( $question->ID );
+                    $html .= $this->quiz->single_choice( $quiz->ID, $answers );
+                    break;
+
+                  case 'multiple_choice':
+                    $answers = $this->quiz->answers( $question->ID );
+                    $html .= $this->quiz->multiple_choice( $quiz->ID, $answers );
+                    break;
+
+                  default:
+                    break;
+                }
+              $html .= '</div>';
+            }
+
+            $html .= '</div>';
+
+          }
+        } else {
+          $html .= '<p>' . __('No quizzes found.', 'humble-lms') . '</p>';
+        }
+
+        $html .= '</div>';
+
+      }
 
       return $html;
     }

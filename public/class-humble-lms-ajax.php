@@ -23,6 +23,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
+      $this->quiz = new Humble_LMS_Quiz;
 
     }
     
@@ -103,8 +104,9 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @return void
      */
     public function evaluate_quiz() {
-      if( ! is_user_logged_in() || ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
-        die( 'Permission Denied' );
+      if( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'humble_lms' ) ) {
+        echo json_encode( 'nonce' );
+        die;
       }
 
       $evaluation = $_POST['evaluation'];
@@ -115,6 +117,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $evaluation['quizIds'][$key] = (int)$id;
       }
 
+      // Max. attempts exceeded
+      $evaluation['max_attempts_exceeded'] = $this->quiz->max_attempts_exceeded( $evaluation['quizIds'] );
+      if( $evaluation['max_attempts_exceeded'] ) {
+        echo json_encode( $evaluation );
+        die;
+      }
+
+      // Updated completed quizzes
       $completed_quizzes = $this->user->completed_quizzes( get_current_user_ID() );
 
       if( $completed === 1 ) {
@@ -208,6 +218,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       array_push( $evaluations, $evaluation );
       update_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', $evaluations );
+
+      // Update remaining attempts
+      $evaluation['max_attempts_exceeded'] = $this->quiz->max_attempts_exceeded( $evaluation['quizIds'] );
+      $evaluation['remaining_attempts'] = $this->quiz->remaining_attempts( $evaluation['quizIds'] );
 
       // Done.
       echo json_encode( $evaluation );

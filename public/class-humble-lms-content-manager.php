@@ -421,7 +421,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     /**
      * Get quizzes for a single lesson.
      *
-     * @param   int|bool
+     * @param   int
      * @return  Array
      * @since   0.0.1
      */

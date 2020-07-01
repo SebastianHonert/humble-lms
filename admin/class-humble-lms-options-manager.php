@@ -38,8 +38,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       );
 
       $this->default_button_labels = array(
-        __('Mark complete and continue', 'humble-lms'),
-        __('Mark incomplete and continue', 'humble-lms'),
+        'Mark complete and continue',
+        'Mark incomplete and continue',
       );
 
       $this->custom_pages = array(
@@ -337,9 +337,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $button_labels = isset( $this->options['button_labels'] ) ? $this->options['button_labels'] : $this->default_button_labels;
 
       echo '<p><strong>' . __('Mark lesson complete', 'humble-lms') . '</strong></p>';
-      echo '<p><input type="text" maxlength="32" id="button_labels_complete" name="humble_lms_options[button_labels][]" value="' . $button_labels[0] . '" placeholder="' . $this->default_button_labels[0] . '"></p>';
+      echo '<p><input type="text" maxlength="32" id="button_labels_complete" name="humble_lms_options[button_labels][]" value="' . $button_labels[0] . '" placeholder="' . __($this->default_button_labels[0], 'humble-lms') . '"></p>';
       echo '<p><strong>' . __('Mark lesson incomplete', 'humble-lms') . '</strong></p>';
-      echo '<p><input type="text" maxlength="32" id="button_labels_incomplete" name="humble_lms_options[button_labels][]" value="' . $button_labels[1] . '" placeholder="' . $this->default_button_labels[1] . '"></p>';
+      echo '<p><input type="text" maxlength="32" id="button_labels_incomplete" name="humble_lms_options[button_labels][]" value="' . $button_labels[1] . '" placeholder="' . __($this->default_button_labels[1], 'humble-lms') . '"></p>';
     }
 
     /**
@@ -1063,8 +1063,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function get_button_labels() {
       $options = get_option('humble_lms_options');
       $button_labels = array();
-      $button_labels[0] = isset( $options['button_labels'][0] ) && ! empty( $options['button_labels'][0] ) && $options['button_labels'][0] !== '' ? $options['button_labels'][0] : $this->default_button_labels[0];
-      $button_labels[1] = isset( $options['button_labels'][1] ) && ! empty( $options['button_labels'][1] ) && $options['button_labels'][1] !== '' ? $options['button_labels'][1] : $this->default_button_labels[1];
+      $button_labels[0] = isset( $options['button_labels'][0] ) && ! empty( $options['button_labels'][0] ) && $options['button_labels'][0] !== '' ? $options['button_labels'][0] : __($this->default_button_labels[0], 'humble-lms');
+      $button_labels[1] = isset( $options['button_labels'][1] ) && ! empty( $options['button_labels'][1] ) && $options['button_labels'][1] !== '' ? $options['button_labels'][1] : __($this->default_button_labels[1], 'humble-lms');
       return $button_labels;
     }
     

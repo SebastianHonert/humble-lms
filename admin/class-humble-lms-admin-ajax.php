@@ -68,6 +68,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $allowed_post_types = array(
         'humble_lms_lesson',
         'humble_lms_course',
+        'humble_lms_question'
       );
   
       if( ! isset( $_POST['title'] ) || empty( $_POST['title'] ) || ! isset( $_POST['post_type'] ) || empty( $_POST['post_type'] || empty( $_POST['lang'] ) ) || ! in_array( $_POST['post_type'], $allowed_post_types ) ) {

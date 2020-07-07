@@ -518,7 +518,7 @@ jQuery(document).ready(function($) {
     let id
 
     $(document).on('click', '.humble-lms-open-admin-lightbox', function() {
-      id = $(this).data('id')
+      id = typeof $(this).data('id') !== 'undefined' ? $(this).data('id') : null;
 
       $('.humble-lms-add-content-lightbox-wrapper').css('display', 'flex')
       $('.humble-lms-add-content-name').focus()
@@ -578,7 +578,7 @@ jQuery(document).ready(function($) {
             currentSection.find('.ms-container').remove()
             currentSection.find('.humble-lms-searchable').multiSelect('refresh')
             initMultiselect($('.humble-lms-searchable'))
-          } else if (response.post_type === 'humble_lms_course') {
+          } else if (response.post_type === 'humble_lms_course' || response.post_type === 'humble_lms_question') {
             $('.humble-lms-searchable').multiSelect('addOption', {
               value: response.post_id,
               text: response.post_title

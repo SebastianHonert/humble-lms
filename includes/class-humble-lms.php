@@ -257,6 +257,12 @@ class Humble_LMS {
       $this->loader->add_action( 'manage_edit-humble_lms_course_sortable_columns', $plugin_admin, 'humble_lms_course_tracks_sort' );
     }
 
+    if( is_admin() && 'edit.php' === $pagenow && isset( $_GET['post_type'] ) && 'humble_lms_question' === $_GET['post_type'] ) {
+      $this->loader->add_action( 'manage_humble_lms_question_posts_columns', $plugin_admin, 'add_humble_lms_question_column_quizzes' );
+      $this->loader->add_action( 'manage_humble_lms_question_posts_custom_column', $plugin_admin, 'humble_lms_question_sortable_column_quizzes', 10, 2 );
+      $this->loader->add_action( 'manage_edit-humble_lms_question_sortable_columns', $plugin_admin, 'humble_lms_question_quizzes_sort' );
+    }
+
     // Admin AJAX
     $admin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );
 

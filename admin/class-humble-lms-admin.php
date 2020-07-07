@@ -1097,6 +1097,76 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Add quiz column to humble_lms_question (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function add_humble_lms_question_column_quizzes( $columns ) {
+    $new = array();
+    foreach( $columns as $key => $title ) {
+      if( $key === 'categories' ) {
+        $new['quizzes'] = __('Quizzes', 'humble-lms');
+      }
+
+      $new[$key] = $title;
+    }
+
+    return $new;
+  }
+
+  /**
+   * Add sortable quiz column content to humble_lms_question (dashboard).
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_question_sortable_column_quizzes( $column, $post_id ) {
+    $content_manager = new Humble_LMS_Content_Manager;
+    switch ( $column ) {
+      case 'quizzes' :
+        $quizzes_array = array();
+        $quizzes = $content_manager->get_quizzes();
+
+        foreach( $quizzes as $quiz ) {
+          $questions = $content_manager->get_quiz_questions( $quiz->ID );
+
+          foreach( $questions as $question ) {
+            if( in_array( $post_id, $questions ) ) {
+              array_push( $quizzes_array, array(
+                'id' => $quiz->ID,
+                'name' => $quiz->post_title,
+              ) );
+            }
+          }
+        }
+
+        $quizzes_array = array_unique( $quizzes_array, SORT_REGULAR );
+
+        foreach( $quizzes_array as $quiz ) {
+          echo '<a href="' . get_edit_post_link( $quiz['id'] ) . '">' . $quiz['name'] . '</a>';
+          
+          if( $quiz !== end( $quizzes_array ) ) {
+            echo ', ';
+          }
+        }
+
+        break;
+    }
+  }
+
+  /**
+   * Sort questions based on column "Quizzes".
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_question_quizzes_sort( $columns ) {
+    $custom = array(
+      'quizzes' => 'quizzes',
+    );
+
+    return wp_parse_args($custom, $columns);
+  }
+
+  /**
    * Add track column to humble_lms_course (dashboard).
    * 
    * @since   0.0.1

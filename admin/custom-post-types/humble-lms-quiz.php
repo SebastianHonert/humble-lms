@@ -106,6 +106,17 @@ function humble_lms_quiz_questions_mb() {
     }
   }
 
+  // Add lesson lightbox
+  echo '<div class="humble-lms-add-content-lightbox-wrapper">';
+    echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_question" data-lang="' . $translator->current_language() . '">';
+      echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add question', 'humble-lms') . '</div>';
+      echo '<input type="text" class="widefat humble-lms-add-content-name" name="humble-lms-add-content-name" value="" placeholder="' . __('Question title', 'humble-lms') . '&hellip;">';
+      echo '<p class="humble-lms-add-content-error" data-message="' . __('Please add a question title.', 'humble-lms') . '"></p>';
+      echo '<a class="button button-primary humble-lms-add-content-submit">' . __('Create and add', 'humble-lms') . '</a> <a class="button humble-lms-add-content-cancel">' . __('Close') . '</a>';
+      echo '<p class="humble-lms-add-content-success"><a target="_blank">' . __('Content added – click to edit.', 'humble-lms') . '</a></p>';
+    echo '</div>';
+  echo '</div>';
+
   if( $questions || $selected_questions ):
 
     echo '<div id="humble-lms-admin-quiz-questions">';
@@ -129,6 +140,8 @@ function humble_lms_quiz_questions_mb() {
     echo '<p>' . __('No quiz questions found. Please add one or more question first.', 'humble-lms') . '</p>';
 
   endif;
+
+  echo '<p><a class="humble-lms-open-admin-lightbox button button-primary">' . __('Add question', 'humble-lms') . '</a></p>';
 }
 
 // Meta box passing grade

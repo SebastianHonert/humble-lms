@@ -389,23 +389,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return $quiz_questions;
 
       $quiz_questions = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', false );
-
-      
       $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
-  
-      // Get translated post ids if custom fields are synchronized
-      $translator = new Humble_LMS_Translator;
-
-      // foreach( $quiz_questions as $key => $quiz_id ) {
-      //   $translated_post_id = $translator->get_translated_post_id( $quiz_id );
-
-      //   if( $translated_post_id ) {
-      //     $quiz_questions[$key] = $translated_post_id;
-      //   } else {
-      //     $quiz_questions = array_diff( $quiz_questions, array( $quiz_id ) );
-      //   }
-      // }
-      
       $quiz_questions = array_unique( $quiz_questions );
 
       return $quiz_questions;

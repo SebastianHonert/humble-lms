@@ -119,11 +119,17 @@ jQuery(document).ready(function($) {
         
         loadingLayer(false)
 
+        console.log(response)
+
         if (response.max_attempts_exceeded && response.completed === 0) {
           $('.humble-lms-quiz, .humble-lms-quiz-submit').hide(0)
-          $('.humble-lms-message--max-attempts-exceeded').show(0)
+          $('.humble-lms-message--max-attempts-exceeded__initial').show(0)
+          $('.humble-lms-message--limited-attempts').hide(0)
         } else if (response.completed === 1) {
-          $('.humble-lms-quiz-submit').hide(0)
+          if (response.remaining_attempts !== -1) {
+            $('.humble-lms-quiz-submit').hide(0)
+          }
+
           $('.humble-lms-message--remaining-attempts').hide(0)
           $('.humble-lms-message--max-attempts-completed').show(0)
         }

@@ -987,7 +987,8 @@ input[type='submit'].humble-lms-btn--error:active,
   border-radius: 50%;
   background: white; }
 
-.humble-lms-message--max-attempts-exceeded,
+.humble-lms-message--max-attempts-exceeded__initial,
+.humble-lms-message--limited-attempts,
 .humble-lms-message--max-attempts-completed {
   display: none; }
 

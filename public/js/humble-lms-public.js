@@ -95,8 +95,8 @@ jQuery(document).ready(function($) {
     loadingLayer(true)
 
     $('.humble-lms-message-quiz').hide(0)
-    $('.humble-lms-quiz-score').text(evaluation.grade + ' %')
-    $('.humble-lms-quiz-passing-grade').text(evaluation.passing_grade + ' %')
+    $('.humble-lms-quiz-score').text(evaluation.percent + ' %')
+    $('.humble-lms-quiz-passing-percent').text(evaluation.passing_percent + ' %')
 
     $.ajax({
       url: humble_lms.ajax_url,
@@ -119,9 +119,13 @@ jQuery(document).ready(function($) {
         
         loadingLayer(false)
 
-        if (response.max_attempts_exceeded) {
+        if (response.max_attempts_exceeded && response.completed === 0) {
           $('.humble-lms-quiz, .humble-lms-quiz-submit').hide(0)
           $('.humble-lms-message--max-attempts-exceeded').show(0)
+        } else if (response.completed === 1) {
+          $('.humble-lms-quiz-submit').hide(0)
+          $('.humble-lms-message--remaining-attempts').hide(0)
+          $('.humble-lms-message--max-attempts-completed').show(0)
         }
 
         $('.humble-lms-quiz-remaining-attempts').text(response.remaining_attempts)
@@ -499,6 +503,8 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   function addMessages(messages) {
+    $('.humble-lms-award-message').remove()
+
     let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div>'
 
     messages.forEach(function (message) {

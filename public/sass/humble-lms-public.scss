@@ -503,7 +503,11 @@ input[type='submit'].humble-lms-btn--error:active,
   display: inline-block;
   content: '\e62b';
   font-family: 'themify';
-  margin-right: .15em;
+  margin-right: .2em;
+}
+
+.humble-lms-message--error.humble-lms-message--error__info .humble-lms-message-title::before {
+  content: '\e717';
 }
 
 /* Media */
@@ -1191,7 +1195,8 @@ input[type='submit'].humble-lms-btn--error:active,
   background: white;
 }
 
-.humble-lms-message--max-attempts-exceeded {
+.humble-lms-message--max-attempts-exceeded,
+.humble-lms-message--max-attempts-completed {
   display: none;
 }
 

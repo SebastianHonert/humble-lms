@@ -338,7 +338,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Perform activities based on the completed content.
      * 
-     * array( [], [], [], [], [], [] ) => lesson, courses, tracks, awards, certificates, quizzes
+     * array( [], [], [], [], [], [], int ) => lesson, courses, tracks, awards, certificates, quizzes, percent completed
      * 
      * humble_lms_activity_trigger = lesson, course, track, quiz
      * humble_lms_activity_trigger_lesson = lesson ID
@@ -354,7 +354,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @param   int
      * @since   0.0.1
      */
-    public function perform_activities( $completed ) {
+    public function perform_activities( $completed, $percent = 0 ) {
       if( ! is_user_logged_in() )
         return [];
 
@@ -448,6 +448,16 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
           }
 
           foreach( $activities as $activity ) {
+            // Check required percentage for quiz activities
+            if( $humble_lms_activity_trigger === 'user_completed_quiz' ) {
+              $humble_lms_activity_trigger_quiz = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_quiz', true);
+              $trigger_quiz_percent = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_quiz_percent', true);
+
+              if( $percent < $trigger_quiz_percent ) {
+                continue;
+              }
+            }
+
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);
             
             switch( $action ) 
@@ -780,6 +790,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       return $purchases;
     }
+
     /**
      * Check if user has purchased a track/course.
      *
@@ -804,6 +815,25 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $purchases = $this->purchases();
 
       return in_array( $post_id, $purchases );
+    }
+
+    /**
+     * Get user evaluations.
+     *
+     * @since 1.0.0
+     * @return array
+     */
+    public function evaluations( $post_id = null ) {
+      $evaluations = [];
+
+      if( ! is_user_logged_in() ) {
+        return $evaluations;
+      }
+
+      $user_evaluations = get_user_meta( get_current_user_id(), 'humble_lms_quiz_evaluations' );
+      $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];
+
+      return $evaluations;
     }
 
   }

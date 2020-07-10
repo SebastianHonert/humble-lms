@@ -231,26 +231,26 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
     }
 
     /**
-     * Get passing grade for a quiz.
+     * Get passing percentage for a quiz.
      *
      * @since    0.0.1
      * @param    int
      * @return   int
      */
-    public function get_passing_grade( $quiz_id = null ) {
+    public function get_passing_percent( $quiz_id = null ) {
       if( ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
         return 0;
 
-      $passing_grade = get_post_meta( $quiz_id, 'humble_lms_quiz_passing_grade', true );
+      $passing_percent = get_post_meta( $quiz_id, 'humble_lms_quiz_passing_percent', true );
 
-      if( ! $passing_grade || ! isset( $passing_grade ) || empty( $passing_grade ) )
+      if( ! $passing_percent || ! isset( $passing_percent ) || empty( $passing_percent ) )
         return 0;
       
-      return $passing_grade;
+      return $passing_percent;
     }
 
     /**
-     * Get passing grade for a quiz.
+     * Get passing percentage for a quiz.
      *
      * @since    0.0.1
      * @param    int
@@ -347,11 +347,10 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $max_attempts = ! isset( $max_attempts[0] ) ? 0 : (int)$max_attempts[0];
 
         if( $max_attempts === 0 ) {
-          return 9999999; // TODO
+          return -1; // TODO
         }
 
-        $user_evaluations = get_user_meta( get_current_user_id(), 'humble_lms_quiz_evaluations' );
-        $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];
+        $evaluations = $this->user->evaluations();
 
         $attempts = array();
 

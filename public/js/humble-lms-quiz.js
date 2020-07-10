@@ -10,13 +10,13 @@ var Humble_LMS_Quiz
     evaluate: function (quizIds) {
       let tryAgain = parseInt($('input[name="try-again"]').val())
       let quizzes = $('.humble-lms-quiz-single')
-      let passing_grades = [];
-        quizzes.each(function (index, quiz) { passing_grades.push(parseInt($(quiz).data('passing-grade'))) })
+      let passing_percentages = [];
+        quizzes.each(function (index, quiz) { passing_percentages.push(parseInt($(quiz).data('passing-percent'))) })
       
       let passing_required = false
         quizzes.each(function (index, quiz) { passing_required = parseInt($(quiz).data('passing-required')) === 1 })
       
-      let passing_grade = Math.round(passing_grades.reduce(function (total, number ) { return total + number }) / passing_grades.length)
+      let passing_percent = Math.round(passing_percentages.reduce(function (total, number ) { return total + number }) / passing_percentages.length)
       let questions_multiple_choice = $('.humble-lms-quiz-question.multiple_choice, .humble-lms-quiz-question.single_choice')
       let answers = $('.humble-lms-answer')
       let evaluation = {
@@ -27,8 +27,8 @@ var Humble_LMS_Quiz
         correct: 0,
         incorrect: 0,
         score: 0,
-        grade: 0,
-        passing_grade: passing_grade,
+        percent: 0,
+        passing_percent: passing_percent,
         passing_required: passing_required,
         completed: 0
       }
@@ -55,15 +55,15 @@ var Humble_LMS_Quiz
         })
       })
 
-      evaluation.grade = Math.round(evaluation.score / evaluation.correct * 100, 2)
+      evaluation.percent = Math.round(evaluation.score / evaluation.correct * 100, 2)
 
-      if (evaluation.grade < 0) {
-        evaluation.grade = 0;
-      } else if (evaluation.grade > 100) {
-        evaluation.grade = 100;
+      if (evaluation.percent < 0) {
+        evaluation.percent = 0;
+      } else if (evaluation.percent > 100) {
+        evaluation.percent = 100;
       }
 
-      evaluation.completed = evaluation.grade >= evaluation.passing_grade ? 1 : 0
+      evaluation.completed = evaluation.percent >= evaluation.passing_percent ? 1 : 0
 
       return evaluation
     }

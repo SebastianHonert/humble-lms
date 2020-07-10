@@ -169,6 +169,15 @@ function humble_lms_activity_trigger_mb()
       echo '<option value="' . $quiz->ID . '" ' . $selected . '>' . $quiz->post_title . '</option>';
     }
   echo '</select>';
+
+  $percent = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_quiz_percent', true);
+
+  if( ! $percent ) {
+    $percent = 0;
+  }
+
+  echo '<p class="humble-lms-activity-trigger-quiz-percent"><strong>' . __('Required percentage of correct answers %', 'humble-lms') . '</strong><br>';
+  echo '<input type="number" value="' . $percent . '" min="0" max="100" step="1" class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_quiz_percent" id="humble_lms_activity_trigger_quiz_percent"></p>';
 }
 
 // Action meta box
@@ -278,6 +287,11 @@ function humble_lms_save_activity_meta_boxes( $post_id, $post )
   $activity_meta['humble_lms_activity_trigger_course'] = isset( $_POST['humble_lms_activity_trigger_course'] ) ? (int)$_POST['humble_lms_activity_trigger_course'] : '';
   $activity_meta['humble_lms_activity_trigger_lesson'] = isset( $_POST['humble_lms_activity_trigger_lesson'] ) ? (int)$_POST['humble_lms_activity_trigger_lesson'] : '';
   $activity_meta['humble_lms_activity_trigger_quiz'] = isset( $_POST['humble_lms_activity_trigger_quiz'] ) ? (int)$_POST['humble_lms_activity_trigger_quiz'] : '';
+  $activity_meta['humble_lms_activity_trigger_quiz_percent'] = isset( $_POST['humble_lms_activity_trigger_quiz_percent'] ) ? (int)$_POST['humble_lms_activity_trigger_quiz_percent'] : 0;
+
+  if( $activity_meta['humble_lms_activity_trigger_quiz_percent'] < 0 || $activity_meta['humble_lms_activity_trigger_quiz_percent'] > 100 ) {
+    $percent = 0;
+  }
 
   $activity_meta['humble_lms_activity_action'] = isset( $_POST['humble_lms_activity_action'] ) ? sanitize_text_field( $_POST['humble_lms_activity_action'] ) : '';
   $activity_meta['humble_lms_activity_action_award'] = isset( $_POST['humble_lms_activity_action_award'] ) ? (int)$_POST['humble_lms_activity_action_award'] : '';

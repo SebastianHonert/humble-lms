@@ -65,7 +65,7 @@ register_post_type( 'humble_lms_quiz', $args );
 function humble_lms_quiz_add_meta_boxes()
 {
   add_meta_box( 'humble_lms_quiz_questions_mb', __('Questions in this quiz', 'humble-lms'), 'humble_lms_quiz_questions_mb', 'humble_lms_quiz', 'normal', 'default' );
-  add_meta_box( 'humble_lms_quiz_passing_grade_mb', __('Passing grade in percent (%)', 'humble-lms'), 'humble_lms_quiz_passing_grade_mb', 'humble_lms_quiz', 'normal', 'default' );
+  add_meta_box( 'humble_lms_quiz_passing_percent_mb', __('Percent of correct answers needed to pass the quiz (%)', 'humble-lms'), 'humble_lms_quiz_passing_percent_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_passing_required_mb', __('Passing required', 'humble-lms'), 'humble_lms_quiz_passing_required_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_max_attempts_mb', __('Max. number of attempts', 'humble-lms'), 'humble_lms_quiz_max_attempts_mb', 'humble_lms_quiz', 'normal', 'default' );
   add_meta_box( 'humble_lms_quiz_shuffle_mb', __('Randomization', 'humble-lms'), 'humble_lms_quiz_shuffle_mb', 'humble_lms_quiz', 'normal', 'default' );
@@ -106,7 +106,7 @@ function humble_lms_quiz_questions_mb() {
     }
   }
 
-  // Add lesson lightbox
+  // Add quiz lightbox
   echo '<div class="humble-lms-add-content-lightbox-wrapper">';
     echo '<div class="humble-lms-add-content-lightbox" data-post_type="humble_lms_question" data-lang="' . $translator->current_language() . '">';
       echo '<div class="humble-lms-add-content-lightbox-title">' . __('Add question', 'humble-lms') . '</div>';
@@ -144,14 +144,14 @@ function humble_lms_quiz_questions_mb() {
   echo '<p><a class="humble-lms-open-admin-lightbox button button-primary">' . __('Add question', 'humble-lms') . '</a></p>';
 }
 
-// Meta box passing grade
-function humble_lms_quiz_passing_grade_mb()
+// Meta box passing percent
+function humble_lms_quiz_passing_percent_mb()
 {
   global $post;
 
-  $passing_grade = absint( get_post_meta( $post->ID, 'humble_lms_quiz_passing_grade', true ) );
+  $passing_percent = absint( get_post_meta( $post->ID, 'humble_lms_quiz_passing_percent', true ) );
 
-  echo '<input class="widefat" name="humble_lms_quiz_passing_grade" id="humble_lms_quiz_passing_grade" type="number" value="' . $passing_grade . '" min="0" max="100">';
+  echo '<input class="widefat" name="humble_lms_quiz_passing_percent" id="humble_lms_quiz_passing_percent" type="number" value="' . $passing_percent . '" min="0" max="100">';
 }
 
 // Meta box passing required
@@ -220,10 +220,10 @@ function humble_lms_save_quiz_meta_boxes( $post_id, $post )
   // Let's save some data!
   $quiz_meta['humble_lms_quiz_questions'] = isset( $_POST['humble_lms_quiz_questions'] ) ? explode(',', $_POST['humble_lms_quiz_questions']) : array();
   $quiz_meta['humble_lms_quiz_questions'] = array_map( 'esc_attr', $quiz_meta['humble_lms_quiz_questions'] );
-  $quiz_meta['humble_lms_quiz_passing_grade'] = absint( $_POST['humble_lms_quiz_passing_grade'] );
+  $quiz_meta['humble_lms_quiz_passing_percent'] = absint( $_POST['humble_lms_quiz_passing_percent'] );
   
-  if( $quiz_meta['humble_lms_quiz_passing_grade'] > 100 )
-    $quiz_meta['humble_lms_quiz_passing_grade'] = 100;
+  if( $quiz_meta['humble_lms_quiz_passing_percent'] > 100 )
+    $quiz_meta['humble_lms_quiz_passing_percent'] = 100;
 
   $quiz_meta['humble_lms_quiz_passing_required'] = isset( $_POST['humble_lms_quiz_passing_required'] ) ? 1 : 0;
   $quiz_meta['humble_lms_quiz_max_attempts'] = isset( $_POST['humble_lms_quiz_max_attempts'] ) ? absint( $_POST['humble_lms_quiz_max_attempts'] ) : 0;

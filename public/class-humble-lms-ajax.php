@@ -130,12 +130,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       if( $completed === 1 ) {
         foreach( $evaluation['quizIds'] as $id ) {
           if( ! in_array( $id, $completed_quizzes ) ) {
-            if( sizeof( $completed_quizzes < 10 ) ) { // Max. 10 trials evaluated
-              array_push( $completed_quizzes, $id );
-            } else {
-              array_shift( $completed_quizzes );
-              array_push( $completed_quizzes, $id );
-            }
+            array_push( $completed_quizzes, $id );
           }
         }
       }
@@ -158,7 +153,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Perform activities => array( [], [], [], [], [], [] ) => lesson, courses, tracks, awards, certificates, quizzes
-      $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ) );
+      $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ), $evaluation['percent'] );
 
       // Awards
       if( ! empty( $evaluation['activities'][3] ) ) {
@@ -205,18 +200,18 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Add quiz evaluation to user meta
-      $user_evaluations = get_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', false );
-
-      if( ! isset( $user_evaluations[0] ) || ! is_array( $user_evaluations[0] ) ) {
-        $user_evaluations[0] = array();
-      }
-
-      $evaluations = $user_evaluations[0];
+      $evaluations = $this->user->evaluations();
       $evaluation['datetime'] = round(microtime(true) * 1000);
       $evaluation['completed'] = $completed;
       $evaluation['completed_quizzes'] = $completed_quizzes;
 
-      array_push( $evaluations, $evaluation );
+      if( count( $evaluations ) < 50 ) { // Max. 50 attempts evaluated. TODO: add value to options?
+        array_push( $evaluations, $evaluation );
+      } else {
+        array_shift( $evaluations );
+        array_push( $evaluations, $evaluation );
+      }
+
       update_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', $evaluations );
 
       // Update remaining attempts

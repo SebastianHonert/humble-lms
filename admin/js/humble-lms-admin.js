@@ -181,6 +181,12 @@ jQuery(document).ready(function($) {
       if (typeof selected_data !== 'undefined') {
         $('#' + selected_data.toString()).show(0)
       }
+
+      if (selected_value === 'user_completed_quiz') {
+        $('#humble_lms_activity_trigger_quiz_percent, .humble-lms-activity-trigger-quiz-percent').show(0)
+      } else {
+        $('#humble_lms_activity_trigger_quiz_percent, .humble-lms-activity-trigger-quiz-percent').hide(0)
+      }
     }
   }
 

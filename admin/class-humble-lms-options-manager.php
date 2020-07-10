@@ -890,16 +890,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         <th width="75%">' . __('Attempts', 'humble-lms') . '</th>
       </tr></thead>';
 
-      $evaluations = get_user_meta( $user->ID, 'humble_lms_quiz_evaluations' );
-
-      if( ! isset( $evaluations[0] ) || ! is_array( $evaluations[0] ) ) {
-        $evaluations[0] = array();
-      }
-
-      $quiz_evaluations = $evaluations[0];
+      $evaluations = $this->user->evaluations();
       $quizzes = array();
   
-      foreach( $quiz_evaluations as $evaluation ) {
+      foreach( $evaluations as $evaluation ) {
         if( empty( $evaluation ) || ! is_array( $evaluation ) ) {
           continue;
         }
@@ -935,7 +929,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               }
 
               $completed = isset( $evaluation['completed'] ) && (int)$evaluation['completed'] === 1 ? '&check;' : '&times;';
-              echo '<option>' . $completed . ' (' .  (int)$evaluation['grade'] . '%) ' . date("d-m-Y H:i:s", ($evaluation['datetime'] / 1000) ) . '</option>'; 
+              echo '<option>' . $completed . ' (' .  (int)$evaluation['percent'] . '%) ' . date("d-m-Y H:i:s", ($evaluation['datetime'] / 1000) ) . '</option>'; 
             }
           echo '</select></td>';
         echo '</tr>';

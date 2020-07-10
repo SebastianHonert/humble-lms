@@ -247,14 +247,32 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      *
      * @since    0.0.1
      */
-    public function completed_quiz( $quiz_id ) {
-      if( ! is_user_logged_in() || ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
+    public function completed_quiz( $quiz_ids = null ) {
+      if( ! is_user_logged_in() || ! $quiz_ids )
         return;
+
+      if( ! is_array( $quiz_ids ) ) {
+        $quiz_ids = [$quiz_ids];
+      }
 
       $user_id = get_current_user_id();
       $completed_quizzes = $this->completed_quizzes( get_current_user_ID() );
 
-      return is_array( $completed_quizzes) ? in_array( $quiz_id, $completed_quizzes ) : false;
+      if( ! is_array( $completed_quizzes ) ) {
+        return;
+      }
+
+      foreach( $quiz_ids as $id ) {
+        if( 'publish' !== get_post_status( $id ) ) {
+          continue;
+        }
+
+        if( ! in_array( $id, $completed_quizzes ) ) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     /**

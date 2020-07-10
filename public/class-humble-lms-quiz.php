@@ -343,10 +343,9 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       }
       
       foreach( $quiz_ids as $id ) {
-        $max_attempts = get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
-        $max_attempts = ! isset( $max_attempts[0] ) ? 0 : (int)$max_attempts[0];
+        $max_attempts = (int)get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
 
-        if( $max_attempts === 0 ) {
+        if( ! $max_attempts || $max_attempts === 0 ) {
           return -1; // TODO
         }
 
@@ -367,7 +366,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         }
       }
 
-      $remaining_attempts = $max_attempts - sizeof( $attempts );
+      $remaining_attempts = $max_attempts - count( $attempts );
 
       if( $remaining_attempts < 0 ) {
         $remaining_attempts = 0;
@@ -390,9 +389,9 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
 
       $max_attempts = 0;
       foreach( $quiz_ids as $id ) {
-        $quiz_max_attempts = get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
-        if( absint( $quiz_max_attempts ) > $max_attempts ) {
-          $max_attempts = absint( $quiz_max_attempts );
+        $quiz_max_attempts = (int)get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
+        if( $quiz_max_attempts > $max_attempts ) {
+          $max_attempts = $quiz_max_attempts;
         }
       }
 

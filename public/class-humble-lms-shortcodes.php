@@ -1269,9 +1269,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
         <input type="hidden" name="humble-lms-form" value="humble-lms-update-user" />
       </form>
-      
-      <p><a id="humble-lms-reset-user-progress" data-user-id="<?php echo get_current_user_ID(); ?>" class="humble-lms-btn humble-lms-btn--error"><small><?php _e('Reset my learning progress', 'humble-lms'); ?></small></a></p>
-      
+
       <?php 
        
       return ob_get_clean();
@@ -1464,7 +1462,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Check if student exceeded max. attempts for each quiz: TODO
-      $completed = $this->user->completed_quiz( $quiz->ID );
+      $completed = $this->user->completed_quiz( $quiz_ids );
       $max_attempts = $this->quiz->max_attempts( $quiz_ids );
       $remaining_attempts = $this->quiz->remaining_attempts( $quiz_ids );
       $max_attempts_exceeded = $this->quiz->max_attempts_exceeded( $quiz_ids );
@@ -1515,8 +1513,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           if( is_user_logged_in() && ! $completed && $remaining_attempts > -1 && ! $max_attempts_exceeded) {
             $html .= '<div class="humble-lms-message humble-lms-message--error humble-lms-message--error__info humble-lms-message--remaining-attempts">
               <div class="humble-lms-message-title">' . __('Attention, limited attempts!', 'humble-lms') . '</div>
-              <div class="humble-lms-message-content">' . __('Maximum attempts', 'humble-lms') . ': <span class="humble-lms-quiz-max-attempts">' . absint( $max_attempts ) . '</span><br>
-                ' . __('Remaining attempts', 'humble-lms') . ': <span class="humble-lms-quiz-remaining-attempts">' . $this->quiz->remaining_attempts( $quiz_ids ) . '</span>
+              <div class="humble-lms-message-content">' . __('Maximum attempts', 'humble-lms') . ': <span class="humble-lms-quiz-max-attempts">' . $max_attempts . '</span><br>
+                ' . __('Remaining attempts', 'humble-lms') . ': <span class="humble-lms-quiz-remaining-attempts">' . $remaining_attempts . '</span>
               </div>
             </div>';
           }

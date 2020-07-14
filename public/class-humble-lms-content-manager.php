@@ -254,6 +254,43 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get quizzes in a single course.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_course_quizzes( $course_id = null ) {
+      $translator = new Humble_LMS_Translator;
+      $course_quizzes = [];
+
+      if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' )
+        return $course_quizzes;
+
+      $course_sections = self::get_course_sections( $course_id );
+
+      foreach( $course_sections as $section ) {
+        $lesson_ids = $section['lessons'];
+
+        foreach( $lesson_ids as $lesson_id ) {
+          $translated_post_id = $translator->get_translated_post_id( (int)$lesson_id );
+  
+          if( $translated_post_id ) {
+            $lesson_quizzes = self::get_lesson_quizzes( $translated_post_id );
+
+            foreach( $lesson_quizzes as $quiz_id ) {
+              array_push( $course_quizzes, $quiz_id );
+            }
+          }
+        }
+      }
+
+      $course_quizzes = array_unique( $course_quizzes );
+
+      return $course_quizzes;
+    }
+
+    /**
      * Get track IDs (published / unpublished)
      *
      * @param   bool

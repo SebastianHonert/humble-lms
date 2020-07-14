@@ -97,6 +97,10 @@
   margin-top: .5em;
 }
 
+.humble-lms-activity-trigger-quiz-percent {
+  display: none;
+}
+
 .humble-lms-reporting-table {
   margin-bottom: 1em;
 }

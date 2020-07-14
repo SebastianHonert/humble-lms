@@ -123,10 +123,6 @@ function humble_lms_course_duration_mb()
   $duration = get_post_meta($post->ID, 'humble_lms_course_duration', true);
 
   echo '<input type="text" class="widefat" name="humble_lms_course_duration" id="humble_lms_course_duration" value="' . $duration . '">';
-
-  // TESTING
-  $course_quizzes = Humble_LMS_Content_Manager::get_course_quizzes( $post->ID );
-  print_r( $course_quizzes );
 }
 
 // Sections meta box

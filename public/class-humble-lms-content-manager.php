@@ -291,6 +291,33 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get quizzes for a single track id.
+     *
+     * @param   int|bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public static function get_track_quizzes( $track_id, $published = false ) {
+      $track_quizzes = [];
+
+      if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' )
+        return $track_quizzes;
+
+      $track_courses = self::get_track_courses( $track_id );
+      
+      foreach( $track_courses as $course_id ) {
+        $course_quizzes = self::get_course_quizzes( $course_id );
+        foreach( $course_quizzes as $quiz_id ) {
+          array_push( $track_quizzes, $quiz_id );
+        }
+      }
+
+      $track_quizzes = array_unique( $track_quizzes );
+      
+      return $track_quizzes;
+    }
+
+    /**
      * Get track IDs (published / unpublished)
      *
      * @param   bool

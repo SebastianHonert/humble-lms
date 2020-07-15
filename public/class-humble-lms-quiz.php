@@ -23,6 +23,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
 
       $this->user = new Humble_LMS_Public_User;
       $this->translator = new Humble_LMS_Translator;
+      $this->content_manager = new Humble_LMS_Content_Manager;
 
     }
 
@@ -183,7 +184,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         return;
 
       $html = '';
-      $context = uniqid();
+      $uid = uniqid();
       $completed = $this->user->completed_quiz( $quiz_id );
       $answers = $this->shuffle_answers( $answers, $quiz_id );
 
@@ -192,7 +193,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
         $html .= '<label class="humble-lms-label-container">';
-        $html .= '<input type="radio" name="single-choice-' . $context . '" value="' . $correct . '" ' . $checked  . '>' . $answer['answer'];
+        $html .= '<input type="radio" name="single-choice-' . $uid . '" value="' . $correct . '" ' . $checked  . '>' . $answer['answer'];
         $html .= '<span class="humble-lms-radio"></span>';
         $html .= '</label>';
         $html .= '</div>';
@@ -213,7 +214,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         return;
 
       $html = '';
-      $context = uniqid();
+      $uid = uniqid();
       $completed = $this->user->completed_quiz( $quiz_id );
       $answers = $this->shuffle_answers( $answers, $quiz_id );
       foreach( $answers as $answer ) {
@@ -221,7 +222,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $checked = $correct && $completed ? 'checked' : '';
         $html .= '<div class="humble-lms-answer">';
         $html .= '<label class="humble-lms-label-container">';
-        $html .= '<input type="checkbox" name="multiple-choice-' . $context . '" value="' . $correct . '" ' . $checked . '>' . $answer['answer'];
+        $html .= '<input type="checkbox" name="multiple-choice-' . $uid . '" value="' . $correct . '" ' . $checked . '>' . $answer['answer'];
         $html .= '<span class="humble-lms-checkmark"></span>';
         $html .= '</label>';
         $html .= '</div>';
@@ -396,6 +397,137 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       }
 
       return $max_attempts;
+    }
+
+    /**
+     * Get best quiz attempts for a single user.
+     * 
+     * @param   int
+     * @return  int
+     * @since   0.0.1
+     */
+    public function single_user_best_quiz_attempt( $user_id = null, $quiz_id = null ) {
+      if( ! $quiz_id || 'humble_lms_quiz' !== get_post_type( $quiz_id ) ) {
+        return false;
+      }
+
+      if( ! $user_id || false === get_userdata( $user_id ) ) {
+        if( ! get_current_user_id() ) {
+          return false;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      $evaluations = $this->user->evaluations();
+
+      $quiz_results = array();
+  
+      foreach( $evaluations as $evaluation ) {
+        if( empty( $evaluation ) || ! is_array( $evaluation ) ) {
+          continue;
+        }
+
+        if( in_array( $quiz_id, $evaluation['quizIds'] ) ) {
+          array_push( $quiz_results, (int)$evaluation['percent'] );
+        }
+      }
+
+      if( count( $quiz_results ) === 0 ) {
+        return false;
+      }
+
+      rsort( $quiz_results );
+
+      return $quiz_results[0];
+    }
+
+    /**
+     * Get course quiz results
+     * 
+     * @param   int
+     * @return  int
+     * @since   0.0.1
+     */
+    public function course_results( $user_id = null, $course_id = null ) {
+      if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' ) {
+        return false;
+      }
+
+      if( ! $user_id || false === get_userdata( $user_id ) ) {
+        if( ! get_current_user_id() ) {
+          return false;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      $quiz_results = array();
+      $course_quizzes = $this->content_manager->get_course_quizzes( $course_id );
+
+      foreach( $course_quizzes as $quiz_id ) {
+        $best_result = $this->single_user_best_quiz_attempt( $user_id, $quiz_id );
+
+        if( false !== $best_result ) {
+          array_push( $quiz_results, $best_result );
+        }
+      }
+
+      if( count( $quiz_results ) === 0 ) {
+        return false;
+      }
+
+      $percent = 0;
+      foreach( $quiz_results as $quiz_result ) {
+        $percent += $quiz_result;
+      }
+
+      return $percent / count( $quiz_results );
+    }
+
+    /**
+     * Get track quiz results
+     * 
+     * @param   int
+     * @return  int
+     * @since   0.0.1
+     */
+    public function track_results( $user_id = null, $track_id = null ) {
+      if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' ) {
+        return 0;
+      }
+
+      if( ! $user_id || false === get_userdata( $user_id ) ) {
+        if( ! get_current_user_id() ) {
+          return 0;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      $quiz_results = array();
+      $track_courses = $this->content_manager->get_track_courses( $track_id );
+
+      foreach( $track_courses as $course_id ) {
+        $course_results = $this->course_results( $user_id, $course_id );
+
+        if( false !== $course_results ) {
+          array_push( $quiz_results, $course_results );
+        }
+      }
+
+      if( count( $quiz_results ) === 0 ) {
+        return 0;
+      }
+
+      $percent = 0;
+      foreach( $quiz_results as $quiz_result ) {
+        $percent += $quiz_result;
+      }
+
+      echo $percent / count( $quiz_results );
+
+      return $percent / count( $quiz_results );
     }
     
   }

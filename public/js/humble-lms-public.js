@@ -514,13 +514,19 @@ jQuery(document).ready(function($) {
     let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div>'
 
     messages.forEach(function (message) {
-      if (!message.title || !message.name || !message.image_url ) {
+      if (!message.title || !message.name || (!message.image_url && !message.icon)) {
         return
       }
 
-      let imageHTML
-      imageHTML = message.icon ? '<div class="humble-lms-award-message-image humble-lms-bounce-in"><i class="' + message.icon + '"></i></div>' : ''
-      imageHTML = message.image_url ? '<img class="humble-lms-award-image humble-lms-bounce-in" src="' + message.image_url + '" alt="" />' : ''
+      let imageHTML = ''
+
+      if (message.image_url) {
+        imageHTML = '<img class="humble-lms-award-image humble-lms-bounce-in" src="' + message.image_url + '" alt="" />'
+      } else if (message.icon) {
+        imageHTML = '<div class="humble-lms-award-message-image humble-lms-bounce-in"><i class="' + message.icon + '"></i></div>'
+      } else {
+        imageHTML = ''
+      }
       
       awardHTML += `<div class="humble-lms-award-message-inner"><div>
         <div class="humble-lms-award-message-close" aria-label="Close award overlay">

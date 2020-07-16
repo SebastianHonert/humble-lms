@@ -637,7 +637,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
   
-      // Evaluate quiz button: TODO
+      // Evaluate quiz button
       $max_attempts = $this->quiz->max_attempts( $quizzes );
       $remaining_attempts = $this->quiz->remaining_attempts( $quizzes );
       $max_attempts_exceeded = $this->quiz->max_attempts_exceeded( $quizzes );
@@ -1284,8 +1284,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function humble_lms_user_purchases( $user_id = null ) {
       $purchases = $this->user->purchases( $user_id );
 
-      // TODO
-
       if( ! isset( $purchases ) || empty( $purchases ) ) {
         return '<p>' . __('You have not purchased any courses yet.', 'humble-lms') . '</p>';
       }
@@ -1455,13 +1453,13 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $html = '';
-      $quizzes = $this->quiz->get( $ids ); // TODO see below
+      $quizzes = $this->quiz->get( $ids );
 
       foreach( $quizzes as $quiz ) {
         $quiz_ids[] = $quiz->ID; 
       }
 
-      // Check if student exceeded max. attempts for each quiz: TODO
+      // Check if student exceeded max. attempts for each quiz
       $completed = $this->user->completed_quiz( $quiz_ids );
       $max_attempts = $this->quiz->max_attempts( $quiz_ids );
       $remaining_attempts = $this->quiz->remaining_attempts( $quiz_ids );
@@ -1476,7 +1474,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         <div class="humble-lms-message-content"><i class="ti ti-thumb-up"></i> ' . __('You successfully completed this quiz.', 'humble-lms') . '</div>
       </div>';
 
-      if( is_user_logged_in() && $max_attempts_exceeded && ! $completed ) { // TODO
+      if( is_user_logged_in() && $max_attempts_exceeded && ! $completed ) {
         return '<div class="humble-lms-message humble-lms-message--error humble-lms-message--max-attempts-exceeded">
           <div class="humble-lms-message-title">' . __('Attempts exceeded', 'humble-lms') . '</div>
           <div class="humble-lms-message-content">' . __('You exceeded the maximum number of attempts for this quiz.', 'humble-lms') . '</div>

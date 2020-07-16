@@ -347,7 +347,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         $max_attempts = (int)get_post_meta( $id, 'humble_lms_quiz_max_attempts', true );
 
         if( ! $max_attempts || $max_attempts === 0 ) {
-          return -1; // TODO
+          return -1;
         }
 
         $evaluations = $this->user->evaluations();

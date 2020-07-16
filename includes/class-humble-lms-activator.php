@@ -170,6 +170,7 @@ class Humble_LMS_Activator {
         'checkout' => $custom_page_checkout->ID,
         'currency' => 'USD',
       ),
+      'max_evaluations' => 25,
       'email_welcome' => "Hi there,
 
 welcome to WEBSITE_NAME! Here's how to log in:

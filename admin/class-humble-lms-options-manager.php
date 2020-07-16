@@ -175,6 +175,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'button_labels', __('Button texts', 'humble-lms'), array( $this, 'button_labels' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'max_evaluations', __('Max. number of logged quiz evaluations', 'humble-lms'), array( $this, 'max_evaluations' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
@@ -362,6 +363,16 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '<p><input type="number" name="humble_lms_options[custom_pages][user_profile]" value="' . (int)$custom_pages['user_profile'] . '" /></p>';
       echo '<p><strong>' . __('Checkout', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['checkout'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
       echo '<p><input type="number" name="humble_lms_options[custom_pages][checkout]" value="' . (int)$custom_pages['checkout'] . '" /></p>';
+    }
+
+    /**
+     * Option for max. number of evaluations to be logged per user/quiz.
+     *
+     * @since    0.0.1
+     */
+    public function max_evaluations() {
+      $max_evaluations = isset( $this->options['max_evaluations'] ) ? (int)$this->options['max_evaluations'] : 50;
+      echo '<input type="number" min="10" max="999" step="1" id="max_evaluations" name="humble_lms_options[max_evaluations]" value="' . $max_evaluations . '">';
     }
 
     /**
@@ -589,6 +600,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         
         if( isset( $input['custom_pages'] ) )
           $options['custom_pages'] = $input['custom_pages'];
+
+        if( isset( $input['max_evaluations'] ) )
+          $options['max_evaluations'] = (int)$input['max_evaluations'];
+
+        if( $options['max_evaluations'] < 10 ) {
+          $options['max_evaluations'] = 10;
+        } elseif( $options['max_evaluations'] > 999 ) {
+          $options['max_evaluations'] = 999;
+        }
       }
 
       if( $active === 'registration' ) {

@@ -109,6 +109,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
+      $options = get_option('humble_lms_options');
       $evaluation = $_POST['evaluation'];
       $tryAgain = (int)$evaluation['tryAgain'];
       $completed = (int)$evaluation['completed'];
@@ -205,7 +206,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $evaluation['completed'] = $completed;
       $evaluation['completed_quizzes'] = $completed_quizzes;
 
-      if( count( $evaluations ) < 50 ) { // Max. 50 attempts evaluated. TODO: add value to options?
+      if( count( $evaluations ) < $options['max_evaluations'] ) {
         array_push( $evaluations, $evaluation );
       } else {
         array_shift( $evaluations );

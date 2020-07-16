@@ -187,6 +187,18 @@ jQuery(document).ready(function($) {
       } else {
         $('#humble_lms_activity_trigger_quiz_percent, .humble-lms-activity-trigger-quiz-percent').hide(0)
       }
+
+      if (selected_value === 'user_completed_all_track_quizzes') {
+        $('#humble_lms_activity_trigger_all_track_quizzes_percent, .humble-lms-activity-trigger-all-track-quizzes-percent').show(0)
+      } else {
+        $('#humble_lms_activity_trigger_all_track_quizzes_percent, .humble-lms-activity-trigger-all-track-quizzes-percent').hide(0)
+      }
+
+      if (selected_value === 'user_completed_all_course_quizzes') {
+        $('#humble_lms_activity_trigger_all_course_quizzes_percent, .humble-lms-activity-trigger-all-course-quizzes-percent').show(0)
+      } else {
+        $('#humble_lms_activity_trigger_all_course_quizzes_percent, .humble-lms-activity-trigger-all-course-quizzes-percent').hide(0)
+      }
     }
   }
 

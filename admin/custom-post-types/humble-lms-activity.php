@@ -85,6 +85,8 @@ function humble_lms_activity_trigger_mb()
   $type_course = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_course', true);
   $type_lesson = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_lesson', true);
   $type_quiz = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_quiz', true);
+  $type_all_track_quizzes = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_all_track_quizzes', true);
+  $type_all_course_quizzes = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_all_course_quizzes', true);
 
   $tracks = get_posts( array(
     'post_type' => 'humble_lms_track',
@@ -136,6 +138,10 @@ function humble_lms_activity_trigger_mb()
     echo '<option value="user_completed_all_courses" ' . $selected . '>' . __('Student completed all courses', 'humble-lms') . '</option>';
     $selected = $type === 'user_completed_quiz' ? 'selected' : '';
     echo '<option value="user_completed_quiz" data-select="humble_lms_activity_trigger_quiz" ' . $selected . '>' . __('Student completed a quiz', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_all_track_quizzes' ? 'selected' : '';
+    echo '<option value="user_completed_all_track_quizzes" data-select="humble_lms_activity_trigger_all_track_quizzes" ' . $selected . '>' . __('Student completed all quizzes in a track', 'humble-lms') . '</option>';
+    $selected = $type === 'user_completed_all_course_quizzes' ? 'selected' : '';
+    echo '<option value="user_completed_all_course_quizzes" data-select="humble_lms_activity_trigger_all_course_quizzes" ' . $selected . '>' . __('Student completed all quizzes in a course', 'humble-lms') . '</option>';
   echo '</select>';
 
   echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_track" id="humble_lms_activity_trigger_track">';
@@ -178,6 +184,40 @@ function humble_lms_activity_trigger_mb()
 
   echo '<p class="humble-lms-activity-trigger-quiz-percent"><strong>' . __('Required percentage of correct answers %', 'humble-lms') . '</strong><br>';
   echo '<input type="number" value="' . $percent . '" min="0" max="100" step="1" class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_quiz_percent" id="humble_lms_activity_trigger_quiz_percent"></p>';
+
+  echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_all_track_quizzes" id="humble_lms_activity_trigger_all_track_quizzes">';
+    echo '<option disabled selected>' . __('Select a track', 'humble-lms') . '&hellip;</option>';
+    foreach( $tracks as $track ) {
+      $selected = $type_all_track_quizzes === $track->ID ? 'selected' : '';
+      echo '<option value="' . $track->ID . '" ' . $selected . '>' . $track->post_title . '</option>';
+    }
+  echo '</select>';
+
+  $all_track_quizzes_percent = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_all_track_quizzes_percent', true);
+
+  if( ! $all_track_quizzes_percent ) {
+    $all_track_quizzes_percent = 0;
+  }
+
+  echo '<p class="humble-lms-activity-trigger-all-track-quizzes-percent"><strong>' . __('Required percentage of correct answers %', 'humble-lms') . '</strong><br>';
+  echo '<input type="number" value="' . $all_track_quizzes_percent . '" min="0" max="100" step="1" class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_all_track_quizzes_percent" id="humble_lms_activity_trigger_all_track_quizzes_percent"></p>';
+
+  echo '<select class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_all_course_quizzes" id="humble_lms_activity_trigger_all_course_quizzes">';
+    echo '<option disabled selected>' . __('Select a course', 'humble-lms') . '&hellip;</option>';
+    foreach( $courses as $course ) {
+      $selected = $type_all_course_quizzes === $course->ID ? 'selected' : '';
+      echo '<option value="' . $course->ID . '" ' . $selected . '>' . $course->post_title . '</option>';
+    }
+  echo '</select>';
+
+  $all_course_quizzes_percent = (int)get_post_meta($post->ID, 'humble_lms_activity_trigger_all_course_quizzes_percent', true);
+
+  if( ! $all_course_quizzes_percent ) {
+    $all_course_quizzes_percent = 0;
+  }
+
+  echo '<p class="humble-lms-activity-trigger-all-course-quizzes-percent"><strong>' . __('Required percentage of correct answers %', 'humble-lms') . '</strong><br>';
+  echo '<input type="number" value="' . $all_course_quizzes_percent . '" min="0" max="100" step="1" class="widefat humble-lms-activity-trigger-select" name="humble_lms_activity_trigger_all_course_quizzes_percent" id="humble_lms_activity_trigger_all_course_quizzes_percent"></p>';
 }
 
 // Action meta box
@@ -287,10 +327,22 @@ function humble_lms_save_activity_meta_boxes( $post_id, $post )
   $activity_meta['humble_lms_activity_trigger_course'] = isset( $_POST['humble_lms_activity_trigger_course'] ) ? (int)$_POST['humble_lms_activity_trigger_course'] : '';
   $activity_meta['humble_lms_activity_trigger_lesson'] = isset( $_POST['humble_lms_activity_trigger_lesson'] ) ? (int)$_POST['humble_lms_activity_trigger_lesson'] : '';
   $activity_meta['humble_lms_activity_trigger_quiz'] = isset( $_POST['humble_lms_activity_trigger_quiz'] ) ? (int)$_POST['humble_lms_activity_trigger_quiz'] : '';
+  $activity_meta['humble_lms_activity_trigger_all_track_quizzes'] = isset( $_POST['humble_lms_activity_trigger_all_track_quizzes'] ) ? (int)$_POST['humble_lms_activity_trigger_all_track_quizzes'] : '';
+  $activity_meta['humble_lms_activity_trigger_all_course_quizzes'] = isset( $_POST['humble_lms_activity_trigger_all_course_quizzes'] ) ? (int)$_POST['humble_lms_activity_trigger_all_course_quizzes'] : '';
   $activity_meta['humble_lms_activity_trigger_quiz_percent'] = isset( $_POST['humble_lms_activity_trigger_quiz_percent'] ) ? (int)$_POST['humble_lms_activity_trigger_quiz_percent'] : 0;
+  $activity_meta['humble_lms_activity_trigger_all_track_quizzes_percent'] = isset( $_POST['humble_lms_activity_trigger_all_track_quizzes_percent'] ) ? (int)$_POST['humble_lms_activity_trigger_all_track_quizzes_percent'] : 0;
+  $activity_meta['humble_lms_activity_trigger_all_course_quizzes_percent'] = isset( $_POST['humble_lms_activity_trigger_all_course_quizzes_percent'] ) ? (int)$_POST['humble_lms_activity_trigger_all_course_quizzes_percent'] : 0;
 
   if( $activity_meta['humble_lms_activity_trigger_quiz_percent'] < 0 || $activity_meta['humble_lms_activity_trigger_quiz_percent'] > 100 ) {
-    $percent = 0;
+    $activity_meta['humble_lms_activity_trigger_quiz_percent'] = 0;
+  }
+
+  if( $activity_meta['humble_lms_activity_trigger_all_track_quizzes_percent'] < 0 || $activity_meta['humble_lms_activity_trigger_all_track_quizzes_percent'] > 100 ) {
+    $activity_meta['humble_lms_activity_trigger_all_track_quizzes_percent'] = 0;
+  }
+
+  if( $activity_meta['humble_lms_activity_trigger_all_course_quizzes_percent'] < 0 || $activity_meta['humble_lms_activity_trigger_all_course_quizzes_percent'] > 100 ) {
+    $activity_meta['humble_lms_activity_trigger_all_course_quizzes_percent'] = 0;
   }
 
   $activity_meta['humble_lms_activity_action'] = isset( $_POST['humble_lms_activity_action'] ) ? sanitize_text_field( $_POST['humble_lms_activity_action'] ) : '';

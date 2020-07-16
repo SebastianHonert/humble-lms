@@ -97,7 +97,9 @@
   margin-top: .5em;
 }
 
-.humble-lms-activity-trigger-quiz-percent {
+.humble-lms-activity-trigger-quiz-percent,
+.humble-lms-activity-trigger-all-track-quizzes-percent,
+.humble-lms-activity-trigger-all-course-quizzes-percent {
   display: none;
 }
 

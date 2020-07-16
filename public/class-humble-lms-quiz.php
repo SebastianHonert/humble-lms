@@ -466,10 +466,14 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       $course_quizzes = $this->content_manager->get_course_quizzes( $course_id );
 
       foreach( $course_quizzes as $quiz_id ) {
-        $best_result = $this->single_user_best_quiz_attempt( $user_id, $quiz_id );
+        $include_result = (int)get_post_meta( $quiz_id, 'humble_lms_quiz_include_result', true);
 
-        if( false !== $best_result ) {
-          array_push( $quiz_results, $best_result );
+        if( 1 === $include_result ) {
+          $best_result = $this->single_user_best_quiz_attempt( $user_id, $quiz_id );
+
+          if( false !== $best_result ) {
+            array_push( $quiz_results, $best_result );
+          }
         }
       }
 

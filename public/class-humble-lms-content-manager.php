@@ -245,12 +245,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  array
      * @since   0.0.1
      */
-    public function get_quizzes( $published = false ) {
+    public function get_quizzes( $published = false, $translation = true ) {
       $args = array(
         'post_type' => 'humble_lms_quiz',
         'posts_per_page' => -1,
         'post_status' => $published ? 'publish' : 'any',
-        $this->translator->current_language(),
+        'lang' => $translation ? $this->translator->current_language() : '',
       );
   
       $quizzes = get_posts( $args );

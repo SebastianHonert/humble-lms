@@ -1129,7 +1129,7 @@ class Humble_LMS_Admin {
     switch ( $column ) {
       case 'quizzes' :
         $quizzes_array = array();
-        $quizzes = $content_manager->get_quizzes();
+        $quizzes = $content_manager->get_quizzes( false, false );
 
         foreach( $quizzes as $quiz ) {
           $questions = $content_manager->get_quiz_questions( $quiz->ID );

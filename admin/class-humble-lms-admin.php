@@ -1199,10 +1199,10 @@ class Humble_LMS_Admin {
     switch ( $column ) {
       case 'tracks' :
         $tracks_array = array();
-        $tracks = $content_manager->get_tracks();
+        $tracks = $content_manager->get_tracks( false, false );
 
         foreach( $tracks as $track ) {
-          $courses = $content_manager->get_track_courses( $track->ID );
+          $courses = $content_manager->get_track_courses( $track->ID, false, false );
 
           foreach( $courses as $course ) {
             if( in_array( $post_id, $courses ) ) {

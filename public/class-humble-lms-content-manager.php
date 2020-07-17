@@ -21,12 +21,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
-    public function get_tracks( $published = false ) {
+    public function get_tracks( $published = false, $translation = true ) {
       $args = array(
         'post_type' => 'humble_lms_track',
         'posts_per_page' => -1,
         'post_status' => $published ? 'publish' : 'any',
-        'lang' => $this->translator->current_language(),
+        'lang' => $translation ? $this->translator->current_language() : '',
       );
   
       $tracks = get_posts( $args );
@@ -74,7 +74,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  Array
      * @since   0.0.1
      */
-    public static function get_track_courses( $track_id, $published = false ) {
+    public static function get_track_courses( $track_id, $published = false, $translation = true ) {
       $track_courses = [];
 
       if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' )
@@ -87,7 +87,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $translator = new Humble_LMS_Translator;
 
       foreach( $track_courses as $key => $course_id ) {
-        $translated_post_id = $translator->get_translated_post_id( $course_id );
+        $translated_post_id = $translation ? $translator->get_translated_post_id( $course_id ) : $course_id;
 
         if( $translated_post_id ) {
           $track_courses[$key] = $translated_post_id;

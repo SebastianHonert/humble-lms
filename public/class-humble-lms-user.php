@@ -569,6 +569,9 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
               }
             }
 
+            // TODO: Check percentage for all quizzes in track
+            // TODO: Check percentage for all quizzes in course
+
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);
             
             switch( $action ) 

@@ -166,7 +166,7 @@ class Humble_LMS_Admin {
     if( wp_doing_ajax() )
       return;
 
-    if( is_user_logged_in() && is_admin() && ! current_user_can('manage_options') ) {
+    if( is_user_logged_in() && is_admin() && ! current_user_can('edit_others_pages') ) {
       wp_safe_redirect( home_url() );
       die;
     }
@@ -1051,20 +1051,25 @@ class Humble_LMS_Admin {
    */
   public function humble_lms_lesson_sortable_column_courses( $column, $post_id ) {
     $content_manager = new Humble_LMS_Content_Manager;
-    switch ( $column ) {
-      case 'courses' :
+
+    switch( $column ) {
+      case 'courses':
         $courses_array = array();
-        $courses = $content_manager->get_courses();
+        $courses = $content_manager->get_courses( false, false );
 
         foreach( $courses as $course ) {
-          $lessons = $content_manager->get_course_lessons( $course->ID );
+          $lessons = $content_manager->get_course_lessons( $course->ID, false );
 
           foreach( $lessons as $lesson ) {
             if( in_array( $post_id, $lessons ) ) {
-              array_push( $courses_array, array(
+              $new = array(
                 'id' => $course->ID,
                 'name' => $course->post_title,
-              ) );
+              );
+
+              if( ! in_array( $new, $courses_array ) ) {
+                array_push( $courses_array, $new );
+              }
             }
           }
         }

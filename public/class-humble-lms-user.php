@@ -276,7 +276,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * TODO: Check if user completed all quizzes in a course.
+     * Check if user completed all quizzes in a course.
      *
      * @param   int
      * @return  array
@@ -327,23 +327,43 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * TODO: Check if user completed all quizzes in a track.
      *
      * @param   int
-     * @return  bool
+     * @return  array
      * @since   0.0.1
      */
     public function completed_all_track_quizzes( $user_id = null, $quiz_id ) {
+      $completed_tracks = [];
+
       if( ! $user_id ) {
         if( ! is_user_logged_in() ) {
-          return false;
+          return $completed_tracks;
         } else {
           $user_id = get_current_user_id();
         }
       }
 
-      if( 'humble_lms_quiz' !== get_post_type( $id ) ) {
-        return false;
+      if( 'humble_lms_quiz' !== get_post_type( $quiz_id ) ) {
+        return $completed_tracks;
       }
 
-      return false;
+      $completed_courses = $this->completed_all_course_quizzes( $user_id, $quiz_id );
+      $tracks = $this->content_manager->get_tracks( true, true );
+
+      if( empty( $completed_courses ) || empty( $tracks ) ) {
+        return $completed_tracks;
+      }
+
+      foreach( $tracks as $track ) {
+        $track_courses = $this->content_manager->get_track_courses( $track->ID );
+
+        $track_courses = sort( $track_courses );
+        $completed_courses = sort( $completed_courses );
+
+        if( $track_courses === $completed_courses ) {
+          array_push( $completed_tracks, $track->ID );
+        }
+      }
+
+      return $completed_tracks;
     }
 
     /**
@@ -545,7 +565,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
               $humble_lms_activity_trigger_quiz = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_quiz', true);
               $trigger_quiz_percent = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_quiz_percent', true);
 
-              // TODO: PERCENTAGE STAYS SAME FOR ALL COMPLETED QUIZ IDs!
               if( ! in_array( $id, $current_quiz_ids ) ) {
                 unset( $activities[$_key] );
               } else if( in_array( $id, $current_quiz_ids ) && $percent < $trigger_quiz_percent ) {
@@ -597,28 +616,48 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             }
           }
 
-          // TODO: User completes a quiz – check if all quizzes in track completed
-          // if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! $user_completed_all_track_quizzes ) {
-          //   if( $this->completed_all_track_quizzes( $user->ID, $id ) ) {
-          //     $user_completed_all_track_quizzes = true;
+          // User completes a quiz – check if all quizzes in track completed
+          if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! $user_completed_all_track_quizzes ) {
+            $completed_all_track_quizzes = $this->completed_all_track_quizzes( $user->ID, $id );
 
-          //     $args = array(
-          //       'post_type' => 'humble_lms_activity',
-          //       'posts_per_page' => -1,
-          //       'post_status' => 'publish',
-          //       'meta_query' => array(
-          //         array(
-          //           'key' => 'humble_lms_activity_trigger',
-          //           'value' => 'user_completed_all_track_quizzes',
-          //         ),
-          //       ),
-          //       'lang' => $this->translator->current_language(),
-          //     );
+            if( ! empty( $completed_all_track_quizzes ) ) {
+              $user_completed_all_track_quizzes = true;
 
-          //     $activities_completed_all_track_quizzes = get_posts( $args );
-          //     $activities = array_merge( $activities, $activities_completed_all_track_quizzes );
-          //   }
-          // }
+              $args = array(
+                'post_type' => 'humble_lms_activity',
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+                'meta_query' => array(
+                  array(
+                    'key' => 'humble_lms_activity_trigger',
+                    'value' => 'user_completed_all_track_quizzes',
+                  ),
+                  array(
+                    'key' => 'humble_lms_activity_trigger_all_track_quizzes',
+                    'value' => $completed_all_track_quizzes,
+                    'compare' => 'IN',
+                  ),
+                ),
+                'lang' => $this->translator->current_language(),
+              );
+
+              $activities_completed_all_track_quizzes = get_posts( $args );
+
+              $quiz = new Humble_LMS_Quiz;
+
+              foreach( $activities_completed_all_track_quizzes as $_key => $activity ) {
+                $humble_lms_activity_trigger_all_track_quizzes = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_all_track_quizzes', true);
+                $trigger_all_track_quizzes_percent = (int)get_post_meta($activity->ID, 'humble_lms_activity_trigger_all_track_quizzes_percent', true);
+                $percent_average = $quiz->track_results( $user->ID, $humble_lms_activity_trigger_all_track_quizzes );
+
+                if( $percent_average < $trigger_all_track_quizzes_percent ) {
+                  unset( $activities_completed_all_track_quizzes[$_key] );
+                }
+              }
+
+              $activities = array_merge( $activities, $activities_completed_all_track_quizzes );
+            }
+          }
 
           foreach( $activities as $activity_key => $activity ) {
             $action = get_post_meta($activity->ID, 'humble_lms_activity_action', true);

@@ -153,8 +153,23 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
+      // Add quiz evaluation to user meta
+      $evaluations = $this->user->evaluations();
+      $evaluation['datetime'] = round(microtime(true) * 1000);
+      $evaluation['completed'] = $completed;
+      $evaluation['completed_quizzes'] = $completed_quizzes;
+
+      if( count( $evaluations ) < $options['max_evaluations'] ) {
+        array_push( $evaluations, $evaluation );
+      } else {
+        array_shift( $evaluations );
+        array_push( $evaluations, $evaluation );
+      }
+
+      update_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', $evaluations );
+
       // Perform activities => array( [], [], [], [], [], [] ) => lesson, courses, tracks, awards, certificates, quizzes
-      $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ), $evaluation['percent'] );
+      $evaluation['activities'] = $this->user->perform_activities( array( [], [], [], [], [], $completed_quizzes ), $evaluation['percent'], $evaluation['quizIds'] );
 
       // Awards
       if( ! empty( $evaluation['activities'][3] ) ) {
@@ -199,21 +214,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           array_push( $evaluation['certificates'], $tmp );
         }
       }
-
-      // Add quiz evaluation to user meta
-      $evaluations = $this->user->evaluations();
-      $evaluation['datetime'] = round(microtime(true) * 1000);
-      $evaluation['completed'] = $completed;
-      $evaluation['completed_quizzes'] = $completed_quizzes;
-
-      if( count( $evaluations ) < $options['max_evaluations'] ) {
-        array_push( $evaluations, $evaluation );
-      } else {
-        array_shift( $evaluations );
-        array_push( $evaluations, $evaluation );
-      }
-
-      update_user_meta( get_current_user_ID(), 'humble_lms_quiz_evaluations', $evaluations );
 
       // Update remaining attempts
       $evaluation['max_attempts_exceeded'] = $this->quiz->max_attempts_exceeded( $evaluation['quizIds'] );

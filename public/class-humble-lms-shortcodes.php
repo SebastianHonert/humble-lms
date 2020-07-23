@@ -1452,6 +1452,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return '<p>' . __('Please enter at least one valid quiz ID.', 'humble-lms') . '</p>';
       }
 
+      $ids_array = explode(',', $ids);
+
+      foreach( $ids_array as $id ) {
+        if( 'publish' !== get_post_status( $id ) || 'humble_lms_quiz' !== get_post_type( $id ) ) {
+          return '<p>' . __('One or more quiz ID seems to be invalid.', 'humble-lms') . '</p>';
+        } 
+      }
+
       $html = '';
       $quizzes = $this->quiz->get( $ids );
 

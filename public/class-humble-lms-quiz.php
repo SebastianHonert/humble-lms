@@ -450,13 +450,15 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @since   0.0.1
      */
     public function course_results( $user_id = null, $course_id = null ) {
+      $percent = 0;
+
       if( ! $course_id || get_post_type( $course_id ) !== 'humble_lms_course' ) {
-        return false;
+        return $percent;
       }
 
       if( ! $user_id || false === get_userdata( $user_id ) ) {
         if( ! get_current_user_id() ) {
-          return false;
+          return $percent;
         } else {
           $user_id = get_current_user_id();
         }
@@ -478,10 +480,9 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       }
 
       if( count( $quiz_results ) === 0 ) {
-        return false;
+        return $percent;
       }
 
-      $percent = 0;
       foreach( $quiz_results as $quiz_result ) {
         $percent += $quiz_result;
       }
@@ -497,13 +498,15 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
      * @since   0.0.1
      */
     public function track_results( $user_id = null, $track_id = null ) {
+      $percent = 0;
+
       if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' ) {
-        return 0;
+        return $percent;
       }
 
       if( ! $user_id || false === get_userdata( $user_id ) ) {
         if( ! get_current_user_id() ) {
-          return 0;
+          return $percent;
         } else {
           $user_id = get_current_user_id();
         }
@@ -521,15 +524,12 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       }
 
       if( count( $quiz_results ) === 0 ) {
-        return 0;
+        return $percent;
       }
 
-      $percent = 0;
       foreach( $quiz_results as $quiz_result ) {
         $percent += $quiz_result;
       }
-
-      echo $percent / count( $quiz_results );
 
       return $percent / count( $quiz_results );
     }

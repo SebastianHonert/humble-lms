@@ -78,14 +78,6 @@ add_action( 'add_meta_boxes', 'humble_lms_quiz_add_meta_boxes' );
 function humble_lms_quiz_questions_mb() {
   global $post;
 
-  // TESTING
-  $user = new Humble_LMS_Public_User;
-  $completed_tracks = $user->completed_all_track_quizzes( get_current_user_id(), $post->ID );
-
-  print_r( $completed_tracks );
-
-  // TESTING
-
   wp_nonce_field('humble_lms_meta_nonce', 'humble_lms_meta_nonce');
 
   $translator = new Humble_LMS_Translator;

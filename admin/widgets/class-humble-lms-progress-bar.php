@@ -45,7 +45,7 @@ class Humble_LMS_Widget_Progress_Bar extends WP_Widget
 
     if( ! empty( $title ) ) {
       echo $args['before_title'];
-      echo $title;
+      echo __($title, 'humble-lms');
       echo $args['after_title'];
     }
   

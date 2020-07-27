@@ -30,7 +30,6 @@
   position: relative;
   background: $color-primary;
   color: $color-light;
-  padding: 1em 1em 0 1em;
   background-size: cover;
   background-position: center center;
   display: block;
@@ -62,7 +61,7 @@
   color: $color-light;
 }
 
-.humble-lms-course-tile-layer {
+.humble-lms-course-title-layer {
   position: absolute;
   left: 0;
   top: 0;
@@ -70,6 +69,7 @@
   height: 100%;
   background: $color-primary;
   opacity: .825;
+  z-index: -1;
 }
 
 .humble-lms-16-9 {
@@ -89,9 +89,13 @@
   font-size: 1.5em;
   line-height: 1.2;
   position: absolute;
-  bottom: 1em;
+  bottom: 0;
   text-shadow: 1px 1px 0 rgba(0,0,0,.4);
-  max-width: 90%;
+  padding: .5em;
+  z-index: 1;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .humble-lms-course-tile-meta {

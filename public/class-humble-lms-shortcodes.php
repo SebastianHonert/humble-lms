@@ -124,10 +124,12 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $price = ! $this->user->purchased( $track_id ) ? $this->options_manager->get_currency() . ' ' . $this->content_manager->get_price( $track_id ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
-        $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
-          $html .= '<div class="humble-lms-course-tile-layer" style="' . $overlay_color . '"></div>';
+        $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
           $html .= '<div class="humble-lms-16-9">';
-            $html .= '<div class="humble-lms-course-title">' . $track->post_title . '</div>';
+            $html .= '<div class="humble-lms-course-title">';
+              $html .= $track->post_title;
+              $html .= '<div class="humble-lms-course-title-layer" style="' . $overlay_color . '"></div>';
+            $html .= '</div>';
           $html .= '</div>';
         $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
@@ -262,12 +264,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->content_manager->get_price( $course_id ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
-        $html .= '<a style="background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
-          $html .= '<div class="humble-lms-course-tile-layer" style="' . $overlay_color . '"></div>';
-          $html .= '<div class="humble-lms-16-9">';
-            $html .= '<div class="humble-lms-course-title">' . $course->post_title . '</div>';
+      $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
+        $html .= '<div class="humble-lms-16-9">';
+          $html .= '<div class="humble-lms-course-title">';
+            $html .= $course->post_title;
+            $html .= '<div class="humble-lms-course-title-layer" style="' . $overlay_color . '"></div>';
           $html .= '</div>';
-        $html .= '</a>';
+        $html .= '</div>';
+      $html .= '</a>';
         $html .= '<div class="humble-lms-course-tile-meta">';
           $html .= $is_for_sale && $price ? '<span class="humble-lms-price"><strong>' . __('Price', 'humble-lms') . ':</strong> <span>' . $price . '*</span></span>' : '';
           if( $providers ) {

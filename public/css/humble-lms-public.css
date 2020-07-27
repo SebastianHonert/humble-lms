@@ -986,8 +986,8 @@ input[type='submit'].humble-lms-btn--error:active,
 
 /* Style the radio indicator (dot/circle) */
 .humble-lms-label-container .humble-lms-radio::after {
-  width: .5em;
-  height: .5em;
+  width: .44em;
+  height: .44em;
   border-radius: 50%;
   background: white; }
 

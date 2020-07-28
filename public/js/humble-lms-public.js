@@ -2,6 +2,7 @@ jQuery(document).ready(function($) {
   'use strict'
 
   const animSpeed = 400
+  const animSpeedFast = 150
 
   /**
    * Show/hide loading layer/spinner
@@ -543,5 +544,17 @@ jQuery(document).ready(function($) {
     $('body').append(awardHTML)
     showMessages()
   }
+
+  // TippyJS
+  const tippys = tippy('[data-tippy-content]', {
+    delay: animSpeedFast,
+    animation: 'scale',
+    allowHTML: true
+  })
+
+  tippys.forEach(function (tippy) {
+    const content = marked(tippy.popper.innerText)
+    tippy.setContent(content)
+  })
 
 })

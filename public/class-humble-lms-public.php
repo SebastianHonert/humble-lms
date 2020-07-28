@@ -77,6 +77,10 @@ class Humble_LMS_Public {
      * class.
      */
 
+    // Tippy
+    wp_enqueue_style( 'tippy-scale', plugin_dir_url( __FILE__ ) . 'js/tippy/animations/scale.css', array(), $this->version, 'all' );
+
+    // Humble LMS
     wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/humble-lms-public.css', array(), $this->version, 'all' );
     wp_enqueue_style( 'themify-icons', plugin_dir_url( __FILE__ ) . 'font/themify-icons/themify-icons.css', array(), $this->version, 'all' );
 
@@ -104,6 +108,8 @@ class Humble_LMS_Public {
     global $post;
     
     $options = get_option('humble_lms_options');
+
+    // PayPal
     if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
       $client_id = $options['paypal_client_id'];
       $currency = $this->options_manager->get_currency();
@@ -114,6 +120,7 @@ class Humble_LMS_Public {
       wp_enqueue_script( 'humble-lms-paypal' , 'https://www.paypal.com/sdk/js?client-id=' . $client_id . '&currency=' . $currency, false, NULL, true );
     }
 
+    // reCAPTChA
     if( Humble_LMS_Admin_Options_Manager::has_recaptcha() ) {
       $website_key = isset( $options['recaptcha_website_key'] ) ? $options['recaptcha_website_key'] : false;
 
@@ -122,8 +129,16 @@ class Humble_LMS_Public {
       }
     }
 
-    wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, false );
-    wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, false );
+     // Marked
+     wp_enqueue_script( 'humble-lms-marked', 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', false, '2.4.4', true );
+
+    // TippyJS
+    wp_enqueue_script( 'humble-lms-popper', plugin_dir_url( __FILE__ ) . 'js/tippy/popper.min.js', false, '2.4.4', true );
+    wp_enqueue_script( 'humble-lms-tippy', plugin_dir_url( __FILE__ ) . 'js/tippy/tippy-bundle.umd.min.js', false, '6.2.5', true );
+
+    // Humble LMS
+    wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, true );
+    wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, true );
     
     wp_localize_script( $this->humble_lms, 'humble_lms', array(
       'ajax_url' => admin_url( 'admin-ajax.php' ),

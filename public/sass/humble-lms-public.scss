@@ -1383,6 +1383,16 @@ input[type='submit'].humble-lms-btn--error:active,
   margin-bottom: 1em;
 }
 
+/* Tippy Tooltips */
+.tippy-box {
+  padding: .5em;
+}
+
+.tippy-box *:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
 /* Responsive */
 
 @media screen and (max-width: 767px) {

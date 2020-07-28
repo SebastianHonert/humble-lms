@@ -130,7 +130,7 @@ class Humble_LMS_Public {
     }
 
      // Marked
-     wp_enqueue_script( 'humble-lms-marked', 'https://cdn.jsdelivr.net/npm/marked/marked.min.js', false, '2.4.4', true );
+     wp_enqueue_script( 'humble-lms-marked', plugin_dir_url( __FILE__ ) . 'js/marked.min.js', false, '1.1.1', true );
 
     // TippyJS
     wp_enqueue_script( 'humble-lms-popper', plugin_dir_url( __FILE__ ) . 'js/tippy/popper.min.js', false, '2.4.4', true );

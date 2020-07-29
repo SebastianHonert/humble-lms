@@ -421,6 +421,10 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
 
       $evaluations = $this->user->evaluations();
 
+      if( empty( $evaluations ) ) {
+        return 0;
+      }
+
       $quiz_results = array();
   
       foreach( $evaluations as $evaluation ) {
@@ -434,7 +438,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
       }
 
       if( count( $quiz_results ) === 0 ) {
-        return false;
+        return 0;
       }
 
       rsort( $quiz_results );

@@ -103,6 +103,9 @@
   color: #999;
   font-size: .75em; }
 
+.humble-lms-course-single-parent-track {
+  font-weight: 600; }
+
 /* Syllabus */
 nav.humble-lms-syllabus {
   display: block;
@@ -191,6 +194,7 @@ li.humble-lms-syllabus-lesson span {
   display: block;
   margin-bottom: 1em; }
 
+.humble-lms-syllabus-track-title,
 .humble-lms-syllabus-course-title {
   font-weight: 600; }
 

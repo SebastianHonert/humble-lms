@@ -330,6 +330,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $syllabus_class = 'humble-lms-syllabus--lesson';
         $lesson_id = $post->ID;
         $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+        $track_ids = $this->content_manager->get_tracks_by_course_id( $course_id );
+        $parent_track = $this->content_manager->get_parent_track( $course_id, true );
         
         // Try to get course_id by checking if this lesson is
         // attached to only one course.
@@ -408,6 +410,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $duration = $duration ? '<span class="humble-lms-duration"><strong>' . __('Duration', 'humble-lms') . ':</strong> ' . $duration . '</span>' : '';
 
         $html .= '<p class="humble-lms-course-meta humble-lms-course-meta--lesson">';
+          $html .= ! $parent_track ? '<strong>' . __('Track', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Track', 'humble-lms') . ':</strong> <a class="humble-lms-syllabus-track-title" href="' . esc_url( get_permalink( $parent_track->ID ) ) . '">' . get_the_title( $parent_track->ID ) . '</a><br>';
           $html .= ! $course_id ? '<strong>' . __('Course', 'humble-lms') . ':</strong> ' . __('not selected', 'humble-lms') . '<br>' : '<strong>' . __('Course', 'humble-lms') . ':</strong> <a class="humble-lms-syllabus-course-title" href="' . esc_url( get_permalink( $course_id ) ) . '">' . get_the_title( $course_id ) . '</a><br>';
           $html .= $duration;
         $html .= '</p>';

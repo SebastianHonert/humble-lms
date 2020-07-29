@@ -19,6 +19,13 @@ if (have_posts()):
       
       echo '<h1 class="humble-lms-course-single-title">' . get_the_title() . '</h1>';
 
+      $content_manager = new Humble_LMS_Content_Manager();
+      $parent_track = $content_manager->get_parent_track( $post->ID, true );
+
+      if( $parent_track ) {
+        echo '<p>' . __('Track', 'humble_lms') . ': ' . '<a class="humble-lms-course-single-parent-track" href="' . esc_html( get_permalink( $parent_track->ID ) ) . '">' . $parent_track->post_title . '</a></p>'; 
+      }
+
       the_content();
 
       do_action( 'humble_lms_after_course_content' );

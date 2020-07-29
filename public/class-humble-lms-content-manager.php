@@ -239,6 +239,61 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get all tracks that contain a single course.
+     *
+     * @param   int
+     * @return  array
+     * @since   0.0.1
+     */
+    public function get_tracks_by_course_id( $course_id = null ) {
+      $tracks_by_quiz_id = [];
+
+      if( ! $course_id || 'humble_lms_course' !== get_post_type( $course_id ) ) {
+        return $tracks_by_quiz_id;
+      }
+
+      $tracks = $this->get_tracks( true, true );
+
+      foreach( $tracks as $track ) {
+        $courses = $this->get_track_courses( $track->ID );
+
+        if( in_array( $course_id, $courses ) ) {
+          array_push( $tracks_by_quiz_id, $track->ID );
+        }
+      }
+
+      return $tracks_by_quiz_id;
+    }
+
+    /**
+     * Get parent track ID.
+     * 
+     * @param   int
+     * @return  object
+     * @since   0.0.1
+     */
+    function get_parent_track( $course_id = null, $published = false ) {
+      if( ! $course_id || 'humble_lms_course' !== get_post_type( $course_id ) ) {
+        return false;
+      }
+
+      $track_ids = $this->get_tracks_by_course_id( $course_id );
+      $track_id = count( $track_ids ) === 1 ? $track_ids[0] : false;
+
+      if( ! $track_id ) {
+        return false;
+      }
+
+      if( $published && get_post_status( $track_id ) !== 'publish' ) {
+        return false;
+      }
+
+      $track = get_post( $track_id );
+
+      return $track;
+    }
+
+    /**
      * Get quizzes (published / unpublished).
      *
      * @param   bool

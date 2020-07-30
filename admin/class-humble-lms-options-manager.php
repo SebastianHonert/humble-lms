@@ -176,6 +176,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'button_labels', __('Button texts', 'humble-lms'), array( $this, 'button_labels' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'max_evaluations', __('Max. number of logged quiz evaluations', 'humble-lms'), array( $this, 'max_evaluations' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'tippy_theme', __('TippyJS tooltips theme', 'humble-lms'), array( $this, 'tippy_theme' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
@@ -373,6 +374,30 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function max_evaluations() {
       $max_evaluations = isset( $this->options['max_evaluations'] ) ? (int)$this->options['max_evaluations'] : 50;
       echo '<input type="number" min="10" max="999" step="1" id="max_evaluations" name="humble_lms_options[max_evaluations]" value="' . $max_evaluations . '">';
+    }
+
+    /**
+     * Option for TippyJS tooltip theme.
+     *
+     * @since    0.0.1
+     */
+    public function tippy_theme() {
+      $options = get_option('humble_lms_options');
+
+      $tippy_theme = isset( $options['tippy_theme'] ) ? sanitize_text_field( $options['tippy_theme'] ) : 'default';
+
+      echo '<select id="tippy_theme" name="humble_lms_options[tippy_theme]">';
+        $selected = $tippy_theme === 'default' ? 'selected="selected"' : '';
+        echo '<option value="default" ' . $selected . '>default</option>';
+        $selected = $tippy_theme === 'light' ? 'selected="selected"' : '';
+        echo '<option value="light" ' . $selected . '>light</option>';
+        $selected = $tippy_theme === 'light-border' ? 'selected="selected"' : '';
+        echo '<option value="light-border" ' . $selected . '>light-border</option>';
+        $selected = $tippy_theme === 'material' ? 'selected="selected"' : '';
+        echo '<option value="material" ' . $selected . '>material</option>';
+        $selected = $tippy_theme === 'translucent' ? 'selected="selected"' : '';
+        echo '<option value="translucent" ' . $selected . '>translucent</option>';
+      echo '</select>';
     }
 
     /**
@@ -603,6 +628,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
         if( isset( $input['max_evaluations'] ) )
           $options['max_evaluations'] = (int)$input['max_evaluations'];
+
+        if( isset( $input['tippy_theme'] ) )
+          $options['tippy_theme'] = sanitize_text_field( $input['tippy_theme'] );
 
         if( $options['max_evaluations'] < 10 ) {
           $options['max_evaluations'] = 10;

@@ -549,7 +549,10 @@ jQuery(document).ready(function($) {
   const tippys = tippy('[data-tippy-content]', {
     delay: animSpeedFast,
     animation: 'scale',
-    allowHTML: true
+    allowHTML: true,
+    interactive: true,
+    theme: 'default' !== humble_lms.tippy_theme ? humble_lms.tippy_theme : false,
+    trigger: 'click'
   })
 
   tippys.forEach(function (tippy) {

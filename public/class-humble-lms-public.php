@@ -77,9 +77,17 @@ class Humble_LMS_Public {
      * class.
      */
 
-    // Tippy
-    wp_enqueue_style( 'tippy-scale', plugin_dir_url( __FILE__ ) . 'js/tippy/animations/scale.css', array(), $this->version, 'all' );
+    $options = get_option('humble_lms_options');
 
+    $tippy_theme = isset( $options['tippy_theme'] ) ? sanitize_text_field( $options['tippy_theme'] ) : 'default';
+
+    // Tippy
+    if( $tippy_theme !== 'default' ) {
+      wp_enqueue_style( 'tippy-theme-' . $tippy_theme, plugin_dir_url( __FILE__ ) . 'js/tippy/themes/' . $tippy_theme . '.css', array(), $this->version, 'all' );
+    }
+
+    wp_enqueue_style( 'tippy-scale', plugin_dir_url( __FILE__ ) . 'js/tippy/animations/scale.css', array(), $this->version, 'all' );
+    
     // Humble LMS
     wp_enqueue_style( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'css/humble-lms-public.css', array(), $this->version, 'all' );
     wp_enqueue_style( 'themify-icons', plugin_dir_url( __FILE__ ) . 'font/themify-icons/themify-icons.css', array(), $this->version, 'all' );
@@ -153,6 +161,7 @@ class Humble_LMS_Public {
       'syllabus_max_height' => isset( $options['syllabus_max_height'] ) ? $options['syllabus_max_height'] : 640,
       'currency' => $this->options_manager->get_currency(),
       'has_paypal' => Humble_LMS_Admin_Options_Manager::has_paypal(),
+      'tippy_theme' => isset( $options['tippy_theme'] ) ? $options['tippy_theme'] : 'default',
     ) );
   }
 

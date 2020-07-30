@@ -171,6 +171,7 @@ class Humble_LMS_Activator {
         'currency' => 'USD',
       ),
       'max_evaluations' => 25,
+      'tippy_theme' => 'default',
       'email_welcome' => "Hi there,
 
 welcome to WEBSITE_NAME! Here's how to log in:

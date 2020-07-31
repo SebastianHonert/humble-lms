@@ -134,7 +134,7 @@ function humble_lms_cert_content_mb()
   echo '<strong>' . implode('</strong>, <strong>', $allowed_html ) . '</strong>';
 }
 
-// Email format
+// TODO: Templates
 function humble_lms_cert_template_mb()
 {
   global $post;

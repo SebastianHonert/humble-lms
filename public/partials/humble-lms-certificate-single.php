@@ -54,7 +54,15 @@ if( ! current_user_can('manage_options') ) {
   $content = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $content );
   $content = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $content );
 
-  echo '<div id="certificate">';
+  $featured_image_url = get_the_post_thumbnail_url( $post->ID );
+
+  if( $featured_image_url ) {
+    $background_style = 'style="background-image:url(' . $featured_image_url . ')"';
+  } else {
+    $background_style = '';
+  }
+
+  echo '<div id="humble-lms-certificate" ' . $background_style . '>';
 
     echo $heading ? '<h1 class="humble-lms-certificate-title">' . $heading . '</h1>' : '';
     echo $subheading ? '<h2 class="humble-lms-certificate-subtitle">' . $subheading . '</h2>' : '';

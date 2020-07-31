@@ -51,7 +51,7 @@ table {
   box-sizing: border-box;
 }
 
-body {
+body.humble-lms-certificate {
   position: relative;
   background: #ccc;
   font-size: 1.125em;
@@ -61,8 +61,8 @@ body {
   padding: 2em;
 }
 
-#certificate {
-  background-color: #fff;
+#humble-lms-certificate {
+  background: #fff;
   position: relative;
   width: 210mm;
   height: 297mm;
@@ -72,42 +72,46 @@ body {
   display: block;
   margin: 0 auto;
   overflow: hidden;
+  z-index: 1;
+  background-size: cover;
 }
 
-h1 {
-  font-size: 2em;
+h1.humble-lms-certificate-title {
+  font-size: 3em;
   font-weight: 600;
   text-align: center;
-  padding: 1em 0 .5em;
-  margin-bottom: .5em;
+  padding: 1em 0 .25em;
+  margin-bottom: .25em;
   border-bottom: .1cm double #000;
+  letter-spacing: 1px;
 }
 
-h2 {
+h2.humble-lms-certificate-subtitle {
   font-size: 1.5em;
   text-align: center;
   padding-bottom: 2em;
+  letter-spacing: 2px;
 }
 
-h3 {
+#humble-lms-certificate h3 {
   font-size: 1.25em;
   padding: 1.125em;
   text-align: center;
 }
 
-.content {
+.humble-lms-certificate-content {
   padding: 3em 0;
 }
 
-p {
+#humble-lms-certificate p {
   padding: 0 0 1em;
 }
 
-em, i {
+#humble-lms-certificate em, i {
   font-style: italic;
 }
 
-strong, b {
+#humble-lms-certificate strong, b {
   font-weight: 700;
 }
 
@@ -116,12 +120,26 @@ strong, b {
   padding: 2em 0;
 }
 
-a {
+#humble-lms-certificate a {
   text-decoration: none;
 }
 
-a:hover {
+#humble-lms-certificate a:hover {
   text-decoration: underline;
+}
+
+#humble-lms-certificate .humble-lms-awards-list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#humble-lms-certificate .humble-lms-awards-list-item img {
+  display: inline-block;
+  max-height: 40mm;
+  margin: 5mm;
+  position: relative;
 }
 
 @media print {
@@ -131,7 +149,7 @@ a:hover {
     height: auto;
   }
  
-  body {
+  body.humble-lms-certificate {
     width: 210mm;
     height: 296mm; /* TODO: 297mm adds page break */
     margin: 0 0 0 0;
@@ -141,7 +159,7 @@ a:hover {
     background: none;
   }
 
-  #certificate {
+  #humble-lms-certificate {
     width: 100%;
     height: 100%;
     margin: 0;

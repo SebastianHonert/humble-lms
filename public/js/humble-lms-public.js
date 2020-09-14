@@ -117,10 +117,8 @@ jQuery(document).ready(function($) {
           location.reload(true)
           return
         }
-        
-        loadingLayer(false)
 
-        console.log(response)
+        loadingLayer(false)
 
         if (response.max_attempts_exceeded && response.completed === 0) {
           $('.humble-lms-quiz, .humble-lms-quiz-submit').hide(0)
@@ -141,6 +139,7 @@ jQuery(document).ready(function($) {
           $('.humble-lms-quiz-message-image').html('<i class="ti-face-sad"></i>')
           $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--success').addClass('humble-lms-quiz-message--failed')
           $('.humble-lms-quiz-message, .humble-lms-message-quiz--failed').fadeIn(animSpeed)
+          $('.humble-lms-quiz-message').unbind('click')
         } else if (response.completed === 1) {
           $('.humble-lms-quiz-message-image').html('<i class="ti-face-smile"></i>')
           $('.humble-lms-quiz-message').removeClass('humble-lms-quiz-message--failed').addClass('humble-lms-quiz-message--success')
@@ -148,9 +147,9 @@ jQuery(document).ready(function($) {
           $('#humble-lms-mark-complete').fadeIn(animSpeed)
 
           // Add messages for awards and certificates
-          $('.humble-lms-quiz-message').on('click', function() {
+          $('.humble-lms-quiz-message').click(function() {
             let messages = []
-            
+
             if (typeof response.awards !== 'undefined' && response.awards.length > 0) {
               response.awards.forEach(function(award) {
                 messages.push(award)
@@ -163,9 +162,7 @@ jQuery(document).ready(function($) {
               })
             }
 
-            if (messages.length > 0 ) {
-              addMessages(messages)
-            }
+            addMessages(messages)
           })
         }
       },
@@ -511,6 +508,10 @@ jQuery(document).ready(function($) {
    */
   function addMessages(messages) {
     $('.humble-lms-award-message').remove()
+
+    if (messages.length === 0) {
+      return
+    }
 
     let awardHTML = '<div class="humble-lms-award-message humble-lms-award-message--quiz"><div>'
 

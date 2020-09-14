@@ -414,11 +414,10 @@ jQuery(document).ready(function($) {
             loadingLayer(false)
           },
           success: function(response, textStatus, XMLHttpRequest) {
-            location.reload()
             loadingLayer(false)
           },
           complete: function(reply, textStatus) {
-            loadingLayer(false)
+            location.reload()
           }
         })
       }, 250)

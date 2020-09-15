@@ -666,11 +666,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             {
               case 'award':
                 $award_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
-                
-                if( ! in_array( $award_id, $this->granted_awards( $user->ID ) ) ) {
-                  array_push( $completed[3], $award_id );
-                  $this->grant_award( $user->ID, $award_id );
-                }
+                array_push( $completed[3], $award_id );
+                $this->grant_award( $user->ID, $award_id );
               break;
 
               case 'certificate':

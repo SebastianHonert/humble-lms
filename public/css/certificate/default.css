@@ -144,9 +144,15 @@ h2.humble-lms-certificate-subtitle {
 
 @media print {
 
+  .dont-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
   @page {
-    margin: 10mm 25mm 10mm 25mm;
-    height: auto;
+    margin: 0 0 0 0;
+    width: 210mm;
+    height: 296mm;
   }
  
   body.humble-lms-certificate {
@@ -162,7 +168,7 @@ h2.humble-lms-certificate-subtitle {
   #humble-lms-certificate {
     width: 100%;
     height: 100%;
-    margin: 0;
+    margin: 0 0 0 0;
     box-shadow: 0 0;
     page-break-after: auto;
   }

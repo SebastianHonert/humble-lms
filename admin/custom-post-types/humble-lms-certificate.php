@@ -139,10 +139,25 @@ function humble_lms_cert_template_mb()
 {
   global $post;
 
+  $formats = ['default'];
   $format = get_post_meta( $post->ID, 'humble_lms_cert_template', true );
+  $custom_formats = glob( get_stylesheet_directory() . '/humble-lms/certificate/' . '*.css' );
+
+  if( $custom_formats ) {
+    foreach( $custom_formats as $custom_format ) {
+      array_push( $formats, basename( $custom_format, '.css' ) );
+    }
+  }
+
+  if( ! in_array( $format, $formats ) ) {
+    $format = 'default';
+  }
 
   echo '<select id="humble_lms_cert_template" name="humble_lms_cert_template">';
-    echo '<option value="default" selected>'. __('Default template', 'humble-lms') . '</option>';
+    foreach( $formats as $f ) {
+      $selected = $f === $format ? 'selected' : '';
+      echo '<option value="' . esc_html( strtolower( $f ) ) . '" ' . $selected . '>' . ucfirst( esc_html( $f ) ) . '</option>';
+    }
   echo '</select> <a href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview certificate', 'humble-lms') . '</a>';
 }
 

@@ -28,6 +28,15 @@ if( ! current_user_can('manage_options') ) {
     die;
   }
 }
+
+$template = get_post_meta( $post->ID, 'humble_lms_cert_template', true );
+$template_dir = dirname( plugin_dir_url( __FILE__ ) ) . '/css/certificate/';
+
+if( $template !== 'default' && file_exists( get_stylesheet_directory() . '/humble-lms/certificate/' . $template . '.css' ) ) {
+  $template_dir = get_stylesheet_directory_uri() . '/humble-lms/certificate/';
+} else {
+  $template = 'default';
+}
   
 ?><!DOCTYPE html>
 <html lang="en">
@@ -36,7 +45,7 @@ if( ! current_user_can('manage_options') ) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Humble LMS Certificate</title>
-  <link rel="stylesheet" href="<?php echo dirname( plugin_dir_url( __FILE__ ) ) . '/css/certificate/default.css'; ?>">
+  <link rel="stylesheet" href="<?php echo $template_dir . esc_html( $template ) . '.css'; ?>">
 </head>
 <body class="humble-lms-certificate"><?php
 

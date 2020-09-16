@@ -68,6 +68,7 @@ function humble_lms_cert_add_meta_boxes()
   add_meta_box( 'humble_lms_cert_subheading_mb', __('Subtitle', 'humble-lms'), 'humble_lms_cert_subheading_mb', 'humble_lms_cert', 'normal', 'default' );
   add_meta_box( 'humble_lms_cert_date_format_mb', __('Date format', 'humble-lms'), 'humble_lms_cert_date_format_mb', 'humble_lms_cert', 'normal', 'default' );
   add_meta_box( 'humble_lms_cert_content_mb', __('Content (HTML allowed)', 'humble-lms'), 'humble_lms_cert_content_mb', 'humble_lms_cert', 'normal', 'default' );
+  add_meta_box( 'humble_lms_cert_orientation_mb', __('Orientation', 'humble-lms'), 'humble_lms_cert_orientation_mb', 'humble_lms_cert', 'normal', 'default' );
   add_meta_box( 'humble_lms_cert_template_mb', __('Template', 'humble-lms'), 'humble_lms_cert_template_mb', 'humble_lms_cert', 'normal', 'default' );
 }
 
@@ -134,7 +135,26 @@ function humble_lms_cert_content_mb()
   echo '<strong>' . implode('</strong>, <strong>', $allowed_html ) . '</strong>';
 }
 
-// TODO: Templates
+// Orientation
+function humble_lms_cert_orientation_mb()
+{
+  global $post;
+
+  $orientation = get_post_meta( $post->ID, 'humble_lms_cert_orientation', true );
+
+  if( ! $orientation ) {
+    $orientation = 'portrait';
+  }
+
+  echo '<select id="humble_lms_cert_orientation" name="humble_lms_cert_orientation">';
+    $selected = $orientation === 'portrait' ? 'selected' : '';
+    echo '<option value="portrait" ' . $selected . '>Portrait</option>';
+    $selected = $orientation === 'landscape' ? 'selected' : '';
+    echo '<option value="landscape" ' . $selected . '>Landscape</option>';
+  echo '</select>';
+}
+
+// Templates
 function humble_lms_cert_template_mb()
 {
   global $post;
@@ -221,6 +241,7 @@ function humble_lms_save_cert_meta_boxes( $post_id, $post )
   $cert_meta['humble_lms_cert_subheading'] = isset( $_POST['humble_lms_cert_subheading'] ) ? sanitize_text_field( $_POST['humble_lms_cert_subheading'] ) : '';
   $cert_meta['humble_lms_cert_date_format'] = isset( $_POST['humble_lms_cert_date_format'] ) ? sanitize_text_field( $_POST['humble_lms_cert_date_format'] ) : 'F j, Y';
   $cert_meta['humble_lms_cert_content'] = isset( $_POST['humble_lms_cert_content'] ) ? wp_kses( $_POST['humble_lms_cert_content'], $allowed_html ) : '';
+  $cert_meta['humble_lms_cert_orientation'] = isset( $_POST['humble_lms_cert_orientation'] ) ? sanitize_text_field( $_POST['humble_lms_cert_orientation'] ) : 'portrait';
   $cert_meta['humble_lms_cert_template'] = isset( $_POST['humble_lms_cert_template'] ) ? sanitize_text_field( $_POST['humble_lms_cert_template'] ) : 'default';
 
   if( ! empty( $cert_meta ) && sizeOf( $cert_meta ) > 0 )

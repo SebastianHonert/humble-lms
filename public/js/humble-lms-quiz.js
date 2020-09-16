@@ -38,22 +38,34 @@ var Humble_LMS_Quiz
       }
 
       questions_multiple_choice.each(function (index, question) {
+        let question_score = 0
+        let question_correct = 0
+        let question_incorrect = 0
+
         answers = $(question).find('.humble-lms-answer')
         answers.each(function (index, answer) {
           input = $(answer).find('input')
           if ($(input).val() == 1) {
-            evaluation.correct++
+            question_correct++
             if ($(input).is(':checked')) {
-              evaluation.score++
+              question_score++
             }
           } else {
-            evaluation.incorrect++
+            question_incorrect++
             if ($(input).is(':checked')) {
-              evaluation.score--
+              question_score--
             }
           }
         })
+
+        evaluation.score += question_score
+        evaluation.correct += question_incorrect
+        evaluation.incorrect += question_incorrect
       })
+
+      if (evaluation.score < 0) {
+        evaluation.score = 0
+      }
 
       evaluation.percent = Math.round(evaluation.score / evaluation.correct * 100, 2)
 

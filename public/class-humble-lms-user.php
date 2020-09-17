@@ -471,8 +471,8 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $user = wp_get_current_user();
       $user_completed_all_tracks = false;
       $user_completed_all_courses = false;
-      $user_completed_all_track_quizzes = false;
-      $user_completed_all_course_quizzes = false;
+      $user_completed_track_quizzes = [];
+      $user_completed_course_quizzes = [];
 
       foreach( $completed as $key => $ids ) {
         foreach( $ids as $id ) {
@@ -574,12 +574,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
           }
 
           // User completes a quiz – check if all quizzes in course completed
-          if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! $user_completed_all_course_quizzes ) {
+          if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! in_array( $id, $user_completed_course_quizzes ) ) {
             $completed_all_course_quizzes = $this->completed_all_course_quizzes( $user->ID, $id );
 
             if( ! empty( $completed_all_course_quizzes ) ) {
-              $user_completed_all_course_quizzes = true;
-
               $args = array(
                 'post_type' => 'humble_lms_activity',
                 'posts_per_page' => -1,
@@ -617,12 +615,10 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
           }
 
           // User completes a quiz – check if all quizzes in track completed
-          if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! $user_completed_all_track_quizzes ) {
+          if( $humble_lms_activity_trigger === 'user_completed_quiz' && ! in_array( $id, $user_completed_track_quizzes ) ) {
             $completed_all_track_quizzes = $this->completed_all_track_quizzes( $user->ID, $id );
 
             if( ! empty( $completed_all_track_quizzes ) ) {
-              $user_completed_all_track_quizzes = true;
-
               $args = array(
                 'post_type' => 'humble_lms_activity',
                 'posts_per_page' => -1,
@@ -668,8 +664,11 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                 $award_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_award', true);
                 
                 if( ! in_array( $award_id, $this->granted_awards( $user->ID ) ) ) {
-                  array_push( $completed[3], $award_id );
-                  $this->grant_award( $user->ID, $award_id );
+                  if ( ! in_array( $id, $user_completed_course_quizzes ) ) {
+                    array_push( $completed[3], $award_id );
+                    array_push( $user_completed_course_quizzes, $id );
+                    $this->grant_award( $user->ID, $award_id );
+                  }
                 }
               break;
 
@@ -677,8 +676,11 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
                 $certificate_id = (int)get_post_meta($activity->ID, 'humble_lms_activity_action_certificate', true);
 
                 if( ! in_array( $certificate_id, $this->issued_certificates( $user->ID ) ) ) {
-                  array_push( $completed[4], $certificate_id );
-                  $this->issue_certificate( $user->ID, $certificate_id );
+                  if ( ! in_array( $id, $user_completed_track_quizzes ) ) {
+                    array_push( $completed[4], $certificate_id );
+                    array_push( $user_completed_track_quizzes, $id );
+                    $this->issue_certificate( $user->ID, $certificate_id );
+                  }
                 }
               break;
               
@@ -1031,10 +1033,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      */
     public function evaluations( $post_id = null ) {
       $evaluations = [];
-
-      if( ! is_user_logged_in() ) {
-        return $evaluations;
-      }
 
       $user_evaluations = get_user_meta( get_current_user_id(), 'humble_lms_quiz_evaluations' );
       $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];

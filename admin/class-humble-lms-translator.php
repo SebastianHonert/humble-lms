@@ -67,14 +67,14 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
      * @return   string
      */
     public function flush_rewrite_rules() {
+      flush_rewrite_rules();
+
       $options = get_option('humble_lms_options');
       $current_language = $this->current_language();
 
       if( ! isset( $options['current_language'] ) || empty( $options['current_language'] ) || ( $options['current_language'] !== $current_language ) ) {
         $options['current_language'] = $current_language;
         update_option('humble_lms_options', $options);
-
-        flush_rewrite_rules();
       }
     }
 

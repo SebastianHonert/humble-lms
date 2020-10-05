@@ -561,4 +561,16 @@ jQuery(document).ready(function($) {
     tippy.setContent(content)
   })
 
+  // Progress animation
+  $('.humble-lms-progress-bar').on('inview', function (event, isInView) {
+    if (isInView) {
+        let value = $(this).find('.humble-lms-progress-bar-inner').not('.activated')
+
+        value.addClass('activated').width('0').stop().css('opacity', '.875').animate({
+            width   : [value.attr('data-value') + '%', 'swing'],
+            opacity : [1, 'swing'],
+        }, 1000 + Math.ceil(Math.random() * 250))
+    }
+  })
+
 })

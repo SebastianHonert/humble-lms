@@ -301,7 +301,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       ), $atts ) );
 
       $html = '<div class="humble-lms-progress-bar">';
-      $html .= '<div class="humble-lms-progress-bar-inner" style="width:' . $progress . '%"></div>';
+      $html .= '<div class="humble-lms-progress-bar-inner" data-value="' . $progress . '"></div>';
       $html .= '</div>';
 
       return $html;

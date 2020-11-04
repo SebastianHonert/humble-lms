@@ -865,19 +865,22 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       if( ! $user_id )
         return 0;
-      
+  
       $track_courses = $this->content_manager->get_track_courses( $track_id );
-      $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', false );
 
-      if( ! isset( $courses_completed[0] ) || ! is_array( $courses_completed[0] ) )
+      if( ! $track_courses || sizeOf( $track_courses ) === 0 ) {
         return 0;
+      }
 
-      $completed_track_courses = array_intersect( $courses_completed[0], $track_courses );
+      $track_courses_progress = array();
 
-      if( ( empty( $track_courses ) ) || ( empty( $courses_completed[0] ) ) )
-        return 0;
+      foreach( $track_courses as $course_id ) {
+        $course_progress = $this->course_progress( $course_id, $user_id );
+        $track_courses_progress[] = $course_progress;
+      }
 
-      $percent = count( $completed_track_courses ) * 100 / count( $track_courses );
+      $sum = (int)array_sum( $track_courses_progress );
+      $percent = sizeOf( $track_courses_progress ) > 0 ? $sum / sizeOf( $track_courses_progress ) : 0;
 
       return round( $percent, 1 );
     }

@@ -969,21 +969,21 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         <fieldset>
           <p>
             <label for="humble-lms-user-login" class="humble-lms-required"><?php _e('Username', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" />
+            <input name="humble-lms-user-login" id="humble-lms-user-login" class="humble-lms-required" type="text" value="<?php echo $post_user_login; ?>" required />
             <input class="humble-lms-honeypot" type="text" name="humble-lms-honeypot" value="" />
           </p>
           <p>
             <label for="humble-lms-user-first" class="humble-lms-required"><?php _e('First Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
-            <input name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $post_user_first; ?>" />
+            <input name="humble-lms-user-first" id="humble-lms-user-first" type="text" value="<?php echo $post_user_first; ?>" required />
           </p>
           <p>
             <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
-            <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" />
+            <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" required />
           </p>
           <?php if( $registration_has_country ): ?>
             <p>
               <label for="humble-lms-user-country" class="humble-lms-required"><?php _e('Country', 'humble-lms'); ?></label>
-              <select name="humble-lms-user-country" id="humble-lms-user-country">
+              <select name="humble-lms-user-country" id="humble-lms-user-country" required>
                 <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
 
                 <?php 
@@ -998,22 +998,22 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <?php endif; ?>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" />
+            <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" required />
           </p>
           <p>
             <label for="humble-lms-user-email-confirm" class="humble-lms-required"><?php _e('Confirm email address', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-email-confirm" id="humble-lms-user-email-confirm" class="humble-lms-required" type="email" value="<?php echo $post_user_email_confirm; ?>" />
+            <input name="humble-lms-user-email-confirm" id="humble-lms-user-email-confirm" class="humble-lms-required" type="email" value="<?php echo $post_user_email_confirm; ?>" required />
           </p>
           <p>
             <label for="password" class="humble-lms-required">
               <?php _e('Password'); ?><br>
               <small><?php _e('Min. 12 characters, at least 1 letter and 1 number', 'humble-lms'); ?></small>
             </label>
-            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="" />
+            <input name="humble-lms-user-pass" id="password" class="humble-lms-required" type="password" value="" required />
           </p>
           <p>
             <label for="password-again" class="humble-lms-required"><?php _e('Password again', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" />
+            <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" required />
           </p>
           <p>
             <?php $class = isset( $this->options_manager->options['email_agreement'] ) && $this->options_manager->options['email_agreement'] === 1 ? 'humble-lms-required' : ''; ?>

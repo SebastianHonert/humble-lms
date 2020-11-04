@@ -12,7 +12,7 @@ Humble LMS is a very simple learning management plugin for WordPress.
 
 == Description ==
 
-**PLEASE NOTE:** this plugin is work in progress.
+PLEASE NOTE: this plugin is work in progress. Use at your own risk!
 
 Humble LMS is a very simple learning management plugin for WordPress.
 
@@ -20,9 +20,3 @@ Humble LMS is a very simple learning management plugin for WordPress.
 
 1. Upload the `humble-lms` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-
-== Changelog ==
-
-= 0.0.1 =
-
-* Initial commit

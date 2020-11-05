@@ -402,7 +402,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
 
       $html .= '</nav>';
-      $html .= '<a class="humble-lms-toggle-syllabus">' . __('+/- Toggle syllabus', 'humble-lms') . '</a>';
+      $html .= '<a class="humble-lms-toggle-syllabus">' . __('Close syllabus', 'humble-lms') . '</a>';
 
       // Meta information
       if( $lesson_id ) {

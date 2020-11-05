@@ -163,6 +163,9 @@ class Humble_LMS_Public {
       'currency' => $this->options_manager->get_currency(),
       'has_paypal' => Humble_LMS_Admin_Options_Manager::has_paypal(),
       'tippy_theme' => isset( $options['tippy_theme'] ) ? $options['tippy_theme'] : 'default',
+      'toggle_syllabus_text_close' => __('Close syllabus', 'humble-lms'),
+      'toggle_syllabus_text_expand' => __('Expand syllabus', 'humble-lms'),
+      'user_syllabus_state' => get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) ? get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) : 'expanded' 
     ) );
   }
 

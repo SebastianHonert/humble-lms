@@ -438,6 +438,28 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       wp_mail( $to, $subject, $body, $headers );
      }
+
+    /**
+     * Toggle height of syllabus in lesson view.
+     * 
+     * @since   1.0.0
+     * @return   void
+     */
+    public function toggle_syllabus_height() {
+      if( ! is_user_logged_in() ) {
+        echo json_encode('expanded');
+        die;
+      }
+
+      $syllabus_state = sanitize_text_field( $_POST['syllabusState'] );
+      $new_syllabus_state = $syllabus_state === 'expanded' ? 'closed' : 'expanded';
+
+      update_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', $new_syllabus_state );
+
+      echo json_encode( $new_syllabus_state );
+
+      die;
+    }
     
   }
   

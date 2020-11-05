@@ -368,6 +368,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_save_paypal_transaction_single', $plugin_ajax, 'save_paypal_transaction_single' );
     $this->loader->add_action( 'wp_ajax_validate_frontend_price', $plugin_ajax, 'validate_frontend_price' );
     $this->loader->add_action( 'wp_ajax_nopriv_validate_frontend_price', $plugin_ajax, 'validate_frontend_price' );
+    $this->loader->add_action( 'wp_ajax_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
+    $this->loader->add_action( 'wp_ajax_nopriv_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
 
   }
 

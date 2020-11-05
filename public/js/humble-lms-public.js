@@ -468,27 +468,71 @@ jQuery(document).ready(function($) {
    */
   const handleSyllabus = (function() {
     let syllabus = $('.humble-lms-syllabus--lesson')
+    let syllabus_state = humble_lms.user_syllabus_state
     let toggleButton = $('.humble-lms-toggle-syllabus')
     let syllabus_max_height = humble_lms.syllabus_max_height;
     let syllabus_height = syllabus.innerHeight()
 
-    if (syllabus_height > syllabus_max_height) {
+    if (humble_lms.is_user_logged_in && (syllabus_height > syllabus_max_height)) {
       toggleButton.css('display', 'block')
     }
 
-    function toggleSyllabusHeight() {
-      if (syllabus.innerHeight() <= syllabus_max_height) {
+    function toggleSyllabusHeight(ajax = false) {
+      let syllabus_height = syllabus.innerHeight()
+      
+      function expand_syllabus() {
         syllabus.css({'height':'auto'})
-      } else {
+        syllabus_height = syllabus.innerHeight()
+        $('.humble-lms-toggle-syllabus').text(humble_lms.toggle_syllabus_text_close)
+        syllabus_state = 'expanded'
+      }
+
+      function close_syllabus() {
         syllabus.css({'height':syllabus_max_height + 'px'})
+        syllabus_height = syllabus.innerHeight()
+        $('.humble-lms-toggle-syllabus').text(humble_lms.toggle_syllabus_text_expand)
+        syllabus_state = 'closed'
+      }
+
+      if (!syllabus_state || syllabus_state === 'expanded') {
+        expand_syllabus()
+      } else {
+        close_syllabus()
+      }
+
+      if (ajax) {
+        loadingLayer(true)
+        $.ajax({
+          url: humble_lms.ajax_url,
+          type: 'POST',
+          data: {
+            action: 'toggle_syllabus_height',
+            syllabusState: syllabus_state,
+            nonce: humble_lms.nonce
+          },
+          dataType: 'json',
+          error: function(MLHttpRequest, textStatus, errorThrown) {
+            console.error(errorThrown)
+            loadingLayer(true)
+          },
+          success: function(response, textStatus, XMLHttpRequest) {
+            if (response === 'closed') {
+              close_syllabus()
+            } else {
+              expand_syllabus()
+            }
+
+            loadingLayer(false)
+          }
+        })
       }
     }
 
     toggleButton.on('click', function() {
-      toggleSyllabusHeight()
+      toggleSyllabusHeight(true)
     })
 
-    toggleSyllabusHeight()
+    toggleSyllabusHeight(false)
   })()
 
   /**

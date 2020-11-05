@@ -50,10 +50,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       }
 
       // Check membership access level
-      $lesson_membership = get_post_meta( $lesson_id, 'humble_lms_membership', true );
-      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
-
-      if( $lesson_membership && $lesson_membership !== 'free' && ( $user_membership !== $lesson_membership ) ) {
+      if( ! $this->user_can_access_lesson( $lesson_id ) ) {
         return 'membership';
       }
 
@@ -75,6 +72,46 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       $user = wp_get_current_user();
 
       return empty( array_intersect( $user->roles, $levels ) ) ? 'denied' : 'allowed';
+    }
+
+    /**
+     * Check if user membership level is equal or higher than lesson access level.
+     * 
+     * @since 0.0.1
+     */
+    public function user_can_access_lesson( $lesson_id = null ) {
+      if( ! $lesson_id ) {
+        return false;
+      }
+
+      $lesson_membership = get_post_meta( $lesson_id, 'humble_lms_membership', true );
+
+      if( $lesson_membership === 'free' ) {
+        return true;
+      }
+
+      $memberships = $this->content_manager::get_memberships();
+
+      if( empty( $memberships ) ) {
+        return true;
+      }
+
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+
+      if( ! in_array( $user_membership, $memberships ) ) {
+        return false;
+      }
+
+      if( in_array( $user_membership, $memberships ) ) {
+        $key_user_membership = array_search( $user_membership, $memberships );
+        $key_lesson_membership = array_search( $lesson_membership, $memberships );
+
+        if( $key_user_membership >= $key_lesson_membership ) {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     /**

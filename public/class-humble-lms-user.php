@@ -324,7 +324,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * TODO: Check if user completed all quizzes in a track.
+     * Check if user completed all quizzes in a track.
      *
      * @param   int
      * @return  array

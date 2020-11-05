@@ -224,7 +224,7 @@ class Humble_LMS_Admin {
     $content_manager = new Humble_LMS_Content_Manager;
     $options = new Humble_LMS_Admin_Options_Manager;
     $countries = $options->countries;
-    $memberships = $this::get_memberships();
+    $memberships = $content_manager::get_memberships();
 
     $user_country = get_user_meta( $user->ID, 'humble_lms_country', true);
     echo '<h4>' . __('Country', 'humble-lms') . '</h4>';
@@ -1239,99 +1239,6 @@ class Humble_LMS_Admin {
     );
 
     return wp_parse_args($custom, $columns);
-  }
-
-  /**
-   * Get memberships sorted by price.
-   * 
-   * @since   0.0.1
-   */
-  public static function get_memberships( $array = true, $publish = true ) {
-    $post_status = $publish ? 'publish' : 'any';
-
-    $memberships = get_posts( array(
-      'post_type' => 'humble_lms_mbship',
-      'post_status' => $post_status,
-      'posts_per_page' => -1,
-      'meta_key' => 'humble_lms_mbship_price',
-      'orderby' => 'meta_value_num',
-      'order' => 'ASC',
-      'lang' =>  '',
-    ) );
-
-    if( ! $array ) {
-      return $memberships;
-    }
-
-    $memberships_array = array();
-
-    foreach( $memberships as $membership ) {
-      array_push( $memberships_array, $membership->post_name );
-    }
-
-    return $memberships_array; 
-  }
-
-  /**
-   * Get memberships.
-   * 
-   * @since   0.0.1
-   */
-  public static function get_membership_by_slug( $slug = null ) {
-    if( ! $slug ) {
-      return;
-    }
-
-    $args = array(
-      'name' => $slug,
-      'post_type'   => 'humble_lms_mbship',
-      'post_status' => 'publish',
-      'numberposts' => 1,
-      'lang' => '',
-    );
-
-    $posts = get_posts( $args );
-
-    return $posts ? $posts[0] : false;
-  }
-
-  /**
-   * Get membership price.
-   * 
-   * @since   0.0.1
-   */
-  public static function get_membership_price_by_slug( $slug = null, $vat = false ) {
-    if( ! $slug ) {
-      return;
-    }
-
-    $membership = self::get_membership_by_slug( $slug );
-
-    if( ! $membership ) {
-      return;
-    }
-
-    $price = get_post_meta( $membership->ID, 'humble_lms_mbship_price', true );
-    $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-
-    // Value added tax
-    if( ! $vat ) {
-      return $price;
-    }
-
-    $options = get_option('humble_lms_options');
-
-    if( ! empty( $options['hasVAT'] ) && ! empty( $options['VAT'] ) ) {
-      if( $options['hasVAT'] === 1 ) { // Inclusive of VAT
-        $price = $price / (100 + (int)$options['VAT'] ) * 100;
-      } else if( $options['hasVAT'] === 2 ) { // Exclusive of VAT
-        $price = $price + ( $price / 100 * 19 );
-      }
-    }
-
-    $price = number_format((float)$price, 2, '.', '');
-
-    return $price;
   }
 
   /**

@@ -25,13 +25,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->quiz = new Humble_LMS_Quiz;
       $this->translator = new Humble_LMS_Translator;
+      $this->calculator = new Humble_LMS_Calculator;
 
     }
     
     /**
      * Mark lesson complete button clicked / open lesson.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function mark_lesson_complete() {
@@ -107,7 +108,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Save evaluated quiz for logged in user.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function evaluate_quiz() {
@@ -234,7 +235,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Reset user progress.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function reset_user_progress( $user_id = null ) {
@@ -253,7 +254,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Validate frontend price
      * 
-     * @since   1.0.0
+     * @since   0.0.1
      * @return  boolean
      */
     public function validate_frontend_price() {
@@ -280,7 +281,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Save PayPal transaction.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function save_paypal_transaction() {
@@ -374,7 +375,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Send email notifications for completed transactions.
      * 
-     * @since   1.0.0
+     * @since   0.0.1
      * @return   void
      */
     public function send_checkout_email( $order_details, $context = '' ) {
@@ -442,7 +443,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Toggle height of syllabus in lesson view.
      * 
-     * @since   1.0.0
+     * @since   0.0.1
      * @return   void
      */
     public function toggle_syllabus_height() {
@@ -458,6 +459,49 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       echo json_encode( $new_syllabus_state );
 
+      die;
+    }
+
+    /**
+     * Get price for a membership
+     * 
+     * @since   0.0.1
+     * @return   void
+     */
+    public function get_membership_price() {
+      $membership = sanitize_text_field( $_POST['membership'] );
+
+      if( ! $membership ) {
+        echo json_encode('membership not found');
+        die;
+      }
+
+      $options = get_option('humble_lms_options');
+      $VAT = $options['VAT'];
+      $hasVAT = $options['hasVAT'];
+
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+      $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
+      $membership_price = $this->calculator->get_membership_price_by_slug( $membership );
+
+      $price_difference = floatval($membership_price) - floatval($user_membership_price);
+      if( $price_difference < 0 ) $price_difference = 0.00;
+
+      $price_difference = number_format( $price_difference, 2 );
+
+      // Value added tax
+      $price_difference_vat = 0;
+      if( ! empty( $hasVAT ) && ! empty( $VAT ) ) {
+        if( $hasVAT === 1 ) { // Inclusive of VAT
+          $price_difference_vat = $price_difference;
+        } else if( $hasVAT === 2 ) { // Exclusive of VAT
+          $price_difference_vat = $price_difference + ( $price_difference / 100 * 19 );
+        }
+      }
+
+      $price_difference_vat = number_format( $price_difference_vat, 2 );
+
+      echo json_encode( $price_difference_vat );
       die;
     }
     

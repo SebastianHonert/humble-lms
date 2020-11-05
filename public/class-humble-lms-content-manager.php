@@ -12,6 +12,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
     public function __construct() {
       $this->translator = new Humble_LMS_Translator;
+      $this->calculator = new Humble_LMS_Calculator;
     }
 
     /**
@@ -804,6 +805,60 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
     }
 
     /**
+     * Get memberships sorted by price.
+     * 
+     * @since   0.0.1
+     */
+    public static function get_memberships( $array = true, $publish = true ) {
+      $post_status = $publish ? 'publish' : 'any';
+
+      $memberships = get_posts( array(
+        'post_type' => 'humble_lms_mbship',
+        'post_status' => $post_status,
+        'posts_per_page' => -1,
+        'meta_key' => 'humble_lms_mbship_price',
+        'orderby' => 'meta_value_num',
+        'order' => 'ASC',
+        'lang' =>  '',
+      ) );
+
+      if( ! $array ) {
+        return $memberships;
+      }
+
+      $memberships_array = array();
+
+      foreach( $memberships as $membership ) {
+        array_push( $memberships_array, $membership->post_name );
+      }
+
+      return $memberships_array; 
+    }
+
+    /**
+     * Get memberships.
+     * 
+     * @since   0.0.1
+     */
+    public static function get_membership_by_slug( $slug = null ) {
+      if( ! $slug ) {
+        return;
+      }
+
+      $args = array(
+        'name' => $slug,
+        'post_type'   => 'humble_lms_mbship',
+        'post_status' => 'publish',
+        'numberposts' => 1,
+        'lang' => '',
+      );
+
+      $posts = get_posts( $args );
+
+      return $posts ? $posts[0] : false;
+    }
+
+    /**
      * Check if user can upgrade membership
      * 
      * @return  bool
@@ -826,10 +881,10 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $memberships = get_posts( $args );
       $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
-      $user_membership_price = Humble_LMS_Admin::get_membership_price_by_slug( $user_membership );
+      $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
 
       foreach( $memberships as $membership ) {
-        $membership_price = Humble_LMS_Admin::get_membership_price_by_slug( $membership->post_name );
+        $membership_price = $this->calculator->get_membership_price_by_slug( $membership->post_name );
         if( floatval($membership_price) > $user_membership_price ) {
           return true;
         }

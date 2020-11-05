@@ -90,7 +90,7 @@ function humble_lms_lesson_description_mb() {
 function humble_lms_lesson_membership_mb() {
   global $post;
 
-  $memberships = Humble_LMS_Admin::get_memberships();
+  $memberships = Humble_LMS_Content_Manager::get_memberships();
   $membership = get_post_meta( $post->ID, 'humble_lms_membership', true );
   
   if( ! in_array( $membership, $memberships ) ) {

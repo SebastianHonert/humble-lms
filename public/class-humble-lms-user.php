@@ -917,7 +917,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Reset user progress.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function reset_user_progress( $user_id = null ) {
@@ -936,7 +936,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Remove user instructor status.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function remove_instructor_status( $user_id = null ) {
@@ -970,7 +970,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Get user purchases.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return array
      */
     public function purchases( $user_id = null ) {
@@ -1005,7 +1005,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Check if user has purchased a track/course.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return bool
      */
     public function purchased( $post_id = null ) {
@@ -1031,7 +1031,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Get user evaluations.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return array
      */
     public function evaluations( $post_id = null ) {

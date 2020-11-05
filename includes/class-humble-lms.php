@@ -176,6 +176,11 @@ class Humble_LMS {
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-quiz.php';
 
+    /**
+     * The class responsible for prices and VAT.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-calculator.php';
+
     $this->loader = new Humble_LMS_Loader();
 
   }
@@ -370,6 +375,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_nopriv_validate_frontend_price', $plugin_ajax, 'validate_frontend_price' );
     $this->loader->add_action( 'wp_ajax_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
     $this->loader->add_action( 'wp_ajax_nopriv_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
+    $this->loader->add_action( 'wp_ajax_get_membership_price', $plugin_ajax, 'get_membership_price' );
+    $this->loader->add_action( 'wp_ajax_nopriv_get_membership_price', $plugin_ajax, 'get_membership_price' );
 
   }
 

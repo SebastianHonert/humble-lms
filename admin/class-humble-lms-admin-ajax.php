@@ -26,7 +26,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
     /**
      * Send test emails from dashboard.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function send_test_email() {
@@ -60,7 +60,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
     /**
      * Add content.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @return void
      */
     public function add_content() {

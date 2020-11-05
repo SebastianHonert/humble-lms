@@ -23,6 +23,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
+      $this->options_manager = new Humble_LMS_Admin_Options_Manager;
       $this->quiz = new Humble_LMS_Quiz;
       $this->translator = new Humble_LMS_Translator;
       $this->calculator = new Humble_LMS_Calculator;
@@ -252,33 +253,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
 
     /**
-     * Validate frontend price
-     * 
-     * @since   0.0.1
-     * @return  boolean
-     */
-    public function validate_frontend_price() {
-      $post_id = sanitize_text_field( $_POST['post_id'] );
-      $is_for_sale = get_post_meta( $post_id, 'humble_lms_is_for_sale', true );
-
-      if( (int)$is_for_sale !== 1 ) {
-        echo json_encode('not for sale');
-        die;
-      }
-
-      $price_frontend = sanitize_text_field( $_POST['price'] );
-      $price_backend = Humble_LMS_Content_Manager::get_price( $post_id, true );
-
-      if( $price_frontend !== $price_backend ) {
-        echo json_encode('prices do not match');
-        die;
-      }
-
-      echo json_encode('valid');
-      die;
-    }
-
-    /**
      * Save PayPal transaction.
      *
      * @since 0.0.1
@@ -468,40 +442,41 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @since   0.0.1
      * @return   void
      */
-    public function get_membership_price() {
+    public function validate_membership_price() {
       $membership = sanitize_text_field( $_POST['membership'] );
 
-      if( ! $membership ) {
+      if( ! $membership || ! is_user_logged_in() ) {
         echo json_encode('membership not found');
         die;
       }
 
       $options = get_option('humble_lms_options');
-      $VAT = $options['VAT'];
-      $hasVAT = $options['hasVAT'];
-
+      $VAT = $this->calculator->get_VAT(); 
+      $has_VAT = $this->calculator->has_VAT();
+      $currency = $this->options_manager->get_currency();
+      
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
       $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
-      $membership_price = $this->calculator->get_membership_price_by_slug( $membership );
 
-      $price_difference = floatval($membership_price) - floatval($user_membership_price);
-      if( $price_difference < 0 ) $price_difference = 0.00;
+      $price = $this->calculator->get_membership_price_by_slug( $membership );
+      $price_diff = $this->calculator->format_price( $price - $user_membership_price );
+      $price_diff = $price_diff < 0 ? 0.00 : $price_diff;
+      $price_VAT = $this->calculator->get_VAT_price( $price_diff );
+      $purchased = $price <= $user_membership_price || $user_membership === $membership;
 
-      $price_difference = number_format( $price_difference, 2 );
-
-      // Value added tax
-      $price_difference_vat = 0;
-      if( ! empty( $hasVAT ) && ! empty( $VAT ) ) {
-        if( $hasVAT === 1 ) { // Inclusive of VAT
-          $price_difference_vat = $price_difference;
-        } else if( $hasVAT === 2 ) { // Exclusive of VAT
-          $price_difference_vat = $price_difference + ( $price_difference / 100 * 19 );
-        }
+      if( $has_VAT === 1 ) { // inclusive
+        $final_price = $this->calculator->format_price( $price_diff );
+        $final_price_VAT = $this->calculator->format_price( $price_VAT );
+      } else if( $has_VAT === 2 ) { // exclusive
+        $final_price = $this->calculator->format_price( $price_VAT );
+        $final_price_VAT = $this->calculator->format_price( $price_diff );
+      } else { // none
+        $final_price = $this->calculator->format_price( $price_diff );
+        $final_price_VAT = 0;
       }
 
-      $price_difference_vat = number_format( $price_difference_vat, 2 );
+      echo json_encode( $final_price );
 
-      echo json_encode( $price_difference_vat );
       die;
     }
     

@@ -325,7 +325,10 @@ jQuery(document).ready(function($) {
     })
 
     $('.humble-lms-btn--purchase-membership').on('click', function() {
-      let price
+      $('#humble-lms-paypal-buttons').empty()
+
+      let validated_price
+      let price = $('#humble-lms-paypal-buttons').data('price')
       let membership = $('#humble-lms-paypal-buttons').data('membership')
 
       if (typeof membership === 'undefined' || !membership) {
@@ -337,7 +340,7 @@ jQuery(document).ready(function($) {
         url: humble_lms.ajax_url,
         type: 'POST',
         data: {
-          action: 'get_membership_price',
+          action: 'validate_membership_price',
           membership: membership
         },
         dataType: 'json',
@@ -345,62 +348,65 @@ jQuery(document).ready(function($) {
           console.log(errorThrown)
         },
         success: function(response, textStatus, XMLHttpRequest) {
-          price = response
+          validated_price = response
         },
       })
 
-      console.log(price)
+      if (validated_price.toString() !== price.toString()) {
+        console.log('not validated')
+        return
+      }
 
-      // if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
-      //   paypal.Buttons({
-      //     createOrder: function(data, actions) {
-      //       if (typeof membership === 'undefined' || ! membership) {
-      //         alert(humble_lms.membership_undefined)
-      //         return
-      //       }
+      if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
+        paypal.Buttons({
+          createOrder: function(data, actions) {
+            if (typeof membership === 'undefined' || ! membership) {
+              alert(humble_lms.membership_undefined)
+              return
+            }
   
-      //       if (typeof price === 'undefined' || ! price) {
-      //         alert(humble_lms.membership_price_undefined)
-      //         return
-      //       }
+            if (typeof price === 'undefined' || ! price) {
+              alert(humble_lms.membership_price_undefined)
+              return
+            }
   
-      //       return actions.order.create({
-      //         purchase_units: [{
-      //           amount: {
-      //             value: price,
-      //           },
-      //           reference_id: membership
-      //         }]
-      //       })
-      //     },
-      //     onApprove: function(data, actions) {
-      //       let context = $('#humble-lms-paypal-buttons').data('context')
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: price,
+                },
+                reference_id: membership
+              }]
+            })
+          },
+          onApprove: function(data, actions) {
+            let context = $('#humble-lms-paypal-buttons').data('context')
   
-      //       return actions.order.capture().then(function(details) {
-      //         loadingLayer(true)
+            return actions.order.capture().then(function(details) {
+              loadingLayer(true)
   
-      //         $.ajax({
-      //           url: humble_lms.ajax_url,
-      //           type: 'POST',
-      //           data: {
-      //             action: 'save_paypal_transaction',
-      //             context: context,
-      //             details: details
-      //           },
-      //           dataType: 'json',
-      //           error: function(MLHttpRequest, textStatus, errorThrown) {
-      //             loadingLayer(false)
-      //             alert('Sorry, there has been an error processing your transaction.')
-      //             console.error(errorThrown)
-      //           },
-      //           success: function(response, textStatus, XMLHttpRequest) {
-      //             window.location = window.location.pathname + '?purchase=success'
-      //           }
-      //         })
-      //       })
-      //     }
-      //   }).render('#humble-lms-paypal-buttons')
-      // }
+              $.ajax({
+                url: humble_lms.ajax_url,
+                type: 'POST',
+                data: {
+                  action: 'save_paypal_transaction',
+                  context: context,
+                  details: details
+                },
+                dataType: 'json',
+                error: function(MLHttpRequest, textStatus, errorThrown) {
+                  loadingLayer(false)
+                  alert('Sorry, there has been an error processing your transaction.')
+                  console.error(errorThrown)
+                },
+                success: function(response, textStatus, XMLHttpRequest) {
+                  window.location = window.location.pathname + '?purchase=success'
+                }
+              })
+            })
+          }
+        }).render('#humble-lms-paypal-buttons')
+      }
 
     })
   })()

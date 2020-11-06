@@ -417,7 +417,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Toggle height of syllabus in lesson view.
      * 
-     * @since   0.0.1
+     * @since   0.0.2
      * @return   void
      */
     public function toggle_syllabus_height() {
@@ -439,7 +439,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     /**
      * Get price for a membership
      * 
-     * @since   0.0.1
+     * @since   0.0.2
      * @return   void
      */
     public function validate_membership_price() {

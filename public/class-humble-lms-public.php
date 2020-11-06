@@ -340,17 +340,9 @@ class Humble_LMS_Public {
 
     // Premium membership required
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'membership' ) && ! current_user_can('manage_options' ) ) {
-      $html .= '<div class="humble-lms-message humble-lms-message--error">';
-      $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
-      $html .= '<span class="humble-lms-message-content">' . __('You need to upgrade your account to premium status in order to access the requested content.', 'humble-lms' );
-
-      if( Humble_LMS_Admin::humble_lms_checkout_page_exists() ) {
-        $html .= ' <a href="' . esc_url( get_permalink( $options['custom_pages']['checkout'] ) ) . '">' . __('Upgrade your account now.', 'humble_lms') . '</a>';
-      }
-
-      $html .= '</span>';
-      $html .= '</div>';
+      $html .= $this->html_premium_membership_required();
     }
+    
 
     // Lesson not accessed in consecutive order
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'order' ) && ! current_user_can('manage_options' ) ) {
@@ -442,6 +434,28 @@ class Humble_LMS_Public {
   }
 
   /**
+   * Message for required premium membership.
+   * 
+   * @since 0.0.2
+   */
+  public function html_premium_membership_required() {
+    $options = get_option('humble_lms_options');
+
+    $html = '<div class="humble-lms-message humble-lms-message--error">';
+    $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
+    $html .= '<span class="humble-lms-message-content">' . __('You need to upgrade your account in order to access the requested content.', 'humble-lms' );
+
+    if( Humble_LMS_Admin::humble_lms_checkout_page_exists() ) {
+      $html .= ' <a href="' . esc_url( get_permalink( $options['custom_pages']['checkout'] ) ) . '">' . __('Upgrade your account now.', 'humble_lms') . '</a>';
+    }
+
+    $html .= '</span>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+  /**
    * Check if there are any messages that need to be shown.
    *
    * @since    0.0.1
@@ -466,11 +480,15 @@ class Humble_LMS_Public {
   public function humble_lms_template_redirect() {
     global $post;
 
+    if( is_search() ) {
+      return;
+    }
+
     $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
     $access = isset( $post->ID ) ? $this->access_handler->can_access_lesson( $post->ID, $course_id ) : 'allowed';
     $url = ! empty( $_POST['course_id'] ) ? esc_url( get_permalink( (int)$_POST['course_id'] ) ) : esc_url( site_url() ); 
 
-    if( is_single() && $post->post_type == 'humble_lms_lesson' && $access !== 'allowed' ) {
+    if( is_single() && $post->post_type === 'humble_lms_lesson' && $access !== 'allowed' ) {
       switch( $access ) {
         case 'purchase':
           wp_redirect( add_query_arg( 'access', 'purchase', $url ) );
@@ -489,6 +507,13 @@ class Humble_LMS_Public {
           break;
       }
       die;
+    }
+
+    // Check membership access level for posts / pages
+    if ( is_page() || ( is_single() && 'post' === get_post_type() ) ) {
+      if( ! $this->access_handler->user_can_access_post( $post->ID ) ) {
+        $post->post_content = $this->html_premium_membership_required();
+      }
     }
   }
 
@@ -525,6 +550,89 @@ class Humble_LMS_Public {
    */
   public function flush_rewrite_rules() {
     $this->translator->flush_rewrite_rules();
+  }
+
+  /**
+   * Add access level meta box for posts/pages
+   * 
+   * @since 0.0.2
+   */
+  public function add_post_page_meta_box_membership_access_level() {
+    $screens = [ 'post', 'page' ];
+    foreach ( $screens as $screen ) {
+        add_meta_box(
+            'humble_lms_metabox_post_page_membership_access_level',
+            __('Access level', 'humble-lms'),
+            array( $this, 'post_page_meta_box_membership_access_level'),
+            $screen,
+            'side',
+            'high'
+        );
+    }
+  }
+
+  /**
+   * Access level meta box for posts/pages.
+   * 
+   * @since 0.0.2
+   */
+  public function post_page_meta_box_membership_access_level( $post ) {
+    global $post;
+
+    wp_nonce_field( 'humble_lms_metabox_post_page_membership_access_level', 'humble_lms_metabox_post_page_membership_access_level_nonce' );
+
+    $memberships = Humble_LMS_Content_Manager::get_memberships();
+    $membership = get_post_meta( $post->ID, 'humble_lms_membership', true );
+    
+    if( ! $membership || ! in_array( $membership, $memberships ) ) {
+      $membership = 'free';
+    }
+
+    echo '<select name="humble_lms_membership" id="humble_lms_membership">';
+      $selected = 'free' === $membership ? 'selected' : '';
+      echo '<option value="free" ' . $selected . '>Free</option>';
+
+      foreach( $memberships as $m ) {
+        $selected = $m === $membership ? 'selected' : '';
+        echo '<option value="' . $m . '" ' . $selected . '>' . ucfirst($m) . '</option>';
+      }
+    echo '</select>';
+  }
+
+  /**
+   * Save access level meta box for posts/pages.
+   * 
+   * @since 0.0.2
+   */
+  public function save_post_page_meta_box_membership_access_level( $post_id ) {
+    if ( ! isset( $_POST['humble_lms_metabox_post_page_membership_access_level_nonce'] ) ) {
+      return $post_id;
+    }
+
+    $nonce = $_POST['humble_lms_metabox_post_page_membership_access_level_nonce'];
+
+    if ( ! wp_verify_nonce( $nonce, 'humble_lms_metabox_post_page_membership_access_level' ) ) {
+      return $post_id;
+    }
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return $post_id;
+    }
+
+    if ( 'page' === $_POST['post_type'] ) {
+      if ( ! current_user_can( 'edit_page', $post_id ) ) {
+        return $post_id;
+      }
+    } else {
+      if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return $post_id;
+      }
+    }
+
+    // All good, let's sanitize and save the metabox data.
+    $access_level = sanitize_text_field( $_POST['humble_lms_membership'] );
+
+    update_post_meta( $post_id, 'humble_lms_membership', $access_level );
   }
 
 }

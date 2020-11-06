@@ -247,10 +247,10 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @since   0.0.1
      */
     public function get_tracks_by_course_id( $course_id = null ) {
-      $tracks_by_quiz_id = [];
+      $tracks_by_course_id = [];
 
       if( ! $course_id || 'humble_lms_course' !== get_post_type( $course_id ) ) {
-        return $tracks_by_quiz_id;
+        return $tracks_by_course_id;
       }
 
       $tracks = $this->get_tracks( true, true );
@@ -259,11 +259,38 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         $courses = $this->get_track_courses( $track->ID );
 
         if( in_array( $course_id, $courses ) ) {
-          array_push( $tracks_by_quiz_id, $track->ID );
+          array_push( $tracks_by_course_id, $track->ID );
         }
       }
 
-      return $tracks_by_quiz_id;
+      return $tracks_by_course_id;
+    }
+
+    /**
+     * Get all courses that contain a single lesson.
+     *
+     * @param   int
+     * @return  array
+     * @since   0.0.2
+     */
+    public function get_courses_by_lesson_id( $lesson_id = null ) {
+      $courses_by_lesson_id = [];
+
+      if( ! $lesson_id || 'humble_lms_lesson' !== get_post_type( $lesson_id ) ) {
+        return $courses_by_lesson_id;
+      }
+
+      $courses = $this->get_courses( true, true );
+
+      foreach( $courses as $course ) {
+        $lessons = $this->get_course_lessons( $course->ID );
+
+        if( in_array( $lesson_id, $lessons ) ) {
+          array_push( $courses_by_lesson_id, $course->ID );
+        }
+      }
+
+      return $courses_by_lesson_id;
     }
 
     /**
@@ -292,6 +319,34 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $track = get_post( $track_id );
 
       return $track;
+    }
+
+    /**
+     * Get parent course ID.
+     * 
+     * @param   int
+     * @return  object
+     * @since   0.0.2
+     */
+    function get_parent_course( $lesson_id = null, $published = false ) {
+      if( ! $lesson_id || 'humble_lms_lesson' !== get_post_type( $lesson_id ) ) {
+        return false;
+      }
+
+      $course_ids = $this->get_courses_by_lesson_id( $lesson_id );
+      $course_id = count( $course_ids ) === 1 ? $course_ids[0] : false;
+
+      if( ! $course_id ) {
+        return false;
+      }
+
+      if( $published && get_post_status( $course_id ) !== 'publish' ) {
+        return false;
+      }
+
+      $course = get_post( $course_id );
+
+      return $course;
     }
 
     /**
@@ -862,7 +917,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * Check if user can upgrade membership
      * 
      * @return  bool
-     * @since   0.0.1
+     * @since   0.0.2
      */
     public static function user_can_upgrade_membership( $user_id = null ) {
       if( ! $user_id ) {
@@ -881,10 +936,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $memberships = get_posts( $args );
       $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
-      $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
+
+      $calculator = new Humble_LMS_Calculator;
+      $user_membership_price = $calculator->get_membership_price_by_slug( $user_membership );
 
       foreach( $memberships as $membership ) {
-        $membership_price = $this->calculator->get_membership_price_by_slug( $membership->post_name );
+        $membership_price = $calculator->get_membership_price_by_slug( $membership->post_name );
         if( floatval($membership_price) > $user_membership_price ) {
           return true;
         }

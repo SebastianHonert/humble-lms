@@ -326,6 +326,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
     $this->loader->add_action( 'set_current_user', $plugin_public, 'hide_admin_bar' );
+    $this->loader->add_action( 'add_meta_boxes', $plugin_public, 'add_post_page_meta_box_membership_access_level' );
+    $this->loader->add_action( 'save_post', $plugin_public, 'save_post_page_meta_box_membership_access_level' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_archive_templates' );
     $this->loader->add_filter( 'single_template', $plugin_public, 'humble_lms_single_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );

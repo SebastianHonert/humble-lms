@@ -37,6 +37,11 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
         return 'allowed';
 
+      // Try to get parrent course if course ID is not set
+      if( get_post_type( $course_id ) !== 'humble_lms_course' ) {
+        $course_id = $this->content_manager->get_parent_course( $lesson_id );
+      }
+
       // Check if track/course is sold for a fixed price and user has bought the item
       if( ! $this->user->purchased( $course_id ) ) {
         return 'purchase';
@@ -50,7 +55,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
       }
 
       // Check membership access level
-      if( ! $this->user_can_access_lesson( $lesson_id ) ) {
+      if( ! $this->user_can_access_post( $lesson_id ) ) {
         return 'membership';
       }
 
@@ -77,16 +82,16 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
     /**
      * Check if user membership level is equal or higher than lesson access level.
      * 
-     * @since 0.0.1
+     * @since 0.0.2
      */
-    public function user_can_access_lesson( $lesson_id = null ) {
-      if( ! $lesson_id ) {
+    public function user_can_access_post( $post_id = null ) {
+      if( ! $post_id ) {
         return false;
       }
 
-      $lesson_membership = get_post_meta( $lesson_id, 'humble_lms_membership', true );
+      $post_membership = get_post_meta( $post_id, 'humble_lms_membership', true );
 
-      if( $lesson_membership === 'free' ) {
+      if( ! $post_membership || $post_membership === 'free' ) {
         return true;
       }
 
@@ -104,9 +109,9 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
 
       if( in_array( $user_membership, $memberships ) ) {
         $key_user_membership = array_search( $user_membership, $memberships );
-        $key_lesson_membership = array_search( $lesson_membership, $memberships );
+        $key_post_membership = array_search( $post_membership, $memberships );
 
-        if( $key_user_membership >= $key_lesson_membership ) {
+        if( $key_user_membership >= $key_post_membership ) {
           return true;
         }
       }

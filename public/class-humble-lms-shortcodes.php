@@ -331,6 +331,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $syllabus_class = 'humble-lms-syllabus--lesson';
         $lesson_id = $post->ID;
         $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+
+        if( ! $course_id ) {
+          $course = $this->content_manager->get_parent_course( $lesson_id );
+
+          if( $course && 'humble_lms_course' === get_post_type( $course->ID ) ) {
+            $course_id = $course->ID;
+          }
+        }
+
         $track_ids = $this->content_manager->get_tracks_by_course_id( $course_id );
         $parent_track = $this->content_manager->get_parent_track( $course_id, true );
         

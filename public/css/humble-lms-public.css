@@ -714,17 +714,27 @@ input[type='submit'].humble-lms-btn--error:active,
   margin: 0 1.5em 1.5em 0; }
 
 .humble-lms-awards-list-item img {
-  height: 8em;
+  height: 7em;
   width: auto; }
 
 /* Certificates list */
-.humble-lms-certificates-list-item {
-  display: inline-flex;
-  margin: 0 1.5em 1.5em 0; }
+.humble-lms-certificates-list-item * {
+  box-sizing: border-box; }
 
-.humble-lms-certificates-list-item img {
-  height: 8em;
-  width: auto; }
+.humble-lms-certificates-list-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: .375em .25em; }
+
+.humble-lms-certificates-list-item-image {
+  padding-right: .375em;
+  font-size: .93875em;
+  position: relative;
+  top: 1px; }
+
+.humble-lms-certificates-list-item-text span {
+  font-weight: 600; }
 
 /* Instructors */
 .humble-lms-instructors {
@@ -1183,5 +1193,3 @@ input[type='submit'].humble-lms-btn--error:active,
 @media screen and (max-width: 480px) {
   .humble-lms-course-tile .humble-lms-course-title {
     font-size: 1.75em; } }
-
-/*# sourceMappingURL=humble-lms-public.css.map */

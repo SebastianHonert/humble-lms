@@ -855,12 +855,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<p>' . __('You have not been issued any certificates yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-certificates-list">';
-        foreach( $certificates[0] as $certificate ) {
-          $image = plugin_dir_url( __FILE__ ) . '/assets/img/certificate.png';
-          $html .= '<div class="humble-lms-certificates-list-item">';
-          $html .= '<a href="' . esc_url( get_permalink( $certificate ) ) . '"><img src="' . $image . '" alt="' . get_the_title( $certificate ) . '" title="' . get_the_title( $certificate ) . '" /></a>';
-          $html .= '</div>';
-        }
+          foreach( $certificates[0] as $certificate ) {
+            $html .= '<a class="humble-lms-certificates-list-item" href="' . esc_url( get_permalink( $certificate ) ) . '">';
+              $html .= '<div class="humble-lms-certificates-list-item-image">';
+              $html .= '<span class="ti ti-file"></span>';
+              $html .= '</div>';
+              $html .= '<div class="humble-lms-certificates-list-item-text"><span>' . get_the_title( $certificate ) . '</span> <small>(PDF)</small></div>';
+            $html .= '</a>';
+          }
         $html .= '</div>';
       }
 

@@ -26,12 +26,13 @@
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
   die;
 }
 
-// PHP 7.3 polyfills
+/**
+ * PHP 7.3 polyfills
+ */
 if( PHP_VERSION_ID < 70300 ) {
   if( ! function_exists( 'is_countable' ) ) {
     function is_countable( $var ) {

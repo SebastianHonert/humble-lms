@@ -107,6 +107,48 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
 
       die;
     }
+
+    /**
+     * Set membership access level for all lessons in a course.
+     * 
+     * @since 0.0.2
+     */
+    public function set_lesson_membership_level() {
+      if( ! isset( $_POST['course_id'] ) || ! isset( $_POST['membership'] ) ) {
+        echo json_encode( __('Course ID or membership type not set.', 'humble-lms' ) );
+        die;
+      }
+
+      $course_id = (int)$_POST['course_id'];
+
+      if( 'humble_lms_course' !== get_post_type( $course_id ) ) {
+        echo json_encode( __('Course ID not found.', 'humble-lms' ) );
+        die;
+      }
+
+      $memberships = Humble_LMS_Content_Manager::get_memberships();
+      $membership = sanitize_text_field( $_POST['membership'] );
+      
+      if( 'free' !== $membership && ! in_array( $membership, $memberships ) ) {
+        echo json_encode( __('Membership not found.', 'humble-lms' ) );
+        die;
+      }
+
+      $lessons = Humble_LMS_Content_Manager::get_course_lessons( $course_id );
+
+      if( empty( $lessons ) ) {
+        echo json_encode( __('This course does not include any lessons.', 'humble-lms' ) );
+        die;
+      }
+
+      foreach( $lessons as $lesson ) {
+        update_post_meta( $lesson, 'humble_lms_membership', $membership );
+      }
+
+      $response_text = sprintf( __('Membership access for all lessons in this course set to %s', 'humble-lms'), '"' . ucfirst( $membership ) . '"' );
+      echo json_encode( $response_text );
+      die;
+    }
     
   }
   

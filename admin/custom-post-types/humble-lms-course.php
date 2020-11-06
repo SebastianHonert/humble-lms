@@ -64,6 +64,7 @@ register_post_type( 'humble_lms_course', $args );
 
 function humble_lms_course_add_meta_boxes()
 {
+  add_meta_box( 'humble_lms_course_membership_mb', __('Access level', 'humble-lms'), 'humble_lms_course_membership_mb', 'humble_lms_course', 'side', 'default' );
   add_meta_box( 'humble_lms_course_timestamps_mb', __('Timeframe', 'humble-lms'), 'humble_lms_course_timestamps_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
@@ -75,6 +76,35 @@ function humble_lms_course_add_meta_boxes()
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
+
+// Access levels meta box
+
+function humble_lms_course_membership_mb()
+{
+  global $post;
+
+  $memberships = Humble_LMS_Content_Manager::get_memberships();
+  $membership = get_post_meta( $post->ID, 'humble_lms_membership', true );
+  
+  if( ! $memberships || ! in_array( $membership, $memberships ) ) {
+    $membership = 'free';
+  }
+
+  echo '<p class="description">' . __('Set the access level for all lessons included in this course to the selected value.', 'humble-lms') . '</p>';
+
+  echo '<select name="humble_lms_membership" id="humble_lms_membership" class="humble_lms_widefat">';
+    $selected = 'free' === $membership ? 'selected' : '';
+    echo '<option value="free" ' . $selected . '>Free</option>';
+
+    foreach( $memberships as $m ) {
+      $selected = $m === $membership ? 'selected' : '';
+      echo '<option value="' . $m . '" ' . $selected . '>' . ucfirst($m) . '</option>';
+    }
+  echo '</select>';
+
+  echo '<p><a class="button-primary" id="humble-lms-set-lessons-membership-level" data-id="' . $post->ID . '">' . __('Apply now', 'humble-lms') . '</a></p>';
+  echo '<p id="humble-lms-set-lessons-membership-level-response"></p>';
+}
 
 // Timeframe meta box
 

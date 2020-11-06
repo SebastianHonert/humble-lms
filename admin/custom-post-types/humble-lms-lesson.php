@@ -93,7 +93,7 @@ function humble_lms_lesson_membership_mb() {
   $memberships = Humble_LMS_Content_Manager::get_memberships();
   $membership = get_post_meta( $post->ID, 'humble_lms_membership', true );
   
-  if( ! in_array( $membership, $memberships ) ) {
+  if( ! $membership || ! in_array( $membership, $memberships ) ) {
     $membership = 'free';
   }
 

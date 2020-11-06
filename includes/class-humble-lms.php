@@ -275,6 +275,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_send_test_email', $admin_ajax, 'send_test_email' );
     $this->loader->add_action( 'wp_ajax_nopriv_add_content', $admin_ajax, 'add_content' );
     $this->loader->add_action( 'wp_ajax_add_content', $admin_ajax, 'add_content' );
+    $this->loader->add_action( 'wp_ajax_nopriv_set_lesson_membership_level', $admin_ajax, 'set_lesson_membership_level' );
+    $this->loader->add_action( 'wp_ajax_set_lesson_membership_level', $admin_ajax, 'set_lesson_membership_level' );
 
     // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );

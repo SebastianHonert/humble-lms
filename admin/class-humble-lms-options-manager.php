@@ -892,17 +892,20 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '</table>';
 
       // Awards
-      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+      echo '<table class="widefat humble-lms-reporting-table humble-lms-reporting-table--awards"><thead><tr>
         <th width="25%">' . __('Awards', 'humble-lms') . '</th>
-        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+        <th width="50%">' . __('Progress', 'humble-lms') . '</th>
+        <th width="25%">' . __('Action', 'humble-lms') . '</th>
       </tr></thead>';
 
       foreach( $awards as $award ) {
-        $completed = in_array( $award->ID, $granted_awards ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
+        $completed = in_array( $award->ID, $granted_awards );
+        $icon = $completed ? '<span class="humble-lms-options-icon humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-icon humble-lms-options-incomplete">&times;</span>';
 
-        echo '<tr class="humble-lms-reporting-award">';
+        echo '<tr class="humble-lms-reporting-award" data-user-id="' . $user->ID . '" data-id="' . $award->ID . '">';
           echo '<td><strong><a href="' . get_edit_post_link( $award->ID ) . '">' . get_the_title( $award->ID ) . '</a></strong></td>';
-          echo '<td>'. $completed . '</td>';
+          echo '<td>'. $icon . '</td>';
+          echo '<td><a class="button humble-lms-toggle-award-certificate">' . __('Grant / revoke', 'humble-lms') . '</a></td>';
         echo '</tr>';
       }
 
@@ -916,17 +919,20 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '</table>';
 
       // Certificates
-      echo '<table class="widefat humble-lms-reporting-table"><thead><tr>
+      echo '<table class="widefat humble-lms-reporting-table humble-lms-reporting-table--certificates"><thead><tr>
         <th width="25%">' . __('Certificates', 'humble-lms') . '</th>
-        <th width="75%">' . __('Progress', 'humble-lms') . '</th>
+        <th width="50%">' . __('Progress', 'humble-lms') . '</th>
+        <th width="25%">' . __('Action', 'humble-lms') . '</th>
       </tr></thead>';
 
       foreach( $certificates as $certificate ) {
-        $completed = in_array( $certificate->ID, $issued_certificates ) ? '<span class="humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-incomplete">&times;</span>';
+        $completed = in_array( $certificate->ID, $issued_certificates );
+        $icon = $completed ? '<span class="humble-lms-options-icon humble-lms-options-complete">&check;</span>' : '<span class="humble-lms-options-icon humble-lms-options-incomplete">&times;</span>';
 
-        echo '<tr class="humble-lms-reporting-certificates">';
+        echo '<tr class="humble-lms-reporting-certificates" data-user-id="' . $user->ID . '" data-id="' . $certificate->ID . '">';
           echo '<td><strong><a href="' . get_edit_post_link( $certificate->ID ) . '">' . get_the_title( $certificate->ID ) . '</a></strong></td>';
-          echo '<td>'. $completed . '</td>';
+          echo '<td>'. $icon . '</td>';
+          echo '<td><a class="button humble-lms-toggle-award-certificate">' . __('Issue / revoke', 'humble-lms') . '</a></td>';
         echo '</tr>';
       }
 

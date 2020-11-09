@@ -832,8 +832,10 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
         return $price;
 
+      $calculator = new Humble_LMS_Calculator;
+
       $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
-      $price = number_format((float)$price, 2, '.', '');
+      $price = $calculator->format_price( $price );
 
       if( $price ) {
         $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
@@ -854,7 +856,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         }
       }
 
-      $price = number_format((float)$price, 2, '.', '');
+      $price = $calculator->format_price( $price );
 
       return $price;
     }

@@ -728,14 +728,37 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $award_id )
         return;
 
-      $awards = get_user_meta( $user_id, 'humble_lms_awards', false );
-      $awards = is_array( $awards ) && ! empty( $awards[0] ) ? $awards[0] : [];
+      $awards = $this->granted_awards( $user_id );
       
       if( ! in_array( $award_id, $awards ) ) {
         array_push( $awards, $award_id );
       }
 
       update_user_meta( $user_id, 'humble_lms_awards', $awards );
+
+      return;
+    }
+
+    /**
+     * Revoke award from a user.
+     *
+     * @return  false
+     * @param   int
+     * @since   0.0.1
+     */
+    public function revoke_award( $user_id = null, $award_id = null ) {
+      if( ! $user_id )
+        return;
+
+      if( ! $award_id || 'humble_lms_award' !== get_post_type( $award_id ) )
+        return;
+
+      $awards = $this->granted_awards( $user_id );
+
+      if( ( $key = array_search( $award_id, $awards ) ) !== false ) {
+        unset( $awards[$key] );
+        update_user_meta( $user_id, 'humble_lms_awards', $awards );
+      }
 
       return;
     }
@@ -779,21 +802,44 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @param   int
      * @since   0.0.1
      */
-    public function issue_certificate( $user_id, $certificate_id ) {
+    public function issue_certificate( $user_id = null, $certificate_id = null ) {
       if( ! $user_id )
         return;
 
-      if( ! $certificate_id )
+      if( ! $certificate_id || 'humble_lms_cert' !== get_post_type( $certificate_id ) )
         return;
 
-      $certificates = get_user_meta( $user_id, 'humble_lms_certificates', false );
-      $certificates = is_array( $certificates ) && ! empty( $certificates[0] ) ? $certificates[0] : [];
+      $certificates = $this->issued_certificates( $user_id );
       
       if( ! in_array( $certificate_id, $certificates ) ) {
         array_push( $certificates, $certificate_id );
       }
 
       update_user_meta( $user_id, 'humble_lms_certificates', $certificates );
+
+      return;
+    }
+
+    /**
+     * Revoke certificate from a user.
+     *
+     * @return  false
+     * @param   int
+     * @since   0.0.1
+     */
+    public function revoke_certificate( $user_id = null, $certificate_id = null ) {
+      if( ! $user_id )
+        return;
+
+      if( ! $certificate_id )
+        return;
+
+      $certificates = $this->issued_certificates( $user_id );
+      
+      if( ( $key = array_search( $certificate_id, $certificates ) ) !== false ) {
+        unset( $certificates[$key] );
+        update_user_meta( $user_id, 'humble_lms_certificates', $certificates );
+      }
 
       return;
     }

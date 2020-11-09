@@ -653,4 +653,49 @@ jQuery(document).ready(function($) {
     })
   })
 
+  // Toggle award/certificate for user in options view
+  $('.humble-lms-toggle-award-certificate').on('click', function() {
+    let post_id = $(this).parent().parent().data('id')
+    let user_id = $(this).parent().parent().data('user-id')
+
+    if (typeof post_id === 'undefined' || !post_id) {
+      console.log('Post ID not set.')
+      return
+    }
+
+    if (typeof user_id === 'undefined' || !user_id) {
+      console.log('User ID not set.')
+      return
+    }
+
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'toggle_user_award_certificate',
+        post_id: post_id,
+        user_id: user_id,
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown)
+        loadingLayer(false)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        let row = $('.humble-lms-reporting-table').find('tr[data-id="' + post_id + '"][data-user-id="' + user_id + '"]')
+        let icon = row.find('.humble-lms-options-icon')
+
+        if (icon.hasClass('humble-lms-options-complete')) {
+          icon.removeClass('humble-lms-options-complete').html('&times;').addClass('humble-lms-options-incomplete')
+        } else {
+          icon.removeClass('humble-lms-options-incomplete').html('&check;').addClass('humble-lms-options-complete')
+        }
+
+        loadingLayer(false)
+      },
+    })
+  })
+
 })

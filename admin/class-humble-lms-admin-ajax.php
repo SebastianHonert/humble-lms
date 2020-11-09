@@ -149,7 +149,72 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       echo json_encode( $response_text );
       die;
     }
-    
+
+    /**
+     * Toggle user award/certificate by post ID.
+     * 
+     * @since 0.0.2
+     */
+    public function toggle_user_award_certificate() {
+      if( ! isset( $_POST['post_id'] ) || ! $_POST['post_id'] ) {
+        echo json_encode( __('Post ID not set.', 'humble-lms' ) );
+        die;
+      }
+
+      if( ! isset( $_POST['user_id'] ) || ! $_POST['user_id'] ) {
+        echo json_encode( __('User ID not set.', 'humble-lms' ) );
+        die;
+      }
+
+      $post_id = (int)$_POST['post_id'];
+      $user_id = (int)$_POST['user_id'];
+
+      $post_types = array(
+        'humble_lms_cert',
+        'humble_lms_award'
+      );
+
+      $post_type = get_post_type( $post_id );
+
+      if( ! in_array( $post_type, $post_types ) ) {
+        echo json_encode( __('Post type not allowed.', 'humble-lms') );
+        die;
+      }
+
+      $user = get_user_by( 'id', $user_id );
+
+      if( ! $user ) {
+        echo json_encode( __('User not found.', 'humble-lms') );
+        die;
+      }
+
+      $user_manager = new Humble_LMS_Public_User;
+
+      if( 'humble_lms_cert' === $post_type ) {
+        $user_certificates = $user_manager->issued_certificates( $user_id );
+
+        if( ! in_array( $post_id, $user_certificates ) ) {
+          $user_manager->issue_certificate( $user->ID, $post_id );
+        } else {
+          $user_manager->revoke_certificate( $user->ID, $post_id );
+        }
+      }
+      
+      else if( 'humble_lms_award' === $post_type ) {
+        $user_awards = $user_manager->granted_awards( $user_id );
+
+        if( ! in_array( $post_id, $user_awards ) ) {
+          $user_manager->grant_award( $user->ID, $post_id );
+        } else {
+          $user_manager->revoke_award( $user->ID, $post_id );
+        }
+      }
+
+      echo json_encode( 'success' );
+
+      die;
+    }
+
   }
   
 }

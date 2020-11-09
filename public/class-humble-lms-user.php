@@ -938,21 +938,22 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since   0.0.1
      */
     public static function course_progress( $course_id, $user_id = null ) {
-      if( ! $course_id )
+      if( ! $course_id || 'humble_lms_course' !== get_post_type( $course_id ) )
         return 0;
 
-      if( ! $user_id )
+      if( ! $user_id || ! get_user_by( 'id', $user_id ) )
         return 0;
       
-      $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $course_id );
-      $lessons_completed = get_user_meta( $user_id, 'humble_lms_lessons_completed', false );
+      $course_lessons = Humble_LMS_Content_Manager::get_course_lessons( $course_id, false );
 
-      if( ! isset( $lessons_completed[0] ) || ! is_array( $lessons_completed[0] ) )
+      if( empty( $course_lessons ) )
         return 0;
 
-      $completed_course_lessons = array_intersect( $lessons_completed[0], $course_lessons );
+      $user = new Humble_LMS_Public_User;
+      $lessons_completed = $user->completed_lessons( $user_id );
+      $completed_course_lessons = array_intersect( $lessons_completed, $course_lessons );
 
-      if( ( empty( $course_lessons ) ) || ( empty( $lessons_completed[0] ) ) )
+      if( ( empty( $lessons_completed ) ) )
         return 0;
 
       $percent = count( $completed_course_lessons ) * 100 / count( $course_lessons );

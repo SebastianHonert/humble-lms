@@ -783,9 +783,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( $total_users > $users_per_page ) {
         $args = array(
-           'format' => '?paged=%#%',
-           'total' => ceil($total_users / $users_per_page),
-           'current' => max(1, $paged),
+          'base' => add_query_arg( 'paged', '%#%' ),
+          'total' => ceil($total_users / $users_per_page),
+          'current' => max(1, $paged),
         );
 
         echo '<p>' . paginate_links( $args ) . '</p>';

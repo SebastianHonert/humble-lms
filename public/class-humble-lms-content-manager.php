@@ -952,6 +952,32 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       return false;
     }
 
+    /**
+     * Check if a track/course is for sale.
+     * 
+     * @return Boolean
+     * @since 0.0.3
+     */
+    public function is_for_sale( $post_id = null ) {
+      if( ! get_post( $post_id ) ) {
+        return false;
+      }
+
+      $post_type = get_post_type( $post_id );
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course'
+      );
+
+      if( ! in_array( $post_type, $allowed_post_types ) ) {
+        return false;
+      }
+
+      $is_for_sale = get_post_meta( $post_id, 'humble_lms_is_for_sale', true );
+
+      return 1 == $is_for_sale;
+    }
+
   }
   
 }

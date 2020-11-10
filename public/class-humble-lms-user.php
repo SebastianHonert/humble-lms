@@ -23,6 +23,134 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Get user first name.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function first_name( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $user_info = get_userdata( $user_id );
+
+      return isset( $user_info->first_name ) ? $user_info->first_name : '';
+    }
+
+    /**
+     * Get user last name.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function last_name( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $user_info = get_userdata( $user_id );
+
+      return isset( $user_info->last_name ) ? $user_info->last_name : '';
+    }
+
+    /**
+     * Get user address.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function address( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $address = get_user_meta( $user_id, 'humble_lms_address', true );
+
+      return isset( $address ) ? $address : '';
+    }
+
+    /**
+     * Get user postcode.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function postcode( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $postcode = get_user_meta( $user_id, 'humble_lms_postcode', true );
+
+      return isset( $postcode ) ? $postcode : '';
+    }
+
+    /**
+     * Get user city.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function city( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $city = get_user_meta( $user_id, 'humble_lms_city', true );
+
+      return isset( $city ) ? $city : '';
+    }
+
+    /**
+     * Get user country.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function country( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $country = get_user_meta( $user_id, 'humble_lms_country', true );
+
+      return isset( $country ) ? $country : '';
+    }
+
+    /**
+     * Get user company.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function company( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $company = get_user_meta( $user_id, 'humble_lms_company', true );
+
+      return isset( $company ) ? $company : '';
+    }
+
+    /**
+     * Get user VAT ID.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function vat_id( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $vat_id = get_user_meta( $user_id, 'humble_lms_vat_id', true );
+
+      return isset( $vat_id ) ? $vat_id : '';
+    }
+
+    /**
      * Checks if a user has completed a single lesson.
      *
      * @since    0.0.1
@@ -42,6 +170,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     /**
      * Checks if a user has completed a course.
      *
+     * @return Boolean
      * @since    0.0.1
      */
     public function completed_course( $course_id ) {
@@ -1088,6 +1217,28 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];
 
       return $evaluations;
+    }
+
+    /**
+     * Check billing information.
+     * 
+     * @since 0.0.3
+     */
+    public function billing_information_complete( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return false;
+      }
+
+      $first_name = $this->first_name( $user_id );
+      $last_name = $this->last_name( $user_id );
+      $address = $this->address( $user_id );
+      $postcode = $this->postcode( $user_id );
+      $city = $this->city( $user_id );
+      $country = $this->country( $user_id );
+      $company = $this->company( $user_id );
+      $vat_id = $this->vat_id( $user_id );
+
+      return ! empty( $first_name ) && ! empty( $last_name ) && ! empty( $address ) && ! empty( $postcode ) && ! empty( $city );
     }
 
   }

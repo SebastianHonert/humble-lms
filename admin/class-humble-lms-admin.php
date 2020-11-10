@@ -501,6 +501,11 @@ class Humble_LMS_Admin {
       $user_first = $_POST['humble-lms-user-first'];
       $user_last = $_POST['humble-lms-user-last'];
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
+      $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
+      $user_address = sanitize_text_field( $_POST['humble-lms-user-address'] );
+      $user_company = sanitize_text_field( $_POST['humble-lms-user-company'] );
+      $user_vat_id = sanitize_text_field( $_POST['humble-lms-user-vat-id'] );
       $user_pass = $_POST['humble-lms-user-pass'];
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
       $email_agreement = empty( $_POST['humble-lms-email-agreement'] ) ? 0 : 1;
@@ -524,7 +529,7 @@ class Humble_LMS_Admin {
       }
 
       if( $registration_has_country ) {
-        if( ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
+        if( ( ! in_array( $user_country, $countries ) ) && ( $user_country !== '' ) ) {
           $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
         }
       }
@@ -608,6 +613,11 @@ class Humble_LMS_Admin {
             add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
             add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
             add_user_meta( $new_user_id, 'humble_lms_email_agreement', $email_agreement );
+            add_user_meta( $new_user_id, 'humble_lms_postcode', $user_postcode );
+            add_user_meta( $new_user_id, 'humble_lms_city', $user_city );
+            add_user_meta( $new_user_id, 'humble_lms_address', $user_address );
+            add_user_meta( $new_user_id, 'humble_lms_company', $user_company );
+            add_user_meta( $new_user_id, 'humble_lms_vat_id', $user_vat_id );
           }
 
           // Notify admin and user (=> 'both')
@@ -647,11 +657,16 @@ class Humble_LMS_Admin {
       $user_email	= $_POST['humble-lms-user-email'];
       $user_email_confirm	= $_POST['humble-lms-user-email-confirm'];
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
+      $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
+      $user_address = sanitize_text_field( $_POST['humble-lms-user-address'] );
+      $user_company = sanitize_text_field( $_POST['humble-lms-user-company'] );
+      $user_vat_id = sanitize_text_field( $_POST['humble-lms-user-vat-id'] );
       $user_pass = isset( $_POST['humble-lms-user-pass'] ) ? $_POST['humble-lms-user-pass'] : '';
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
 
       if( $registration_has_country ) {
-        if( ( ! in_array( $user_country, $countries ) ) || ( $user_country === '' ) ) {
+        if( ( ! in_array( $user_country, $countries ) ) && ( $user_country !== '' ) ) {
           $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
         }
       }
@@ -711,10 +726,15 @@ class Humble_LMS_Admin {
         $updated_user_id = wp_update_user( $args );
 
         if( $updated_user_id ) {
-          // Add country to user meta
           if( $registration_has_country ) {
             update_user_meta( $updated_user_id, 'humble_lms_country', $user_country );
           }
+
+          update_user_meta( $updated_user_id, 'humble_lms_postcode', $user_postcode );
+          update_user_meta( $updated_user_id, 'humble_lms_city', $user_city );
+          update_user_meta( $updated_user_id, 'humble_lms_address', $user_address );
+          update_user_meta( $updated_user_id, 'humble_lms_company', $user_company );
+          update_user_meta( $updated_user_id, 'humble_lms_vat_id', $user_vat_id );
         }
       }
     }

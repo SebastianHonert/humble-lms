@@ -971,6 +971,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
       $post_user_country = $registration_has_country && isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $post_user_address = isset( $_POST['humble-lms-user-address'] ) ? sanitize_text_field( $_POST['humble-lms-user-address'] ) : '';
+      $post_user_postcode = isset( $_POST['humble-lms-user-postcode'] ) ? sanitize_text_field( $_POST['humble-lms-user-postcode'] ) : '';
+      $post_user_city = isset( $_POST['humble-lms-user-city'] ) ? sanitize_text_field( $_POST['humble-lms-user-city'] ) : '';
+      $post_user_company = isset( $_POST['humble-lms-user-company'] ) ? sanitize_text_field( $_POST['humble-lms-user-company'] ) : '';
+      $post_user_vat_id = isset( $_POST['humble-lms-user-vat-id'] ) ? sanitize_text_field( $_POST['humble-lms-user-vat-id'] ) : '';
       $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       $post_user_email_confirm = isset( $_POST['humble-lms-user-email-confirm'] ) ? sanitize_email( $_POST['humble-lms-user-email-confirm'] ) : '';
       $post_email_agreement_checked = isset( $_POST['humble-lms-email-agreement'] ) ? 'checked="checked"' : '';
@@ -992,22 +997,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" required />
           </p>
-          <?php if( $registration_has_country ): ?>
-            <p>
-              <label for="humble-lms-user-country" class="humble-lms-required"><?php _e('Country', 'humble-lms'); ?></label>
-              <select name="humble-lms-user-country" id="humble-lms-user-country" required>
-                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
-
-                <?php 
-                foreach( $countries as $key => $country ) {
-                  $selected = $country === $post_user_country ? 'selected' : '';
-                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
-                }
-                ?>
-
-              </select>
-            </p>
-          <?php endif; ?>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $post_user_email; ?>" required />
@@ -1032,6 +1021,47 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <label for="email-agreement" class="<?php echo $class; ?>"><?php _e('Email agreement', 'humble-lms'); ?> </label>
             <input name="humble-lms-email-agreement" id="email-agreement" class="<?php echo $class; ?>" type="checkbox" value="1" <?php echo $post_email_agreement_checked; ?> /> <?php _e('Yes, I wish to receive emails from this website which are essential for participating in the online courses.', 'humble-lms'); ?>
           </p>
+
+          <!-- Billing information -->
+          <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
+          <p class="humble-lms-message humble-lms-message--success"><?php _e('If you would like to purchase anything on this website you will have to update your billing information first. You can leave the required fields blank for now and fill them in later.', 'humble-lms'); ?></p>
+          <?php if( $registration_has_country ): ?>
+            <p>
+              <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+              <select name="humble-lms-user-country" id="humble-lms-user-country">
+                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+
+                <?php 
+                foreach( $countries as $key => $country ) {
+                  $selected = $country === $post_user_country ? 'selected' : '';
+                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+                }
+                ?>
+
+              </select>
+            </p>
+          <?php endif; ?>
+          <p>
+            <label for="humble-lms-user-postcode"><?php _e('Postcode', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-postcode" id="humble-lms-user-postcode" type="text" value="<?php echo $post_user_postcode; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-city"><?php _e('City', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-city" id="humble-lms-user-city" type="text" value="<?php echo $post_user_city; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-address"><?php _e('Address/Street/Number', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-address" id="humble-lms-user-address" type="text" value="<?php echo $post_user_address; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-company"><?php _e('Company', 'humble-lms'); ?><br><small><?php _e('Optional for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-company" id="humble-lms-user-company" type="text" value="<?php echo $post_user_company; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-vat-id"><?php _e('VAT ID', 'humble-lms'); ?><br><small><?php _e('Optional for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-vat-id" id="humble-lms-user-vat-id" type="text" value="<?php echo $post_user_vat_id; ?>" />
+          </p>
+
           <?php
             if( $this->options_manager->has_recaptcha() ) {
               $website_key = $this->options_manager->options['recaptcha_website_key'];
@@ -1210,6 +1240,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $user_first = $userdata->first_name;
       $user_last = $userdata->last_name;
       $user_country = get_user_meta( $user_id, 'humble_lms_country', true );
+      $user_postcode = get_user_meta( $user_id, 'humble_lms_postcode', true );
+      $user_city = get_user_meta( $user_id, 'humble_lms_city', true );
+      $user_address = get_user_meta( $user_id, 'humble_lms_address', true );
+      $user_company = get_user_meta( $user_id, 'humble_lms_company', true );
+      $user_vat_id = get_user_meta( $user_id, 'humble_lms_vat_id', true );
       $user_email = $userdata->user_email;
       $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
@@ -1245,22 +1280,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <label for="humble-lms-user-last"><?php _e('Last Name', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_last; ?></strong></p>
           <input type="hidden" name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $user_last; ?>" />
-          <?php if( $registration_has_country ): ?>
-            <p>
-              <label for="humble-lms-user-country" class="humble-lms-required"><?php _e('Country', 'humble-lms'); ?></label>
-              <select name="humble-lms-user-country" id="humble-lms-user-country">
-                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
-
-                <?php 
-                foreach( $countries as $key => $country ) {
-                  $selected = $country === $user_country ? 'selected' : '';
-                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
-                }
-                ?>
-
-              </select>
-            </p>
-          <?php endif; ?>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $user_email; ?>" />
@@ -1280,6 +1299,46 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <label for="password-again" class="humble-lms-required"><?php _e('Password again', 'humble-lms'); ?></label>
             <input name="humble-lms-user-pass-confirm" id="password-again" class="humble-lms-required" type="password" value="" />
           </p>
+
+          <!-- Billing information -->
+          <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
+          <?php if( $registration_has_country ): ?>
+            <p>
+              <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+              <select name="humble-lms-user-country" id="humble-lms-user-country">
+                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+
+                <?php 
+                foreach( $countries as $key => $country ) {
+                  $selected = $country === $user_country ? 'selected' : '';
+                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+                }
+                ?>
+
+              </select>
+            </p>
+          <?php endif; ?>
+          <p>
+            <label for="humble-lms-user-postcode"><?php _e('Postcode', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-postcode" id="humble-lms-user-postcode" type="text" value="<?php echo $user_postcode; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-city"><?php _e('City', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-city" id="humble-lms-user-city" type="text" value="<?php echo $user_city; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-address"><?php _e('Address/Street/Number', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-address" id="humble-lms-user-address" type="text" value="<?php echo $user_address; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-company"><?php _e('Company', 'humble-lms'); ?><br><small><?php _e('Optional for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-company" id="humble-lms-user-company" type="text" value="<?php echo $user_company; ?>" />
+          </p>
+          <p>
+            <label for="humble-lms-user-vat-id"><?php _e('VAT ID', 'humble-lms'); ?><br><small><?php _e('Optional for billing.', 'humble-lms'); ?></small></label>
+            <input name="humble-lms-user-vat-id" id="humble-lms-user-vat-id" type="text" value="<?php echo $user_vat_id; ?>" />
+          </p>
+
           <p>
             <input type="hidden" name="humble-lms-update-user-nonce" value="<?php echo wp_create_nonce('humble-lms-update-user-nonce'); ?>" />
             <input type="submit" class="humble-lms-btn" value="<?php _e('Save changes', 'humble-lms'); ?>"/>
@@ -1415,13 +1474,15 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               } elseif( $post_type === 'humble_lms_course' ) {
                 $content_type = __('Course', 'humble-lms');
               } else {
-                $content_type = __('Unknown', 'humble-lms');
+                $content_type = __('Membership', 'humble-lms');
               }
 
               if( get_post( $reference_id ) ) {
                 $content = get_post( $reference_id );
                 $content_link = '<a href="' . esc_url( get_permalink( $reference_id ) ) . '">' . esc_url( get_permalink( $reference_id ) ) . '</a>';
                 $html .= $content->post_title . ' <span>(' . $content_type . ')</span>';
+              } else {
+                $html .= ucfirst( $reference_id ) . ' <span>(' . $content_type . ')</span>';
               }
 
             $html .= '</div>';
@@ -1679,6 +1740,13 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $html .= '</div>';
+
+      if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
+        $html .= $this->complete_billing_details_html();
+        return $html;
+      }
+
+      // Buy now button
       $html .= '<div class="humble-lms-btn humble-lms-btn--disabled humble-lms-btn--success humble-lms-btn--purchase humble-lms-btn--purchase-membership">' . __('Buy now', 'humble-lms') . '</a></div>';
 
       // Paypal container
@@ -1821,7 +1889,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $price = Humble_LMS_Content_Manager::get_price( $post->ID );
       $price_vat = Humble_LMS_Content_Manager::get_price( $post->ID, true );
-      $price_displayed = $price_vat > $price ? $price_vat: $price;
+      $price_displayed = $price_vat > $price ? $price_vat: $price;   
 
       switch( get_post_type( $post->ID ) ) {
         case 'humble_lms_course':
@@ -1831,13 +1899,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               $html .= '<p>' . __('Please click the button below if your would like to purchase this course.', 'humble-lms') . '</p>';
 
               $track_ids = $this->content_manager->find_tracks_by('course', $post->ID );
+
               if( is_array( $track_ids ) && sizeOf( $track_ids ) === 1 ) {
-                $track_title = get_the_title( $track_ids[0] );
-                $track_permalink = esc_url( get_permalink( $track_ids[0] ) );
-                $html .= '<p>' . sprintf( __('You can also purchase the complete course track %s instead of the single course.', 'humble-lms'), '<a href="' . $track_permalink . '">' . $track_title . '</a>') . '</p>';
+                if( $this->content_manager->is_for_sale( $track_ids[0] ) ) {
+                  $track_title = get_the_title( $track_ids[0] );
+                  $track_permalink = esc_url( get_permalink( $track_ids[0] ) );
+                  $html .= '<p>' . sprintf( __('You can also purchase the complete course track %s instead of the single course.', 'humble-lms'), '<a href="' . $track_permalink . '">' . $track_title . '</a>') . '</p>';
+                }
               }
 
-              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+              if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
+                $html .= $this->complete_billing_details_html();
+              } else {
+                $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+              }
             $html .= '</div>';
           $html .= '</div>';
           break;
@@ -1846,11 +1921,29 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this track', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this track and all its containing courses.', 'humble-lms') . '</p>';
-              $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+
+              if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
+                $html .= $this->complete_billing_details_html();
+              } else {
+                $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+              }
             $html .= '</div>';
           $html .= '</div>';
           break;
       }
+
+      return $html;
+    }
+
+    /**
+     * Complete billing details HTML.
+     * 
+     * @return  String
+     * @since 0.0.3
+     */
+    public function complete_billing_details_html() {
+      $user_profile_page_id = $this->translator->get_translated_post_id( $this->options_manager->options['custom_pages']['user_profile'] );
+      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">Complete billing details</span></a>';
 
       return $html;
     }

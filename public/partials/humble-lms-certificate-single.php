@@ -18,12 +18,13 @@ if( ! is_user_logged_in() ) {
 
 global $post;
 
+$_user = new Humble_LMS_Public_User;
+
 $user = get_user_by( 'id', get_current_user_id() );
 $user_info = get_userdata( $user->ID );
-$first_name = isset( $user_info->first_name ) ? $user_info->first_name : __('not set', 'humble-lms');
-$last_name = isset( $user_info->last_name ) ? $user_info->last_name : __('not set', 'humble-lms');
+$first_name = $_user->first_name( $user->ID );
+$last_name = $_user->last_name( $user->ID );
 
-$_user = new Humble_LMS_Public_User;
 $user_certificates = $_user->issued_certificates( $user->ID );
 
 if( ! current_user_can('manage_options') ) {

@@ -271,20 +271,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $details = $_POST['details'];
-      $context = sanitize_text_field( $_POST['context'] );
-
-      // Create new transaction post
-      $txn = array(
-        'post_type' => 'humble_lms_txn',
-        'post_title' => sanitize_text_field( $user->user_login ) . ' ' . date("Y-m-d h:i"),
-        'post_status' => 'publish',
-        'post_author' => 1,
-      );
-
-      $txn_id = wp_insert_post( $txn, $wp_error );
-      update_post_meta( $txn_id, 'humble_lms_txn_user_id', (int)$user_id );
-
-      // Update transaction meta
       $order_details = array (
         'order_id' => sanitize_text_field( $details['id'] ),
         'payer_id' => sanitize_text_field( $details['payer']['payer_id'] ),
@@ -301,6 +287,20 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'value' => sanitize_text_field( $details['purchase_units'][0]['amount']['value'] ),
       );
 
+      $context = sanitize_text_field( $_POST['context'] );
+
+      // Create new transaction post
+      $txn = array(
+        'post_type' => 'humble_lms_txn',
+        'post_title' => sanitize_text_field( $user->user_login ) . ' ' . date("Y-m-d h:i") . '-' . $order_details['order_id'],
+        'post_status' => 'publish',
+        'post_author' => 1,
+      );
+
+      $txn_id = wp_insert_post( $txn, $wp_error );
+      update_post_meta( $txn_id, 'humble_lms_txn_user_id', (int)$user_id );
+
+      // Update transaction meta
       add_post_meta( $txn_id, 'humble_lms_order_details', $order_details );
 
       // Update user meta

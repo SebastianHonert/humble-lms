@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('transaction', 'humble-lms'),
+  'slug'                  => __('invoice', 'humble-lms'),
   'with_front'            => true,
 );
 
@@ -40,20 +40,20 @@ $args = array(
   'description'           => __( 'Transaction', 'humble-lms' ),
   'labels'                => $labels,
   'supports'              => array( 'title', 'revisions' ),
-  'show_in_rest'          => false,
+  'show_in_rest'          => true,
   'taxonomies'            => array(),
   'hierarchical'          => false,
-  'public'                => false,
+  'public'                => true,
   'show_ui'               => true,
   'show_in_menu'          => true,
   'menu_position'         => 5,
   'menu_icon'             => 'dashicons-chart-line',
-  'show_in_admin_bar'     => false,
-  'show_in_nav_menus'     => false,
+  'show_in_admin_bar'     => true,
+  'show_in_nav_menus'     => true,
   'can_export'            => true,
-  'has_archive'           => true,
+  'has_archive'           => false,
   'exclude_from_search'   => true,
-  'publicly_queryable'    => false,
+  'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );
@@ -152,6 +152,9 @@ function humble_lms_order_details_mb() {
   // User ID meta
   echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';
   echo '<input class="widefat" type="number" name="humble_lms_txn_user_id" value="' . $user_id_txn . '" disabled="disabled">';
+
+  // Invoice
+  echo '<p><a class="button button-primary" href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_blank">' . __('Show invoice', 'humble-lms') . '</a></p>';
 }
 
 // Save metabox data

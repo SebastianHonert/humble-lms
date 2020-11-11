@@ -1241,6 +1241,36 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       return ! empty( $first_name ) && ! empty( $last_name ) && ! empty( $address ) && ! empty( $postcode ) && ! empty( $city );
     }
 
+    /**
+     * Get user transactions
+     * 
+     * @return Posts
+     * @since 0.0.3
+     */
+    public function transactions( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return;
+      }
+  
+      $args = array(
+        'post_type' => 'humble_lms_txn',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+          array(
+            'key' => 'humble_lms_txn_user_id',
+            'value' => $user_id,
+            'compare' => '=',
+          ),
+        ),
+        'order' => 'DESC',
+      );
+
+      $transactions = get_posts( $args );
+
+      return $transactions;
+    }
+
   }
 
 }

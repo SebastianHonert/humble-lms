@@ -243,6 +243,13 @@ class Humble_LMS_Public {
       }
     }
 
+    // Transaction single (= invoice)
+    if ( is_single() && $post->post_type == 'humble_lms_txn' ) {
+      if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-txn-single.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-txn-single.php';
+      }
+    }
+
     return $template;
   }
 

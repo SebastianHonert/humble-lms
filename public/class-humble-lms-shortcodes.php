@@ -1415,25 +1415,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( ! is_user_logged_in() )
         return;
 
-      $user_id = get_current_user_id();
-
       $html = '';
-
-      $args = array(
-        'post_type' => 'humble_lms_txn',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        'meta_query' => array(
-          array(
-            'key' => 'humble_lms_txn_user_id',
-            'value' => $user_id,
-            'compare' => '=',
-          ),
-        ),
-        'order' => 'DESC',
-      );
-
-      $transactions = get_posts( $args );
+      $user_id = get_current_user_id();
+      $transactions = $this->user->transactions( $user_id );
 
       if( ! $transactions ) {
         return '<p>' . __('No transactions found.', 'humble-lms') . '</p>';

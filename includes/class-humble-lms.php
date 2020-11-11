@@ -279,6 +279,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_set_lesson_membership_level', $admin_ajax, 'set_lesson_membership_level' );
     $this->loader->add_action( 'wp_ajax_nopriv_toggle_user_award_certificate', $admin_ajax, 'toggle_user_award_certificate' );
     $this->loader->add_action( 'wp_ajax_toggle_user_award_certificate', $admin_ajax, 'toggle_user_award_certificate' );
+    $this->loader->add_action( 'wp_ajax_nopriv_create_invoice', $admin_ajax, 'create_invoice' );
+    $this->loader->add_action( 'wp_ajax_create_invoice', $admin_ajax, 'create_invoice' );
 
     // Widgets
     $plugin_widget_syllabus = new Humble_LMS_Widget_Syllabus( $plugin_admin );
@@ -381,6 +383,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_nopriv_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
     $this->loader->add_action( 'wp_ajax_validate_membership_price', $plugin_ajax, 'validate_membership_price' );
     $this->loader->add_action( 'wp_ajax_nopriv_validate_membership_price', $plugin_ajax, 'validate_membership_price' );
+    $this->loader->add_action( 'wp_ajax_create_invoice', $plugin_ajax, 'create_invoice' );
+    $this->loader->add_action( 'wp_ajax_nopriv_create_invoice', $plugin_ajax, 'create_invoice' );
 
   }
 

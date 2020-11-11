@@ -109,6 +109,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $nav_tab_options = $active === 'options' ? 'nav-tab-active' : '';
         $nav_tab_registration = $active === 'registration' ? 'nav-tab-active' : '';
         $nav_tab_paypal = $active === 'paypal' ? 'nav-tab-active' : '';
+        $nav_tab_billing = $active === 'billing' ? 'nav-tab-active' : '';
 
         echo '<h2 class="nav-tab-wrapper">
           <a href="' . $this->admin_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Users', 'humble-lms') . '</a>
@@ -116,6 +117,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <a href="' . $this->admin_url . '&active=options" class="nav-tab ' . $nav_tab_options . '">' . __('Options', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=registration" class="nav-tab ' . $nav_tab_registration . '">' . __('Registration', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=paypal" class="nav-tab ' . $nav_tab_paypal . '">PayPal</a>
+          <a href="' . $this->admin_url . '&active=billing" class="nav-tab ' . $nav_tab_billing . '">' . __('Billing', 'humble-lms'). '</a>
         </h2>';
 
         echo '<form method="post" action="options.php">';
@@ -143,6 +145,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               do_settings_sections('humble_lms_options_paypal');
               submit_button();
               break;
+            case 'billing':
+              settings_fields('humble_lms_options_billing');
+              do_settings_sections('humble_lms_options_billing');
+              submit_button();
+              break;
           }
         echo '</form>';
 
@@ -159,12 +166,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       register_setting( 'humble_lms_options', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_registration', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_paypal', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
+      register_setting( 'humble_lms_options_billing', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       
       add_settings_section('humble_lms_options_section_reporting_users', '', array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
       add_settings_section('humble_lms_options_section_registration', __('User Registration', 'humble-lms'), array( $this, 'humble_lms_options_section_registration' ), 'humble_lms_options_registration' );
       add_settings_section('humble_lms_options_section_paypal', 'PayPal', array( $this, 'humble_lms_options_section_paypal' ), 'humble_lms_options_paypal' );
+      add_settings_section('humble_lms_options_section_billing', __('Billing', 'humble-lms'), array( $this, 'humble_lms_options_section_billing' ), 'humble_lms_options_billing' );
 
       add_settings_field( 'tiles_per_page', __('Tiles per page (track/course archive)', 'humble-lms'), array( $this, 'tiles_per_page' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -190,6 +199,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'hasVAT', __('Prices include value added tax (VAT)', 'humble-lms'), array( $this, 'hasVAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'VAT', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'VAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+
+      add_settings_field( 'seller_info', __('Seller info', 'humble-lms'), array( $this, 'seller_info' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
+      add_settings_field( 'seller_logo', __('Logo', 'humble-lms'), array( $this, 'seller_logo' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
+      add_settings_field( 'invoice_prefix', __('Invoice ID prefix', 'humble-lms'), array( $this, 'invoice_prefix' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
+      add_settings_field( 'invoice_text_before', __('Invoice text (before)', 'humble-lms'), array( $this, 'invoice_text_before' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
+      add_settings_field( 'invoice_text_after', __('Invoice text (after)', 'humble-lms'), array( $this, 'invoice_text_after' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
+      add_settings_field( 'invoice_text_footer', __('Invoice footer text', 'humble-lms'), array( $this, 'invoice_text_footer' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
     }
 
     /**
@@ -223,6 +239,10 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
     public function humble_lms_options_section_paypal() {
       echo '<p><em>' . __('In order to use PayPal you need to register a developer account first.', 'humble-lms') . '</em> <a href="https://developer.paypal.com/" target="_blank">' . __('Register developer account', 'humble-lms') . '</a></p>';
+    }
+
+    public function humble_lms_options_section_billing() {
+      echo '<p><em>' . __('Set up your billing information and invoice layout.', 'humble-lms') . '</em></p>';
     }
 
     /**
@@ -583,6 +603,127 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Seller info.
+     *
+     * @since    0.0.3
+     */
+    function seller_info()
+    {
+      $allowed_tags = array(
+        'a' => array(
+          'href' => array(),
+        ),
+        'br' => array(),
+        'em' => array(),
+        'p' => array(),
+        'strong' => array(),
+      );
+
+      $seller_info = isset( $this->options['seller_info'] ) ? wp_kses( $this->options['seller_info'], $allowed_tags ) : '';
+
+      echo '<p class="description">' . __('Your personal and/or company information. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, p, strong.', 'humble-lms') . '</p>';
+      echo '<p><textarea class="widefat" id="seller_info" name="humble_lms_options[seller_info]" rows="7">' . $seller_info . '</textarea></p>';
+      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
+    }
+
+    /**
+     * Seller logo.
+     *
+     * @since    0.0.3
+     */
+    function seller_logo()
+    {
+      $seller_logo = isset( $this->options['seller_logo'] ) ? esc_url_raw( $this->options['seller_logo'] ) : '';
+
+      echo '<p class="description">' . __('You company or personal logo (URL)', 'humble-lms') . '</p>';
+      echo '<p><input class="widefat" id="seller_logo" name="humble_lms_options[seller_logo]" value="' . $seller_logo . '"></p>';
+    }
+
+    /**
+     * Invoice prefix.
+     *
+     * @since    0.0.3
+     */
+    function invoice_prefix()
+    {
+      $invoice_prefix = isset( $this->options['invoice_prefix'] ) ? sanitize_text_field( $this->options['invoice_prefix'] ) : '';
+
+      echo '<p class="description">' . __('Invoice IDs will increment automatically (1,2,3&hellip;). You can add a prefix to the invoice ID here.', 'humble-lms') . '</p>';
+      echo '<p><input class="widefat" id="invoice_prefix" name="humble_lms_options[invoice_prefix]" value="' . $invoice_prefix . '"></p>';
+    }
+
+    /**
+     * Invoice text (before)
+     *
+     * @since    0.0.3
+     */
+    function invoice_text_before()
+    {
+      $allowed_tags = array(
+        'a' => array(
+          'href' => array(),
+        ),
+        'br' => array(),
+        'em' => array(),
+        'p' => array(),
+        'strong' => array(),
+      );
+
+      $invoice_text_before = isset( $this->options['invoice_text_before'] ) ? wp_kses( $this->options['invoice_text_before'], $allowed_tags ) : __('');
+
+      echo '<p class="description">' . __('Text displayed before the table of purchased items. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
+      echo '<p><textarea class="widefat" id="invoice_text_before" name="humble_lms_options[invoice_text_before]" rows="5">' . $invoice_text_before . '</textarea></p>';
+    }
+
+    /**
+     * Invoice text (after)
+     *
+     * @since    0.0.3
+     */
+    function invoice_text_after()
+    {
+      $allowed_tags = array(
+        'a' => array(
+          'href' => array(),
+        ),
+        'br' => array(),
+        'em' => array(),
+        'p' => array(),
+        'strong' => array(),
+      );
+
+      $invoice_text_after = isset( $this->options['invoice_text_after'] ) ? wp_kses( $this->options['invoice_text_after'], $allowed_tags ) : __('');
+
+      echo '<p class="description">' . __('Text displayed after the table of purchased items. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
+      echo '<p><textarea class="widefat" id="invoice_text_after" name="humble_lms_options[invoice_text_after]" rows="5">' . $invoice_text_after . '</textarea></p>';
+    }
+
+    /**
+     * Invoice footer text
+     *
+     * @since    0.0.3
+     */
+    function invoice_text_footer()
+    {
+      $allowed_tags = array(
+        'a' => array(
+          'href' => array(),
+        ),
+        'br' => array(),
+        'em' => array(),
+        'p' => array(),
+        'strong' => array(),
+      );
+
+      $invoice_text_footer = isset( $this->options['invoice_text_footer'] ) ? wp_kses( $this->options['invoice_text_footer'], $allowed_tags ) : __('');
+
+      echo '<p class="description">' . __('Text displayed at the bottom of your invoices. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
+      echo '<p><textarea class="widefat" id="invoice_text_footer" name="humble_lms_options[invoice_text_footer]" rows="3">' . $invoice_text_footer . '</textarea></p>';
+
+      echo '<p><a href="#" target="_billing_preview" class="button" id="humble-lms-preview-invoice">' . __('Preview invoice', 'humble-lms') . '</a></p>';
+    }
+
+    /**
      * Validate options on save.
      *
      * @param   array
@@ -686,8 +827,26 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         }
 
         if( isset( $input['email_checkout'] ) ) {
-          $options['email_checkout'] = wp_kses_post( $input['email_checkout'] );
+          $options['email_checkout'] = wp_kses( $input['email_checkout'] );
         }
+      }
+
+      if( $active === 'billing' ) {
+        $allowed_tags = array(
+          'a' => array(
+            'href' => array(),
+          ),
+          'br' => array(),
+          'em' => array(),
+          'strong' => array(),
+        );
+
+        $options['seller_info'] =  wp_kses( $input['seller_info'], $allowed_tags );
+        $options['seller_logo'] =  esc_url_raw( $input['seller_logo'] );
+        $options['invoice_prefix'] =  sanitize_text_field( $input['invoice_prefix'] );
+        $options['invoice_text_before'] =  wp_kses( $input['invoice_text_before'], $allowed_tags );
+        $options['invoice_text_after'] =  wp_kses( $input['invoice_text_after'], $allowed_tags );
+        $options['invoice_text_footer'] =  wp_kses( $input['invoice_text_footer'], $allowed_tags );
       }
 
       return $options;

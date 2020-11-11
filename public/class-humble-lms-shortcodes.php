@@ -1230,7 +1230,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '</div>';
       } else {
         if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-          echo '<div class="humble-lms-message humble-lms-message--success">' . __('Profile update successful.', 'humble-lms') . '</div>';
+          echo '<div class="humble-lms-message humble-lms-message--success">' . __('Account information updated.', 'humble-lms') . '</div>';
         }
       }
 

@@ -978,6 +978,42 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       return 1 == $is_for_sale;
     }
 
+    /**
+     * Get content title by reference ID (humble_lms_txn)
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function get_content_description_by_reference_id( $reference_id = null ) {
+      $title = '';
+
+      if( ! $reference_id ) {
+        return '';
+      }
+
+      $post = get_post( $reference_id );
+
+      if( $post ) {
+        $post_type = get_post_type( $post->ID );
+
+        if( $post_type == 'humble_lms_track' ) {
+          $content_type = '(' . __('Track', 'humble-lms') . ')';
+        } else {
+          $content_type = '(' . __('Kurs', 'humble-lms') . ')';
+        }
+
+        return $post->post_title . ' ' . $content_type;
+      }
+
+      $membership = $this->get_membership_by_slug( $reference_id );
+
+      if( $membership ) {
+        return $membership->post_title . ' (' . __('Membership', 'humble-lms') . ')';
+      }
+
+      return __('Unknown', 'humble-lms');
+    }
+
   }
   
 }

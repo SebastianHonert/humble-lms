@@ -95,6 +95,9 @@ function humble_lms_order_details_mb() {
   $reference_id = isset( $order_details['reference_id'] ) ? $order_details['reference_id'] : '';
   $currency_code = isset( $order_details['currency_code'] ) ? $order_details['currency_code'] : '';
   $value = isset( $order_details['value'] ) ? $order_details['value'] : '';
+  $invoice_number = isset( $order_details['invoice_number'] ) ? $order_details['invoice_number'] : '';
+  $has_VAT = isset( $order_details['has_VAT'] ) ? $order_details['has_VAT'] : '';
+  $VAT = isset( $order_details['VAT'] ) ? $order_details['VAT'] : 0;
   
   if( $user ) {
     $userdata = get_userdata( $user->ID );
@@ -146,8 +149,17 @@ function humble_lms_order_details_mb() {
   echo '<label for="currency_code">' . __('Currency code', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="currency_code" value="' . $currency_code . '"></p>';
 
-  echo '<label for="surname">' . __('Value', 'humble-lms') . '</label>';
+  echo '<label for="value">' . __('Value', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $value . '"></p>';
+
+  echo '<label for="vat">' . __('VAT in %', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $VAT . '"></p>';
+
+  echo '<label for="vat-type">' . __('VAT type (0 = none, 1 = inclusive, 2 = exclusive)', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $has_VAT . '"></p>';
+
+  echo '<label for="invoice-number">' . __('Invoice #', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="invoice_number" value="' . $invoice_number . '"></p>';
 
   // User ID meta
   echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';

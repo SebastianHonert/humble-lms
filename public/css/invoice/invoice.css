@@ -78,16 +78,13 @@ body.humble-lms-invoice {
 
 #humble-lms-invoice {
   position: relative;
-  width: 210mm;
-  height: 297mm;
-  padding: 5mm;
+  padding: 10mm;
   display: block;
   margin: 0 auto;
   z-index: 1;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  border: 1px solid #aaa;
 }
 
 #humble-lms-invoice p {
@@ -95,10 +92,10 @@ body.humble-lms-invoice {
 } 
 
 #humble-lms-seller-logo {
-  max-width: 14cm;
-  max-height: 3cm;
-  border: 0;
-  background: #fff;
+  padding: 0;
+  margin: 0;
+  max-height: 2cm;
+  max-width: 10cm;
 }
 
 #humble-lms-seller-customer-info {
@@ -116,13 +113,14 @@ body.humble-lms-invoice {
 #humble-lms-seller-info {
   margin: .5cm 0 .5cm;
   float: left;
-  width: 70%;
+  width: 50%;
 }
 
 #humble-lms-customer-info {
   margin: .5cm 0 .5cm;
   float: left;
-  width: 30%;
+  text-align: right;
+  width: 50%;
 }
 
 #humble-lms-invoice-text-before {
@@ -135,7 +133,7 @@ body.humble-lms-invoice {
 
 #humble-lms-invoice-text-footer {
   position: absolute;
-  bottom: .5cm;
+  bottom: 0;
   display: block;
   width: 100%;
 }
@@ -168,4 +166,19 @@ body.humble-lms-invoice {
 
 #humble-lms-invoice-table th {
   font-weight: 700;
+}
+
+#humble-lms-subtotal,
+#humble-lms-taxes {
+  background: #fafafa;
+}
+
+.humble-lms-total {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 27px;
+  font-weight: 700;
+  padding: 0 0 1cm;
 }

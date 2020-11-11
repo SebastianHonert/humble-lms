@@ -152,6 +152,7 @@ class Humble_LMS_Activator {
     $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
     $custom_page_checkout = get_page_by_title('Humble LMS Checkout', OBJECT, 'page');
 
+    update_option('humble_lms_invoice_counter', 0);
     update_option('humble_lms_options', array(
       'tiles_per_page' => 10,
       'syllabus_max_height' => 640,

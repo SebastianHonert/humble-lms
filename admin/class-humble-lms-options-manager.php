@@ -646,10 +646,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     function invoice_prefix()
     {
+      $invoice_counter = get_option('humble_lms_invoice_counter');
+      $invoice_counter = isset( $invoice_counter ) ? (int)$invoice_counter : 0;
+
       $invoice_prefix = isset( $this->options['invoice_prefix'] ) ? sanitize_text_field( $this->options['invoice_prefix'] ) : '';
 
       echo '<p class="description">' . __('Invoice IDs will increment automatically (1,2,3&hellip;). You can add a prefix to the invoice ID here.', 'humble-lms') . '</p>';
       echo '<p><input class="widefat" id="invoice_prefix" name="humble_lms_options[invoice_prefix]" value="' . $invoice_prefix . '"></p>';
+
+      echo '<p>' . __('Current invoice number', 'humble-lms') . ': ' . $invoice_prefix . $invoice_counter . '</p>';
     }
 
     /**
@@ -733,6 +738,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function humble_lms_options_validate( $input ) {
       $options = $this->options;
       $active = isset( $input['active'] ) ? sanitize_text_field( $input['active'] ) : '';
+
+      $allowed_tags = array(
+        'a' => array(
+          'href' => array(),
+        ),
+        'br' => array(),
+        'em' => array(),
+        'strong' => array(),
+      );
 
       if( $active === 'reporting-users' ) {
         if( isset( $input['users_per_page'] ) ) {
@@ -827,20 +841,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         }
 
         if( isset( $input['email_checkout'] ) ) {
-          $options['email_checkout'] = wp_kses( $input['email_checkout'] );
+          $options['email_checkout'] = wp_kses( $input['email_checkout'], $allowed_tags );
         }
       }
 
       if( $active === 'billing' ) {
-        $allowed_tags = array(
-          'a' => array(
-            'href' => array(),
-          ),
-          'br' => array(),
-          'em' => array(),
-          'strong' => array(),
-        );
-
         $options['seller_info'] =  wp_kses( $input['seller_info'], $allowed_tags );
         $options['seller_logo'] =  esc_url_raw( $input['seller_logo'] );
         $options['invoice_prefix'] =  sanitize_text_field( $input['invoice_prefix'] );

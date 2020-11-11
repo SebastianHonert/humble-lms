@@ -270,6 +270,17 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
+      $options = get_option('humble_lms_options');
+
+      // Update invoice counter
+      $invoice_prefix = isset( $options['invoice_prefix'] ) ? sanitize_text_field( $options['invoice_prefix'] ) : '';
+      $invoice_counter = get_option('humble_lms_invoice_counter');
+      $invoice_counter = isset( $invoice_counter ) ? (int)$invoice_counter : 0;
+      $invoice_counter++;
+
+      update_option('humble_lms_invoice_counter', $invoice_counter);
+
+      // Set order details
       $details = $_POST['details'];
       $order_details = array (
         'order_id' => sanitize_text_field( $details['id'] ),
@@ -285,9 +296,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'reference_id' => sanitize_text_field( $details['purchase_units'][0]['reference_id'] ),
         'currency_code' => sanitize_text_field( $details['purchase_units'][0]['amount']['currency_code'] ),
         'value' => sanitize_text_field( $details['purchase_units'][0]['amount']['value'] ),
+        'invoice_number' => $invoice_prefix . $invoice_counter,
+        'has_VAT' => $this->calculator->has_VAT(),
+        'VAT' => $this->calculator->get_VAT(),
       );
 
       $context = sanitize_text_field( $_POST['context'] );
+
+      // Update invoice counter
 
       // Create new transaction post
       $txn = array(

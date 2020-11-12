@@ -94,8 +94,8 @@ body.humble-lms-invoice {
 #humble-lms-seller-logo {
   padding: 0;
   margin: 0;
-  max-height: 2cm;
-  max-width: 10cm;
+  max-height: 3cm;
+  max-width: 100%;
 }
 
 #humble-lms-seller-customer-info {

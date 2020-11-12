@@ -1,6 +1,6 @@
 <?php
 /**
- * This class calculates prices and VAT.
+ * This class calculates prices and vat.
  *
  * @package    Humble_LMS
  * @subpackage Humble_LMS/public
@@ -20,7 +20,20 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
     }
 
     /**
-     * Get VAT type.
+     * Get currency.
+     * 
+     * @return String
+     * @since 0.0.1
+     */
+    public function currency() {
+      $options = $this->options;
+      $currency = isset( $options['currency'] ) ? $options['currency'] : '';
+
+      return $currency;
+    }
+
+    /**
+     * Get vat type.
      * 
      * 0 = none
      * 1 = inclusive
@@ -28,58 +41,58 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * 
      * @since 0.0.1
      */
-    public function has_VAT() {
+    public function has_vat() {
       $options = $this->options;
-      $hasVAT = $options['hasVAT'];
+      $has_vat = isset( $options['has_vat'] ) ? $options['has_vat'] : null;
 
-      if( empty( $hasVAT ) || ! isset( $hasVAT) || ( $hasVAT !== 1 && $hasVAT !== 2 ) ) {
+      if( empty( $has_vat ) || ! isset( $has_vat) || ( $has_vat !== 1 && $has_vat !== 2 ) ) {
         return 0;
       }
 
-      return $hasVAT;
+      return $has_vat;
     }
 
     /**
-     * Get VAT amount.
+     * Get vat amount.
      * 
      * @since 0.0.1
      */
-    public function get_VAT() {
+    public function get_vat() {
       $options = $this->options;
-      $VAT = $options['VAT'];
+      $vat = isset( $options['vat'] ) ? $options['vat'] : null;
       
-      if( empty( $VAT ) || ! isset( $VAT) ) {
+      if( empty( $vat ) || ! isset( $vat) ) {
         return 0;
       }
 
-      return (int)$VAT;
+      return (int)$vat;
     }
 
     /**
-     * Get price including VAT.
+     * Get price including vat.
      * 
      * @since 0.0.1
      */
-    public function get_VAT_price( $price = 0 ) {
+    public function get_vat_price( $price = 0 ) {
       if( ! $price ) {
         return $this->format_price( $price );
       }
       
-      $VAT = $this->get_VAT();
+      $vat = $this->get_vat();
 
-      if( 0 === $VAT ) {
+      if( 0 === $vat ) {
         return $this->format_price( $price );
       }
 
-      $has_VAT = $this->has_VAT();
+      $has_vat = $this->has_vat();
 
-      if( 0 === $has_VAT ) {
+      if( 0 === $has_vat ) {
         return $this->format_price( $price );
       }
 
-      if( $has_VAT === 1 ) { // inclusive
-        $price = $price / (100 + (int)$VAT) * 100;
-      } else if( $has_VAT === 2 ) { // exclusive
+      if( $has_vat === 1 ) { // inclusive
+        $price = $price / (100 + (int)$vat) * 100;
+      } else if( $has_vat === 2 ) { // exclusive
         $price = $price + ( $price / 100 * 19 );
       }
 
@@ -106,12 +119,12 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $price = get_post_meta( $membership->ID, 'humble_lms_mbship_price', true );
       $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 
-      // Return price without VAT
+      // Return price without vat
       if( ! $vat ) {
         return $price;
       }
 
-      $price = $this->get_VAT_price( $price );
+      $price = $this->get_vat_price( $price );
 
       return $this->format_price( $price );
     }
@@ -121,29 +134,29 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * 
      * @since 0.0.1
      */
-    public function get_membership_price_VAT_diff( $slug = null ) {
+    public function get_membership_price_vat_diff( $slug = null ) {
       if( ! $slug ) {
         return;
       }
   
-      $VAT = $this->get_VAT();
+      $vat = $this->get_vat();
 
-      if( 0 === $VAT ) {
+      if( 0 === $vat ) {
         return 0;
       }
 
-      $has_VAT = $this->has_VAT();
+      $has_vat = $this->has_vat();
 
-      if( 0 === $has_VAT ) {
+      if( 0 === $has_vat ) {
         return 0;
       }
 
-      if( $has_VAT === 1 ) { // inclusive
+      if( $has_vat === 1 ) { // inclusive
         $price = $this->get_membership_price_by_slug( $slug, true );
-        $diff = $price / 100 * $VAT;
-      } else if( $has_VAT === 2 ) { // exclusive
+        $diff = $price / 100 * $vat;
+      } else if( $has_vat === 2 ) { // exclusive
         $price = $this->get_membership_price_by_slug( $slug );
-        $diff = $price / 100 * $VAT;
+        $diff = $price / 100 * $vat;
       }
       
       return $this->format_price( $diff );
@@ -158,8 +171,59 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       if( ! $price ) {
         return 0;
       }
-
+  
       return number_format((float)$price, 2, '.', '');
+    }
+
+    /**
+     * Get price, subtotal, total, and VAT difference for a transaction by post ID.
+     * 
+     * @return Array
+     * @since 0.0.3
+     */
+    public function sum_transaction( $post_id = null ) {
+      $sum = array(
+        'price' => 0,
+        'subtotal' => 0,
+        'total' => 0,
+        'vat' => 0,
+        'vat_diff' => 0,
+        'vat_string' => '',
+      );
+
+      if( 'humble_lms_txn' !== get_post_type( $post_id ) ) {
+        return $sum;
+      }
+
+      $content_manager = new Humble_LMS_Content_Manager;
+      $transaction = $content_manager->transaction_details( $post_id );
+
+      if( 1 === $transaction['has_vat'] ) {
+        $sum['price'] = $transaction['value'];
+        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
+        $sum['vat_diff'] = ( $transaction['value'] / 100 ) * $transaction['vat'];
+        $sum['subtotal'] = $transaction['value'];
+        $sum['total'] = $transaction['value'];
+      } else if( 2 === $transaction['has_vat'] ) {
+        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
+        $sum['price'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
+        $sum['subtotal'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
+        $sum['vat_diff'] = $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'];
+        $sum['total'] = $transaction['value'];
+      } else {
+        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
+        $sum['price'] = $transaction['value'];
+        $sum['subtotal'] = $transaction['value'];
+        $sum['vat_diff'] = 0;
+        $sum['total'] = $transaction['value'];
+      }
+
+      $sum['price'] = $this->format_price( $sum['price'] );
+      $sum['subtotal'] = $this->format_price( $sum['subtotal'] );
+      $sum['total'] = $this->format_price( $sum['total'] );
+      $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
+      
+      return $sum;
     }
 
   }

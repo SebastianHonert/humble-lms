@@ -135,7 +135,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
-     * Get user VAT ID.
+     * Get user vat ID.
      * 
      * @return String
      * @since 0.0.3

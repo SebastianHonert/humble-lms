@@ -177,7 +177,7 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-quiz.php';
 
     /**
-     * The class responsible for prices and VAT.
+     * The class responsible for prices and vat.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-calculator.php';
 

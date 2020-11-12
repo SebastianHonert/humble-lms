@@ -196,8 +196,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
  
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
-      add_settings_field( 'hasVAT', __('Prices include value added tax (VAT)', 'humble-lms'), array( $this, 'hasVAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
-      add_settings_field( 'VAT', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'VAT' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'vat', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
 
       add_settings_field( 'seller_info', __('Seller info', 'humble-lms'), array( $this, 'seller_info' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
@@ -554,33 +554,33 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * Prices including value added taxes (VAT)
+     * Prices including value added taxes (vat)
      *
      * @since    0.0.1
      */
-    public function hasVAT() {
-      $hasVAT = isset( $this->options['hasVAT'] ) ? $this->options['hasVAT'] : 0;
+    public function has_vat() {
+      $has_vat = isset( $this->options['has_vat'] ) ? $this->options['has_vat'] : 0;
 
-      echo '<p><select id="hasVAT" name="humble_lms_options[hasVAT]">';
-        $selected = $hasVAT === 0 ? 'selected="selected"' : '';
-        echo '<option value="0" ' . $selected . '">' . __('Without VAT', 'humble-lms') . '</option>';
-        $selected = $hasVAT === 1 ? 'selected="selected"' : '';
-        echo '<option value="1" ' . $selected . '">' . __('Inclusive of VAT', 'humble-lms') . '</option>';
-        $selected = $hasVAT === 2 ? 'selected="selected"' : '';
-        echo '<option value="2" ' . $selected . '">' . __('Exclusive of VAT', 'humble-lms') . '</option>';
+      echo '<p><select id="has_vat" name="humble_lms_options[has_vat]">';
+        $selected = $has_vat === 0 ? 'selected="selected"' : '';
+        echo '<option value="0" ' . $selected . '">' . __('Without vat', 'humble-lms') . '</option>';
+        $selected = $has_vat === 1 ? 'selected="selected"' : '';
+        echo '<option value="1" ' . $selected . '">' . __('Inclusive of vat', 'humble-lms') . '</option>';
+        $selected = $has_vat === 2 ? 'selected="selected"' : '';
+        echo '<option value="2" ' . $selected . '">' . __('Exclusive of vat', 'humble-lms') . '</option>';
       echo '</select></p><p class="description">' . __('Would you like to list your prices inclusive of, exclusive of, or without value added taxes?', 'humble-lms') . '</p>';
     }
 
     /**
-     * VAT amount in percent.
+     * vat amount in percent.
      *
      * @since    0.0.1
      */
-    function VAT()
+    function vat()
     {
-      $VAT = isset( $this->options['VAT'] ) ? (int)$this->options['VAT'] : 0;
+      $vat = isset( $this->options['vat'] ) ? (int)$this->options['vat'] : 0;
 
-      echo '<p><input type="number" min="0" max="100" step="1" class="widefat" name="humble_lms_options[VAT]" value="' . $VAT . '"></p>';
+      echo '<p><input type="number" min="0" max="100" step="1" class="widefat" name="humble_lms_options[vat]" value="' . $vat . '"></p>';
     }
 
     /**
@@ -829,14 +829,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['currency'] = sanitize_text_field( $input['currency'] );
         $options['currency'] = in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
 
-        if( isset( $input['hasVAT'] ) ) {
-          $options['hasVAT'] = (int)$input['hasVAT'];
+        if( isset( $input['has_vat'] ) ) {
+          $options['has_vat'] = (int)$input['has_vat'];
         }
 
-        if( isset( $input['VAT'] ) ) {
-          $options['VAT'] = absint( $input['VAT'] );
-          if( $options['VAT'] > 100 ) {
-            $options['VAT'] = 100;
+        if( isset( $input['vat'] ) ) {
+          $options['vat'] = absint( $input['vat'] );
+          if( $options['vat'] > 100 ) {
+            $options['vat'] = 100;
           }
         }
 

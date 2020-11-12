@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Questions', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Question', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Quiz Questions', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Questions', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Question', 'humble-lms' ),
   'archives'              => __( 'Question Archives', 'humble-lms' ),
   'attributes'            => __( 'Question Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Question:', 'humble-lms' ),
@@ -53,7 +53,7 @@ $args = array(
   'can_export'            => true,
   'has_archive'           => false,
   'exclude_from_search'   => true,
-  'publicly_queryable'    => true,
+  'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );

@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Emails', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Email', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Emails', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Emails', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Email', 'humble-lms' ),
   'archives'              => __( 'Email Archives', 'humble-lms' ),
   'attributes'            => __( 'Email Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Email:', 'humble-lms' ),
@@ -53,7 +53,7 @@ $args = array(
   'can_export'            => true,
   'has_archive'           => false,
   'exclude_from_search'   => true,
-  'publicly_queryable'    => true,
+  'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );

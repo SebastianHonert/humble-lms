@@ -818,7 +818,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  float
      * @since   0.0.1
      */
-    public static function get_price( $post_id, $vat = false ) {
+    public static function get_price( $post_id = null, $with_vat = false ) {
       $price = 0.00;
 
       if( ! get_post( $post_id ) )
@@ -837,23 +837,66 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
       $price = $calculator->format_price( $price );
 
-      if( $price ) {
-        $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-      }
-
-      // Value added tax
-      if( ! $vat ) {
+      if( ! $with_vat ) {
         return $price;
       }
 
-      $options = get_option('humble_lms_options');
+      // Value added tax
+      $vat = $calculator->get_vat();
+      $has_vat = $calculator->has_vat();
 
-      if(! empty( $options['hasVAT'] ) && ! empty( $options['VAT'] ) ) {
-        if( $options['hasVAT'] === 1 ) { // Inclusive of VAT
-          $price = $price / (100 + (int)$options['VAT'] ) * 100;
-        } else if( $options['hasVAT'] === 2 ) { // Exclusive of VAT
-          $price = $price + ( $price / 100 * 19 );
-        }
+      if( $has_vat === 0 || $vat === 0 || ! $vat ) {
+        return $price;
+      }
+
+      if( $has_vat === 1 ) { // Inclusive of vat
+        $price = $price / (100 + $vat ) * 100;
+      } else if( $has_vat === 2 ) { // Exclusive of vat
+        $price = $price + ( $price / 100 * $vat );
+      }
+
+      $price = $calculator->format_price( $price );
+
+      return $price;
+    }
+
+    /**
+     * Get price of items that can be sold for a fixed price.
+     * 
+     * @return  float
+     * @since   0.0.1
+     */
+    public static function display_price( $post_id = null ) {
+      $price = 0.00;
+
+      if( ! get_post( $post_id ) )
+        return $price;
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course'
+      );
+
+      if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
+        return $price;
+
+      $calculator = new Humble_LMS_Calculator;
+
+      $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
+      $price = $calculator->format_price( $price );
+
+      // Value added tax
+      $vat = $calculator->get_vat();
+      $has_vat = $calculator->has_vat();
+
+      if( $has_vat === 0 || $vat === 0 || ! $vat ) {
+        return $price;
+      }
+
+      if( $has_vat === 1 ) { // Inclusive of vat
+        $price = $price;
+      } else if( $has_vat === 2 ) { // Exclusive of vat
+        $price = $price + ( $price / 100 * $vat );
       }
 
       $price = $calculator->format_price( $price );
@@ -1012,6 +1055,81 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       }
 
       return __('Unknown', 'humble-lms');
+    }
+
+    /**
+     * Get invoice template data.
+     * 
+     * @return Array
+     * @since 0.0.3
+     */
+    public function invoice_template_data() {
+      $options = get_option('humble_lms_options');
+
+      $template_data = array(
+        'seller_info' => $options['seller_info'],
+        'seller_logo' => $options['seller_logo'],
+        'invoice_prefic' => $options['invoice_prefix'],
+        'invoice_text_before' => $options['invoice_text_before'],
+        'invoice_text_after' => $options['invoice_text_after'],
+        'invoice_text_footer' => $options['invoice_text_footer'],
+      );
+
+      return $template_data;
+    }
+
+    /**
+     * Get transaction details by post ID.
+     * 
+     * @return Array
+     * @since 0.0.3
+     */
+    public function transaction_details( $post_id = null ) {
+      $transaction_details = array();
+
+      if( 'humble_lms_txn' !== get_post_type( $post_id ) ) {
+        return;
+      }
+
+      $user = new Humble_LMS_Public_User;
+
+      $order_details = get_post_meta( $post_id, 'humble_lms_order_details', false );
+      $order_details = isset( $order_details[0] ) ? $order_details[0] : $order_details;
+
+      $user_id = isset( $order_details['user_id'] ) ? (int)$order_details['user_id'] : null;
+      $user_id_txn = get_post_meta( $post_id, 'humble_lms_txn_user_id', true );
+
+      $transaction = array(
+        'user_id' => $user_id,
+        'txn_user_id' => $user_id_txn,
+        'order_details' => $order_details,
+        'first_name' => isset( $order_details['first_name'] ) ? $order_details['first_name'] : '',
+        'last_name' => isset( $order_details['last_name'] ) ? $order_details['last_name'] : '',
+        'company' => isset( $order_details['company'] ) ? $order_details['company'] : '',
+        'postcode' => isset( $order_details['postcode'] ) ? $order_details['postcode'] : '',
+        'city' => isset( $order_details['city'] ) ? $order_details['city'] : '',
+        'address' => isset( $order_details['address'] ) ? $order_details['address'] : '',
+        'country' => isset( $order_details['country'] ) ? $order_details['country'] : '',
+        'vat_id' => isset( $order_details['vat_id'] ) ? $order_details['vat_id'] : '',
+        'order_id' => isset( $order_details['order_id'] ) ? $order_details['order_id'] : '',
+        'email_address' => isset( $order_details['email_address'] ) ? $order_details['email_address'] : '',
+        'payer_id' => isset( $order_details['payer_id'] ) ? $order_details['payer_id'] : '',
+        'status' => isset( $order_details['status'] ) ? $order_details['status'] : '',
+        'payment_service_provider' => isset( $order_details['payment_service_provider'] ) ? $order_details['payment_service_provider'] : '',
+        'create_time' => isset( $order_details['create_time'] ) ? $order_details['create_time'] : '',
+        'update_time' => isset( $order_details['update_time'] ) ? $order_details['update_time'] : '',
+        'given_name' => isset( $order_details['given_name'] ) ? $order_details['given_name'] : '',
+        'surname' => isset( $order_details['surname'] ) ? $order_details['surname'] : '',
+        'reference_id' => isset( $order_details['reference_id'] ) ? $order_details['reference_id'] : '',
+        'currency_code' => isset( $order_details['currency_code'] ) ? $order_details['currency_code'] : '',
+        'value' => isset( $order_details['value'] ) ? $order_details['value'] : '',
+        'description' => isset( $order_details['description'] ) ? $order_details['description'] : '',
+        'invoice_number' => isset( $order_details['invoice_number'] ) ? $order_details['invoice_number'] : null,
+        'has_vat' => isset( $order_details['has_vat'] ) ? $order_details['has_vat'] : $this->calculator->has_vat(),
+        'vat' => isset( $order_details['vat'] ) ? $order_details['vat'] : $this->calculator->get_vat(),
+      );
+
+      return $transaction;
     }
 
   }

@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Memberships', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Membership', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Memberships', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Memberships', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Membership', 'humble-lms' ),
 );
 
 $rewrite = array(
@@ -25,12 +25,12 @@ $args = array(
   'show_in_menu'          => true,
   'menu_position'         => 5,
   'menu_icon'             => 'dashicons-groups',
-  'show_in_admin_bar'     => false,
+  'show_in_admin_bar'     => true,
   'show_in_nav_menus'     => false,
   'can_export'            => true,
   'has_archive'           => false,
-  'exclude_from_search'   => false,
-  'publicly_queryable'    => true,
+  'exclude_from_search'   => true,
+  'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );
@@ -56,10 +56,6 @@ function humble_lms_mbship_price_mb()
   $calculator = new Humble_LMS_Calculator;
   $price = get_post_meta( $post->ID, 'humble_lms_mbship_price', true );
   $price = $calculator->format_price( $price );
-
-  if( $price ) {
-    $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-  }
 
   echo '<input lang="en" class="widefat" type="number" min="0.00" max="9999999999.99" step="0.01" name="humble_lms_mbship_price" id="humble_lms_mbship_price" value="' . $price . '">';
   echo '<p class="description">' . __('Prices must be 2 digit decimals. Based on your browser language settings the saved value will sometimes be displayed with a comma instead of a dot.', 'humble-lms') . '</p>';
@@ -104,6 +100,8 @@ function humble_lms_save_mbship_meta_boxes( $post_id, $post )
     return false;
   }
 
+  $calculator = new Humble_LMS_Calculator;
+
   $allowed_tags = array(
     'strong' => array(),
     'em' => array(),
@@ -112,7 +110,11 @@ function humble_lms_save_mbship_meta_boxes( $post_id, $post )
   );
 
   $mbship_meta['humble_lms_mbship_description'] = wp_kses( $_POST['humble_lms_mbship_description'], $allowed_tags );
-  $mbship_meta['humble_lms_mbship_price'] = isset( $_POST['humble_lms_mbship_price'] ) ? round( filter_var( $_POST['humble_lms_mbship_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) : 0.00; 
+  $mbship_meta['humble_lms_mbship_price'] = isset( $_POST['humble_lms_mbship_price'] ) ? $calculator->format_price( $_POST['humble_lms_mbship_price'] ) : 0.00; 
+
+  if( $mbship_meta['humble_lms_mbship_price'] < 0 ) {
+    $mbship_meta['humble_lms_mbship_price'] = 0;
+  }
 
   if( ! empty( $mbship_meta ) && sizeOf( $mbship_meta ) > 0 )
   {

@@ -440,11 +440,11 @@ msgid "Currency"
 msgstr "Divisa"
 
 #: admin/class-humble-lms-options-manager.php:190
-msgid "Prices include value added tax (VAT)"
+msgid "Prices include value added tax (vat)"
 msgstr "Os preços incluem o imposto sobre o valor acrescentado (IVA)"
 
 #: admin/class-humble-lms-options-manager.php:191
-msgid "Value added tax (VAT) in %"
+msgid "Value added tax (vat) in %"
 msgstr "Imposto sobre o valor acrescentado (IVA) em %"
 
 #: admin/class-humble-lms-options-manager.php:192
@@ -601,15 +601,15 @@ msgid "More infos on Google reCAPTCHA"
 msgstr "Mais informações sobre o Google reCAPTCHA"
 
 #: admin/class-humble-lms-options-manager.php:546
-msgid "Without VAT"
+msgid "Without vat"
 msgstr "Sem IVA"
 
 #: admin/class-humble-lms-options-manager.php:548
-msgid "Inclusive of VAT"
+msgid "Inclusive of vat"
 msgstr "IVA incluído"
 
 #: admin/class-humble-lms-options-manager.php:550
-msgid "Exclusive of VAT"
+msgid "Exclusive of vat"
 msgstr "IVA excluído"
 
 #: admin/class-humble-lms-options-manager.php:551
@@ -2997,7 +2997,7 @@ msgstr "Sem imposto sobre o valor acrescentado"
 #: public/class-humble-lms-shortcodes.php:1753
 #: public/class-humble-lms-shortcodes.php:1755
 #, fuzzy, php-format
-msgid "%s %s plus %s%% VAT"
+msgid "%s %s plus %s%% vat"
 msgstr "%s %s mais %s%% IVA"
 
 #: public/class-humble-lms-shortcodes.php:1672

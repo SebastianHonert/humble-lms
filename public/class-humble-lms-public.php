@@ -486,9 +486,17 @@ class Humble_LMS_Public {
    */
   public function humble_lms_template_redirect() {
     global $post;
+    global $wp_query;
 
     if( is_search() ) {
       return;
+    }
+
+    if( is_single() && $post->post_type === 'humble_lms_mbship' ) {
+      $wp_query->set_404();
+      status_header( 404 );
+      get_template_part( 404 );
+      die;
     }
 
     $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;

@@ -287,6 +287,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'payer_id' => sanitize_text_field( $details['payer']['payer_id'] ),
         'status' => sanitize_text_field( $details['status'] ),
         'user_id' => (int)$user_id,
+        'first_name' => $this->user->first_name( $user_id ),
+        'last_name' => $this->user->last_name( $user_id ),
+        'company' => $this->user->company( $user_id ),
+        'postcode' => $this->user->postcode( $user_id ),
+        'city' => $this->user->city( $user_id ),
+        'address' => $this->user->address( $user_id ),
+        'country' => $this->user->country( $user_id ),
+        'vat_id' => $this->user->vat_id( $user_id ),
         'payment_service_provider' => 'PayPal',
         'email_address' => sanitize_email( $details['payer']['email_address'] ),
         'create_time' => sanitize_text_field( $details['create_time'] ),
@@ -297,9 +305,11 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'currency_code' => sanitize_text_field( $details['purchase_units'][0]['amount']['currency_code'] ),
         'value' => sanitize_text_field( $details['purchase_units'][0]['amount']['value'] ),
         'invoice_number' => $invoice_prefix . $invoice_counter,
-        'has_VAT' => $this->calculator->has_VAT(),
-        'VAT' => $this->calculator->get_VAT(),
+        'has_vat' => $this->calculator->has_vat(),
+        'vat' => $this->calculator->get_vat(),
       );
+
+      $order_details['description'] = $this->content_manager->get_content_description_by_reference_id( $order_details['reference_id'] );
 
       $context = sanitize_text_field( $_POST['context'] );
 
@@ -467,8 +477,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $options = get_option('humble_lms_options');
-      $VAT = $this->calculator->get_VAT(); 
-      $has_VAT = $this->calculator->has_VAT();
+      $vat = $this->calculator->get_vat(); 
+      $has_vat = $this->calculator->has_vat();
       $currency = $this->options_manager->get_currency();
       
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
@@ -477,18 +487,18 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $price = $this->calculator->get_membership_price_by_slug( $membership );
       $price_diff = $this->calculator->format_price( $price - $user_membership_price );
       $price_diff = $price_diff < 0 ? 0.00 : $price_diff;
-      $price_VAT = $this->calculator->get_VAT_price( $price_diff );
+      $price_vat = $this->calculator->get_vat_price( $price_diff );
       $purchased = $price <= $user_membership_price || $user_membership === $membership;
 
-      if( $has_VAT === 1 ) { // inclusive
+      if( $has_vat === 1 ) { // inclusive
         $final_price = $this->calculator->format_price( $price_diff );
-        $final_price_VAT = $this->calculator->format_price( $price_VAT );
-      } else if( $has_VAT === 2 ) { // exclusive
-        $final_price = $this->calculator->format_price( $price_VAT );
-        $final_price_VAT = $this->calculator->format_price( $price_diff );
+        $final_price_vat = $this->calculator->format_price( $price_vat );
+      } else if( $has_vat === 2 ) { // exclusive
+        $final_price = $this->calculator->format_price( $price_vat );
+        $final_price_vat = $this->calculator->format_price( $price_diff );
       } else { // none
         $final_price = $this->calculator->format_price( $price_diff );
-        $final_price_VAT = 0;
+        $final_price_vat = 0;
       }
 
       echo json_encode( $final_price );

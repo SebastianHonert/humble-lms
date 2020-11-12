@@ -1362,7 +1362,7 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-user-transaction__amount {
   font-weight: 700;
-  color: green;
+  color: #14785d;
 }
 
 .humble-lms-user-transaction__content {
@@ -1382,6 +1382,18 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-user-transaction p:last-of-type{
   margin-bottom: 0;
+}
+
+.humble-lms-user-transaction p.humble-lms-user-transaction__topic {
+  display: block;
+  font-weight: 400;
+  font-size: .875em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: .25em;
+  margin: .75em 0 .5em;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 /* Timeframes / course dates */

@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Tracks', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Track', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Tracks', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Tracks', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Track', 'humble-lms' ),
   'archives'              => __( 'Track Archives', 'humble-lms' ),
   'attributes'            => __( 'Track Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Track:', 'humble-lms' ),
@@ -178,7 +178,7 @@ function humble_lms_track_fixed_price_mb() {
   global $post;
 
   $sell = get_post_meta($post->ID, 'humble_lms_is_for_sale', true);
-  $price = Humble_LMS_Content_Manager::get_price( $post->ID );
+  $price = get_post_meta($post->ID, 'humble_lms_fixed_price', true);
 
   $options = get_option('humble_lms_options');
   $currency = $options['currency'];
@@ -216,12 +216,18 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
+  $calculator = new Humble_LMS_Calculator;
+
   $track_meta['humble_lms_track_courses'] = isset( $_POST['humble_lms_track_courses'] ) ? explode( ',', $_POST['humble_lms_track_courses'] ) : [];
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
   $track_meta['humble_lms_track_color'] = isset( $_POST['humble_lms_track_color'] ) ? sanitize_hex_color( $_POST['humble_lms_track_color'] ) : '';
-  $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? abs( round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) ) : 0.00;
+  $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? $calculator->format_price( $_POST['humble_lms_fixed_price'] ) : 0.00;
   $track_meta['humble_lms_is_for_sale'] = $track_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
+
+  if( $track_meta['humble_lms_fixed_price'] < 0 ) {
+    $track_meta['humble_lms_fixed_price'] = 0.00;
+  }
 
   if( ! empty( $track_meta ) && sizeOf( $track_meta ) > 0 )
   {

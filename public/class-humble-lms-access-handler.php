@@ -85,8 +85,8 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      * @since 0.0.2
      */
     public function user_can_access_post( $post_id = null ) {
-      if( ! $post_id ) {
-        return false;
+      if( current_user_can('manage_options') ) {
+        return true;
       }
 
       $post_membership = get_post_meta( $post_id, 'humble_lms_membership', true );

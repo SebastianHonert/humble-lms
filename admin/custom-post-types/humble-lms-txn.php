@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Transactions', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Transaction', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Transactions', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Transactions', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Transaction', 'humble-lms' ),
   'archives'              => __( 'Transaction Archives', 'humble-lms' ),
   'attributes'            => __( 'Transaction Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Transaction:', 'humble-lms' ),
@@ -83,21 +83,8 @@ function humble_lms_order_details_mb() {
   $user_id = isset( $order_details['user_id'] ) ? $order_details['user_id'] : '';
   $user = get_user_by( 'id', $user_id );
 
-  $order_id = isset( $order_details['order_id'] ) ? $order_details['order_id'] : '';
-  $email_address = isset( $order_details['email_address'] ) ? $order_details['email_address'] : '';
-  $payer_id = isset( $order_details['payer_id'] ) ? $order_details['payer_id'] : '';
-  $status = isset( $order_details['status'] ) ? $order_details['status'] : '';
-  $payment_service_provider = isset( $order_details['payment_service_provider'] ) ? $order_details['payment_service_provider'] : '';
-  $create_time = isset( $order_details['create_time'] ) ? $order_details['create_time'] : '';
-  $update_time = isset( $order_details['update_time'] ) ? $order_details['update_time'] : '';
-  $given_name = isset( $order_details['given_name'] ) ? $order_details['given_name'] : '';
-  $surname = isset( $order_details['surname'] ) ? $order_details['surname'] : '';
-  $reference_id = isset( $order_details['reference_id'] ) ? $order_details['reference_id'] : '';
-  $currency_code = isset( $order_details['currency_code'] ) ? $order_details['currency_code'] : '';
-  $value = isset( $order_details['value'] ) ? $order_details['value'] : '';
-  $invoice_number = isset( $order_details['invoice_number'] ) ? $order_details['invoice_number'] : '';
-  $has_VAT = isset( $order_details['has_VAT'] ) ? $order_details['has_VAT'] : '';
-  $VAT = isset( $order_details['VAT'] ) ? $order_details['VAT'] : 0;
+  $content_manager = new Humble_LMS_Content_Manager;
+  $transaction_details = $content_manager->transaction_details( $post->ID );
   
   if( $user ) {
     $userdata = get_userdata( $user->ID );
@@ -117,56 +104,82 @@ function humble_lms_order_details_mb() {
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="user_id" value="' . $user_id . '"></p>';
 
   echo '<label for="order_id">' . __('Order ID', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="order_id" value="' . $order_id . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="order_id" value="' . $transaction_details['order_id'] . '"></p>';
 
   echo '<label for="email_address">' . __('Email address', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="email" name="email_address" value="' . $email_address . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="email" name="email_address" value="' . $transaction_details['email_address'] . '"></p>';
 
   echo '<label for="payer_id">' . __('Payer ID', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="payer_id" value="' . $payer_id . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="payer_id" value="' . $transaction_details['payer_id'] . '"></p>';
 
   echo '<label for="status">' . __('Transaction status', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="status" value="' . $status . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="status" value="' . $transaction_details['status'] . '"></p>';
 
   echo '<label for="payment_service_provider">' . __('Payment service provider', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="payment_service_provider" value="' . $payment_service_provider . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="payment_service_provider" value="' . $transaction_details['payment_service_provider'] . '"></p>';
 
   echo '<label for="create_time">' . __('Create time', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="create_time" value="' . $create_time . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="create_time" value="' . $transaction_details['create_time'] . '"></p>';
 
   echo '<label for="update_time">' . __('Update time', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="update_time" value="' . $update_time . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="update_time" value="' . $transaction_details['update_time'] . '"></p>';
 
   echo '<label for="given_name">' . __('Given name', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="given_name" value="' . $given_name . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="given_name" value="' . $transaction_details['given_name'] . '"></p>';
 
   echo '<label for="surname">' . __('Surname', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="surname" value="' . $surname . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="surname" value="' . $transaction_details['surname'] . '"></p>';
 
   echo '<label for="reference_id">' . __('Reference ID', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="reference_id" value="' . $reference_id . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="reference_id" value="' . $transaction_details['reference_id'] . '"></p>';
 
   echo '<label for="currency_code">' . __('Currency code', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="currency_code" value="' . $currency_code . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="currency_code" value="' . $transaction_details['currency_code'] . '"></p>';
 
   echo '<label for="value">' . __('Value', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $value . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $transaction_details['value'] . '"></p>';
 
-  echo '<label for="vat">' . __('VAT in %', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $VAT . '"></p>';
+  echo '<label for="vat">' . __('vat in %', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="number" min="0" max="100" step="1" name="vat" value="' . $transaction_details['vat'] . '"></p>';
 
-  echo '<label for="vat-type">' . __('VAT type (0 = none, 1 = inclusive, 2 = exclusive)', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $has_VAT . '"></p>';
+  echo '<label for="vat-type">' . __('vat type (0 = none, 1 = inclusive, 2 = exclusive)', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="number" min="0" max="2" step="1" name="has_vat" value="' . $transaction_details['has_vat'] . '"></p>';
 
   echo '<label for="invoice-number">' . __('Invoice #', 'humble-lms') . '</label>';
-  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="invoice_number" value="' . $invoice_number . '"></p>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="invoice_number" value="' . $transaction_details['invoice_number'] . '"></p>';
+
+  echo '<br><p><strong>' . __('Billing information', 'humble-lms') . '</strong></p>';
+
+  echo '<label for="first-name">' . __('First name', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="first_name" value="' . $transaction_details['first_name'] . '"></p>';
+
+  echo '<label for="last-name">' . __('Last name', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="last_name" value="' . $transaction_details['last_name'] . '"></p>';
+  
+  echo '<label for="country">' . __('Country', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="country" value="' . $transaction_details['country'] . '"></p>';
+
+  echo '<label for="postcode">' . __('Postcode', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="postcode" value="' . $transaction_details['postcode'] . '"></p>';
+
+  echo '<label for="city">' . __('City', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="city" value="' . $transaction_details['city'] . '"></p>';
+
+  echo '<label for="address">' . __('Address', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="address" value="' . $transaction_details['address'] . '"></p>';
+
+  echo '<label for="company">' . __('Company', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="company" value="' . $transaction_details['company'] . '"></p>';
+
+  echo '<label for="vat_id">' . __('VAT ID', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="vat_id" value="' . $transaction_details['vat_id'] . '"></p>';
 
   // User ID meta
   echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';
   echo '<input class="widefat" type="number" name="humble_lms_txn_user_id" value="' . $user_id_txn . '" disabled="disabled">';
 
   // Invoice
-  echo '<p><a class="button button-primary" href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_blank">' . __('Show invoice', 'humble-lms') . '</a></p>';
+  echo '<p><a class="button" href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_blank">' . __('Show invoice', 'humble-lms') . '</a> <input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></p>';
 }
 
 // Save metabox data
@@ -209,7 +222,28 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
     'reference_id' => sanitize_text_field( $_POST['reference_id'] ),
     'currency_code' => sanitize_text_field( $_POST['currency_code'] ),
     'value' => sanitize_text_field( $_POST['value'] ),
+    'vat' => (int)$_POST['vat'],
+    'has_vat' => (int)$_POST['has_vat'],
+    'invoice_number' => sanitize_text_field( $_POST['invoice_number'] ),
+
+    // Billing information
+    'first_name' => sanitize_text_field( $_POST['first_name'] ),
+    'last_name' => sanitize_text_field( $_POST['last_name'] ),
+    'country' => sanitize_text_field( $_POST['country'] ),
+    'postcode' => sanitize_text_field( $_POST['postcode'] ),
+    'city' => sanitize_text_field( $_POST['city'] ),
+    'address' => sanitize_text_field( $_POST['address'] ),
+    'company' => sanitize_text_field( $_POST['company'] ),
+    'vat_id' => sanitize_text_field( $_POST['vat_id'] ),
   );
+
+  if( $txn_meta['humble_lms_order_details']['vat'] > 100 || $txn_meta['humble_lms_order_details']['vat'] < 0 ) {
+    $txn_meta['humble_lms_order_details']['vat'] = 0;
+  }
+
+  if( $txn_meta['humble_lms_order_details']['has_vat'] < 0 || $txn_meta['humble_lms_order_details']['has_vat'] > 2 ) {
+    $txn_meta['humble_lms_order_details']['has_vat'] = 0;
+  }
 
   $txn_meta['humble_lms_txn_user_id'] = (int)$_POST['user_id'];
 

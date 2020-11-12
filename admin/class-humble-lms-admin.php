@@ -465,7 +465,6 @@ class Humble_LMS_Admin {
 
     if( $username === '' || $password === '' ) {
       wp_redirect( $this->login_page );
-      // wp_redirect( add_query_arg( 'login', 'empty', $this->login_page ) );
       exit();
     }
 

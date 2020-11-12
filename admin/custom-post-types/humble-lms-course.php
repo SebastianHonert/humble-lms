@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Courses', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Course', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Courses', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Courses', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Course', 'humble-lms' ),
   'archives'              => __( 'Course Archives', 'humble-lms' ),
   'attributes'            => __( 'Course Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Course:', 'humble-lms' ),
@@ -344,8 +344,10 @@ function humble_lms_course_show_featured_image_mb() {
 function humble_lms_fixed_price_mb() {
   global $post;
 
+  $calculator = new Humble_LMS_Calculator();
+
   $sell = get_post_meta($post->ID, 'humble_lms_is_for_sale', true);
-  $price = Humble_LMS_Content_Manager::get_price( $post->ID );
+  $price = $calculator->format_price( get_post_meta($post->ID, 'humble_lms_fixed_price', true) );
 
   $options = get_option('humble_lms_options');
   $currency = isset( $options['currency'] ) ? $options['currency'] : 'USD';
@@ -383,6 +385,8 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   }
 
   // Let's save some data!
+  $calculator = new Humble_LMS_Calculator;
+
   $allowed_html = array(
     'a' => array(
       'href' => array(),
@@ -410,8 +414,12 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
   $course_meta['humble_lms_course_color'] = isset( $_POST['humble_lms_course_color'] ) ? sanitize_hex_color( $_POST['humble_lms_course_color'] ) : '';
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
-  $course_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? abs( round( filter_var( $_POST['humble_lms_fixed_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ), 2 ) ) : 0.00;
+  $course_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? $calculator->format_price( $_POST['humble_lms_fixed_price'] ) : 0.00;
   $course_meta['humble_lms_is_for_sale'] = $course_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
+
+  if( $course_meta['humble_lms_fixed_price'] < 0 ) {
+    $course_meta['humble_lms_fixed_price'] = 0.00;
+  }
 
   if( ! empty( $course_meta ) && sizeOf( $course_meta ) > 0 )
   {

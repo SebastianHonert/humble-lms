@@ -482,11 +482,11 @@ msgid "Currency"
 msgstr "Währungscode"
 
 #: admin/class-humble-lms-options-manager.php:190
-msgid "Prices include value added tax (VAT)"
+msgid "Prices include value added tax (vat)"
 msgstr "Preise mit Umsatzsteuer ausweisen (USt.)"
 
 #: admin/class-humble-lms-options-manager.php:191
-msgid "Value added tax (VAT) in %"
+msgid "Value added tax (vat) in %"
 msgstr "Umsatzsteuer (USt.) in %"
 
 #: admin/class-humble-lms-options-manager.php:192
@@ -643,15 +643,15 @@ msgid "More infos on Google reCAPTCHA"
 msgstr "Mehr Informationen zu Google reCAPTCHA"
 
 #: admin/class-humble-lms-options-manager.php:546
-msgid "Without VAT"
+msgid "Without vat"
 msgstr "Ohne USt."
 
 #: admin/class-humble-lms-options-manager.php:548
-msgid "Inclusive of VAT"
+msgid "Inclusive of vat"
 msgstr "Inklusive USt."
 
 #: admin/class-humble-lms-options-manager.php:550
-msgid "Exclusive of VAT"
+msgid "Exclusive of vat"
 msgstr "Exklusive USt."
 
 #: admin/class-humble-lms-options-manager.php:551
@@ -2904,7 +2904,7 @@ msgstr "Optional für Rechnung."
 
 #: public/class-humble-lms-shortcodes.php:1061
 #: public/class-humble-lms-shortcodes.php:1338
-msgid "VAT ID"
+msgid "vat ID"
 msgstr "USt.-ID."
 
 #: public/class-humble-lms-shortcodes.php:1076
@@ -3108,7 +3108,7 @@ msgstr "Vielen Dank, Ihr Account wurde erfolgreich hochgestuft."
 #: public/class-humble-lms-shortcodes.php:1834
 #: public/class-humble-lms-shortcodes.php:1836
 #, php-format
-msgid "%s %s plus %s%% VAT"
+msgid "%s %s plus %s%% vat"
 msgstr "%s %s zzgl. %s%% USt."
 
 #: public/class-humble-lms-shortcodes.php:1757

@@ -122,7 +122,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $color = get_post_meta( $track_id, 'humble_lms_track_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = get_post_meta( $track_id, 'humble_lms_is_for_sale', true );
-      $price = ! $this->user->purchased( $track_id ) ? $this->options_manager->get_currency() . ' ' . $this->content_manager->get_price( $track_id ) : null;
+      $price = ! $this->user->purchased( $track_id ) ? $this->calculator->currency() . ' ' . $this->content_manager->display_price( $track_id ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
         $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
@@ -262,7 +262,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $color = get_post_meta( $course_id, 'humble_lms_course_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = get_post_meta( $course_id, 'humble_lms_is_for_sale', true );
-      $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->content_manager->get_price( $course_id ) : null;
+      $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->content_manager->display_price( $course_id ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
       $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
@@ -1428,31 +1428,19 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $order_details = get_post_meta( $txn->ID, 'humble_lms_order_details', false );
         $order_details = isset( $order_details[0] ) ? $order_details[0] : $order_details;
 
-        $order_id = isset( $order_details['order_id'] ) ? $order_details['order_id'] : '';
-        $email_address = isset( $order_details['email_address'] ) ? $order_details['email_address'] : '';
-        $payer_id = isset( $order_details['payer_id'] ) ? $order_details['payer_id'] : '';
-        $status = isset( $order_details['status'] ) ? $order_details['status'] : '';
-        $payment_service_provider = isset( $order_details['payment_service_provider'] ) ? $order_details['payment_service_provider'] : '';
-        $create_time = isset( $order_details['create_time'] ) ? $order_details['create_time'] : '';
-        $update_time = isset( $order_details['update_time'] ) ? $order_details['update_time'] : '';
-        $given_name = isset( $order_details['given_name'] ) ? $order_details['given_name'] : '';
-        $surname = isset( $order_details['surname'] ) ? $order_details['surname'] : '';
-        $reference_id = isset( $order_details['reference_id'] ) ? $order_details['reference_id'] : '';
-        $currency_code = isset( $order_details['currency_code'] ) ? $order_details['currency_code'] : '';
-        $amount = isset( $order_details['value'] ) ? $order_details['value'] : '';
-        $content_link = '';
-        $post_type = get_post_type( $reference_id );
+        $transaction_details = $this->content_manager->transaction_details( $txn->ID );
 
-        $created = new DateTime($create_time);
+        $created = new DateTime($transaction_details['create_time']);
         $created = $created->format('Y-m-d H:i:s');
 
-        $updated = new DateTime($update_time);
+        $updated = new DateTime($transaction_details['update_time']);
         $updated = $updated->format('Y-m-d H:i:s');
 
         $html .= '<div class="humble-lms-user-transaction">';
           $html .= '<div class="humble-lms-user-transaction__title">';
             $html .= '<div class="humble-lms-user-transaction__title_name">';
               
+              $post_type = get_post_type( $transaction_details['reference_id'] );
               if( $post_type === 'humble_lms_track' ) {
                 $content_type = __('Track', 'humble-lms');
               } elseif( $post_type === 'humble_lms_course' ) {
@@ -1461,34 +1449,44 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
                 $content_type = __('Membership', 'humble-lms');
               }
 
-              if( get_post( $reference_id ) ) {
-                $content = get_post( $reference_id );
-                $content_link = '<a href="' . esc_url( get_permalink( $reference_id ) ) . '">' . esc_url( get_permalink( $reference_id ) ) . '</a>';
+              if( get_post( $transaction_details['reference_id'] ) ) {
+                $content = get_post( $transaction_details['reference_id'] );
+                $content_link = '<a href="' . esc_url( get_permalink( $transaction_details['reference_id'] ) ) . '">' . esc_url( get_permalink( $transaction_details['reference_id'] ) ) . '</a>';
                 $html .= $content->post_title . ' <span>(' . $content_type . ')</span>';
               } else {
-                $html .= ucfirst( $reference_id ) . ' <span>(' . $content_type . ')</span>';
+                $html .= ucfirst( $transaction_details['reference_id'] ) . ' <span>(' . $content_type . ')</span>';
               }
 
             $html .= '</div>';
-            $html .= '<span class="humble-lms-user-transaction__amount">' . $currency_code . ' ' . $amount . '</span> | ' . $created . ' | ID ' . $txn->ID;
+            $html .= '<span class="humble-lms-user-transaction__amount">' . $transaction_details['currency_code'] . ' ' . $transaction_details['value'] . '</span> | ' . $created . ' | ID ' . $txn->ID;
           $html .= '</div>';
           $html .= '<div class="humble-lms-user-transaction__content">';
+            $html .= '<p><strong>' . __('Invoice', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $txn->ID ) ) . '">' . __('Download (PDF)', 'humble-lms') . '</a></p>';
+            $html .= '<p class="humble-lms-user-transaction__topic">' . __('PayPal transaction data', 'humble-lms') . '</p>';
             $html .= '<p><strong>' . __('Transaction ID', 'humble-lms') . ':</strong> ' . $txn->ID . '</p>';
-            $html .= '<p><strong>' . __('Reference ID', 'humble-lms') . ':</strong> ' . $reference_id . '</p>';
-            $html .= '<p><strong>' . __('URL', 'humble-lms') . ':</strong> ' . $content_link . '</p>';
+            $html .= '<p><strong>' . __('Reference ID', 'humble-lms') . ':</strong> ' . $transaction_details['reference_id'] . '</p>';
+            $html .= isset( $content_link ) ? '<p><strong>' . __('URL', 'humble-lms') . ':</strong> ' . $content_link . '</p>' : '';
             $html .= '<p><strong>' . __('User ID', 'humble-lms') . ':</strong> ' . $user_id_txn . '</p>';
-            $html .= '<p><strong>' . __('Amount', 'humble-lms') . ':</strong> ' . $amount . '</p>';
-            $html .= '<p><strong>' . __('Currency code', 'humble-lms') . ':</strong> ' . $currency_code . '</p>';
-            $html .= '<p><strong>' . __('Order ID', 'humble-lms') . ':</strong> ' . $order_id . '</p>';
-            $html .= '<p><strong>' . __('Email adress', 'humble-lms') . ':</strong> ' . $email_address . '</p>';
-            $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
-            $html .= '<p><strong>' . __('Status', 'humble-lms') . ':</strong> ' . $status . '</p>';
-            $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $payer_id . '</p>';
-            $html .= '<p><strong>' . __('Payment service provider', 'humble-lms') . ':</strong> ' . $payment_service_provider . '</p>';
+            $html .= '<p><strong>' . __('Amount', 'humble-lms') . ':</strong> ' . $transaction_details['value'] . '</p>';
+            $html .= '<p><strong>' . __('Currency code', 'humble-lms') . ':</strong> ' . $transaction_details['currency_code'] . '</p>';
+            $html .= '<p><strong>' . __('Order ID', 'humble-lms') . ':</strong> ' . $transaction_details['order_id'] . '</p>';
+            $html .= '<p><strong>' . __('Email adress', 'humble-lms') . ':</strong> ' . $transaction_details['email_address'] . '</p>';
+            $html .= '<p><strong>' . __('Payer ID', 'humble-lms') . ':</strong> ' . $transaction_details['payer_id'] . '</p>';
+            $html .= '<p><strong>' . __('Status', 'humble-lms') . ':</strong> ' . $transaction_details['status'] . '</p>';
+            $html .= '<p><strong>' . __('Payment service provider', 'humble-lms') . ':</strong> ' . $transaction_details['payment_service_provider'] . '</p>';
             $html .= '<p><strong>' . __('Create time', 'humble-lms') . ':</strong> ' . $created . '</p>';
             $html .= '<p><strong>' . __('Update time', 'humble-lms') . ':</strong> ' . $updated . '</p>';
-            $html .= '<p><strong>' . __('Given name', 'humble-lms') . ':</strong> ' . $given_name . '</p>';
-            $html .= '<p><strong>' . __('Surname', 'humble-lms') . ':</strong> ' . $surname . '</p>';
+            $html .= '<p><strong>' . __('Given name (PayPal)', 'humble-lms') . ':</strong> ' . $transaction_details['given_name'] . '</p>';
+            $html .= '<p><strong>' . __('Surname (PayPal)', 'humble-lms') . ':</strong> ' . $transaction_details['surname'] . '</p>';
+            $html .= '<p class="humble-lms-user-transaction__topic">' . __('Billing details', 'humble-lms') . '</p>';
+            $html .= '<p><strong>' . __('First name', 'humble-lms') . ':</strong> ' . $transaction_details['first_name'] . '</p>';
+            $html .= '<p><strong>' . __('Last name', 'humble-lms') . ':</strong> ' . $transaction_details['last_name'] . '</p>';
+            $html .= '<p><strong>' . __('Country', 'humble-lms') . ':</strong> ' . $transaction_details['country'] . '</p>';
+            $html .= '<p><strong>' . __('Postcode', 'humble-lms') . ':</strong> ' . $transaction_details['postcode'] . '</p>';
+            $html .= '<p><strong>' . __('City', 'humble-lms') . ':</strong> ' . $transaction_details['city'] . '</p>';
+            $html .= '<p><strong>' . __('Address', 'humble-lms') . ':</strong> ' . $transaction_details['address'] . '</p>';
+            $html .= '<p><strong>' . __('Company', 'humble-lms') . ':</strong> ' . $transaction_details['company'] . '</p>';
+            $html .= '<p><strong>' . __('VAT ID', 'humble-lms') . ':</strong> ' . $transaction_details['vat_id'] . '</p>';
           $html .= '</div>';
         $html .= '</div>';
       }
@@ -1642,8 +1640,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $options = get_option('humble_lms_options');
-      $VAT = $this->calculator->get_VAT(); 
-      $has_VAT = $this->calculator->has_VAT();
+      $vat = $this->calculator->get_vat(); 
+      $has_vat = $this->calculator->has_vat();
       $currency = $this->options_manager->get_currency();
 
       if( ! is_user_logged_in() ) {
@@ -1675,7 +1673,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $price = $this->calculator->get_membership_price_by_slug( $membership->post_name );
         $price_diff = $this->calculator->format_price( $price - $user_membership_price );
         $price_diff = $price_diff < 0 ? 0.00 : $price_diff;
-        $price_VAT = $this->calculator->get_VAT_price( $price_diff );
+        $price_vat = $this->calculator->get_vat_price( $price_diff );
         $description = get_post_meta( $membership->ID, 'humble_lms_mbship_description', true );
         $purchased = $price <= $user_membership_price || $user_membership === $membership->post_name;
         
@@ -1689,29 +1687,29 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-checkout-membership ' . $class . '">';
           $html .= '<div class="humble-lms-checkout-membership-input">';
 
-            if( $has_VAT === 1 ) { // inclusive
+            if( $has_vat === 1 ) { // inclusive
               $final_price = $this->calculator->format_price( $price_diff );
-              $final_price_VAT = $this->calculator->format_price( $price_VAT );
-            } else if( $has_VAT === 2 ) { // exclusive
-              $final_price = $this->calculator->format_price( $price_VAT );
-              $final_price_VAT = $this->calculator->format_price( $price_diff );
+              $final_price_vat = $this->calculator->format_price( $price_vat );
+            } else if( $has_vat === 2 ) { // exclusive
+              $final_price = $this->calculator->format_price( $price_vat );
+              $final_price_vat = $this->calculator->format_price( $price_diff );
             } else { // none
               $final_price = $this->calculator->format_price( $price_diff );
-              $final_price_VAT = 0;
+              $final_price_vat = 0;
             }
 
-            if( $has_VAT ) {
+            if( $has_vat ) {
               $asterisk = '*';
-              $VAT_info = '<br><span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% VAT', 'humble-lms'), $final_price_VAT, $currency, $VAT ) . '</span>';
+              $vat_info = '<br><span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $final_price_vat, $currency, $vat ) . '</span>';
             } else {
               $asterisk = '';
-              $VAT_info = '';
+              $vat_info = '';
             }
 
             $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $final_price . '">';
             $html .= $membership->post_title;
             $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $final_price  . $asterisk . '</span>';
-            $html .= $purchased ? '' : $VAT_info;
+            $html .= $purchased ? '' : $vat_info;
 
           $html .= '</div>';
 
@@ -1794,7 +1792,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( (int)$is_for_sale !== 1 )
         return '';
       
-      $price = $this->content_manager->get_price( $post_id );
+      $price = $this->content_manager->get_price( $post_id, false );
       $price_vat = $this->content_manager->get_price( $post_id, true );
       $price_final = $price_vat > $price ? $price_vat : $price; 
 
@@ -1808,16 +1806,17 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-lightbox-title">' . __('Purchase now', 'humble-lms') . '</div>';
             $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $price_final . '*</strong><br>';
 
-            // VAT
-            $options = get_option( 'humble_lms_options' );
-            $hasVAT = $options['hasVAT'];
+            // vat
+            $vat = $this->calculator->get_vat();
+            $has_vat = $this->calculator->has_vat();
+            $currency = $this->calculator->currency();
 
-            if( empty( $hasVAT ) ) {
+            if( 0 === $has_vat || ! $has_vat ) {
               $html .= '<span class="humble-lms-price-vat">*' . __('No value added tax', 'humble-lms') . '</span></p>';
-            } else if( $hasVAT === 1 ) { // Inclusive of VAT
-              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% VAT', 'humble-lms'), $price_vat, $options['currency'], $options['VAT'] ) . '</span></p>';
-            } else if( $hasVAT === 2 ) { // Exclusive of VAT
-              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% VAT', 'humble-lms'), $price, $options['currency'], $options['VAT'] ) . '</span></p>';
+            } else if( $has_vat === 1 ) { // Inclusive of vat
+              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $price_vat, $currency, $vat ) . '</span></p>';
+            } else if( $has_vat === 2 ) { // Exclusive of vat
+              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $price, $currency, $vat ) . '</span></p>';
             }
 
             $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $price_final . '" data-context="single"></div>';
@@ -1871,9 +1870,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      $price = Humble_LMS_Content_Manager::get_price( $post->ID );
+      $price = Humble_LMS_Content_Manager::get_price( $post->ID, false );
       $price_vat = Humble_LMS_Content_Manager::get_price( $post->ID, true );
-      $price_displayed = $price_vat > $price ? $price_vat: $price;   
+      $price_displayed = Humble_LMS_Content_Manager::display_price( $post->ID );
 
       switch( get_post_type( $post->ID ) ) {
         case 'humble_lms_course':

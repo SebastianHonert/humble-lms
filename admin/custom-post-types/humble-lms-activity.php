@@ -4,7 +4,7 @@ $labels = array(
   'name'                  => _x( 'Activities', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Activity', 'Post Type Singular Name', 'humble-lms' ),
   'menu_name'             => __( 'Activities', 'humble-lms' ),
-  'name_admin_bar'        => __( 'Activities', 'humble-lms' ),
+  'name_admin_bar'        => __( 'Activity', 'humble-lms' ),
   'archives'              => __( 'Activity Archives', 'humble-lms' ),
   'attributes'            => __( 'Activity Attributes', 'humble-lms' ),
   'parent_item_colon'     => __( 'Parent Activity:', 'humble-lms' ),
@@ -53,7 +53,7 @@ $args = array(
   'can_export'            => true,
   'has_archive'           => false,
   'exclude_from_search'   => false,
-  'publicly_queryable'    => true,
+  'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
   'capability_type'       => 'page',
 );

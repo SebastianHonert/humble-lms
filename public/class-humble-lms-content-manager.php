@@ -1042,7 +1042,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         if( $post_type == 'humble_lms_track' ) {
           $content_type = '(' . __('Track', 'humble-lms') . ')';
         } else {
-          $content_type = '(' . __('Kurs', 'humble-lms') . ')';
+          $content_type = '(' . __('Course', 'humble-lms') . ')';
         }
 
         return $post->post_title . ' ' . $content_type;

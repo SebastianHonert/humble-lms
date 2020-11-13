@@ -1682,7 +1682,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $sum['total'] . '">';
             $html .= $membership->post_title;
             $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $sum['total']  . '*</span>';
-            $html .= $purchased ? '' : ' <span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $sum['subtotal'] . ' ' . $sum['vat_string'] . ' = ' . $sum['vat_diff'] . '</span>';
+            $html .= $purchased ? '' : ' <span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $sum['subtotal'] . ' ' . $sum['vat_string'] . '</span>';
           $html .= '</div>';
 
           if( $description ) {

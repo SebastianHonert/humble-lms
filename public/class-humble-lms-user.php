@@ -1150,11 +1150,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @return array
      */
     public function purchases( $user_id = null ) {
-      // $users = get_users();
-      // foreach( $users as $user ) {
-      //   update_user_meta( $user->ID, 'humble_lms_purchased_content', [] );
-      // }
-
       if( ! $user_id ) {
         if( ! is_user_logged_in() ) {
           return [];
@@ -1169,7 +1164,9 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       foreach( $purchases as $post_id ) {
         if( get_post_type( $post_id ) === 'humble_lms_track') {
           $track_courses = $this->content_manager->get_track_courses( $post_id );
-          array_push( $purchases, $track_courses );
+          if( ! empty( $track_courses ) ) {
+            array_push( $purchases, $track_courses );
+          }
         }
       }
 
@@ -1202,6 +1199,28 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $purchases = $this->purchases();
 
       return in_array( $post_id, $purchases );
+    }
+
+    /**
+     * Check if user purchased all courses in a track.
+     * 
+     * @return Bool
+     * @since 0.0.3
+     */
+    public function purchased_all_track_courses( $user_id = null, $track_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) || 'humble_lms_track' !== get_post_type( $track_id ) ) {
+        return false;
+      }
+
+      $courses = $this->content_manager->get_track_courses( $track_id );
+
+      if( ! $courses || empty( $courses ) ) {
+        return false;
+      }
+
+      $purchases = $this->purchases( $user_id );
+
+      return ! array_diff( $courses, $purchases );
     }
 
     /**

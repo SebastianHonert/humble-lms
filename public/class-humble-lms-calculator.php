@@ -316,6 +316,82 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       return $this->format_price( $price );
     }
 
+    /**
+     * Get the sum of all track course prices.
+     * 
+     * @return Float
+     * @since 0.0.3
+     */
+    public function track_courses_sum( $track_id = null, $user_id = null ) {
+      if( 'humble_lms_track' !== get_post_type( $track_id ) ) {
+        return 0.00;
+      }
+
+      $courses = Humble_LMS_Content_Manager::get_track_courses( $track_id, true );
+
+      if( empty( $courses ) ) {
+        return 0.00;
+      }
+
+      if( $user_id ) {
+        $user = new Humble_LMS_Public_User;
+        $purchases = $user->purchases( $user_id );
+
+        foreach( $purchases as $key => $purchase ) {
+          if( 'humble_lms_course' !== get_post_type( $purchase ) ) {
+            unset( $purchases[$key] );
+          }
+        }
+
+        $courses = array_diff( $courses, $purchases );
+      }
+
+      $sum = 0.00;
+
+      foreach( $courses as $course_id ) {
+        $course_price = get_post_meta( $course_id, 'humble_lms_fixed_price', true );
+        $sum += $course_price;
+      }
+
+      return $this->format_price( $sum );
+    }
+
+    /**
+     * Determine if track price is greater than price or courses, purchased courses, and 
+     * 
+     * @return Bool
+     * @since 0.0.3
+     */
+    public function is_track_purchase_lucrative( $price = 0, $track_id = null, $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        if( ! is_user_logged_in() ) {
+          return true;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      if( 'humble_lms_track' !== get_post_type( $track_id ) ) {
+        return false;
+      }
+
+      $public_user = new Humble_LMS_Public_User;
+
+      if( $public_user->purchased_all_track_courses( $user_id, $track_id ) ) {
+        return false;
+      }
+
+      if( ! $user_id && $price <= $this->track_courses_sum( $track_id ) ) {
+        return true;
+      }
+
+      if( $price <= $this->track_courses_sum( $track_id, $user_id ) ) {
+        return true;
+      }
+
+      return false;
+    }
+
   }
 
 }

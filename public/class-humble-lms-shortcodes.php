@@ -1841,13 +1841,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this course.', 'humble-lms') . '</p>';
 
-              $track_ids = $this->content_manager->find_tracks_by('course', $post->ID );
+              $parent_track = $this->content_manager->get_parent_track( $post->ID, true );
 
-              if( is_array( $track_ids ) && sizeOf( $track_ids ) === 1 ) {
-                if( $this->content_manager->is_for_sale( $track_ids[0] ) ) {
-                  $track_title = get_the_title( $track_ids[0] );
-                  $track_permalink = esc_url( get_permalink( $track_ids[0] ) );
-                  $html .= '<p>' . sprintf( __('You can also purchase the complete course track %s instead of the single course.', 'humble-lms'), '<a href="' . $track_permalink . '">' . $track_title . '</a>') . '</p>';
+              if( $parent_track ) {
+                if( $this->content_manager->is_for_sale( $parent_track->ID ) ) {
+                  $parent_track_price = get_post_meta( $parent_track->ID, 'humble_lms_fixed_price', true );
+                  if( $this->calculator->is_track_purchase_lucrative( $parent_track_price, $parent_track->ID, get_current_user_id() ) ) {
+                    $track_title = get_the_title( $parent_track->ID );
+                    $track_permalink = esc_url( get_permalink( $parent_track->ID ) );
+                    $html .= '<p>' . sprintf( __('You can also purchase the complete course track %s instead of the single course.', 'humble-lms'), '<a href="' . $track_permalink . '">' . $track_title . '</a>') . '</p>';
+                  }
                 }
               }
 
@@ -1860,6 +1863,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '</div>';
           break;
         case 'humble_lms_track':
+          if( ! $this->calculator->is_track_purchase_lucrative( $price, $post->ID, get_current_user_id() ) ) {
+            return '';
+          }
+
           $html = '<div class="humble-lms-message humble-lms-message--success">';
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this track', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';

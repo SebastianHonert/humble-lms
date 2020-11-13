@@ -300,7 +300,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  object
      * @since   0.0.1
      */
-    function get_parent_track( $course_id = null, $published = false ) {
+    public function get_parent_track( $course_id = null, $published = false ) {
       if( ! $course_id || 'humble_lms_course' !== get_post_type( $course_id ) ) {
         return false;
       }
@@ -328,7 +328,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @return  object
      * @since   0.0.2
      */
-    function get_parent_course( $lesson_id = null, $published = false ) {
+    public function get_parent_course( $lesson_id = null, $published = false ) {
       if( ! $lesson_id || 'humble_lms_lesson' !== get_post_type( $lesson_id ) ) {
         return false;
       }

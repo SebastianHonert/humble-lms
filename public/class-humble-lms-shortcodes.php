@@ -1673,7 +1673,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $price = $this->calculator->upgrade_membership_price( $membership->ID );
         $sum = $this->calculator->sum_price( $price );
         $description = get_post_meta( $membership->ID, 'humble_lms_mbship_description', true );
-        $purchased = $price === 0 || $user_membership === $membership->post_name;
+        $purchased = $price === 0.00 || $user_membership === $membership->post_name;
         
         $class = $purchased ? 'disabled' : '';
 

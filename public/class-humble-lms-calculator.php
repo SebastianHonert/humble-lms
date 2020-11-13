@@ -176,10 +176,9 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      */
     public function format_price( $price = 0 ) {
       if( ! $price ) {
-        return 0;
+        return 0.00;
       }
 
-      $price = floor( $price * 100 ) / 100;
       $price = number_format((float)$price, 2, '.', '');
 
       return $price;

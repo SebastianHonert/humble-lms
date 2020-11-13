@@ -469,39 +469,18 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @return   void
      */
     public function validate_membership_price() {
-      $membership = sanitize_text_field( $_POST['membership'] );
+      $membership_slug = sanitize_text_field( $_POST['membership'] );
+      $membership = Humble_LMS_Content_Manager::get_membership_by_slug( $membership_slug );
 
       if( ! $membership || ! is_user_logged_in() ) {
-        echo json_encode('membership not found');
+        echo json_encode('membership not found or user not logged in');
         die;
       }
 
-      $options = get_option('humble_lms_options');
-      $vat = $this->calculator->get_vat(); 
-      $has_vat = $this->calculator->has_vat();
-      $currency = $this->options_manager->get_currency();
-      
-      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
-      $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
+      $price = $this->calculator->upgrade_membership_price( $membership->ID );
+      $price = $this->calculator->format_price( $price );
 
-      $price = $this->calculator->get_membership_price_by_slug( $membership );
-      $price_diff = $this->calculator->format_price( $price - $user_membership_price );
-      $price_diff = $price_diff < 0 ? 0.00 : $price_diff;
-      $price_vat = $this->calculator->get_vat_price( $price_diff );
-      $purchased = $price <= $user_membership_price || $user_membership === $membership;
-
-      if( $has_vat === 1 ) { // inclusive
-        $final_price = $this->calculator->format_price( $price_diff );
-        $final_price_vat = $this->calculator->format_price( $price_vat );
-      } else if( $has_vat === 2 ) { // exclusive
-        $final_price = $this->calculator->format_price( $price_vat );
-        $final_price_vat = $this->calculator->format_price( $price_diff );
-      } else { // none
-        $final_price = $this->calculator->format_price( $price_diff );
-        $final_price_vat = 0;
-      }
-
-      echo json_encode( $final_price );
+      echo json_encode( $price );
 
       die;
     }

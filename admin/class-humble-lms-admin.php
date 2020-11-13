@@ -442,19 +442,6 @@ class Humble_LMS_Admin {
   }
 
   /**
-   * Check if checkout page exists and contains shortcode
-   * 
-   * @since   0.0.1
-   */
-  public static function humble_lms_checkout_page_exists() {
-    $options = get_option('humble_lms_options');
-    if( ! isset( $options['custom_pages']['checkout'] ) ) return false;
-
-    $custom_page_checkout = get_post( $options['custom_pages']['checkout'] );
-    return get_post_status( $custom_page_checkout ) === 'publish' && has_shortcode( $custom_page_checkout->post_content, 'humble_lms_paypal_buttons' );
-  }
-
-  /**
    * Verify user name and password on login and redirect accordingly.
    * 
    * @since   0.0.1

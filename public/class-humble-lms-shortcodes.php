@@ -1249,7 +1249,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
       $options = get_option('humble_lms_options');
-      $checkout_post_id = isset( $options['custom_pages']['checkout'] ) ? (int)$options['custom_pages']['checkout'] : null;
 
       ?>
       
@@ -1261,7 +1260,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
               echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . '</label>';
               echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
-              echo $this->content_manager->user_can_upgrade_membership() ? '<p><a class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_permalink( $checkout_post_id ) ) . '">' . __('Upgrade membership', 'humble-lms') . '</a></p>' : '';
+              echo $this->content_manager->user_can_upgrade_membership() ? '<p><a class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_post_type_archive_link( 'humble_lms_mbship' ) ) . '">' . __('Upgrade your account', 'humble-lms') . '</a></p>' : '';
             } else {
               echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . ' <small>(' . __('Account status', 'humble-lms' ) . ')</small></label>';
               echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
@@ -1640,8 +1639,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       $options = get_option('humble_lms_options');
-      $vat = $this->calculator->get_vat(); 
-      $has_vat = $this->calculator->has_vat();
       $currency = $this->options_manager->get_currency();
 
       if( ! is_user_logged_in() ) {
@@ -1656,61 +1653,36 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $html = '';
 
-      // Memberships table
       $memberships = $this->content_manager::get_memberships(false);
-      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
-      $user_membership_price = $this->calculator->get_membership_price_by_slug( $user_membership );
-      $html .= '<p>' . __('Please select the membership type you would like to purchase. You can upgrade your membership status anytime you want. Your current membership status:', 'humble-lms') . ' <strong>' . ucfirst( $user_membership ) . '</strong></p>';
 
-      // Success message after purchase
+      if( ! $memberships ) {
+        return '<p>' . __( 'No memberships available at the moment.', 'humble-lms' ) . '</p>';
+      }
+
       if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success' ) {
         $html .= '<p class="humble-lms-message humble-lms-message--success">' . __('Woohoo, your account has been upgraded! 😊', 'humble-lms') . '</p>';
       }
 
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+
+      $html .= '<p>' . __('Please select the membership type you would like to purchase. You can upgrade your membership status anytime you want. Your current membership status is', 'humble-lms') . ' <strong>&raquo;' . ucfirst( $user_membership ) . '&laquo;</strong>.</p>';
+
       $html .= '<div class="humble-lms-checkout-memberships">';
-      
+
       foreach( $memberships as $membership ) {
-        $price = $this->calculator->get_membership_price_by_slug( $membership->post_name );
-        $price_diff = $this->calculator->format_price( $price - $user_membership_price );
-        $price_diff = $price_diff < 0 ? 0.00 : $price_diff;
-        $price_vat = $this->calculator->get_vat_price( $price_diff );
+        $price = $this->calculator->upgrade_membership_price( $membership->ID );
+        $sum = $this->calculator->sum_price( $price );
         $description = get_post_meta( $membership->ID, 'humble_lms_mbship_description', true );
-        $purchased = $price <= $user_membership_price || $user_membership === $membership->post_name;
+        $purchased = $price === 0 || $user_membership === $membership->post_name;
         
-        if( $purchased ) {
-          $class = 'disabled';
-          // continue;
-        } else {
-          $class = '';
-        }
+        $class = $purchased ? 'disabled' : '';
 
         $html .= '<div class="humble-lms-checkout-membership ' . $class . '">';
           $html .= '<div class="humble-lms-checkout-membership-input">';
-
-            if( $has_vat === 1 ) { // inclusive
-              $final_price = $this->calculator->format_price( $price_diff );
-              $final_price_vat = $this->calculator->format_price( $price_vat );
-            } else if( $has_vat === 2 ) { // exclusive
-              $final_price = $this->calculator->format_price( $price_vat );
-              $final_price_vat = $this->calculator->format_price( $price_diff );
-            } else { // none
-              $final_price = $this->calculator->format_price( $price_diff );
-              $final_price_vat = 0;
-            }
-
-            if( $has_vat ) {
-              $asterisk = '*';
-              $vat_info = '<br><span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $final_price_vat, $currency, $vat ) . '</span>';
-            } else {
-              $asterisk = '';
-              $vat_info = '';
-            }
-
-            $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $final_price . '">';
+            $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $sum['total'] . '">';
             $html .= $membership->post_title;
-            $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $final_price  . $asterisk . '</span>';
-            $html .= $purchased ? '' : $vat_info;
-
+            $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $sum['total']  . '*</span>';
+            $html .= $purchased ? '' : ' <span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $sum['subtotal'] . ' ' . $sum['vat_string'] . ' = ' . $sum['vat_diff'] . '</span>';
           $html .= '</div>';
 
           if( $description ) {
@@ -1753,8 +1725,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
       $html .= '<div class="humble-lms-lightbox-wrapper">';
         $html .= '<div class="humble-lms-lightbox">';
-          $html .= '<div class="humble-lms-lightbox-title">' . __('Purchase membership', 'humble-lms') . '</div>';
+          $html .= '<div class="humble-lms-lightbox-title">' . __('Buy membership', 'humble-lms') . '</div>';
           $html .= '<p>' . get_the_title( $membership->ID ) . ', <strong>' . $currency . ' ' . $price . '*</strong><br>';
+          $html .= '<span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $price . ' ' . $sum['vat_string'] . '</span>';
           $html .= '<div id="humble-lms-paypal-buttons" data-membership="" data-price="" data-context="membership"></div>';
         $html .= '</div>';
       $html .= '</div>';
@@ -1792,9 +1765,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( (int)$is_for_sale !== 1 )
         return '';
       
+      $display_price = $this->content_manager::display_price( $post_id );
       $price = $this->content_manager->get_price( $post_id, false );
-      $price_vat = $this->content_manager->get_price( $post_id, true );
-      $price_final = $price_vat > $price ? $price_vat : $price; 
+      $sum = $this->calculator->sum_price( $price );
 
       $html = '';
       $currency = $this->options_manager->get_currency();
@@ -1804,22 +1777,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<div class="humble-lms-lightbox-wrapper">';
           $html .= '<div class="humble-lms-lightbox">';
             $html .= '<div class="humble-lms-lightbox-title">' . __('Purchase now', 'humble-lms') . '</div>';
-            $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $price_final . '*</strong><br>';
-
-            // vat
-            $vat = $this->calculator->get_vat();
-            $has_vat = $this->calculator->has_vat();
-            $currency = $this->calculator->currency();
-
-            if( 0 === $has_vat || ! $has_vat ) {
-              $html .= '<span class="humble-lms-price-vat">*' . __('No value added tax', 'humble-lms') . '</span></p>';
-            } else if( $has_vat === 1 ) { // Inclusive of vat
-              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $price_vat, $currency, $vat ) . '</span></p>';
-            } else if( $has_vat === 2 ) { // Exclusive of vat
-              $html .= '<span class="humble-lms-price-vat">*' . sprintf( __('%s %s plus %s%% vat', 'humble-lms'), $price, $currency, $vat ) . '</span></p>';
-            }
-
-            $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $price_final . '" data-context="single"></div>';
+            $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $display_price . '*</strong><br>';
+            $html .= '<span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $price . ' ' . $sum['vat_string'] . '</span>';
+            $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $display_price . '" data-context="single"></div>';
           $html .= '</div>';
         $html .= '</div>';
       }

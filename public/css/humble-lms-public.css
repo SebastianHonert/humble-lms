@@ -1076,6 +1076,11 @@ input[type='submit'].humble-lms-btn--error:active,
   color: #188e6e;
   margin-left: .375em; }
 
+.humble-lms-checkout-membership-price__tax {
+  font-weight: 400;
+  font-size: .75em;
+  display: block; }
+
 .humble-lms-checkout-membership.disabled,
 .humble-lms-checkout-membership.disabled input[name="humble_lms_membership"] {
   pointer-events: none;

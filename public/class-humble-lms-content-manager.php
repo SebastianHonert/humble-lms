@@ -874,23 +874,22 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $allowed_post_types = array(
         'humble_lms_track',
-        'humble_lms_course'
+        'humble_lms_course',
+        'humble_lms_mbship',
       );
 
       if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
         return $price;
 
       $calculator = new Humble_LMS_Calculator;
-
       $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
-      $price = $calculator->format_price( $price );
 
       // Value added tax
       $vat = $calculator->get_vat();
       $has_vat = $calculator->has_vat();
 
       if( $has_vat === 0 || $vat === 0 || ! $vat ) {
-        return $price;
+        return $calculator->format_price( $price );
       }
 
       if( $has_vat === 1 ) { // Inclusive of vat
@@ -899,9 +898,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         $price = $price + ( $price / 100 * $vat );
       }
 
-      $price = $calculator->format_price( $price );
-
-      return $price;
+      return $calculator->format_price( $price );
     }
 
     /**
@@ -916,7 +913,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         'post_type' => 'humble_lms_mbship',
         'post_status' => $post_status,
         'posts_per_page' => -1,
-        'meta_key' => 'humble_lms_mbship_price',
+        'meta_key' => 'humble_lms_fixed_price',
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
         'lang' =>  '',

@@ -58,7 +58,14 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.1
      */
     public function get_vat() {
+      $has_vat = $this->has_vat();
+      
+      if( ! isset( $has_vat ) || empty( $has_vat ) || $has_vat == 0 ) {
+        return 0;
+      }
+
       $options = $this->options;
+
       $vat = isset( $options['vat'] ) ? $options['vat'] : null;
       
       if( empty( $vat ) || ! isset( $vat) ) {
@@ -116,8 +123,8 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         return 0;
       }
 
-      $price = get_post_meta( $membership->ID, 'humble_lms_mbship_price', true );
-      $price = filter_var( $price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+      $price = get_post_meta( $membership->ID, 'humble_lms_fixed_price', true );
+      $price = $this->format_price( $price );
 
       // Return price without vat
       if( ! $vat ) {
@@ -171,8 +178,64 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       if( ! $price ) {
         return 0;
       }
-  
-      return number_format((float)$price, 2, '.', '');
+
+      $price = floor( $price * 100 ) / 100;
+      $price = number_format((float)$price, 2, '.', '');
+
+      return $price;
+    }
+
+    /**
+     * Get price, subtotal, total, and VAT difference for a single price value.
+     * 
+     * @return Array
+     * @since 0.0.3
+     */
+    public function sum_price( $price = null ) {
+      if( ! $price ) {
+        return 0.00;
+      }
+
+      $price = $this->format_price( $price );
+
+      $sum = array(
+        'price' => $price,
+        'subtotal' => 0,
+        'total' => 0,
+        'vat' => 0,
+        'vat_diff' => 0,
+        'vat_string' => '',
+      );
+
+      $vat = $this->get_vat();
+      $has_vat = $this->has_vat();
+
+      if( 1 === $has_vat ) {
+        $sum['price'] = $price;
+        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['vat_diff'] = ( $price / 100 ) * $vat;
+        $sum['subtotal'] = $price;
+        $sum['total'] = $price;
+      } else if( 2 === $has_vat ) {
+        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['price'] = $price - ($price / ( 100 + $vat ) * $vat );
+        $sum['subtotal'] = $price - ( $price / ( 100 + $vat ) * $vat );
+        $sum['vat_diff'] = $price / ( 100 + $vat ) * $vat;
+        $sum['total'] = $price;
+      } else {
+        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['price'] = $price;
+        $sum['subtotal'] = $price;
+        $sum['vat_diff'] = 0;
+        $sum['total'] = $price;
+      }
+
+      $sum['price'] = $this->format_price( $sum['price'] );
+      $sum['subtotal'] = $this->format_price( $sum['subtotal'] );
+      $sum['total'] = $this->format_price( $sum['total'] );
+      $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
+      
+      return $sum;
     }
 
     /**
@@ -224,6 +287,34 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
       
       return $sum;
+    }
+
+    /**
+     * Get membership price for upgrade if user alread purchased a membership.
+     * 
+     * @return Float
+     * @since 0.0.3
+     */
+    public function upgrade_membership_price( $post_id = null ) {
+      if( 'humble_lms_mbship' !== get_post_type( $post_id ) || ! is_user_logged_in() ) {
+        return 0.00;
+      }
+
+      $price = Humble_LMS_Content_Manager::display_price( $post_id );
+
+      $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
+
+      if( $user_membership === 'free' || ! $user_membership ) {
+        return $price;
+      } else {
+        $membership = Humble_LMS_Content_Manager::get_membership_by_slug( $user_membership );
+        $user_membership_price = Humble_LMS_Content_Manager::display_price( $membership->ID );
+      }
+
+      $price = $price - $user_membership_price;
+      $price = $price < 0 ? 0 : $price;
+
+      return $this->format_price( $price );
     }
 
   }

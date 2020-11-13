@@ -48,7 +48,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'lost_password' => 0,
         'reset_password' => 0,
         'user_profile' => 0,
-        'checkout' => 0,
       );
 
       $this->allowed_currencies = array(
@@ -382,8 +381,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       echo '<p><input type="number" name="humble_lms_options[custom_pages][reset_password]" value="' . (int)$custom_pages['reset_password'] . '" /></p>';
       echo '<p><strong>' . __('User Profile', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['user_profile'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
       echo '<p><input type="number" name="humble_lms_options[custom_pages][user_profile]" value="' . (int)$custom_pages['user_profile'] . '" /></p>';
-      echo '<p><strong>' . __('Checkout', 'humble-lms') . '</strong> | <a href="' . get_edit_post_link( (int)$custom_pages['checkout'] ) . '">' . __('Edit page', 'humble-lms') . '</a></p>';
-      echo '<p><input type="number" name="humble_lms_options[custom_pages][checkout]" value="' . (int)$custom_pages['checkout'] . '" /></p>';
     }
 
     /**
@@ -565,9 +562,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $selected = $has_vat === 0 ? 'selected="selected"' : '';
         echo '<option value="0" ' . $selected . '">' . __('Without vat', 'humble-lms') . '</option>';
         $selected = $has_vat === 1 ? 'selected="selected"' : '';
-        echo '<option value="1" ' . $selected . '">' . __('Inclusive of vat', 'humble-lms') . '</option>';
+        echo '<option value="1" ' . $selected . '">' . __('Including VAT', 'humble-lms') . '</option>';
         $selected = $has_vat === 2 ? 'selected="selected"' : '';
-        echo '<option value="2" ' . $selected . '">' . __('Exclusive of vat', 'humble-lms') . '</option>';
+        echo '<option value="2" ' . $selected . '">' . __('Excluding VAT', 'humble-lms') . '</option>';
       echo '</select></p><p class="description">' . __('Would you like to list your prices inclusive of, exclusive of, or without value added taxes?', 'humble-lms') . '</p>';
     }
 

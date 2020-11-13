@@ -353,7 +353,10 @@ jQuery(document).ready(function($) {
       })
 
       if (validated_price.toString() !== price.toString()) {
-        console.log('not validated')
+        setTimeout(function() {
+          $('.humble-lms-lightbox-wrapper').css('display', 'none')
+        }, 100)
+
         return
       }
 

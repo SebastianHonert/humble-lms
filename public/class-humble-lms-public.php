@@ -198,6 +198,15 @@ class Humble_LMS_Public {
       }
     }
 
+    // Membership archive
+    if ( is_archive() && $post->post_type == 'humble_lms_mbship' ) {
+      if ( file_exists( get_stylesheet_directory() . '/humble-lms/partials/humble-lms-membership-archive.php' ) ) {
+        return get_stylesheet_directory() . '/humble-lms/partials/humble-lms-membership-archive.php';
+      } else if ( file_exists( plugin_dir_path( __FILE__ ) . '/partials/humble-lms-membership-archive.php' ) ) {
+          return plugin_dir_path( __FILE__ ) . '/partials/humble-lms-membership-archive.php';
+      }
+    }
+
     return $template;
   }
 
@@ -451,10 +460,7 @@ class Humble_LMS_Public {
     $html = '<div class="humble-lms-message humble-lms-message--error">';
     $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';
     $html .= '<span class="humble-lms-message-content">' . __('You need to upgrade your account in order to access the requested content.', 'humble-lms' );
-
-    if( Humble_LMS_Admin::humble_lms_checkout_page_exists() ) {
-      $html .= ' <a href="' . esc_url( get_permalink( $options['custom_pages']['checkout'] ) ) . '">' . __('Upgrade your account now.', 'humble_lms') . '</a>';
-    }
+    $html .= ' <a href="' . esc_url( get_post_type_archive_link( 'humble_lms_mbship') ) . '">' . __('Upgrade your account now.', 'humble_lms') . '</a>';
 
     $html .= '</span>';
     $html .= '</div>';

@@ -47,6 +47,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
       $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
       $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
+      $message = wpautop($message);
 
       if( wp_mail( $to, $subject, $message, $headers ) ) {
         echo json_encode('success');

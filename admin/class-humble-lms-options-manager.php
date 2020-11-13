@@ -742,6 +742,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         ),
         'br' => array(),
         'em' => array(),
+        'p' => array(),
         'strong' => array(),
       );
 

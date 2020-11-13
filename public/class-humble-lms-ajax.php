@@ -391,13 +391,20 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       // Order details
       $order_html = '<p><strong>' . __('Account information', 'humble-lms') . '</strong></p>';
       $order_html .= '<p>' . __('Login', 'humble-lms') . ': ' . $user_info->user_login . '<br>';
-      $order_html .= __('Display name', 'humble-lms') . ': ' . $user_info->display_name . '<br>';
-      $order_html .= __('First name', 'humble-lms') . ': ' . $user_info->first_name . '<br>';
-      $order_html .= __('Username', 'humble-lms') . ': ' . $user_info->last_name . '<br>';
       $order_html .= __('Email', 'humble-lms') . ': ' . $user_info->user_email . '</p>';
 
+      $order_html .= '<p><strong>' . __('Billing information', 'humble-lms') . '</strong></p>';
+      $order_html .= '<p>' . __('First name', 'humble-lms') . ': ' . $user_info->first_name . '<br>';
+      $order_html .= __('Last name', 'humble-lms') . ': ' . $user_info->last_name . '<br>';
+      $order_html .= __('Country', 'humble-lms') . ': ' . $order_details['country'] . '<br>';
+      $order_html .= __('Postcode', 'humble-lms') . ': ' . $order_details['postcode'] . '<br>';
+      $order_html .= __('City', 'humble-lms') . ': ' . $order_details['city'] . '<br>';
+      $order_html .= __('Address', 'humble-lms') . ': ' . $order_details['address'] . '<br>';
+      $order_html .= __('Company', 'humble-lms') . ': ' . $order_details['company'] . '<br>';
+      $order_html .= __('VAT ID', 'humble-lms') . ': ' . $order_details['vat_id'] . '</p>';
+
       $order_html .= '<p><strong>' . __('PayPal transaction details', 'humble-lms') . '</strong></p>';
-      $order_html .= __('Payer ID', 'humble-lms') . ': ' . $order_details['payer_id'] . '<br>';
+      $order_html .= '<p>' . __('Payer ID', 'humble-lms') . ': ' . $order_details['payer_id'] . '<br>';
       $order_html .= __('Email', 'humble-lms') . ': ' . $order_details['email_address'] . '<br>';
       $order_html .= __('Given name', 'humble-lms') . ': ' . $order_details['given_name'] . '<br>';
       $order_html .= __('Surname', 'humble-lms') . ': ' . $order_details['surname'] . '<br>';
@@ -405,7 +412,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $order_html .= __('Create time', 'humble-lms') . ': ' . $order_details['create_time'] . '<br>';
       $order_html .= __('Update time', 'humble-lms') . ': ' . $order_details['update_time'] . '<br>';
       $order_html .= __('Reference ID', 'humble-lms') . ': ' . $order_details['reference_id'] . '<br>';
-      $order_html .= __('Value', 'humble-lms') . ': ' . $order_details['currency_code'] . ' ' . $order_details['value'];
+      $order_html .= __('Value', 'humble-lms') . ': ' . $order_details['currency_code'] . ' ' . $order_details['value'] . '</p>';
 
       if( $context !== 'membership' ) {
         $order_html .= '<br>' . __('Link to content', 'humble-lms') . ': ' . esc_url( get_permalink( $order_details['reference_id'] ) );
@@ -416,25 +423,35 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       // Use default content if option is not set
       if( ! isset( $options['email_checkout'] ) || empty( $options['email_checkout'] ) ) {
         $body = '<p>' . sprintf( __('Hello %s!', 'humble-lms'), $user_info->user_login ) . '</p>';
-        $body .= '<p>' . __('Thank you very much for your purchase. Please find the details of your order below.', 'humble-lms') . '</p>';
+        $body .= '<p>' . __('thank you very much for your purchase! We have received your order and updated your account accordingly. You can now access the requested contents.', 'humble-lms') . '</p>';
         $body .= $order_html;
 
         $account_page_html = ! empty( $options['custom_pages']['user_profile'] ) ? esc_url( get_permalink( $options['custom_pages']['user_profile'] ) ) : esc_url( site_url() );
 
-        $body .= '<p>' . __('You can now access the purchased content. A list of all your transactions and purchases is available on your account page of our website:', 'humble-lms') . '</p>';
+        $body .= '<p>' . __('A list of all your purchases and invoices is available on your account page:', 'humble-lms') . '</p>';
         $body .= '<p><a href="' . $account_page_html . '">' . $account_page_html . '</a></p>';
-        $body .= '<p>' . __('We will send you another email including the invoice shortly.', 'humble-lms') . '</p>';
         $body .= '<p>' . __('Enjoy our courses!', 'humble-lms') . '</p>';
       }
 
       else {
-        $body = wp_kses_post( $options['email_checkout'] );
+        $allowed_tags = array(
+          'a' => array(
+            'href' => array(),
+          ),
+          'br' => array(),
+          'em' => array(),
+          'p' => array(),
+          'strong' => array(),
+        );
+
+        $body = wp_kses( $options['email_checkout'], $allowed_html );
         $body = str_replace( 'ORDER_DETAILS', $order_html, $body );
         $body = str_replace( 'USER_NAME', $user_info->display_name, $body );
         $body = str_replace( 'ADMIN_EMAIL', get_option( 'admin_email' ), $body );
         $body = str_replace( 'CURRENT_DATE', $date, $body );
         $body = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $body );
         $body = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $body );
+        $body = wpautop( $body );
       }
 
       wp_mail( $to, $subject, $body, $headers );

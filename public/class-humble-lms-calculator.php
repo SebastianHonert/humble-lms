@@ -350,7 +350,10 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       foreach( $courses as $course_id ) {
         $course_price = get_post_meta( $course_id, 'humble_lms_fixed_price', true );
-        $sum += $course_price;
+
+        if( isset( $course_price ) && ! empty( $course_price ) ) {
+          $sum += $course_price;
+        }
       }
 
       return $this->format_price( $sum );

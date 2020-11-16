@@ -8,6 +8,9 @@
  * @subpackage Humble_LMS/public
  * @author     Sebastian Honert <hello@sebastianhonert.com>
  */
+
+use Dompdf\Dompdf;
+
 if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
   class Humble_LMS_Public_Ajax {
@@ -20,6 +23,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @param      string    $version    The version of this plugin.
      */
     public function __construct() {
+      require_once dirname( plugin_dir_path( __FILE__ ) ) . '/lib/dompdf/autoload.inc.php';
 
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
@@ -313,8 +317,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $context = sanitize_text_field( $_POST['context'] );
 
-      // Update invoice counter
-
       // Create new transaction post
       $txn = array(
         'post_type' => 'humble_lms_txn',
@@ -365,7 +367,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Send email notifications
-      $this->send_checkout_email( $order_details, $context );
+      $this->send_checkout_email( $order_details, $context, $txn_id );
 
       // Done
       echo json_encode($details, true);
@@ -378,7 +380,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @since   0.0.1
      * @return   void
      */
-    public function send_checkout_email( $order_details, $context = '' ) {
+    public function send_checkout_email( $order_details, $context, $txn_id ) {
       $options = get_option('humble_lms_options');
       $user_info = get_userdata( $order_details['user_id'] );
 
@@ -454,7 +456,24 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $body = wpautop( $body );
       }
 
-      wp_mail( $to, $subject, $body, $headers );
+      // Create invoice attachment
+      $invoice_html = $this->content_manager->create_invoice_html( $txn_id );
+
+      $dompdf = new Dompdf();
+      $options = $dompdf->getOptions();
+      $options->setIsRemoteEnabled(true);
+      $dompdf->setOptions($options);
+      $dompdf->loadHtml($invoice_html);
+      $dompdf->setPaper('A4', 'portrait');
+      $dompdf->render();
+      $output = $dompdf->output();
+
+      $filename = 'invoice-' . $order_details['invoice_number'] . '.pdf';
+      $file = $this->create_temp_invoice_file( $filename, $output );
+      $attachments = array( $file );
+
+      // Send email
+      wp_mail( $to, $subject, $body, $headers, $attachments );
      }
 
     /**
@@ -500,6 +519,28 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       echo json_encode( $price );
 
       die;
+    }
+
+    /**
+     * Create temporary invoice file
+     * 
+     * @return Bool
+     * @since 0.0.3
+     */
+    public function create_temp_invoice_file( $name = null, $content = null ) {
+      if( ! $name || ! $content ) {
+        return false;
+      }
+
+      $sep = DIRECTORY_SEPARATOR;
+      $file = $sep . trim( sys_get_temp_dir(), $sep ) . $sep . ltrim( $name, $sep );
+
+      file_put_contents( $file, $content );
+      register_shutdown_function( function() use( $file ) {
+          @unlink( $file );
+      });
+
+      return $file;
     }
     
   }

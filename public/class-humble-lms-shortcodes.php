@@ -1359,6 +1359,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_user_purchases( $user_id = null ) {
+      if( ! is_user_logged_in() ) {
+        return $this->display_login_text();
+      }
+
       $purchases = $this->user->purchases( $user_id );
 
       if( ! isset( $purchases ) || empty( $purchases ) ) {
@@ -1411,8 +1415,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     public function humble_lms_user_transactions() {
-      if( ! is_user_logged_in() )
-        return;
+      if( ! is_user_logged_in() ) {
+        return $this->display_login_text();
+      }
 
       $html = '';
       $user_id = get_current_user_id();
@@ -1460,7 +1465,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             $html .= '<span class="humble-lms-user-transaction__amount">' . $transaction_details['currency_code'] . ' ' . $transaction_details['value'] . '</span> | ' . $created . ' | ID ' . $txn->ID;
           $html .= '</div>';
           $html .= '<div class="humble-lms-user-transaction__content">';
-            $html .= '<p><strong>' . __('Invoice', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $txn->ID ) ) . '">' . __('Download (PDF)', 'humble-lms') . '</a></p>';
+
+            if( $this->user->billing_information_complete( $user_id ) ) {
+              $html .= '<p><strong>' . __('Invoice', 'humble-lms') . ':</strong> <a href="' . esc_url( get_permalink( $txn->ID ) ) . '">' . __('Download (PDF)', 'humble-lms') . '</a></p>';
+            }  else {
+              $user_profile_page_id = $this->translator->get_translated_post_id( $this->options_manager->options['custom_pages']['user_profile'] );
+              $html .= '<p>' . sprintf( __('Looking for an invoice? Please %s', 'humble-lms' ), '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) ) . '">' . __( 'update your billing information first', 'humble-lms' ) . '</a>.</p>';
+            }
+
             $html .= '<p class="humble-lms-user-transaction__topic">' . __('PayPal transaction data', 'humble-lms') . '</p>';
             $html .= '<p><strong>' . __('Transaction ID', 'humble-lms') . ':</strong> ' . $txn->ID . '</p>';
             $html .= '<p><strong>' . __('Reference ID', 'humble-lms') . ':</strong> ' . $transaction_details['reference_id'] . '</p>';

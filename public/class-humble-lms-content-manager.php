@@ -1159,8 +1159,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         $content .= '<div id="humble-lms-customer-info">';
           $content .= '<p>';
             $content .= $transaction['invoice_number'] ? '<p>' . __('Invoice #', 'humble-lms') . ' ' . $transaction['invoice_number'] . '<br>' : '';
-            $content .= __('Date', 'humble-lms') . ': ' . $transaction['create_time'] . '<br>';
-            $content .= __('Due', 'humble-lms') . ': ' . $transaction['create_time'];
+            $content .= __('Date', 'humble-lms') . ': ' . $date . '<br>';
+            $content .= __('Due', 'humble-lms') . ': ' . $date;
           $content .= '</p>';
           $content .= $transaction['company'] ? '<strong>' . $transaction['company'] . '</strong><br>' : '';
           $content .= $transaction['first_name'] . ' ' . $transaction['last_name'] . '<br>';

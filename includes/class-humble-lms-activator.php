@@ -141,6 +141,7 @@ class Humble_LMS_Activator {
 
     update_option('humble_lms_invoice_counter', 0);
     update_option('humble_lms_options', array(
+      'invoice_counter' => 0,
       'tiles_per_page' => 10,
       'syllabus_max_height' => 640,
       'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),

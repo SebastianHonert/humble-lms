@@ -643,13 +643,14 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     function invoice_prefix()
     {
-      $invoice_counter = isset( $this->options['invoice_counter'] ) ? absint( $this->options['invoice_counter'] ) : 0;
+      $invoice_counter = get_option('humble_lms_invoice_counter');
+      $invoice_counter = isset( $invoice_counter ) ? absint( $invoice_counter ) : 0;
       $invoice_prefix = isset( $this->options['invoice_prefix'] ) ? sanitize_text_field( $this->options['invoice_prefix'] ) : '';
 
       echo '<p class="description">' . __('Invoice IDs will increment automatically (1,2,3&hellip;). You can add a prefix to the invoice ID here.', 'humble-lms') . '</p>';
       echo '<p><input class="widefat" id="invoice_prefix" name="humble_lms_options[invoice_prefix]" value="' . $invoice_prefix . '"></p>';
 
-      echo '<p>' . __('Current invoice number', 'humble-lms') . ': ' . $invoice_prefix . '<input id="invoice_counter" name="humble_lms_options[invoice_counter]" type="number" min="0" step="1" value="' . $invoice_counter . '"></p>';
+      echo '<p>' . __('Current invoice number', 'humble-lms') . ': ' . $invoice_prefix . '<input id="invoice_counter" name="humble_lms_options[invoice_counter]" type="number" min="0" step="1" value="' . $invoice_counter . '"></p>';    
     }
 
     /**
@@ -843,10 +844,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['seller_info'] =  wp_kses( $input['seller_info'], $allowed_tags );
         $options['seller_logo'] =  esc_url_raw( $input['seller_logo'] );
         $options['invoice_prefix'] =  sanitize_text_field( $input['invoice_prefix'] );
-        $options['invoice_counter'] =  absint( $input['invoice_counter'] );
         $options['invoice_text_before'] =  wp_kses( $input['invoice_text_before'], $allowed_tags );
         $options['invoice_text_after'] =  wp_kses( $input['invoice_text_after'], $allowed_tags );
         $options['invoice_text_footer'] =  wp_kses( $input['invoice_text_footer'], $allowed_tags );
+
+        update_option( 'humble_lms_invoice_counter', absint( $input['invoice_counter'] ) );
       }
 
       return $options;

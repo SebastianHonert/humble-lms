@@ -275,12 +275,16 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $options = get_option('humble_lms_options');
+      $invoice_prefix = isset( $options['invoice_prefix'] ) ? sanitize_text_field( $options['invoice_prefix'] ) : '';
 
       // Update invoice counter
-      $invoice_prefix = isset( $options['invoice_prefix'] ) ? sanitize_text_field( $options['invoice_prefix'] ) : '';
       $invoice_counter = get_option('humble_lms_invoice_counter');
-      $invoice_counter = isset( $invoice_counter ) ? (int)$invoice_counter : 0;
-      $invoice_counter++;
+
+      if( ! isset( $invoice_counter ) ) {
+        $invoice_counter = 1;
+      } else {
+        $invoice_counter = absint( $invoice_counter ) + 1;
+      }
 
       update_option('humble_lms_invoice_counter', $invoice_counter);
 

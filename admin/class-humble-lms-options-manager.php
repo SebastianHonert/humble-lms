@@ -719,8 +719,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       echo '<p class="description">' . __('Text displayed at the bottom of your invoices. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
       echo '<p><textarea class="widefat" id="invoice_text_footer" name="humble_lms_options[invoice_text_footer]" rows="3">' . $invoice_text_footer . '</textarea></p>';
-
-      echo '<p><a href="#" target="_billing_preview" class="button" id="humble-lms-preview-invoice">' . __('Preview invoice', 'humble-lms') . '</a></p>';
     }
 
     /**

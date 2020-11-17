@@ -185,6 +185,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'max_evaluations', __('Max. number of logged quiz evaluations', 'humble-lms'), array( $this, 'max_evaluations' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tippy_theme', __('TippyJS tooltips theme', 'humble-lms'), array( $this, 'tippy_theme' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'delete_plugin_data_on_uninstall', __('Delete plugin data on uninstall', 'humble-lms'), array( $this, 'delete_plugin_data_on_uninstall' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
       add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
@@ -415,6 +416,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $selected = $tippy_theme === 'translucent' ? 'selected="selected"' : '';
         echo '<option value="translucent" ' . $selected . '>translucent</option>';
       echo '</select>';
+    }
+
+    /**
+     * Option for deleting plugin data on uninstall.
+     *
+     * @since    0.0.1
+     */
+    public function delete_plugin_data_on_uninstall() {
+      $delete_plugin_data_on_uninstall = isset( $this->options['delete_plugin_data_on_uninstall'] ) ? (int)$this->options['delete_plugin_data_on_uninstall'] : 0;
+      $checked = $delete_plugin_data_on_uninstall === 1 ? 'checked' : '';
+  
+      echo '<p><input id="delete_plugin_data_on_uninstall" name="humble_lms_options[delete_plugin_data_on_uninstall]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, delete plugin data on uninstall.', 'humble-lms') . '</p>';
     }
 
     /**
@@ -784,6 +797,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
         if( isset( $input['tippy_theme'] ) )
           $options['tippy_theme'] = sanitize_text_field( $input['tippy_theme'] );
+
+        $options['delete_plugin_data_on_uninstall'] = isset( $input['delete_plugin_data_on_uninstall'] ) ? 1 : 0;
 
         if( $options['max_evaluations'] < 10 ) {
           $options['max_evaluations'] = 10;

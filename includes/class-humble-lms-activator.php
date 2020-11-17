@@ -139,51 +139,64 @@ class Humble_LMS_Activator {
     $custom_page_reset_password = get_page_by_title('Humble LMS Reset Password', OBJECT, 'page');
     $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
 
-    update_option('humble_lms_invoice_counter', 0);
-    update_option('humble_lms_options', array(
-      'invoice_counter' => 0,
-      'tiles_per_page' => 10,
-      'syllabus_max_height' => 640,
-      'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
-      'button_labels' => array(
-        __('Mark complete and continue', 'humble-lms'),
-        __('Mark incomplete and continue', 'humble-lms'),
-      ),
-      'registration_countries' => array(),
-      'custom_pages' => array(
-        'login' => $custom_page_login->ID,
-        'registration' => $custom_page_registration->ID,
-        'lost_password' => $custom_page_lost_password->ID,
-        'reset_password' => $custom_page_reset_password->ID,
-        'user_profile' => $custom_page_user_profile->ID,
-        'currency' => 'USD',
-      ),
-      'max_evaluations' => 25,
-      'tippy_theme' => 'default',
-      'email_welcome' => "Hi there,
+    // Set invoice counter
+    $invoice_counter = get_option('humble_lms_invoice_counter');
 
-welcome to WEBSITE_NAME! Here's how to log in:
+    if( ! isset( $invoice_counter ) || ! $invoice_counter ) {
+      update_option('humble_lms_invoice_counter', 0);
+    }
 
-Username: USER_NAME
-Email: USER_EMAIL
-Login URL: LOGIN_URL
+    // Set default plugin options
+    $options = get_option('humble_lms_options');
 
-Please use the password you entered in the registration form.
+    if( ! isset( $options ) ) {
+      update_option('humble_lms_options', array(
+        'currency' => 'EUR',
+        'delete_plugin_data_on_uninstall' => 0,
+        'tiles_per_page' => 10,
+        'syllabus_max_height' => 640,
+        'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
+        'button_labels' => array(
+          __('Mark complete and continue', 'humble-lms'),
+          __('Mark incomplete and continue', 'humble-lms'),
+        ),
+        'registration_countries' => array(),
+        'custom_pages' => array(
+          'login' => $custom_page_login->ID,
+          'registration' => $custom_page_registration->ID,
+          'lost_password' => $custom_page_lost_password->ID,
+          'reset_password' => $custom_page_reset_password->ID,
+          'user_profile' => $custom_page_user_profile->ID,
+        ),
+        'currency' => 'EUR',
+        'max_evaluations' => 25,
+        'tippy_theme' => 'default',
+        'email_welcome' => "Hi there,
 
-If you have any problems, please contact us via email to ADMIN_EMAIL.
+  welcome to WEBSITE_NAME! Here's how to log in:
 
-Best wishes –
-Sebastian",
-        'email_lost_password' => "Hi there,
+  Username: USER_NAME
+  Email: USER_EMAIL
+  Login URL: LOGIN_URL
 
-you asked us to reset your password for your account using the email address USER_EMAIL.
+  Please use the password you entered in the registration form.
 
-If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.
+  If you have any problems, please contact us via email to ADMIN_EMAIL.
 
-To reset your password please visit the following address: RESET_PASSWORD_URL
+  Best wishes –
+  Sebastian",
+          'email_lost_password' => "Hi there,
 
-Thank you!"
-    ) );
+  you asked us to reset your password for your account using the email address USER_EMAIL.
+
+  If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.
+
+  To reset your password please visit the following address: RESET_PASSWORD_URL
+
+  Thank you!"
+      ) );
+    }
+ 
   }
 
 }

@@ -224,6 +224,11 @@ function humble_lms_course_sections_mb()
         }
       }
 
+      if( empty( $lessons ) && empty( $selected_lessons ) ) {
+        echo '<p>' . __('No lessons found.', 'humble-lms') . '</p>';
+        return;
+      }
+
       echo '<div class="humble-lms-course-section" class="list-group-item" data-id="' . ($key + 1) . '">';
         echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Section', 'humble-lms') . ' <span class="humble-lms-course-section-number">' . ($key + 1) . '</span></label>';
         echo '<div class="humble-lms-section-toggle-wrapper">';  

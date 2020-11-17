@@ -2,30 +2,83 @@
 
 /**
  * Fired when the plugin is uninstalled.
- *
- * When populating this file, consider the following flow
- * of control:
- *
- * - This method should be static
- * - Check if the $_REQUEST content actually is the plugin name
- * - Run an admin referrer check to make sure it goes through authentication
- * - Verify the output of $_GET makes sense
- * - Repeat with other user roles. Best directly by using the links/query string parameters.
- * - Repeat things for multisite. Once for a single site in the network, once sitewide.
- *
- * This file may be updated more in future version of the Boilerplate; however, this is the
- * general skeleton and outline for how the file should work.
- *
- * For more information, see the following discussion:
- * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
- *
- * @link       https://sebastianhonert.com
- * @since      0.0.1
+ * 
+ * @since      0.0.4
  *
  * @package    Humble_LMS
  */
 
-// If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
   exit;
 }
+
+// Delete plugin options
+delete_option('humble_lms_options');
+delete_option('humble_lms_invoice_counter');
+
+// Delete CPTs
+$cpts = array(
+  'humble_lms_activity',
+  'humble_lms_award',
+  'humble_lms_cert',
+  'humble_lms_course',
+  'humble_lms_email',
+  'humble_lms_lesson',
+  'humble_lms_mbship',
+  'humble_lms_question',
+  'humble_lms_quiz',
+  'humble_lms_track',
+  'humble_lms_txn',
+);
+
+foreach( $cpts as $cpt ) {
+  $args = array('post_type' => $cpt, 'posts_per_page' => -1);
+  $posts = get_posts( $args );
+  
+  foreach ( $posts as $post ) {
+    wp_delete_post( $post->ID, false );
+  }
+}
+
+// Delete post meta
+$sql = 'SELECT * FROM mnmlwp_postmeta';
+$results = $wpdb->get_results( $sql );    
+
+if( ! empty( $results ) ) {
+  foreach( $results as $result ) {
+    if( strpos( $result->meta_key, 'humble_lms_' ) !== false ) {
+      delete_post_meta( $result->meta_id, $result->meta_key );
+    }
+  }
+}
+
+// Delete user meta
+$sql = 'SELECT * FROM mnmlwp_usermeta';
+$results = $wpdb->get_results( $sql );    
+
+if( ! empty( $results ) ) {
+  foreach( $results as $result ) {
+    if( strpos( $result->meta_key, 'humble_lms_' ) !== false ) {
+      delete_user_meta( $result->$user_id, $result->meta_key );
+    }
+  }
+}
+
+// Delete terms
+$terms = get_terms( array(
+  'taxonomy' => array(
+    'humble_lms_tax_course_level',
+    'humble_lms_tax_provider',
+  ),
+  'fields'        => 'all',
+  'hide_empty'    => false
+) );
+
+if( ! empty( $terms ) ) {
+  foreach( $terms as $term ) {
+    wp_delete_term( $term->term_id, $term->taxonomy );
+  }
+}
+
+// Delete user roles
+remove_role( 'humble_lms_student' );

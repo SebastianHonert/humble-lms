@@ -105,11 +105,6 @@ function humble_lms_track_courses_mb()
     }
   }
 
-  if( empty( $courses ) && empty( $selected_courses ) ) {
-    echo '<p>' . __('No courses found.', 'humble-lms') . '</p>';
-    return;
-  }
-
   echo '<div id="humble-lms-admin-track-courses humble_lms_multiselect_track_courses">';
     echo '<select class="humble-lms-searchable" data-content="track_courses" multiple="multiple">';
       foreach( $selected_courses as $course ) {

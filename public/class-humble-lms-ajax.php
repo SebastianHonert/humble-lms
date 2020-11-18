@@ -350,12 +350,12 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           $purchased = is_array( $purchased[0] ) ? $purchased[0] : [];
           $post_type = get_post_type( $post_id );
 
-          // Course & track
+          // Add track / course to purchased items
           if( ! in_array( $post_id, $purchased ) ) {
             array_push( $purchased, $post_id );
           }
 
-          // Tracks only
+          // Get and add track courses to purchased items
           if( $post_type === 'humble_lms_track' ) {
             $courses = Humble_LMS_Content_Manager::get_track_courses( $post_id );
             foreach( $courses as $course_id ) {
@@ -364,6 +364,8 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
               }
             }
           }
+
+          $purchased = array_unique( $purchased, SORT_REGULAR );
           
           update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased );
 

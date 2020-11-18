@@ -602,6 +602,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     {
       $message = isset( $this->options['email_checkout'] ) ? wp_kses_post( $this->options['email_checkout'] ) : '';
 
+      echo '<p class="description"><strong><em>' . __('If you leave this field blank, a default email will be sent.', 'humble-lms') . '</em></strong></p>';
       echo '<p class="description">' . __('This email will be send in HTML format. You can use the following strings to include specific information in your email:', 'humble-lms') . '</p>';
       echo '<p><strong>ORDER_DETAILS</strong>, <strong>WEBSITE_NAME</strong>, <strong>WEBSITE_URL</strong>, <strong>USER_NAME</strong>, <strong>CURRENT_DATE</strong>, <strong>ADMIN_EMAIL</strong></p>';
       echo '<div class="humble-lms-test-email" id="humble-lms-test-email-checkout">';

@@ -1165,12 +1165,16 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         if( get_post_type( $post_id ) === 'humble_lms_track') {
           $track_courses = $this->content_manager->get_track_courses( $post_id );
           if( ! empty( $track_courses ) ) {
-            array_push( $purchases, $track_courses );
+            foreach( $track_courses as $course_id ) {
+              if( ! in_array( $course_id, $purchases ) ) {
+                array_push( $purchases, $course_id );
+              }
+            }
           }
         }
       }
 
-      $array = array_unique( $purchases, SORT_REGULAR ); 
+      $purchases = array_unique( $purchases, SORT_REGULAR );
 
       return $purchases;
     }

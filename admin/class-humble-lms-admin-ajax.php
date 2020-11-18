@@ -85,7 +85,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
         'post_title' => $title,
         'post_type' => $post_type,
         'post_content'  => '',
-        'post_status'   => 'publish',
+        'post_status'   => 'draft',
         'post_author' => get_current_user_id(),
       );
 

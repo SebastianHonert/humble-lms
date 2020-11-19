@@ -136,6 +136,7 @@ class Humble_LMS_Admin {
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-coupon.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';

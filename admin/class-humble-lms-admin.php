@@ -133,17 +133,27 @@ class Humble_LMS_Admin {
    * @since    0.0.1
    */
   public function register_custom_post_types() {
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-coupon.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
+    $options = get_option('humble_lms_options');
+
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-lesson.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-membership.php';
+
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-award.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-certificate.php';
+
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-activity.php';
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-email.php';
+    
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-question.php';
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-quiz.php';;
-    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
+
+    require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-membership.php';
+
+    if( isset( $options['use_coupons'] ) && 1 === $options['use_coupons'] ) {
+      require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-coupon.php';
+    }
+    
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-txn.php';
   }
 

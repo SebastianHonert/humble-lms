@@ -30,6 +30,7 @@ if( $delete_plugin_data_on_uninstall ) {
     'humble_lms_activity',
     'humble_lms_award',
     'humble_lms_cert',
+    'humble_lms_coupon',
     'humble_lms_course',
     'humble_lms_email',
     'humble_lms_lesson',

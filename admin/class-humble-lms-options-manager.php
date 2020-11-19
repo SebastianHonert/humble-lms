@@ -194,6 +194,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'email_agreement', __('Email agreement', 'humble-lms'), array( $this, 'email_agreement' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
  
+      add_settings_field( 'use_coupons', 'Use coupons?', array( $this, 'use_coupons' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
@@ -531,6 +532,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for activiating the use of coupons.
+     *
+     * @since    0.0.5
+     */
+    public function use_coupons() {
+      $use_coupons = isset( $this->options['use_coupons'] ) ? (int)$this->options['use_coupons'] : 0;
+      $checked = $use_coupons === 1 ? 'checked' : '';
+  
+      echo '<p><input id="use_coupons" name="humble_lms_options[use_coupons]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, use coupons.', 'humble-lms') . '</p>';
+    }
+
+    /**
      * PayPal client ID.
      *
      * @since    0.0.1
@@ -833,6 +846,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       if( $active === 'paypal' ) {
+        $options['use_coupons'] = isset( $input['use_coupons'] ) ? 1 : 0;
+
         if( isset( $input['paypal_client_id'] ) ) {
           $options['paypal_client_id'] = sanitize_text_field( trim( $input['paypal_client_id'] ) );
         }

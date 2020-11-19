@@ -516,15 +516,36 @@ jQuery(document).ready(function($) {
     }
   })
 
-  $('.humble-lms-clear-datepicker-from').on('click', function () {
+  function clearTimeStampValueFrom() {
     $('input[name="humble_lms_course_timestamps[from]"]').datepicker('setDate', null).val()
     $('input[name="humble_lms_course_timestamps[timestampFrom]"]').val('')
+  }
+
+  function clearTimeStampValueTo() {
+    $('input[name="humble_lms_course_timestamps[to]"]').datepicker('setDate', null)
+    $('input[name="humble_lms_course_timestamps[timestampTo]"]').val('')
+  }
+
+  $('.humble-lms-clear-datepicker-from').on('click', function () {
+    clearTimeStampValueFrom()
   })
 
   $('.humble-lms-clear-datepicker-to').on('click', function () {
-    $('input[name="humble_lms_course_timestamps[to]"]').datepicker('setDate', null)
-    $('input[name="humble_lms_course_timestamps[timestampTo]"]').val('')
+    clearTimeStampValueTo()
   })
+
+  // Set timestamps from post meta dates
+  if ($('input[name="humble_lms_course_timestamps[from]"]').val()) {
+    let dateFrom = new Date(($('input[name="humble_lms_course_timestamps[from]"]').val()))
+    let minutesFrom = dateFrom.setMinutes(dateFrom.getMinutes() - dateFrom.getTimezoneOffset()) / 1000
+    $('input[name="humble_lms_course_timestamps[timestampFrom]"]').val(minutesFrom)
+  }
+
+  if ($('input[name="humble_lms_course_timestamps[to]"]').val()) {
+    let dateTo = new Date(($('input[name="humble_lms_course_timestamps[to]"]').val()))
+    let minutesTo = dateTo.setMinutes(dateTo.getMinutes() - dateTo.getTimezoneOffset()) / 1000
+    $('input[name="humble_lms_course_timestamps[timestampTo]"]').val(minutesTo)
+  }
 
   /**
    * Add content with lightbox.

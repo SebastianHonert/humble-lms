@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Register the coupon custom post type.
+ * 
+ * @since 0.0.5
+ * @package Humble_LMS
+ */
+
 $labels = array(
   'name'                  => _x( 'Coupons', 'Post Type General Name', 'humble-lms' ),
   'singular_name'         => _x( 'Coupon', 'Post Type Singular Name', 'humble-lms' ),

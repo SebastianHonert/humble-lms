@@ -1118,7 +1118,7 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-user-transaction__title {
   padding: .5em;
-  background: #f7f7f7;
+  background: #fafafa;
   cursor: pointer; }
 
 .humble-lms-user-transaction__title_name {

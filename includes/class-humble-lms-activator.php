@@ -153,6 +153,7 @@ class Humble_LMS_Activator {
       update_option('humble_lms_options', array(
         'currency' => 'EUR',
         'delete_plugin_data_on_uninstall' => 0,
+        'use_coupons' => 0,
         'tiles_per_page' => 10,
         'syllabus_max_height' => 640,
         'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),

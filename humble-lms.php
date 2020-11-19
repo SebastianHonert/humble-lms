@@ -16,7 +16,7 @@
  * Plugin Name:       Humble LMS
  * Plugin URI:        https://sebastianhonert.com
  * Description:       Humble LMS is a learning management system plugin for WordPress with a focus on simplicity.
- * Version:           0.0.4
+ * Version:           0.0.5
  * Requires PHP:      7.2
  * Author:            Sebastian Honert
  * Author URI:        https://sebastianhonert.com/

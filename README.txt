@@ -14,7 +14,7 @@ Humble LMS is a very simple learning management plugin for WordPress.
 
 PLEASE NOTE: this plugin is work in progress. Use at your own risk!
 
-Current version: 0.0.4
+Current version: 0.0.5
 
 Humble LMS is a very simple learning management plugin for WordPress.
 

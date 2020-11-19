@@ -430,7 +430,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       // Use default content if option is not set
       if( ! isset( $options['email_checkout'] ) || empty( $options['email_checkout'] ) ) {
-        $body = '<p>' . sprintf( __('Hello %s!', 'humble-lms'), $user_info->user_login ) . '</p>';
+        $body = '<p>' . sprintf( __('Hello %s!', 'humble-lms'), $order_details['given_name'] ) . '</p>';
         $body .= '<p>' . __('thank you very much for your purchase! We have received your order and updated your account accordingly. You can now access the requested contents.', 'humble-lms') . '</p>';
         $body .= $order_html;
 

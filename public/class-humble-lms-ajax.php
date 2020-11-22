@@ -372,6 +372,11 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           break;
       }
 
+      // Add license
+      if( function_exists( 'humble_lms_add_license') ) {
+        humble_lms_add_license( $order_details, $options );
+      }
+
       // Send email notifications
       $this->send_checkout_email( $order_details, $context, $txn_id );
 

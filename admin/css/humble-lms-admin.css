@@ -342,6 +342,24 @@ p.humble-lms-add-course-to-section {
   box-sizing: border-box;
 }
 
+.humble-lms-message {
+  border-radius: 4px;
+  display: inline-block;
+  padding: .5em;
+}
+
+.humble-lms-message--success {
+  color: #207a86;
+  background: #f1fdff;
+  border: 1px solid #207a86;
+}
+
+.humble-lms-message--error {
+  color: rgb(121, 10, 10);
+  background: rgb(255, 243, 243);
+  border: 1px solid rgb(121, 10, 10);
+}
+
 /* Loading layer/spinner */
 .humble-lms-loading-layer {
   position: fixed;

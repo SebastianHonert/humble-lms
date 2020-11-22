@@ -1903,9 +1903,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return  String
      * @since 0.0.3
      */
-    public function complete_billing_details_html() {
+    public function complete_billing_details_html( $price = null ) {
+      $buy_string = $price ? ' / ' . __('Buy for', 'humble-lms') . '&nbsp;' . $price . '&nbsp;' . $this->options_manager->get_currency() : '';
       $user_profile_page_id = $this->translator->get_translated_post_id( $this->options_manager->options['custom_pages']['user_profile'] );
-      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">Complete billing details</span></a>';
+      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">' . __('Complete billing details', 'humble-lms') . $buy_string . '</span></a>';
 
       return $html;
     }

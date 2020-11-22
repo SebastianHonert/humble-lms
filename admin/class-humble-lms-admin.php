@@ -475,6 +475,9 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_register_user() {
+    if( 'POST' !== $_SERVER['REQUEST_METHOD'] || is_user_logged_in() || ! isset( $_POST['humble-lms-form'] ) || 'humble-lms-registration' !== $_POST['humble-lms-form'] )
+      return;
+
     global $wp;
 
     if( ! get_option( 'users_can_register' ) )
@@ -621,7 +624,7 @@ class Humble_LMS_Admin {
           wp_new_user_notification( $new_user_id, null, 'both' );
           
           // Log in new user
-          wp_setcookie( $user_login, $user_pass, true );
+          wp_set_auth_cookie( $new_user_id );
           wp_set_current_user( $new_user_id, $user_login );	
           do_action( 'wp_login', $user_login );
           
@@ -639,7 +642,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_update_user() {
-    if( ! is_user_logged_in() || ! isset( $_POST['humble-lms-form'] ) || $_POST['humble-lms-form'] !== 'humble-lms-update-user' )
+    if( 'POST' !== $_SERVER['REQUEST_METHOD'] || ! is_user_logged_in() || ! isset( $_POST['humble-lms-form'] ) || ( 'humble-lms-update-user' !== $_POST['humble-lms-form'] ) )
       return;
 
     global $wp;

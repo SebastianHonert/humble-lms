@@ -970,6 +970,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $post_user_login = isset( $_POST['humble-lms-user-login'] ) ? sanitize_text_field( $_POST['humble-lms-user-login'] ) : '';
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
+      $post_user_title = isset( $_POST['humble-lms-user-title'] ) ? sanitize_text_field( $_POST['humble-lms-user-title'] ) : '';
       $post_user_country = $registration_has_country && isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $post_user_address = isset( $_POST['humble-lms-user-address'] ) ? sanitize_text_field( $_POST['humble-lms-user-address'] ) : '';
       $post_user_postcode = isset( $_POST['humble-lms-user-postcode'] ) ? sanitize_text_field( $_POST['humble-lms-user-postcode'] ) : '';
@@ -996,6 +997,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <p>
             <label for="humble-lms-user-last" class="humble-lms-required"><?php _e('Last Name', 'humble-lms'); ?><br><small><?php _e('Required for certification.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $post_user_last; ?>" required />
+          </p>
+          <p>
+            <label for="humble-lms-user-title"><?php _e('Academic title', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" value="<?php echo $post_user_title; ?>" />
           </p>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
@@ -1239,6 +1244,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $user_login = $userdata->user_login;
       $user_first = $userdata->first_name;
       $user_last = $userdata->last_name;
+      $user_title = get_user_meta( $user_id, 'humble_lms_title', true );
       $user_country = get_user_meta( $user_id, 'humble_lms_country', true );
       $user_postcode = get_user_meta( $user_id, 'humble_lms_postcode', true );
       $user_city = get_user_meta( $user_id, 'humble_lms_city', true );
@@ -1279,6 +1285,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <label for="humble-lms-user-last"><?php _e('Last Name', 'humble-lms'); ?> <small>(<?php echo __('Can\'t be changed', 'humble-lms' ); ?>)</small></label>
           <p><strong><?php echo $user_last; ?></strong></p>
           <input type="hidden" name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $user_last; ?>" />
+          <p>
+            <label for="humble-lms-user-title"><?php _e('Academic title', 'humble-lms'); ?></label>
+            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" value="<?php echo $user_title; ?>" />
+          </p>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
             <input name="humble-lms-user-email" id="humble-lms-user-email" class="humble-lms-required" type="email" value="<?php echo $user_email; ?>" />
@@ -1903,9 +1913,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return  String
      * @since 0.0.3
      */
-    public function complete_billing_details_html() {
+    public function complete_billing_details_html( $price = null ) {
+      $buy_string = $price ? ' / ' . __('Buy for', 'humble-lms') . '&nbsp;' . $price . '&nbsp;' . $this->options_manager->get_currency() : '';
       $user_profile_page_id = $this->translator->get_translated_post_id( $this->options_manager->options['custom_pages']['user_profile'] );
-      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">Complete billing details</span></a>';
+      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">' . __('Complete billing details', 'humble-lms') . $buy_string . '</span></a>';
 
       return $html;
     }

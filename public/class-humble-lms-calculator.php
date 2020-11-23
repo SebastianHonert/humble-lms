@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class calculates prices and vat.
  *

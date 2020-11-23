@@ -104,9 +104,9 @@ function humble_lms_cert_date_format_mb()
   $format = get_post_meta( $post->ID, 'humble_lms_cert_date_format', true );
 
   echo '<select id="humble_lms_cert_date_format" name="humble_lms_cert_date_format">';
-    $selected_german = $format === 'd.F Y' ? 'selected' : '';
+    $selected_german = $format === 'd. F Y' ? 'selected' : '';
     $selected_english = $format === 'F j, Y' ? 'selected' : '';
-    echo '<option value="d.F Y" ' . $selected_german . '>'. __('German (20. Februar 2020)', 'humble-lms') . '</option>';
+    echo '<option value="d. F Y" ' . $selected_german . '>'. __('German (20. Februar 2020)', 'humble-lms') . '</option>';
     echo '<option value="F j, Y" ' . $selected_english . '>'. __('English (March 10, 2001)', 'humble-lms') . '</option>';
   echo '</select>';
 }
@@ -130,7 +130,7 @@ function humble_lms_cert_content_mb()
     echo '<li>' . __('Website URL', 'humble-lms') . ': <strong>WEBSITE_URL</strong></li>';
   echo '</ul>';
 
-  $allowed_html = array( 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'br', 'em', 'strong', 'img' );
+  $allowed_html = array( 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'br', 'em', 'strong', 'img' );
   echo '<p>' . __('You can use the following tags in the content of your certificate') . ':</p>';
   echo '<strong>' . implode('</strong>, <strong>', $allowed_html ) . '</strong>';
 }
@@ -159,26 +159,28 @@ function humble_lms_cert_template_mb()
 {
   global $post;
 
-  $formats = ['default'];
-  $format = get_post_meta( $post->ID, 'humble_lms_cert_template', true );
-  $custom_formats = glob( get_stylesheet_directory() . '/humble-lms/certificate/' . '*.css' );
+  $templates = ['default'];
+  $template = get_post_meta( $post->ID, 'humble_lms_cert_template', true );
+  $custom_templates = glob( get_stylesheet_directory() . '/humble-lms/certificate/' . '*.css' );
 
-  if( $custom_formats ) {
-    foreach( $custom_formats as $custom_format ) {
-      array_push( $formats, basename( $custom_format, '.css' ) );
+  if( $custom_templates ) {
+    foreach( $custom_templates as $custom_template ) {
+      array_push( $templates, basename( $custom_template, '.css' ) );
     }
   }
 
-  if( ! in_array( $format, $formats ) ) {
-    $format = 'default';
+  if( ! in_array( $template, $templates ) ) {
+    $template = 'default';
   }
+
+  echo '<p class="description">' . __('You can add additional template CSS files in your child theme folder, for example: child-theme/humble-lms/certificate/example.css', 'humble-lms') . '. Please note: The names of the CSS files have to be in lowercase.</p>';
 
   echo '<select id="humble_lms_cert_template" name="humble_lms_cert_template">';
-    foreach( $formats as $f ) {
-      $selected = $f === $format ? 'selected' : '';
-      echo '<option value="' . esc_html( strtolower( $f ) ) . '" ' . $selected . '>' . ucfirst( esc_html( $f ) ) . '</option>';
+    foreach( $templates as $t ) {
+      $selected = $t === $template ? 'selected' : '';
+      echo '<option value="' . esc_html( strtolower( $t ) ) . '" ' . $selected . '>' . ucfirst( esc_html( $t ) ) . '</option>';
     }
-  echo '</select> <a href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview certificate', 'humble-lms') . '</a>';
+  echo '</select> <a href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview (PDF)', 'humble-lms') . '</a> <a href="' . esc_url( get_permalink( $post->ID ) ) . '?display=html" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview (HTML)', 'humble-lms') . '</a>';
 }
 
 // Save metabox data
@@ -211,6 +213,7 @@ function humble_lms_save_cert_meta_boxes( $post_id, $post )
   $allowed_html = array(
     'p' => array(
       'style' => array(),
+      'class' => array(),
     ),
     'h1' => array(
       'style' => array(),
@@ -225,6 +228,7 @@ function humble_lms_save_cert_meta_boxes( $post_id, $post )
       'href' => array(),
       'title' => array(),
       'style' => array(),
+      'class' => array(),
     ),
     'br' => array(),
     'em' => array(),
@@ -234,6 +238,15 @@ function humble_lms_save_cert_meta_boxes( $post_id, $post )
       'alt' => array(),
       'title' => array(),
       'style' => array(),
+      'class' => array(),
+    ),
+    'span' => array(
+      'style' => array(),
+      'class' => array(),
+    ),
+    'div' => array(
+      'style' => array(),
+      'class' => array(),
     ),
   );
 

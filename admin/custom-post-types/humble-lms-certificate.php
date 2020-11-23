@@ -125,6 +125,7 @@ function humble_lms_cert_content_mb()
     echo '<li>' . __('Student name', 'humble-lms') . ': <strong>STUDENT_NAME</strong></li>';
     echo '<li>' . __('Student first name', 'humble-lms') . ': <strong>STUDENT_FIRST_NAME</strong></li>';
     echo '<li>' . __('Student last name', 'humble-lms') . ': <strong>STUDENT_LAST_NAME</strong></li>';
+    echo '<li>' . __('Student acadmic title', 'humble-lms') . ': <strong>STUDENT_TITLE</strong></li>';
     echo '<li>' . __('Current date', 'humble-lms') . ': <strong>CURRENT_DATE</strong></li>';
     echo '<li>' . __('Website name', 'humble-lms') . ': <strong>WEBSITE_NAME</strong></li>';
     echo '<li>' . __('Website URL', 'humble-lms') . ': <strong>WEBSITE_URL</strong></li>';

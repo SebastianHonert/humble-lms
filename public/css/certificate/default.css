@@ -72,7 +72,7 @@ body.humble-lms-certificate {
   background-repeat: no-repeat;
 }
 
-h1.humble-lms-certificate-title {
+.humble-lms-certificate-title {
   font-size: 3em;
   font-weight: 600;
   text-align: center;
@@ -82,7 +82,7 @@ h1.humble-lms-certificate-title {
   letter-spacing: 1px;
 }
 
-h2.humble-lms-certificate-subtitle {
+.humble-lms-certificate-subtitle {
   font-size: 1.5em;
   text-align: center;
   padding-bottom: 2em;

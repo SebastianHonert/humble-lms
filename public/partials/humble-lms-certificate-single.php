@@ -78,8 +78,8 @@ $html = '<!DOCTYPE html>
 </head>
 <body class="humble-lms-certificate" ' . $background_style . '>
   <div id="humble-lms-certificate">';
-    $html .= $heading ? '<h1 class="humble-lms-certificate-title">' . $heading . '</h1>' : '';
-    $html .= $subheading ? '<h2 class="humble-lms-certificate-subtitle">' . $subheading . '</h2>' : '';
+    $html .= $heading ? '<div class="humble-lms-certificate-title">' . $heading . '</div>' : '';
+    $html .= $subheading ? '<div class="humble-lms-certificate-subtitle">' . $subheading . '</div>' : '';
     $html .= $content ? '<div class="humble-lms-certificate-content">' . wpautop( do_shortcode( $content ) ) . '</div>' : '';
   $html .= '</div>';
   $html .= '<p class="humble-lms-certificate-back-link"><a href="' . get_bloginfo('url') . '">← ' . __('Back to home page', 'humble-lms') . '</a></p>';
@@ -104,5 +104,5 @@ if( isset( $_GET['display'] ) && ( 'html' === $_GET['display'] ) ) {
   $dompdf->loadHtml( $html );
   $dompdf->setPaper('A4', $orientation);
   $dompdf->render();
-  $dompdf->stream('certificate.pdf');
+  $dompdf->stream('certificate-' . $post->post_name . '.pdf');
 }

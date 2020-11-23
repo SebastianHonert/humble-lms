@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-11-23 18:17+0100\n"
-"PO-Revision-Date: 2020-11-23 18:24+0100\n"
+"POT-Creation-Date: 2020-11-23 18:35+0100\n"
+"PO-Revision-Date: 2020-11-23 18:35+0100\n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1332,24 +1332,28 @@ msgid "Student last name"
 msgstr "Nachname des Lernenden"
 
 #: admin/custom-post-types/humble-lms-certificate.php:128
+msgid "Student acadmic title"
+msgstr "Titel / Akademischer Grad"
+
+#: admin/custom-post-types/humble-lms-certificate.php:129
 msgid "Current date"
 msgstr "Aktuelles Datum"
 
-#: admin/custom-post-types/humble-lms-certificate.php:129
+#: admin/custom-post-types/humble-lms-certificate.php:130
 #: admin/custom-post-types/humble-lms-email.php:97
 msgid "Website name"
 msgstr "Name der Website"
 
-#: admin/custom-post-types/humble-lms-certificate.php:130
+#: admin/custom-post-types/humble-lms-certificate.php:131
 #: admin/custom-post-types/humble-lms-email.php:98
 msgid "Website URL"
 msgstr "URL der Website"
 
-#: admin/custom-post-types/humble-lms-certificate.php:134
+#: admin/custom-post-types/humble-lms-certificate.php:135
 msgid "You can use the following tags in the content of your certificate"
 msgstr "Du kannst folgende HTML-Tags in diesem Zertifikat verwenden"
 
-#: admin/custom-post-types/humble-lms-certificate.php:176
+#: admin/custom-post-types/humble-lms-certificate.php:177
 msgid ""
 "You can add additional template CSS files in your child theme folder, for "
 "example: child-theme/humble-lms/certificate/example.css"
@@ -1357,11 +1361,11 @@ msgstr ""
 "Du kannst weitere CSS-Templates in deinem Child-Theme-Verzeichnis "
 "hinzufügen, zum Beispiel: child-theme/humble-lms/certificate/example.css"
 
-#: admin/custom-post-types/humble-lms-certificate.php:183
+#: admin/custom-post-types/humble-lms-certificate.php:184
 msgid "Preview (PDF)"
 msgstr "Vorschau (PDF)"
 
-#: admin/custom-post-types/humble-lms-certificate.php:183
+#: admin/custom-post-types/humble-lms-certificate.php:184
 msgid "Preview (HTML)"
 msgstr "Vorschau (HTML)"
 

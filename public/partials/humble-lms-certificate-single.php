@@ -92,11 +92,15 @@ if( ! $orientation ) {
   $orientation = 'portrait';
 }
 
-$dompdf = new Dompdf();
-$options = $dompdf->getOptions();
-$options->setIsRemoteEnabled(true);
-$dompdf->setOptions($options);
-$dompdf->loadHtml( $html );
-$dompdf->setPaper('A4', $orientation);
-$dompdf->render();
-$dompdf->stream('certificate.pdf');
+if( isset( $_GET['display'] ) && ( 'html' === $_GET['display'] ) ) {
+  echo $html;
+} else {
+  $dompdf = new Dompdf();
+  $options = $dompdf->getOptions();
+  $options->setIsRemoteEnabled(true);
+  $dompdf->setOptions($options);
+  $dompdf->loadHtml( $html );
+  $dompdf->setPaper('A4', $orientation);
+  $dompdf->render();
+  $dompdf->stream('certificate.pdf');
+}

@@ -173,12 +173,14 @@ function humble_lms_cert_template_mb()
     $format = 'default';
   }
 
+  echo '<p class="description">' . __('You can add additional template CSS files in your child theme folder, for example: child-theme/humble-lms/certificate/example.css', 'humble-lms') . '. Please note: The names of the CSS files have to be in lowercase.</p>';
+
   echo '<select id="humble_lms_cert_template" name="humble_lms_cert_template">';
     foreach( $formats as $f ) {
       $selected = $f === $format ? 'selected' : '';
       echo '<option value="' . esc_html( strtolower( $f ) ) . '" ' . $selected . '>' . ucfirst( esc_html( $f ) ) . '</option>';
     }
-  echo '</select> <a href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview certificate', 'humble-lms') . '</a>';
+  echo '</select> <a href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview (PDF)', 'humble-lms') . '</a> <a href="' . esc_url( get_permalink( $post->ID ) ) . '?display=html" target="_certificate_preview" class="button" id="humble-lms-preview-certificate">' . __('Preview (HTML)', 'humble-lms') . '</a>';
 }
 
 // Save metabox data

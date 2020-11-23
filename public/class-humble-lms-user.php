@@ -55,6 +55,22 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Get user academic title.
+     * 
+     * @return String
+     * @since 0.0.3
+     */
+    public function title( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $title = get_user_meta( $user_id, 'humble_lms_title', true );
+
+      return $title ? $title : '';
+    }
+
+    /**
      * Get user address.
      * 
      * @return String

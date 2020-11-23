@@ -498,8 +498,9 @@ class Humble_LMS_Admin {
       $user_login = $_POST['humble-lms-user-login'];	
       $user_email	= $_POST['humble-lms-user-email'];
       $user_email_confirm	= isset( $_POST['humble-lms-user-email-confirm'] ) ? $_POST['humble-lms-user-email-confirm'] : '';
-      $user_first = $_POST['humble-lms-user-first'];
+      $user_first = sanitize_text_field( $_POST['humble-lms-user-first'] );
       $user_last = $_POST['humble-lms-user-last'];
+      $user_title = $_POST['humble-lms-user-title'];
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
       $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
@@ -610,6 +611,7 @@ class Humble_LMS_Admin {
         if( $new_user_id ) {
           // Add country to user meta
           if( $registration_has_country ) {
+            add_user_meta( $new_user_id, 'humble_lms_title', $user_title );
             add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
             add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
             add_user_meta( $new_user_id, 'humble_lms_email_agreement', $email_agreement );
@@ -657,6 +659,7 @@ class Humble_LMS_Admin {
       $user_email	= $_POST['humble-lms-user-email'];
       $user_email_confirm	= $_POST['humble-lms-user-email-confirm'];
       $user_country = $registration_has_country ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $user_title = sanitize_text_field( $_POST['humble-lms-user-title'] );
       $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
       $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
       $user_address = sanitize_text_field( $_POST['humble-lms-user-address'] );
@@ -730,6 +733,7 @@ class Humble_LMS_Admin {
             update_user_meta( $updated_user_id, 'humble_lms_country', $user_country );
           }
 
+          update_user_meta( $updated_user_id, 'humble_lms_title', $user_title );
           update_user_meta( $updated_user_id, 'humble_lms_postcode', $user_postcode );
           update_user_meta( $updated_user_id, 'humble_lms_city', $user_city );
           update_user_meta( $updated_user_id, 'humble_lms_address', $user_address );

@@ -72,7 +72,6 @@ body.humble-lms-certificate {
   background-color: #fff;
   background-size: cover;
   background-repeat: no-repeat;
-  border: 1px solid green;
 }
 
 body.humble-lms-certificate.portrait {
@@ -113,7 +112,7 @@ body.humble-lms-certificate.landscape {
 }
 
 .humble-lms-certificate-content {
-  padding: 3em 0;
+  padding: 3em 0 0;
 }
 
 #humble-lms-certificate p {

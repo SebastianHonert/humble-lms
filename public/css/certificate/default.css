@@ -44,11 +44,15 @@ q:before, q:after {
 }
 table {
 	border-collapse: collapse;
-	border-spacing: 0;
+  border-spacing: 0;
 }
 
 * {
   box-sizing: border-box;
+}
+
+body, div, * {
+  font-family: 'Helvetica', Arial, sans-serif;
 }
 
 html.portrait, body.portrait {
@@ -66,13 +70,11 @@ html.landscape, body.landscape {
 body.humble-lms-certificate {
   position: relative;
   font-size: 1em;
-  font-family: Arial, Helvetica, sans-serif;
   position: relative;
   line-height: 1.33;
   background-color: #fff;
   background-size: cover;
   background-repeat: no-repeat;
-  border: 1px solid green;
 }
 
 body.humble-lms-certificate.portrait {
@@ -97,10 +99,10 @@ body.humble-lms-certificate.landscape {
 
 .humble-lms-certificate-title {
   font-size: 3em;
-  font-weight: 600;
+  font-weight: bold;
   text-align: center;
   padding: 1em 0 .25em;
-  margin-bottom: .25em;
+  margin-bottom: .25em; 
   border-bottom: .1cm double #000;
   letter-spacing: 1px;
 }
@@ -125,7 +127,7 @@ body.humble-lms-certificate.landscape {
 }
 
 #humble-lms-certificate strong, b {
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .humble-lms-certificate-back-link {

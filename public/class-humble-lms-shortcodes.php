@@ -1000,7 +1000,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           </p>
           <p>
             <label for="humble-lms-user-title"><?php _e('Academic title', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" value="<?php echo $post_user_title; ?>" />
+            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" maxlength="24" value="<?php echo $post_user_title; ?>" />
           </p>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>
@@ -1287,7 +1287,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <input type="hidden" name="humble-lms-user-last" id="humble-lms-user-last" type="text" value="<?php echo $user_last; ?>" />
           <p>
             <label for="humble-lms-user-title"><?php _e('Academic title', 'humble-lms'); ?></label>
-            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" value="<?php echo $user_title; ?>" />
+            <input name="humble-lms-user-title" id="humble-lms-user-title" type="text" maxlength="24" value="<?php echo $user_title; ?>" />
           </p>
           <p>
             <label for="humble-lms-user-email" class="humble-lms-required"><?php _e('Email address', 'humble-lms'); ?></label>

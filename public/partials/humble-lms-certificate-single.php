@@ -66,17 +66,22 @@ if( $featured_image_url ) {
 } else {
   $background_style = '';
 }
-  
+
+$orientation = get_post_meta( $post->ID, 'humble_lms_cert_orientation', true );
+
+if( ! $orientation ) {
+  $orientation = 'portrait';
+}
+
 $html = '<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="' . $orientation . '">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Certificate</title>
   <link rel="stylesheet" href="' . $template_dir . esc_html( $template ) . '.css' . '">
 </head>
-<body class="humble-lms-certificate" ' . $background_style . '>
+<body class="humble-lms-certificate ' . $orientation . '" ' . $background_style . '>
   <div id="humble-lms-certificate">';
     $html .= $heading ? '<div class="humble-lms-certificate-title">' . $heading . '</div>' : '';
     $html .= $subheading ? '<div class="humble-lms-certificate-subtitle">' . $subheading . '</div>' : '';
@@ -87,13 +92,7 @@ $html = '<!DOCTYPE html>
 $html .= '</body>
 </html>';
 
-// Generate PDF
-$orientation = get_post_meta( $post->ID, 'humble_lms_cert_orientation', true );
-
-if( ! $orientation ) {
-  $orientation = 'portrait';
-}
-
+// Generate output
 if( isset( $_GET['display'] ) && ( 'html' === $_GET['display'] ) ) {
   echo $html;
 } else {
@@ -101,7 +100,7 @@ if( isset( $_GET['display'] ) && ( 'html' === $_GET['display'] ) ) {
   $options = $dompdf->getOptions();
   $options->setIsRemoteEnabled(true);
   $dompdf->setOptions($options);
-  $dompdf->loadHtml( $html );
+  $dompdf->loadHtml($html);
   $dompdf->setPaper('A4', $orientation);
   $dompdf->render();
   $dompdf->stream('certificate-' . $post->post_name . '.pdf');

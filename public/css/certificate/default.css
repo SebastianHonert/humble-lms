@@ -51,25 +51,48 @@ table {
   box-sizing: border-box;
 }
 
+html.portrait, body.portrait {
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+}
+
+html.landscape, body.landscape {
+  width: 297mm;
+  height: 210mm;
+  position: relative;
+}
+
 body.humble-lms-certificate {
   position: relative;
-  font-size: 1.125em;
+  font-size: 1em;
   font-family: Arial, Helvetica, sans-serif;
   position: relative;
   line-height: 1.33;
+  background-color: #fff;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid green;
+}
+
+body.humble-lms-certificate.portrait {
+  width: 210mm;
+  height: 297mm;
+}
+
+body.humble-lms-certificate.landscape {
+  width: 297mm;
+  height: 210mm;
 }
 
 #humble-lms-certificate {
   position: relative;
-  width: 88%;
-  height: 96%;
-  padding: 2% 6%;
+  top: 0;
+  left: 0;
+  padding: 4% 6% 2%;
   display: block;
   margin: 0 auto;
   z-index: 1;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
 }
 
 .humble-lms-certificate-title {
@@ -87,12 +110,6 @@ body.humble-lms-certificate {
   text-align: center;
   padding-bottom: 2em;
   letter-spacing: 2px;
-}
-
-#humble-lms-certificate h3 {
-  font-size: 1.25em;
-  padding: 1.125em;
-  text-align: center;
 }
 
 .humble-lms-certificate-content {
@@ -123,18 +140,4 @@ body.humble-lms-certificate {
 
 #humble-lms-certificate a:hover {
   text-decoration: underline;
-}
-
-#humble-lms-certificate .humble-lms-awards-list {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#humble-lms-certificate .humble-lms-awards-list-item img {
-  display: inline-block;
-  max-height: 40mm;
-  margin: 5mm;
-  position: relative;
 }

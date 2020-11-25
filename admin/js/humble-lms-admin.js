@@ -344,6 +344,10 @@ jQuery(document).ready(function($) {
     let recipient = container.find('#humble-lms-test-email-recipient').val()
     let format = $(this).data('format')
 
+    if (typeof format === 'undefined' || !format) {
+      format = 'text/html'
+    }
+
     if (!message || !recipient) {
       alert(humble_lms.sendTestEmailValidation)
       return

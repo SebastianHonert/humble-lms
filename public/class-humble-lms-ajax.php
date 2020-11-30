@@ -167,7 +167,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       // Add quiz evaluation to user meta
-      $evaluations = $this->user->evaluations();
+      $evaluations = $this->user->evaluations( get_current_user_ID() );
       $evaluation['datetime'] = round(microtime(true) * 1000);
       $evaluation['completed'] = $completed;
       $evaluation['completed_quizzes'] = $completed_quizzes;

@@ -717,7 +717,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'strong' => array(),
       );
 
-      $invoice_text_before = isset( $this->options['invoice_text_before'] ) ? wp_kses( $this->options['invoice_text_before'], $allowed_tags ) : __('');
+      $invoice_text_before = isset( $this->options['invoice_text_before'] ) ? wp_kses( $this->options['invoice_text_before'], $allowed_tags ) : '';
 
       echo '<p class="description">' . __('Text displayed before the table of purchased items. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
       echo '<p><textarea class="widefat" id="invoice_text_before" name="humble_lms_options[invoice_text_before]" rows="5">' . $invoice_text_before . '</textarea></p>';
@@ -740,7 +740,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'strong' => array(),
       );
 
-      $invoice_text_after = isset( $this->options['invoice_text_after'] ) ? wp_kses( $this->options['invoice_text_after'], $allowed_tags ) : __('');
+      $invoice_text_after = isset( $this->options['invoice_text_after'] ) ? wp_kses( $this->options['invoice_text_after'], $allowed_tags ) : '';
 
       echo '<p class="description">' . __('Text displayed after the table of purchased items. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
       echo '<p><textarea class="widefat" id="invoice_text_after" name="humble_lms_options[invoice_text_after]" rows="5">' . $invoice_text_after . '</textarea></p>';
@@ -763,7 +763,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'strong' => array(),
       );
 
-      $invoice_text_footer = isset( $this->options['invoice_text_footer'] ) ? wp_kses( $this->options['invoice_text_footer'], $allowed_tags ) : __('');
+      $invoice_text_footer = isset( $this->options['invoice_text_footer'] ) ? wp_kses( $this->options['invoice_text_footer'], $allowed_tags ) : '';
 
       echo '<p class="description">' . __('Text displayed at the bottom of your invoices. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
       echo '<p><textarea class="widefat" id="invoice_text_footer" name="humble_lms_options[invoice_text_footer]" rows="3">' . $invoice_text_footer . '</textarea></p>';
@@ -1267,7 +1267,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         <th width="75%">' . __('Attempts', 'humble-lms') . '</th>
       </tr></thead>';
 
-      $evaluations = $this->user->evaluations();
+      $evaluations = $this->user->evaluations( $user->ID );
       $quizzes = array();
   
       foreach( $evaluations as $evaluation ) {

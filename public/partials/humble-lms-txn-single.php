@@ -32,6 +32,8 @@
 
   $content_manager = new Humble_LMS_Content_Manager;
   $html = $content_manager->create_invoice_html( $post->ID );
+  $txn_details = $content_manager->transaction_details( $post->ID );
+  $invoice_number = $txn_details['invoice_number'];
 
   // Generate PDF
   $dompdf = new Dompdf();
@@ -41,4 +43,4 @@
   $dompdf->loadHtml($html);
   $dompdf->setPaper('A4', 'portrait');
   $dompdf->render();
-  $dompdf->stream('invoice.pdf');
+  $dompdf->stream('invoice-' . $invoice_number . '.pdf');

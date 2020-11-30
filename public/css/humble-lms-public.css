@@ -155,6 +155,7 @@ li.humble-lms-syllabus-lesson {
   transition: all .3s ease-in-out; }
 
 li.humble-lms-syllabus-lesson:hover,
+li.humble-lms-syllabus-lesson:focus,
 li.humble-lms-syllabus-lesson--current {
   background: #e7e7ef; }
 
@@ -167,7 +168,7 @@ li.humble-lms-syllabus-lesson--completed.humble-lms-syllabus-lesson--current {
 li.humble-lms-syllabus-lesson--completed {
   color: #06211a;
   background: #e3f5f0; }
-  li.humble-lms-syllabus-lesson--completed:hover {
+  li.humble-lms-syllabus-lesson--completed:hover, li.humble-lms-syllabus-lesson--completed:focus {
     background: #cdede4; }
   li.humble-lms-syllabus-lesson--completed .humble-lms-syllabus-title {
     color: #06211a; }
@@ -268,6 +269,7 @@ li.humble-lms-syllabus-lesson span {
 .humble-lms-btn,
 input[type='submit'].humble-lms-btn,
 #humble-lms-custom-login-form input[type='submit'] {
+  font-family: inherit;
   position: relative;
   border-radius: .4rem;
   color: #fff;
@@ -288,6 +290,7 @@ input[type='submit'].humble-lms-btn,
   -webkit-appearance: none;
   appearance: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+  border-top: 0;
   border-left: 1px solid #2f347a;
   border-right: 1px solid #2f347a;
   border-bottom-width: .25em;

@@ -85,6 +85,18 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', false );
       $track_courses = isset( $track_courses[0] ) && is_array( $track_courses[0] ) && ! empty( $track_courses[0] ) && ( isset( $track_courses[0][0] ) && $track_courses[0][0] !== '' ) ? $track_courses[0] : [];
 
+      if( empty( $track_courses ) ) {
+        return $track_courses;
+      }
+
+      // Remove unpublished
+      foreach( $track_courses as $key => $course_id ) {
+        if( 'publish' !== get_post_status( $course_id ) ) {
+          unset( $track_courses[$key] );
+          $track_courses = array_values( $track_courses );
+        }
+      }
+      
       // Get translated post ids if custom fields are synchronized
       $translator = new Humble_LMS_Translator;
 
@@ -1164,8 +1176,9 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
           $content .= '</p>';
           $content .= $transaction['company'] ? '<strong>' . $transaction['company'] . '</strong><br>' : '';
           $content .= $transaction['first_name'] . ' ' . $transaction['last_name'] . '<br>';
-          $content .= $transaction['postcode'] . ' ' . $transaction['city'] . '<br>';
           $content .= $transaction['address'] . '<br>';
+          $content .= $transaction['postcode'] . ' ' . $transaction['city'] . '<br>';
+          $content .= $transaction['country'] . ' ' . $transaction['country'] . '<br>';
           $content .= $transaction['vat_id'] ? $transaction['vat_id'] : '';
         $content .= '</div>';
       $content .= '</div>';
@@ -1211,16 +1224,16 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         
       $html = '<!DOCTYPE html>
       <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Invoice</title>
-        <link rel="stylesheet" href="' . $css . '">
-      </head>
-      <body class="humble-lms-invoice">
-        <div id="humble-lms-invoice">' . wpautop( $content ) . '</div>
-      </body>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <title>' . __('Invoice', 'humble-lms') . '</title>
+          <link rel="stylesheet" href="' . $css . '">
+        </head>
+        <body class="humble-lms-invoice">
+          <div id="humble-lms-invoice">' . wpautop( $content ) . '</div>
+        </body>
       </html>';
 
       return $html;

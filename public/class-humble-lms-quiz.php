@@ -350,7 +350,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
           return -1;
         }
 
-        $evaluations = $this->user->evaluations();
+        $evaluations = $this->user->evaluations( get_current_user_ID() );
 
         $attempts = array();
 
@@ -419,7 +419,7 @@ if( ! class_exists( 'Humble_LMS_Quiz' ) ) {
         }
       }
 
-      $evaluations = $this->user->evaluations();
+      $evaluations = $this->user->evaluations( get_current_user_ID() );
 
       if( empty( $evaluations ) ) {
         return 0;

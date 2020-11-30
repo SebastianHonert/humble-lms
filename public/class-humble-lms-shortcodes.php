@@ -401,7 +401,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
                 $set_title = false;
               }
 
-              $html .= '<li class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
+              $html .= '<li tabindex="0" class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
               $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson_index . '. ' . $lesson->post_title . '</span>';
               $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
               $html .= '</li>';
@@ -429,7 +429,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       // View course/lesson
       if( $context === 'course' ) {
         if( isset( $lessons[0] ) && ! empty( $lessons[0] ) ) {
-          $html .= '<span class="humble-lms-btn humble-lms-btn--success humble-lms-btn--start-course humble-lms-open-lesson" data-lesson-id="' . $lessons[0] . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</span>';
+          $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--start-course humble-lms-open-lesson" data-lesson-id="' . $lessons[0] . '" data-course-id="' . $course_id . '">' . __('Start the course now', 'humble-lms') . '</button>';
         }
       }
 
@@ -1266,7 +1266,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
               echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . '</label>';
               echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
-              echo $this->content_manager->user_can_upgrade_membership() ? '<p><a class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_post_type_archive_link( 'humble_lms_mbship' ) ) . '">' . __('Upgrade your account', 'humble-lms') . '</a></p>' : '';
+              echo $this->content_manager->user_can_upgrade_membership() ? '<p><button class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_post_type_archive_link( 'humble_lms_mbship' ) ) . '">' . __('Upgrade your account', 'humble-lms') . '</button></p>' : '';
             } else {
               echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . ' <small>(' . __('Account status', 'humble-lms' ) . ')</small></label>';
               echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
@@ -1723,7 +1723,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Buy now button
-      $html .= '<div class="humble-lms-btn humble-lms-btn--disabled humble-lms-btn--success humble-lms-btn--purchase humble-lms-btn--purchase-membership">' . __('Buy now', 'humble-lms') . '</a></div>';
+      $html .= '<button class="humble-lms-btn humble-lms-btn--disabled humble-lms-btn--success humble-lms-btn--purchase humble-lms-btn--purchase-membership">' . __('Buy now', 'humble-lms') . '</a></button>';
 
       // Paypal container
 
@@ -1879,7 +1879,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
-                $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';
@@ -1897,7 +1897,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
-                $html .= '<div class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</div>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';
@@ -1916,7 +1916,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function complete_billing_details_html( $price = null ) {
       $buy_string = $price ? ' / ' . __('Buy for', 'humble-lms') . '&nbsp;' . $price . '&nbsp;' . $this->options_manager->get_currency() : '';
       $user_profile_page_id = $this->translator->get_translated_post_id( $this->options_manager->options['custom_pages']['user_profile'] );
-      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><span class="humble-lms-btn humble-lms-btn--success">' . __('Complete billing details', 'humble-lms') . $buy_string . '</span></a>';
+      $html = '<a href="' . esc_url( get_permalink( $user_profile_page_id ) ) . '"><button class="humble-lms-btn humble-lms-btn--success">' . __('Complete billing details', 'humble-lms') . $buy_string . '</button></a>';
 
       return $html;
     }

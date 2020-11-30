@@ -220,7 +220,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $user_id = get_current_user_id();
 
-      $track_courses = $this->content_manager->get_track_courses( $track_id );
+      $track_courses = $this->content_manager->get_track_courses( $track_id, true );
 
       $courses_completed = get_user_meta( $user_id, 'humble_lms_courses_completed', true );
 
@@ -1057,7 +1057,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       if( ! $user_id )
         return 0;
   
-      $track_courses = $this->content_manager->get_track_courses( $track_id );
+      $track_courses = $this->content_manager->get_track_courses( $track_id, true );
 
       if( ! $track_courses || sizeOf( $track_courses ) === 0 ) {
         return 0;
@@ -1249,10 +1249,14 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
      * @since 0.0.1
      * @return array
      */
-    public function evaluations( $post_id = null ) {
+    public function evaluations( $user_id = null ) {
+      if( ! $user_id ) {
+        $user_id = get_current_user_ID();
+      }
+
       $evaluations = [];
 
-      $user_evaluations = get_user_meta( get_current_user_id(), 'humble_lms_quiz_evaluations' );
+      $user_evaluations = get_user_meta( $user_id, 'humble_lms_quiz_evaluations' );
       $evaluations = ! isset( $user_evaluations[0] ) ? [] : $user_evaluations[0];
 
       return $evaluations;

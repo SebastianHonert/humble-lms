@@ -983,7 +983,7 @@ class Humble_LMS_Admin {
       $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
     }
 
-    $msg['subject'] = __('Your credentials');
+    $msg['subject'] = __('Your credentials', 'humble-lms');
     $msg['headers'] = array('From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>', 'Content-Type: text/plain; charset=UTF-8');
       
     $msg['message'] = $message;

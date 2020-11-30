@@ -583,11 +583,11 @@ msgstr "Ja"
 
 #: admin/class-humble-lms-options-manager.php:382
 msgid "Mark lesson complete"
-msgstr "Lektion als abgeschlossen markieren"
+msgstr "Lektion abschließen"
 
 #: admin/class-humble-lms-options-manager.php:384
 msgid "Mark lesson incomplete"
-msgstr "Lektion als unbearbeitet markieren"
+msgstr "Lektion zurücksetzen"
 
 #: admin/class-humble-lms-options-manager.php:396
 #: public/class-humble-lms-ajax.php:406

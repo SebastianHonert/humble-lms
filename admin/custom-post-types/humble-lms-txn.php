@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('invoice', 'humble-lms'),
+  'slug'                  => 'invoice',
   'with_front'            => true,
 );
 

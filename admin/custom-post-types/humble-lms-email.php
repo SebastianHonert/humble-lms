@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('email', 'humble-lms'),
+  'slug'                  => 'email',
   'with_front'            => true,
 );
 

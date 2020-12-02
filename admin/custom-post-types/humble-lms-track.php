@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('track', 'humble-lms'),
+  'slug'                  => 'track',
   'with_front'            => true,
 );
 

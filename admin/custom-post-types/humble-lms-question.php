@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('quiz-question', 'humble-lms'),
+  'slug'                  => 'quiz-question',
   'with_front'            => true,
 );
 

@@ -38,7 +38,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('coupon', 'humble-lms'),
+  'slug'                  => 'coupon',
   'with_front'            => true,
 );
 

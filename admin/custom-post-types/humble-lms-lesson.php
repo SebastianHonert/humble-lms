@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('lesson', 'humble-lms'),
+  'slug'                  => 'lesson',
   'with_front'            => true,
 );
 

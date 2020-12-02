@@ -31,7 +31,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('certificate', 'humble-lms'),
+  'slug'                  => 'certificate',
   'with_front'            => true,
 );
 

@@ -8,7 +8,7 @@ $labels = array(
 );
 
 $rewrite = array(
-  'slug'                  => __('membership', 'humble-lms'),
+  'slug'                  => 'membership',
   'with_front'            => true,
 );
 

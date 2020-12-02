@@ -156,7 +156,6 @@ class Humble_LMS_Activator {
         'license_server_url' => 'https://humblelms.de',
         'item_reference' => 'Humble LMS',
         'license_key' => '',
-        'currency' => 'EUR',
         'delete_plugin_data_on_uninstall' => 0,
         'use_coupons' => 0,
         'tiles_per_page' => 10,

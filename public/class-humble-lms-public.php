@@ -565,15 +565,6 @@ class Humble_LMS_Public {
   }
 
   /**
-   * Flush rewrite rules when language changes
-   * 
-   * @since    0.0.1
-   */
-  public function flush_rewrite_rules() {
-    $this->translator->flush_rewrite_rules();
-  }
-
-  /**
    * Add access level meta box for posts/pages
    * 
    * @since 0.0.2

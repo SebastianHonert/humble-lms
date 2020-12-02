@@ -328,7 +328,6 @@ class Humble_LMS {
 
     $plugin_public = new Humble_LMS_Public( $this->get_humble_lms(), $this->get_version() );
 
-    $this->loader->add_action( 'init', $plugin_public, 'flush_rewrite_rules' );
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
     $this->loader->add_action( 'set_current_user', $plugin_public, 'hide_admin_bar' );

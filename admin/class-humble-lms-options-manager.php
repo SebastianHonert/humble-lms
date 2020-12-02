@@ -44,8 +44,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       );
 
       $this->default_button_labels = array(
-        'Mark as complete',
-        'Mark as incomplete',
+        'Mark lesson as complete',
+        'Mark lesson as incomplete',
       );
 
       $this->custom_pages = array(
@@ -379,9 +379,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function button_labels() {
       $button_labels = isset( $this->options['button_labels'] ) ? $this->options['button_labels'] : $this->default_button_labels;
 
-      echo '<p><strong>' . __('Mark as complete', 'humble-lms') . '</strong></p>';
+      echo '<p><strong>' . __('Mark lesson as complete', 'humble-lms') . '</strong></p>';
       echo '<p><input type="text" maxlength="32" id="button_labels_complete" name="humble_lms_options[button_labels][]" value="' . $button_labels[0] . '" placeholder="' . __($this->default_button_labels[0], 'humble-lms') . '"></p>';
-      echo '<p><strong>' . __('Mark as incomplete', 'humble-lms') . '</strong></p>';
+      echo '<p><strong>' . __('Mark lesson as incomplete', 'humble-lms') . '</strong></p>';
       echo '<p><input type="text" maxlength="32" id="button_labels_incomplete" name="humble_lms_options[button_labels][]" value="' . $button_labels[1] . '" placeholder="' . __($this->default_button_labels[1], 'humble-lms') . '"></p>';
     }
 

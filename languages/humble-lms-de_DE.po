@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-12-02 12:55+0100\n"
+"POT-Creation-Date: 2020-12-02 13:06+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -577,14 +577,12 @@ msgid "Yes"
 msgstr "Ja"
 
 #: admin/class-humble-lms-options-manager.php:382
-#: includes/class-humble-lms-activator.php:166
-msgid "Mark as complete"
+msgid "Mark lesson as complete"
 msgstr "Lektion abschließen"
 
 #: admin/class-humble-lms-options-manager.php:384
-#: includes/class-humble-lms-activator.php:167
-msgid "Mark as incomplete"
-msgstr "Lektion wiederherstellen"
+msgid "Mark lesson as incomplete"
+msgstr "Lektion zurücksetzen"
 
 #: admin/class-humble-lms-options-manager.php:396
 #: public/class-humble-lms-ajax.php:410
@@ -2747,6 +2745,14 @@ msgstr "passwort-zuruecksetzen"
 #: includes/class-humble-lms-activator.php:101
 msgid "account"
 msgstr "account"
+
+#: includes/class-humble-lms-activator.php:166
+msgid "Mark as complete"
+msgstr "Lektion abschließen"
+
+#: includes/class-humble-lms-activator.php:167
+msgid "Mark as incomplete"
+msgstr "Lektion zurücksetzen"
 
 #: public/class-humble-lms-ajax.php:204 public/class-humble-lms-public.php:411
 msgid "You received an award"

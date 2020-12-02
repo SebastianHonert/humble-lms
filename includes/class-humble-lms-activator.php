@@ -163,8 +163,8 @@ class Humble_LMS_Activator {
         'syllabus_max_height' => 640,
         'messages' => array('lesson', 'course', 'track', 'award', 'certificate'),
         'button_labels' => array(
-          __('Mark complete and continue', 'humble-lms'),
-          __('Mark incomplete and continue', 'humble-lms'),
+          __('Mark as complete', 'humble-lms'),
+          __('Mark as incomplete', 'humble-lms'),
         ),
         'registration_countries' => array(),
         'custom_pages' => array(

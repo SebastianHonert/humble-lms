@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-11-30 21:52+0100\n"
+"POT-Creation-Date: 2020-12-02 12:55+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -117,7 +117,7 @@ msgstr "Dieser Nutzer ist ein/e Kurstrainer/in."
 #: admin/class-humble-lms-admin.php:241 admin/class-humble-lms-admin.php:1000
 #: admin/class-humble-lms-admin.php:1026
 #: admin/custom-post-types/humble-lms-txn.php:159
-#: public/class-humble-lms-ajax.php:412
+#: public/class-humble-lms-ajax.php:416
 #: public/class-humble-lms-shortcodes.php:1035
 #: public/class-humble-lms-shortcodes.php:1316
 #: public/class-humble-lms-shortcodes.php:1505
@@ -582,15 +582,17 @@ msgid "Yes"
 msgstr "Ja"
 
 #: admin/class-humble-lms-options-manager.php:382
-msgid "Mark lesson complete"
+#: includes/class-humble-lms-activator.php:166
+msgid "Mark as complete"
 msgstr "Lektion abschließen"
 
 #: admin/class-humble-lms-options-manager.php:384
-msgid "Mark lesson incomplete"
+#: includes/class-humble-lms-activator.php:167
+msgid "Mark as incomplete"
 msgstr "Lektion zurücksetzen"
 
 #: admin/class-humble-lms-options-manager.php:396
-#: public/class-humble-lms-ajax.php:406
+#: public/class-humble-lms-ajax.php:410
 #: public/class-humble-lms-shortcodes.php:929
 #: public/class-humble-lms-shortcodes.php:1088
 #: public/class-humble-lms-shortcodes.php:1145
@@ -1769,7 +1771,7 @@ msgstr "E-Mails"
 #: admin/custom-post-types/humble-lms-email.php:7
 #: admin/custom-post-types/humble-lms-email.php:39
 #: admin/custom-post-types/humble-lms-email.php:40
-#: public/class-humble-lms-ajax.php:407 public/class-humble-lms-ajax.php:421
+#: public/class-humble-lms-ajax.php:411 public/class-humble-lms-ajax.php:425
 msgid "Email"
 msgstr "E-Mail"
 
@@ -2453,14 +2455,14 @@ msgstr "Login-Kennung"
 
 #: admin/custom-post-types/humble-lms-txn.php:94
 #: admin/custom-post-types/humble-lms-txn.php:153
-#: public/class-humble-lms-ajax.php:410
+#: public/class-humble-lms-ajax.php:414
 #: public/class-humble-lms-shortcodes.php:1503
 msgid "First name"
 msgstr "Vorname"
 
 #: admin/custom-post-types/humble-lms-txn.php:95
 #: admin/custom-post-types/humble-lms-txn.php:156
-#: public/class-humble-lms-ajax.php:411
+#: public/class-humble-lms-ajax.php:415
 #: public/class-humble-lms-shortcodes.php:1504
 msgid "Last name"
 msgstr "Nachname"
@@ -2484,7 +2486,7 @@ msgid "User ID"
 msgstr "Nutzer-ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:106
-#: public/class-humble-lms-ajax.php:424
+#: public/class-humble-lms-ajax.php:428
 #: public/class-humble-lms-shortcodes.php:1493
 msgid "Order ID"
 msgstr "Order ID"
@@ -2496,7 +2498,7 @@ msgid "Email address"
 msgstr "E-Mail-Adresse"
 
 #: admin/custom-post-types/humble-lms-txn.php:112
-#: public/class-humble-lms-ajax.php:420
+#: public/class-humble-lms-ajax.php:424
 #: public/class-humble-lms-shortcodes.php:1495
 msgid "Payer ID"
 msgstr "Payer ID"
@@ -2511,29 +2513,29 @@ msgid "Payment service provider"
 msgstr "Bezahldienstleister"
 
 #: admin/custom-post-types/humble-lms-txn.php:121
-#: public/class-humble-lms-ajax.php:425
+#: public/class-humble-lms-ajax.php:429
 #: public/class-humble-lms-shortcodes.php:1498
 msgid "Create time"
 msgstr "Erstellt"
 
 #: admin/custom-post-types/humble-lms-txn.php:124
-#: public/class-humble-lms-ajax.php:426
+#: public/class-humble-lms-ajax.php:430
 #: public/class-humble-lms-shortcodes.php:1499
 msgid "Update time"
 msgstr "Aktualisiert"
 
 #: admin/custom-post-types/humble-lms-txn.php:127
-#: public/class-humble-lms-ajax.php:422
+#: public/class-humble-lms-ajax.php:426
 msgid "Given name"
 msgstr "Vorname"
 
 #: admin/custom-post-types/humble-lms-txn.php:130
-#: public/class-humble-lms-ajax.php:423
+#: public/class-humble-lms-ajax.php:427
 msgid "Surname"
 msgstr "Nachname"
 
 #: admin/custom-post-types/humble-lms-txn.php:133
-#: public/class-humble-lms-ajax.php:427
+#: public/class-humble-lms-ajax.php:431
 #: public/class-humble-lms-shortcodes.php:1488
 msgid "Reference ID"
 msgstr "Referenz-ID"
@@ -2544,7 +2546,7 @@ msgid "Currency code"
 msgstr "Währungscode"
 
 #: admin/custom-post-types/humble-lms-txn.php:139
-#: public/class-humble-lms-ajax.php:428
+#: public/class-humble-lms-ajax.php:432
 msgid "Value"
 msgstr "Wert"
 
@@ -2562,14 +2564,14 @@ msgid "Invoice #"
 msgstr "Rechnung #"
 
 #: admin/custom-post-types/humble-lms-txn.php:151
-#: public/class-humble-lms-ajax.php:409
+#: public/class-humble-lms-ajax.php:413
 #: public/class-humble-lms-shortcodes.php:1031
 #: public/class-humble-lms-shortcodes.php:1313
 msgid "Billing information"
 msgstr "Rechnungsdaten"
 
 #: admin/custom-post-types/humble-lms-txn.php:162
-#: public/class-humble-lms-ajax.php:413
+#: public/class-humble-lms-ajax.php:417
 #: public/class-humble-lms-shortcodes.php:1050
 #: public/class-humble-lms-shortcodes.php:1331
 #: public/class-humble-lms-shortcodes.php:1506
@@ -2577,7 +2579,7 @@ msgid "Postcode"
 msgstr "Postleitzahl"
 
 #: admin/custom-post-types/humble-lms-txn.php:165
-#: public/class-humble-lms-ajax.php:414
+#: public/class-humble-lms-ajax.php:418
 #: public/class-humble-lms-shortcodes.php:1054
 #: public/class-humble-lms-shortcodes.php:1335
 #: public/class-humble-lms-shortcodes.php:1507
@@ -2585,13 +2587,13 @@ msgid "City"
 msgstr "Stadt/Ort"
 
 #: admin/custom-post-types/humble-lms-txn.php:168
-#: public/class-humble-lms-ajax.php:415
+#: public/class-humble-lms-ajax.php:419
 #: public/class-humble-lms-shortcodes.php:1508
 msgid "Address"
 msgstr "Adresse"
 
 #: admin/custom-post-types/humble-lms-txn.php:171
-#: public/class-humble-lms-ajax.php:416
+#: public/class-humble-lms-ajax.php:420
 #: public/class-humble-lms-shortcodes.php:1062
 #: public/class-humble-lms-shortcodes.php:1343
 #: public/class-humble-lms-shortcodes.php:1509
@@ -2599,7 +2601,7 @@ msgid "Company"
 msgstr "Unternehmen"
 
 #: admin/custom-post-types/humble-lms-txn.php:174
-#: public/class-humble-lms-ajax.php:417
+#: public/class-humble-lms-ajax.php:421
 #: public/class-humble-lms-shortcodes.php:1066
 #: public/class-humble-lms-shortcodes.php:1347
 #: public/class-humble-lms-shortcodes.php:1510
@@ -2752,44 +2754,36 @@ msgstr "passwort-zuruecksetzen"
 msgid "account"
 msgstr "account"
 
-#: includes/class-humble-lms-activator.php:166
-msgid "Mark complete and continue"
-msgstr "Lektion als abgeschlossen markieren"
-
-#: includes/class-humble-lms-activator.php:167
-msgid "Mark incomplete and continue"
-msgstr "Lektion als unbearbeitet markieren"
-
-#: public/class-humble-lms-ajax.php:200 public/class-humble-lms-public.php:411
+#: public/class-humble-lms-ajax.php:204 public/class-humble-lms-public.php:411
 msgid "You received an award"
 msgstr "Auszeichnung erhalten"
 
-#: public/class-humble-lms-ajax.php:222 public/class-humble-lms-public.php:412
+#: public/class-humble-lms-ajax.php:226 public/class-humble-lms-public.php:412
 msgid "You have been issued a certificate"
 msgstr "Sie haben ein Zertifikat erworben"
 
-#: public/class-humble-lms-ajax.php:399
+#: public/class-humble-lms-ajax.php:403
 msgid "Order details"
 msgstr "Bestelldetails"
 
-#: public/class-humble-lms-ajax.php:405
+#: public/class-humble-lms-ajax.php:409
 msgid "Account information"
 msgstr "Informationen zum Benutzerprofil"
 
-#: public/class-humble-lms-ajax.php:419
+#: public/class-humble-lms-ajax.php:423
 msgid "PayPal transaction details"
 msgstr "PayPal Transaktionsdetails"
 
-#: public/class-humble-lms-ajax.php:431
+#: public/class-humble-lms-ajax.php:435
 msgid "Link to content"
 msgstr "Link zum Inhalt"
 
-#: public/class-humble-lms-ajax.php:438
+#: public/class-humble-lms-ajax.php:442
 #, php-format
 msgid "Hello %s!"
 msgstr "Hallo %s!"
 
-#: public/class-humble-lms-ajax.php:439
+#: public/class-humble-lms-ajax.php:443
 msgid ""
 "thank you very much for your purchase! We have received your order and "
 "updated your account accordingly. You can now access the requested contents."
@@ -2798,14 +2792,14 @@ msgstr ""
 "Profil entsprechend aktualisiert. Sie können jetzt auf die gekauften Inhalte "
 "zugreifen."
 
-#: public/class-humble-lms-ajax.php:444
+#: public/class-humble-lms-ajax.php:448
 msgid ""
 "A list of all your purchases and invoices is available on your account page:"
 msgstr ""
 "Eine Übersicht Ihrer Einkäufe und Rechnungen finden Sie auf Ihrer "
 "Profilseite."
 
-#: public/class-humble-lms-ajax.php:446
+#: public/class-humble-lms-ajax.php:450
 msgid "Enjoy our courses!"
 msgstr "Viel Vergnügen mit unseren Kursen!"
 
@@ -3597,6 +3591,12 @@ msgstr "Seiten"
 #: public/partials/humble-lms-track-archive.php:10
 msgid "Course Tracks"
 msgstr "Lernpfade"
+
+#~ msgid "Mark complete and continue"
+#~ msgstr "Lektion als abgeschlossen markieren"
+
+#~ msgid "Mark incomplete and continue"
+#~ msgstr "Lektion als unbearbeitet markieren"
 
 #~ msgid ""
 #~ "This email will be send in plain text format. HTML is currently not "

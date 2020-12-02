@@ -674,7 +674,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      // Mark complete button
+      // Mark as complete/incomplete button
       $hidden_style = ! $user_completed_quizzes && ( $passing_required && $lesson_has_quiz && ! $lesson_completed ) ? 'display:none' : '';
       $html .= '<form method="post" id="humble-lms-mark-complete" class="' . $quiz_class . '" style="' . $hidden_style . '">';
         $html .= '<input type="hidden" name="course-id" id="course-id" value="' . $course_id . '">';

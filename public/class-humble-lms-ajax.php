@@ -35,7 +35,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
     
     /**
-     * Mark lesson complete button clicked / open lesson.
+     * Mark lesson as complete button clicked / open lesson.
      *
      * @since 0.0.1
      * @return void
@@ -98,13 +98,17 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $key = array_search( $lesson_id, $lessons );
       $is_last = $key === array_key_last( $lessons );
 
-      if( ! $is_last ) {
-        $next_lesson = get_post( $lessons[$key+1] );
-        $next_lesson_id = $this->translator->get_translated_post_id( $next_lesson->ID );
-        $redirect_url = esc_url( get_permalink( $next_lesson_id ) );
+      if( ! in_array( $lesson_id, $this->user->completed_lessons( get_current_user_ID() ) ) ) {
+        $redirect_url = esc_url( get_permalink( $lesson_id  ) );
       } else {
-        $next_lesson_id = $this->translator->get_translated_post_id( $lessons[0] );
-        $redirect_url = esc_url( get_permalink( $next_lesson_id  ) );
+        if( ! $is_last ) {
+          $next_lesson = get_post( $lessons[$key+1] );
+          $next_lesson_id = $this->translator->get_translated_post_id( $next_lesson->ID );
+          $redirect_url = esc_url( get_permalink( $next_lesson_id ) );
+        } else {
+          $next_lesson_id = $this->translator->get_translated_post_id( $lessons[0] );
+          $redirect_url = esc_url( get_permalink( $next_lesson_id  ) );
+        }
       }
 
       default_redirect( $redirect_url, $course_id, $next_lesson_id, $completed );

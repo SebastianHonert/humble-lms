@@ -964,14 +964,13 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         echo '</div>';
       }
 
-      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === 1;
       $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
 
       $post_user_login = isset( $_POST['humble-lms-user-login'] ) ? sanitize_text_field( $_POST['humble-lms-user-login'] ) : '';
       $post_user_first = isset( $_POST['humble-lms-user-first'] ) ? sanitize_text_field( $_POST['humble-lms-user-first'] ) : '';
       $post_user_last = isset( $_POST['humble-lms-user-last'] ) ? sanitize_text_field( $_POST['humble-lms-user-last'] ) : '';
       $post_user_title = isset( $_POST['humble-lms-user-title'] ) ? sanitize_text_field( $_POST['humble-lms-user-title'] ) : '';
-      $post_user_country = $registration_has_country && isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
+      $post_user_country = isset( $_POST['humble-lms-user-country'] ) ? sanitize_text_field( $_POST['humble-lms-user-country'] ) : '';
       $post_user_address = isset( $_POST['humble-lms-user-address'] ) ? sanitize_text_field( $_POST['humble-lms-user-address'] ) : '';
       $post_user_postcode = isset( $_POST['humble-lms-user-postcode'] ) ? sanitize_text_field( $_POST['humble-lms-user-postcode'] ) : '';
       $post_user_city = isset( $_POST['humble-lms-user-city'] ) ? sanitize_text_field( $_POST['humble-lms-user-city'] ) : '';
@@ -1030,22 +1029,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <!-- Billing information -->
           <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
           <p class="humble-lms-message humble-lms-message--success"><?php _e('If you would like to purchase anything on this website you will have to update your billing information first. You can leave the required fields blank for now and fill them in later.', 'humble-lms'); ?></p>
-          <?php if( $registration_has_country ): ?>
-            <p>
-              <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
-              <select name="humble-lms-user-country" id="humble-lms-user-country">
-                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+          <p>
+            <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <select name="humble-lms-user-country" id="humble-lms-user-country">
+              <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
 
-                <?php 
-                foreach( $countries as $key => $country ) {
-                  $selected = $country === $post_user_country ? 'selected' : '';
-                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
-                }
-                ?>
+              <?php 
+              foreach( $countries as $key => $country ) {
+                $selected = $country === $post_user_country ? 'selected' : '';
+                echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+              }
+              ?>
 
-              </select>
-            </p>
-          <?php endif; ?>
+            </select>
+          </p>
           <p>
             <label for="humble-lms-user-postcode"><?php _e('Postcode', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-postcode" id="humble-lms-user-postcode" type="text" value="<?php echo $post_user_postcode; ?>" />
@@ -1239,7 +1236,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         }
       }
 
-      $registration_has_country = isset( $this->options_manager->options['registration_has_country'] ) && $this->options_manager->options['registration_has_country'] === 1;
       $countries = isset( $this->options_manager->options['registration_countries'] ) ? maybe_unserialize( $this->options_manager->options['registration_countries'] ) : $this->options_manager->countries;
       $user_login = $userdata->user_login;
       $user_first = $userdata->first_name;
@@ -1311,22 +1307,20 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
           <!-- Billing information -->
           <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
-          <?php if( $registration_has_country ): ?>
-            <p>
-              <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
-              <select name="humble-lms-user-country" id="humble-lms-user-country">
-                <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
+          <p>
+            <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
+            <select name="humble-lms-user-country" id="humble-lms-user-country">
+              <option value=""><?php _e('Please select your country', 'humble-lms'); ?></option>
 
-                <?php 
-                foreach( $countries as $key => $country ) {
-                  $selected = $country === $user_country ? 'selected' : '';
-                  echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
-                }
-                ?>
+              <?php 
+              foreach( $countries as $key => $country ) {
+                $selected = $country === $user_country ? 'selected' : '';
+                echo '<option value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+              }
+              ?>
 
-              </select>
-            </p>
-          <?php endif; ?>
+            </select>
+          </p>
           <p>
             <label for="humble-lms-user-postcode"><?php _e('Postcode', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
             <input name="humble-lms-user-postcode" id="humble-lms-user-postcode" type="text" value="<?php echo $user_postcode; ?>" />

@@ -201,7 +201,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'tippy_theme', __('TippyJS tooltips theme', 'humble-lms'), array( $this, 'tippy_theme' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'delete_plugin_data_on_uninstall', __('Delete plugin data on uninstall', 'humble-lms'), array( $this, 'delete_plugin_data_on_uninstall' ), 'humble_lms_options', 'humble_lms_options_section_options');
       
-      add_settings_field( 'registration_has_country', __('Include country in registration form?', 'humble-lms'), array( $this, 'registration_has_country' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'registration_countries', __('Which countries should be included (multiselect)?', 'humble-lms'), array( $this, 'registration_countries' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_welcome', __('Welcome email', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
@@ -452,19 +451,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * Option for displaying country field in registration form.
-     *
-     * @since    0.0.1
-     */
-    public function registration_has_country() {
-      $registration_has_country = isset( $this->options['registration_has_country'] ) ? (int)$this->options['registration_has_country'] : 0;
-      $checked = $registration_has_country === 1 ? 'checked' : '';
-  
-      echo '<p><input id="registration_has_country" name="humble_lms_options[registration_has_country]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, include country in registration form.', 'humble-lms') . '</p>';
-      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
-    }
-
-    /**
      * Option for selecting individual countries to be included in registration form.
      *
      * @since    0.0.1
@@ -480,6 +466,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         }
       echo '</select>';
       echo '<input class="humble-lms-multiselect-value" id="humble_lms_registration_countries" name="humble_lms_options[registration_countries]" type="hidden" value="' . implode(',', $registration_countries) . '">';
+      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
       echo '<p><a class="humble-lms-multiselect-select-all">' . __('Select all', 'humble-lms') . '</a> | <a class="humble-lms-multiselect-deselect-all">' . __('Deselect all', 'humble-lms') . '</a></p>';
     }
 
@@ -871,18 +858,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       if( $active === 'registration' ) {
-        $options['registration_has_country'] = isset( $input['registration_has_country'] ) ? 1 : 0;
         $options['email_agreement'] = isset( $input['email_agreement'] ) ? 1 : 0;
         $options['recaptcha_website_key'] = esc_attr( trim( $input['recaptcha_website_key'] ) );
         $options['recaptcha_secret_key'] = esc_attr( trim( $input['recaptcha_secret_key'] ) );
         $options['recaptcha_enabled'] = isset( $input['recaptcha_enabled'] ) && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) ? 1 : 0;
         
         if( isset( $input['registration_countries'] ) ) {
-          $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : [];
-        }
-  
-        if( empty( $options['registration_countries'] ) ) {
-          $options['registration_has_country'] = 0;
+          $options['registration_countries'] = ! empty( $input['registration_countries'] ) ? serialize( explode( ',', $input['registration_countries'] ) ) : $this->countries;
+        } else {
+          $options['registration_countries'] = $this->countries;
         }
   
         if( isset( $input['email_welcome'] ) ) {

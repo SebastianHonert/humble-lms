@@ -1283,9 +1283,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . '</label>';
               echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
               echo $this->content_manager->user_can_upgrade_membership() ? '<p><button class="humble-lms-btn humble-lms-btn--success" href="' . esc_url( get_post_type_archive_link( 'humble_lms_mbship' ) ) . '">' . __('Upgrade your account', 'humble-lms') . '</button></p>' : '';
-            } else {
-              echo '<label for="humble-lms-user-membership">' . __('Membership', 'humble-lms') . ' <small>(' . __('Account status', 'humble-lms' ) . ')</small></label>';
-              echo '<p><strong>' . ucfirst( $user_membership ) . '</strong></p>';
             }
 
           ?>

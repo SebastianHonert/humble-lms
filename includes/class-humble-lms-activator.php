@@ -157,6 +157,7 @@ class Humble_LMS_Activator {
         'item_reference' => 'Humble LMS',
         'license_key' => '',
         'delete_plugin_data_on_uninstall' => 0,
+        'has_sales' => 0,
         'use_coupons' => 0,
         'tiles_per_page' => 10,
         'syllabus_max_height' => 640,

@@ -496,6 +496,7 @@ class Humble_LMS_Admin {
       $user_email_confirm	= isset( $_POST['humble-lms-user-email-confirm'] ) ? $_POST['humble-lms-user-email-confirm'] : '';
       $user_first = $_POST['humble-lms-user-first'];
       $user_last = $_POST['humble-lms-user-last'];
+      $user_title = sanitize_text_field( $_POST['humble-lms-user-title'] );
       $user_country = sanitize_text_field( $_POST['humble-lms-user-country'] );
       $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
       $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
@@ -524,7 +525,7 @@ class Humble_LMS_Admin {
         $this->humble_lms_errors()->add('last_name_empty', __('Please enter your last name', 'humble-lms'));
       }
 
-      if( ( ! in_array( $user_country, $countries ) ) && ( $user_country !== '' ) ) {
+      if( $user_country !== '' && ( ! in_array( $user_country, $countries ) ) ) {
         $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
       }
   
@@ -603,6 +604,7 @@ class Humble_LMS_Admin {
 
         if( $new_user_id ) {
           // Add country to user meta
+          add_user_meta( $new_user_id, 'humble_lms_title', $user_title );
           add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
           add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
           add_user_meta( $new_user_id, 'humble_lms_email_agreement', $email_agreement );
@@ -647,16 +649,21 @@ class Humble_LMS_Admin {
     if( wp_verify_nonce( $_POST['humble-lms-update-user-nonce'], 'humble-lms-update-user-nonce' ) ) {
       $user_email	= $_POST['humble-lms-user-email'];
       $user_email_confirm	= $_POST['humble-lms-user-email-confirm'];
+      $user_title	= sanitize_text_field( $_POST['humble-lms-user-title'] );
       $user_country = sanitize_text_field( $_POST['humble-lms-user-country'] );
-      $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
-      $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
-      $user_address = sanitize_text_field( $_POST['humble-lms-user-address'] );
-      $user_company = sanitize_text_field( $_POST['humble-lms-user-company'] );
-      $user_vat_id = sanitize_text_field( $_POST['humble-lms-user-vat-id'] );
       $user_pass = isset( $_POST['humble-lms-user-pass'] ) ? $_POST['humble-lms-user-pass'] : '';
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
 
-      if( ( ! in_array( $user_country, $countries ) ) && ( $user_country !== '' ) ) {
+      // Billing information
+      if( Humble_LMS_Admin_Options_Manager::has_sales() ) {
+        $user_postcode = sanitize_text_field( $_POST['humble-lms-user-postcode'] );
+        $user_city = sanitize_text_field( $_POST['humble-lms-user-city'] );
+        $user_address = sanitize_text_field( $_POST['humble-lms-user-address'] );
+        $user_company = sanitize_text_field( $_POST['humble-lms-user-company'] );
+        $user_vat_id = sanitize_text_field( $_POST['humble-lms-user-vat-id'] );
+      }
+
+      if( $user_country !== '' && ( ! in_array( $user_country, $countries ) ) ) {
         $this->humble_lms_errors()->add('country_empty', __('Please select your country.', 'humble-lms'));
       }
   
@@ -715,12 +722,16 @@ class Humble_LMS_Admin {
         $updated_user_id = wp_update_user( $args );
 
         if( $updated_user_id ) {
+          update_user_meta( $updated_user_id, 'humble_lms_title', $user_title );
           update_user_meta( $updated_user_id, 'humble_lms_country', $user_country );
-          update_user_meta( $updated_user_id, 'humble_lms_postcode', $user_postcode );
-          update_user_meta( $updated_user_id, 'humble_lms_city', $user_city );
-          update_user_meta( $updated_user_id, 'humble_lms_address', $user_address );
-          update_user_meta( $updated_user_id, 'humble_lms_company', $user_company );
-          update_user_meta( $updated_user_id, 'humble_lms_vat_id', $user_vat_id );
+
+          if( Humble_LMS_Admin_Options_Manager::has_sales() ) {
+            update_user_meta( $updated_user_id, 'humble_lms_postcode', $user_postcode );
+            update_user_meta( $updated_user_id, 'humble_lms_city', $user_city );
+            update_user_meta( $updated_user_id, 'humble_lms_address', $user_address );
+            update_user_meta( $updated_user_id, 'humble_lms_company', $user_company );
+            update_user_meta( $updated_user_id, 'humble_lms_vat_id', $user_vat_id );
+          }
         }
       }
     }

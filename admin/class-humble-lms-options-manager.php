@@ -207,8 +207,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'email_agreement', __('Email agreement', 'humble-lms'), array( $this, 'email_agreement' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
  
-      add_settings_field( 'use_coupons', 'Use coupons?', array( $this, 'use_coupons' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
-      add_settings_field( 'paypal_client_id', 'Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'activate_sales', __('Activate online sales?', 'humble-lms'), array( $this, 'activate_sales' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'paypal_client_id', 'PayPal Client ID', array( $this, 'paypal_client_id' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'use_coupons', __('Use coupons?', 'humble-lms'), array( $this, 'use_coupons' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'vat', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
@@ -543,11 +544,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      *
      * @since    0.0.5
      */
-    public function use_coupons() {
-      $use_coupons = isset( $this->options['use_coupons'] ) ? (int)$this->options['use_coupons'] : 0;
-      $checked = $use_coupons === 1 ? 'checked' : '';
+    public function activate_sales() {
+      $has_sales = isset( $this->options['has_sales'] ) ? (int)$this->options['has_sales'] : 0;
+      $checked = $has_sales === 1 ? 'checked' : '';
   
-      echo '<p><input id="use_coupons" name="humble_lms_options[use_coupons]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, use coupons.', 'humble-lms') . '</p>';
+      echo '<p><input id="has_sales" name="humble_lms_options[has_sales]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, activate online sales (PayPal Client ID required, see below).', 'humble-lms') . '</p>';
     }
 
     /**
@@ -561,6 +562,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       echo '<p><input type="text" class="widefat" name="humble_lms_options[paypal_client_id]" value="' . $paypal_client_id . '"></p>';
       echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
+    }
+
+    /**
+     * Option for activiating the use of coupons.
+     *
+     * @since    0.0.5
+     */
+    public function use_coupons() {
+      $use_coupons = isset( $this->options['use_coupons'] ) ? (int)$this->options['use_coupons'] : 0;
+      $checked = $use_coupons === 1 ? 'checked' : '';
+  
+      echo '<p><input id="use_coupons" name="humble_lms_options[use_coupons]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, use coupons.', 'humble-lms') . '</p>';
     }
 
     /**
@@ -879,6 +892,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       if( $active === 'paypal' ) {
+        $options['has_sales'] = isset( $input['has_sales'] ) ? 1 : 0;
         $options['use_coupons'] = isset( $input['use_coupons'] ) ? 1 : 0;
 
         if( isset( $input['paypal_client_id'] ) ) {
@@ -1400,6 +1414,17 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public static function has_paypal() {
       $options = get_option('humble_lms_options');
       return ( ! empty( $options['paypal_client_id'] ) );
+    }
+
+    /**
+     * Check if selling content is activated.
+     *
+     * @return  bool
+     * @since   0.0.5
+     */
+    public static function has_sales() {
+      $options = get_option('humble_lms_options');
+      return ( self::has_paypal() && ( isset( $options['has_sales'] ) && 1 === $options['has_sales'] ) );
     }
 
     /**

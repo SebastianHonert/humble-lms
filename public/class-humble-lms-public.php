@@ -118,7 +118,7 @@ class Humble_LMS_Public {
     $options = get_option('humble_lms_options');
 
     // PayPal
-    if( Humble_LMS_Admin_Options_Manager::has_paypal() ) {
+    if( Humble_LMS_Admin_Options_Manager::has_sales() ) {
       $client_id = $options['paypal_client_id'];
       $currency = $this->options_manager->get_currency();
       
@@ -161,7 +161,7 @@ class Humble_LMS_Public {
       'buy_now_text' => __('Buy now', 'humble-lms'),
       'syllabus_max_height' => isset( $options['syllabus_max_height'] ) ? $options['syllabus_max_height'] : 640,
       'currency' => $this->options_manager->get_currency(),
-      'has_paypal' => Humble_LMS_Admin_Options_Manager::has_paypal(),
+      'has_sales' => Humble_LMS_Admin_Options_Manager::has_sales(),
       'tippy_theme' => isset( $options['tippy_theme'] ) ? $options['tippy_theme'] : 'default',
       'toggle_syllabus_text_close' => __('Close syllabus', 'humble-lms'),
       'toggle_syllabus_text_expand' => __('Expand syllabus', 'humble-lms'),

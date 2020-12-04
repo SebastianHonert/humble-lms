@@ -90,13 +90,15 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       }
 
       // Remove unpublished
-      foreach( $track_courses as $key => $course_id ) {
-        if( 'publish' !== get_post_status( $course_id ) ) {
-          unset( $track_courses[$key] );
-          $track_courses = array_values( $track_courses );
+      if( $published ) {
+        foreach( $track_courses as $key => $course_id ) {
+          if( 'publish' !== get_post_status( $course_id ) ) {
+            unset( $track_courses[$key] );
+          }
         }
       }
 
+      $track_courses = array_values( $track_courses );
       $track_courses = array_unique( $track_courses );
       
       return $track_courses;

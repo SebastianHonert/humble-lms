@@ -1342,6 +1342,21 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           <?php if( Humble_LMS_Admin_Options_Manager::has_sales() ): ?>
 
             <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
+
+            <?php
+
+            if( ! $this->user->billing_information_complete( $user_id ) ) {
+              echo '<div class="humble-lms-message humble-lms-message--error">';
+              echo __('Pflease complete your billing information.', 'humble-lms');
+              echo '</div>';
+            } else {
+              echo '<div class="humble-lms-message humble-lms-message--success">';
+              echo __('Your billing information is complete.', 'humble-lms');
+              echo '</div>';
+            }
+
+            ?>
+
             <p>
               <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
               <select name="humble-lms-user-country" id="humble-lms-user-country">

@@ -71,6 +71,22 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
     }
 
     /**
+     * Get user country.
+     * 
+     * @return String
+     * @since 0.0.5
+     */
+    public function country( $user_id = null ) {
+      if( ! get_user_by( 'id', $user_id ) ) {
+        return '';
+      }
+
+      $country = get_user_meta( $user_id, 'humble_lms_country', true );
+
+      return isset( $country ) ? $country : '';
+    }
+
+    /**
      * Get user address.
      * 
      * @return String
@@ -116,22 +132,6 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       $city = get_user_meta( $user_id, 'humble_lms_city', true );
 
       return isset( $city ) ? $city : '';
-    }
-
-    /**
-     * Get user country.
-     * 
-     * @return String
-     * @since 0.0.3
-     */
-    public function country( $user_id = null ) {
-      if( ! get_user_by( 'id', $user_id ) ) {
-        return '';
-      }
-
-      $country = get_user_meta( $user_id, 'humble_lms_country', true );
-
-      return isset( $country ) ? $country : '';
     }
 
     /**
@@ -1274,14 +1274,14 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
 
       $first_name = $this->first_name( $user_id );
       $last_name = $this->last_name( $user_id );
+      $country = $this->country( $user_id );
       $address = $this->address( $user_id );
       $postcode = $this->postcode( $user_id );
       $city = $this->city( $user_id );
-      $country = $this->country( $user_id );
       $company = $this->company( $user_id );
       $vat_id = $this->vat_id( $user_id );
 
-      return ! empty( $first_name ) && ! empty( $last_name ) && ! empty( $address ) && ! empty( $postcode ) && ! empty( $city );
+      return ! empty( $first_name ) && ! empty( $last_name ) && ! empty( $country ) && ! empty( $address ) && ! empty( $postcode ) && ! empty( $city );
     }
 
     /**

@@ -63,10 +63,6 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $lesson_completed = $_POST['lessonCompleted'] && $_POST['lessonCompleted'] === 'true';
       $mark_complete = filter_var( $_POST['markComplete'], FILTER_VALIDATE_BOOLEAN );
 
-      // Get translated post IDs
-      $course_id = $this->translator->get_translated_post_id( $course_id );
-      $lesson_id = $this->translator->get_translated_post_id( $lesson_id );
-
       if( ! $course_id ) {
         if( ! $lesson_id ) {
           $redirect_url = esc_url( home_url() );
@@ -99,15 +95,13 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $is_last = $key === array_key_last( $lessons );
 
       if( ! in_array( $lesson_id, $this->user->completed_lessons( get_current_user_ID() ) ) ) {
-        $redirect_url = esc_url( get_permalink( $lesson_id  ) );
+        $redirect_url = esc_url( get_permalink( $lesson_id ) );
       } else {
         if( ! $is_last ) {
           $next_lesson = get_post( $lessons[$key+1] );
-          $next_lesson_id = $this->translator->get_translated_post_id( $next_lesson->ID );
-          $redirect_url = esc_url( get_permalink( $next_lesson_id ) );
+          $redirect_url = esc_url( get_permalink( $next_lesson->ID ) );
         } else {
-          $next_lesson_id = $this->translator->get_translated_post_id( $lessons[0] );
-          $redirect_url = esc_url( get_permalink( $next_lesson_id  ) );
+          $redirect_url = esc_url( get_permalink( $lessons[0] ) );
         }
       }
 

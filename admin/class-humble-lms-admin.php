@@ -505,7 +505,8 @@ class Humble_LMS_Admin {
       $user_vat_id = sanitize_text_field( $_POST['humble-lms-user-vat-id'] );
       $user_pass = $_POST['humble-lms-user-pass'];
       $user_pass_confirm = isset( $_POST['humble-lms-user-pass-confirm'] ) ? sanitize_text_field( $_POST['humble-lms-user-pass-confirm'] ) : '';
-      $email_agreement = empty( $_POST['humble-lms-email-agreement'] ) ? 0 : 1;
+      $email_agreement = isset( $_POST['humble-lms-email-agreement'] ) ? 1 : 0;
+      $terms_of_service = isset( $_POST['humble-lms-terms-of-service'] ) ? 1 : 0;
       
       if( username_exists( $user_login ) ) {
         $this->humble_lms_errors()->add('username_unavailable', __('Username already taken.', 'humble-lms'));
@@ -567,6 +568,12 @@ class Humble_LMS_Admin {
         }
       }
 
+      if( isset( $options_manager->options['terms_of_service'] ) && $options_manager->options['terms_of_service'] === 1 ) {
+        if( $terms_of_service === 0 ) {
+          $this->humble_lms_errors()->add('terms_of_service', __('Please agree to our terms of service (TOS) and privacy policy.', 'humble-lms'));
+        }
+      }
+
       // reCAPTCHA
       if( $options_manager->has_recaptcha() ) {
         if( isset( $_POST['g-recaptcha-response'] ) ) {
@@ -608,6 +615,7 @@ class Humble_LMS_Admin {
           add_user_meta( $new_user_id, 'humble_lms_country', $user_country );
           add_user_meta( $new_user_id, 'humble_lms_membership', 'free' );
           add_user_meta( $new_user_id, 'humble_lms_email_agreement', $email_agreement );
+          add_user_meta( $new_user_id, 'humble_lms_terms_of_service', $terms_of_service );
           add_user_meta( $new_user_id, 'humble_lms_postcode', $user_postcode );
           add_user_meta( $new_user_id, 'humble_lms_city', $user_city );
           add_user_meta( $new_user_id, 'humble_lms_address', $user_address );

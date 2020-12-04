@@ -205,6 +205,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'email_welcome', __('Welcome email', 'humble-lms'), array( $this, 'email_welcome' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_lost_password', __('Lost password email', 'humble-lms'), array( $this, 'email_lost_password' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'email_agreement', __('Email agreement', 'humble-lms'), array( $this, 'email_agreement' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
+      add_settings_field( 'terms_of_service', __('Terms of service (TOS) and privacy policy', 'humble-lms'), array( $this, 'terms_of_service' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
       add_settings_field( 'recaptcha_keys', __('Google reCAPTCHA', 'humble-lms'), array( $this, 'recaptcha_keys' ), 'humble_lms_options_registration', 'humble_lms_options_section_registration');
  
       add_settings_field( 'activate_sales', __('Activate online sales?', 'humble-lms'), array( $this, 'activate_sales' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
@@ -522,6 +523,24 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for making email agreement required or optional.
+     *
+     * @since    0.0.1
+     */
+    public function terms_of_service() {
+      $terms_of_service = isset( $this->options['terms_of_service'] ) ? (int)$this->options['terms_of_service'] : 0;
+      $terms_of_service_url = isset( $this->options['terms_of_service_url'] ) ? $this->options['terms_of_service_url'] : '';
+      $privacy_policy_url = isset( $this->options['privacy_policy_url'] ) ? $this->options['privacy_policy_url'] : '';
+      $checked = $terms_of_service === 1 ? 'checked' : '';
+  
+      echo '<p class="humble-lms-padding-bottom"><input id="terms_of_service" name="humble_lms_options[terms_of_service]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, show the terms of service checkbox (required input field).', 'humble-lms') . '</p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[terms_of_service_url]" value="' . $terms_of_service_url . '" placeholder="' . __('Link to your terms of service (TOS)', 'humble-lms') . '&hellip;"></p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[privacy_policy_url]" value="' . $privacy_policy_url . '" placeholder="' . __('Link to your privacy policy', 'humble-lms') . '&hellip;"></p>';
+      echo get_privacy_policy_url() ? '<p class="description">' . __('WordPress privacy policy page', 'humble-lms') . ': ' . get_privacy_policy_url() . '</p>': '';
+      echo '<p class="description">' . __('Links will be placed automatically if you fill in the URL fields. Otherwise a text without links will be displayed.', 'humble-lms') . '</p>';
+    }
+
+    /**
      * reCAPTCHA keys.
      *
      * @since    0.0.1
@@ -533,7 +552,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $recaptcha_website_key = isset( $this->options['recaptcha_website_key'] ) ? $this->options['recaptcha_website_key'] : '';
       $recaptcha_secret_key = isset( $this->options['recaptcha_secret_key'] ) ? $this->options['recaptcha_secret_key'] : '';
       
-      echo '<p class="humble-lms-enable-recaptcha"><input type="checkbox" class="widefat" name="humble_lms_options[recaptcha_enabled]" value="1" ' . $checked . '"> ' . __('Enable reCAPTCHA in registration form', 'humble-lms') . '</p>';
+      echo '<p class="humble-lms-padding-bottom"><input type="checkbox" class="widefat" name="humble_lms_options[recaptcha_enabled]" value="1" ' . $checked . '"> ' . __('Enable reCAPTCHA in registration form', 'humble-lms') . '</p>';
       echo '<p><input type="text" class="widefat" name="humble_lms_options[recaptcha_website_key]" value="' . $recaptcha_website_key . '" placeholder="' . __('Website key', 'humble-lms') . '&hellip;"></p>';
       echo '<p><input type="text" class="widefat" name="humble_lms_options[recaptcha_secret_key]" value="' . $recaptcha_secret_key . '" placeholder="' . __('Secret key', 'humble-lms') . '&hellip;"></p>';
       echo '<p class="description">' . __('Make sure you adjust your data privacy disclaimer to include Google reCAPTCHA.', 'humble-lms') . ' <a href="https://www.google.com/recaptcha/" target="_blank">' . __('More infos on Google reCAPTCHA', 'humble-lms') . '</a></p>';
@@ -872,6 +891,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       if( $active === 'registration' ) {
         $options['email_agreement'] = isset( $input['email_agreement'] ) ? 1 : 0;
+        $options['terms_of_service'] = isset( $input['terms_of_service'] ) ? 1 : 0;
+        $options['terms_of_service_url'] = esc_attr( trim( $input['terms_of_service_url'] ) );
+        $options['privacy_policy_url'] = esc_attr( trim( $input['privacy_policy_url'] ) );
         $options['recaptcha_website_key'] = esc_attr( trim( $input['recaptcha_website_key'] ) );
         $options['recaptcha_secret_key'] = esc_attr( trim( $input['recaptcha_secret_key'] ) );
         $options['recaptcha_enabled'] = isset( $input['recaptcha_enabled'] ) && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) ? 1 : 0;

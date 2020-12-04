@@ -979,6 +979,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $post_user_email = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       $post_user_email_confirm = isset( $_POST['humble-lms-user-email-confirm'] ) ? sanitize_email( $_POST['humble-lms-user-email-confirm'] ) : '';
       $post_email_agreement_checked = isset( $_POST['humble-lms-email-agreement'] ) ? 'checked="checked"' : '';
+      $post_terms_of_service_checked = isset( $_POST['humble-lms-terms-of-service'] ) ? 'checked="checked"' : '';
 
       ?>
       
@@ -1042,11 +1043,23 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             <input name="humble-lms-email-agreement" id="email-agreement" class="<?php echo $class; ?>" type="checkbox" value="1" <?php echo $post_email_agreement_checked; ?> /> <?php _e('Yes, I wish to receive emails from this website which are essential for participating in the online courses.', 'humble-lms'); ?>
           </p>
 
+          <!-- TOS -->
+          <?php if( isset( $this->options_manager->options['terms_of_service'] ) && $this->options_manager->options['terms_of_service'] === 1 ): ?>
+            <p>
+              <label for="email-agreement" class="humble-lms-required"><?php _e('TOS / privacy policy', 'humble-lms'); ?></label>
+
+              <?php $terms_of_service_string = ! empty( $this->options_manager->options['terms_of_service_url'] ) ? '<a href="' . $this->options_manager->options['terms_of_service_url'] . '" target="_blank">' . __('terms of service', 'humble-lms') . '</a>' : __('terms of service', 'humble-lms'); ?>
+              <?php $privacy_policy_string = ! empty( $this->options_manager->options['privacy_policy_url'] ) ? '<a href="' . $this->options_manager->options['privacy_policy_url'] . '" target="_blank">' . __('privacy policy', 'humble-lms') . '</a>' : __('privacy policy', 'humble-lms'); ?>
+
+              <input name="humble-lms-terms-of-service" id="terms-of-service" class="humble-lms-required" type="checkbox" value="1" <?php echo $post_terms_of_service_checked; ?> /> <?php echo sprintf( __('I agree to the %s and I have read and accepted the %s.', 'humble-lms'), $terms_of_service_string, $privacy_policy_string ); ?>
+            </p>
+          <?php endif; ?>
+
           <!-- Billing information -->
           <?php if( Humble_LMS_Admin_Options_Manager::has_sales() ): ?>
 
             <h2><?php _e('Billing information', 'humble-lms'); ?></h2>
-            <p class="humble-lms-message humble-lms-message--success"><?php _e('If you would like to purchase anything on this website you will have to update your billing information first. You can leave the required fields blank for now and fill them in later.', 'humble-lms'); ?></p>
+            <p class="humble-lms-message humble-lms-message--success"><?php _e('If you would like to purchase anything on this website you will have to enter your billing information. Of course you can leave the required fields blank for now and fill them in later.', 'humble-lms'); ?></p>
             <p>
               <label for="humble-lms-user-country"><?php _e('Country', 'humble-lms'); ?><br><small><?php _e('Required for billing.', 'humble-lms'); ?></small></label>
               <select name="humble-lms-user-country" id="humble-lms-user-country">

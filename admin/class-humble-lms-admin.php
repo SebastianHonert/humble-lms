@@ -1365,13 +1365,11 @@ class Humble_LMS_Admin {
    * @since 0.0.6
    */
   function plugin_info( $res, $action, $args ) {
-    delete_transient( 'update_' . $this->humble_lms );
-
     if( 'plugin_information' !== $action ) {
       return $res;
     }
 
-    if( $plugin_slug !== $args->slug ) {
+    if( $this->humble_lms !== $args->slug ) {
       return $res;
     }
 
@@ -1393,7 +1391,7 @@ class Humble_LMS_Admin {
 
       $res = new stdClass();
       $res->name = $remote->name;
-      $res->slug = $plugin_slug;
+      $res->slug = $this->humble_lms;
       $res->version = $remote->version;
       $res->tested = $remote->tested;
       $res->requires = $remote->requires;
@@ -1414,10 +1412,9 @@ class Humble_LMS_Admin {
         $res->sections['screenshots'] = $remote->sections->screenshots;
       }
 
-      $res->banners = array(
-        'low' => 'https://humblelms.de/update/humble-lms/banner-772x250.png',
-        'high' => 'https://humblelms.de/update/humble-lms/banner-1544x500.png',
-      );
+      if( ! empty( $remote->sections->banners ) ) {
+        $res->banners = $remote->sections->banners;
+      }
 
       return $res;
     }
@@ -1435,7 +1432,6 @@ class Humble_LMS_Admin {
       return $transient;
     }
 
-    // Trying to get from cache first
     if( false === $remote = get_transient( 'update_' . $this->humble_lms ) ) {
       $remote = wp_remote_get( 'https://humblelms.de/update/humble-lms/info.json', array(
         'timeout' => 10,

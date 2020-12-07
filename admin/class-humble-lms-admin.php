@@ -1359,4 +1359,123 @@ class Humble_LMS_Admin {
     echo '<div class="humble-lms-loading-layer"><div class="humble-lms-loading"></div></div>';
   }
 
+  /**
+   * Plugin update API info
+   * 
+   * @since 0.0.6
+   */
+  function plugin_info( $res, $action, $args ) {
+    delete_transient( 'update_' . $this->humble_lms );
+
+    if( 'plugin_information' !== $action ) {
+      return $res;
+    }
+
+    if( $plugin_slug !== $args->slug ) {
+      return $res;
+    }
+
+    if( false === $remote = get_transient( 'update_' . $this->humble_lms ) ) {
+      $remote = wp_remote_get( 'https://humblelms.de/update/humble-lms/info.json', array(
+        'timeout' => 10,
+        'headers' => array(
+          'Accept' => 'application/json'
+        ) )
+      );
+   
+      if ( ! is_wp_error( $remote ) && isset( $remote['response']['code'] ) && $remote['response']['code'] == 200 && ! empty( $remote['body'] ) ) {
+        set_transient( 'update_' . $this->humble_lms, $remote, 43200 ); // 12 hours cache
+      }
+    }
+   
+    if( ! is_wp_error( $remote ) && isset( $remote['response']['code'] ) && $remote['response']['code'] == 200 && ! empty( $remote['body'] ) ) {
+      $remote = json_decode( $remote['body'] );
+
+      $res = new stdClass();
+      $res->name = $remote->name;
+      $res->slug = $plugin_slug;
+      $res->version = $remote->version;
+      $res->tested = $remote->tested;
+      $res->requires = $remote->requires;
+      $res->author = '<a href="https://sebastianhonert.com">Sebastian Honert</a>';
+      $res->author_profile = 'https://profiles.wordpress.org/shonert';
+      $res->download_link = $remote->download_url;
+      $res->trunk = $remote->download_url;
+      $res->requires_php = '5.3';
+      $res->last_updated = $remote->last_updated;
+      $res->sections = array(
+        'description' => $remote->sections->description,
+        'installation' => $remote->sections->installation,
+        'changelog' => $remote->sections->changelog
+        // add custom tabs here
+      );
+
+      if( ! empty( $remote->sections->screenshots ) ) {
+        $res->sections['screenshots'] = $remote->sections->screenshots;
+      }
+
+      $res->banners = array(
+        'low' => 'https://humblelms.de/update/humble-lms/banner-772x250.png',
+        'high' => 'https://humblelms.de/update/humble-lms/banner-1544x500.png',
+      );
+
+      return $res;
+    }
+   
+    return $res;
+  }
+
+  /**
+   * Push plugin update
+   * 
+   * @since 0.0.6
+   */
+  function push_update( $transient ) {
+    if( empty( $transient->checked ) ) {
+      return $transient;
+    }
+
+    // Trying to get from cache first
+    if( false === $remote = get_transient( 'update_' . $this->humble_lms ) ) {
+      $remote = wp_remote_get( 'https://humblelms.de/update/humble-lms/info.json', array(
+        'timeout' => 10,
+        'headers' => array(
+          'Accept' => 'application/json'
+        ) )
+      );
+
+      if ( ! is_wp_error( $remote ) && isset( $remote['response']['code'] ) && $remote['response']['code'] == 200 && !empty( $remote['body'] ) ) {
+        set_transient( 'update_' . $this->humble_lms, $remote, 43200 ); // 12 hours cache
+      }
+    }
+
+    if( $remote ) {
+      $remote = json_decode( $remote['body'] );
+
+      if( $remote && version_compare( $this->version, $remote->version, '<' ) && version_compare( $remote->requires, get_bloginfo('version'), '<' ) ) {
+        $res = new stdClass();
+        $res->slug = $this->humble_lms;
+        $res->plugin = $this->humble_lms . '/' . $this->humble_lms . '.php';
+        $res->new_version = $remote->version;
+        $res->tested = $remote->tested;
+        $res->package = $remote->download_url;
+        $transient->response[$res->plugin] = $res;
+        $transient->checked[$res->plugin] = $remote->version;
+      }
+    }
+
+    return $transient;
+  }
+
+  /**
+   * Plugin update cache
+   * 
+   * @since 0.0.6
+   */
+  function after_update( $upgrader_object, $options ) {
+    if ( $options['action'] == 'update' && $options['type'] === 'plugin' ) {
+      delete_transient( 'update_' . $this->humble_lms );
+    }
+  }
+
 }

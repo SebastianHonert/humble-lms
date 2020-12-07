@@ -268,6 +268,11 @@ class Humble_LMS {
       $this->loader->add_action( 'manage_edit-humble_lms_question_sortable_columns', $plugin_admin, 'humble_lms_question_quizzes_sort' );
     }
 
+    // Remote update
+    $this->loader->add_filter( 'plugins_api', $plugin_admin, 'plugin_info', 20, 3 );
+    $this->loader->add_filter( 'site_transient_update_plugins', $plugin_admin, 'push_update' );
+    $this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'after_update', 10, 2 );
+
     // Admin AJAX
     $admin_ajax = new Humble_LMS_Admin_Ajax( $plugin_admin );
 
@@ -299,6 +304,9 @@ class Humble_LMS {
     
     // Login, registration, lost password
     $this->loader->add_action( 'wp_login_failed', $plugin_admin, 'custom_login_failed' );
+    $this->loader->add_filter( 'plugins_api', $plugin_admin, 'plugin_info', 20, 3 );
+    $this->loader->add_filter( 'site_transient_update_plugins', $plugin_admin, 'push_update' );
+    $this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'after_update', 10, 2 );
     $this->loader->add_filter( 'authenticate', $plugin_admin, 'verify_user_pass', 1, 3 );
     $this->loader->add_filter( 'login_redirect', $plugin_admin, 'humble_lms_login_redirect', 10, 3 );
     $this->loader->add_action( 'wp_logout', $plugin_admin, 'logout_redirect' );

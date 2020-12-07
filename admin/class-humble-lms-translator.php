@@ -75,6 +75,20 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
     }
 
     /**
+     * Get translated home URL.
+     * 
+     * @since    0.0.1
+     * @return   String
+     */
+    public function home_url() {
+      if( ! function_exists('pll_home_url') ) {
+        return home_url();
+      }
+      
+      return pll_home_url();
+    }
+
+    /**
      * Get translated post id.
      * 
      * pll_get_post will return the original post ID if no translated post exists.
@@ -89,7 +103,7 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
 
       $translated_post_id = pll_get_post( $post_id, $this->current_language() );
 
-      return $translated_post_id; 
+      return $translated_post_id ? $translated_post_id : $post_id;
     }
     
   }

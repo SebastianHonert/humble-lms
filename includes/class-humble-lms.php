@@ -300,6 +300,7 @@ class Humble_LMS {
     // Login, registration, lost password
     $this->loader->add_action( 'wp_login_failed', $plugin_admin, 'custom_login_failed' );
     $this->loader->add_filter( 'authenticate', $plugin_admin, 'verify_user_pass', 1, 3 );
+    $this->loader->add_filter( 'login_redirect', $plugin_admin, 'humble_lms_login_redirect', 10, 3 );
     $this->loader->add_action( 'wp_logout', $plugin_admin, 'logout_redirect' );
     $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_register_user' );
     $this->loader->add_action( 'init', $plugin_admin, 'humble_lms_update_user' );

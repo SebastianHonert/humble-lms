@@ -282,7 +282,7 @@ class Humble_LMS_Public {
     if( isset( $_GET['humble-lms-welcome'] ) && (int)$_GET['humble-lms-welcome'] === 1 ) {
       echo '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Registration successful', 'humble-lms') . '</span>
-        <span class="humble-lms-message-content">' . sprintf( __('Welcome on board! %s We just sent you a welcome email with further instructions. Please check your email account.', 'humble-lms'), '<i class="ti-face-smile"></i>' ) . '</span>
+        <span class="humble-lms-message-content">' . sprintf( __('Welcome on board! %s We just sent you a welcome email with your account information. Please check your inbox.', 'humble-lms'), '<i class="ti-face-smile"></i>' ) . '</span>
       </div>';
     }
 

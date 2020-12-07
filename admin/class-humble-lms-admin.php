@@ -52,10 +52,6 @@ class Humble_LMS_Admin {
     $this->humble_lms = $humble_lms;
     $this->version = $version;
     $this->options = get_option('humble_lms_options');
-    $this->login_page = site_url('/login/');
-    $this->registration_page = site_url('/registration/');
-    $this->lost_password_page = site_url('/lost-password/');
-    $this->reset_password_page = site_url('/reset-password/');
 
   }
 
@@ -388,16 +384,54 @@ class Humble_LMS_Admin {
   }
 
   /**
+   * Get login page URL.
+   * 
+   * @return  String
+   * @since   0.0.1
+   */
+  public function login_page() {
+    if( ! $this->humble_lms_login_page_exists() ) {
+      return wp_login_url();
+    }
+
+    $translator = new Humble_LMS_Translator;
+    $options = get_option('humble_lms_options');
+    $custom_login_page_id = $options['custom_pages']['login'];
+
+    return esc_url( get_permalink( $translator->get_translated_post_id( $custom_login_page_id ) ) );
+  }
+
+  /**
    * Check if login page exists and contains shortcode
    * 
    * @since   0.0.1
    */
   public function humble_lms_login_page_exists() {
     $options = get_option('humble_lms_options');
+
     if( ! isset( $options['custom_pages']['login'] ) ) return false;
 
     $custom_page_login = get_post( (int)$options['custom_pages']['login'] );
+
     return get_post_status( $custom_page_login ) === 'publish' && has_shortcode( $custom_page_login->post_content, 'humble_lms_login_form' );
+  }
+
+  /**
+   * Get registration page URL.
+   * 
+   * @return  String
+   * @since   0.0.1
+   */
+  public function registration_page() {
+    if( ! $this->humble_lms_registration_page_exists() ) {
+      return wp_registration_url();
+    }
+
+    $translator = new Humble_LMS_Translator;
+    $options = get_option('humble_lms_options');
+    $custom_registration_page_id = $options['custom_pages']['registration'];
+
+    return esc_url( get_permalink( $translator->get_translated_post_id( $custom_registration_page_id ) ) );
   }
 
   /**
@@ -414,7 +448,25 @@ class Humble_LMS_Admin {
   }
 
   /**
-   * Check if registration page exists and contains shortcode
+   * Get lost password page URL.
+   * 
+   * @return  String
+   * @since   0.0.1
+   */
+  public function lost_password_page() {
+    if( ! $this->humble_lms_lost_password_page_exists() ) {
+      return wp_lostpassword_url();
+    }
+
+    $translator = new Humble_LMS_Translator;
+    $options = get_option('humble_lms_options');
+    $custom_lost_password_page_id = $options['custom_pages']['lost_password'];
+
+    return esc_url( get_permalink( $translator->get_translated_post_id( $custom_lost_password_page_id ) ) );
+  }
+
+  /**
+   * Check if lost password page exists and contains shortcode
    * 
    * @since   0.0.1
    */
@@ -427,7 +479,25 @@ class Humble_LMS_Admin {
   }
 
   /**
-   * Check if registration page exists and contains shortcode
+   * Get reset password page URL.
+   * 
+   * @return  String
+   * @since   0.0.1
+   */
+  public function reset_password_page() {
+    if( ! $this->humble_lms_reset_password_page_exists() ) {
+      return site_url('wp-login.php?action=rp');
+    }
+
+    $translator = new Humble_LMS_Translator;
+    $options = get_option('humble_lms_options');
+    $custom_reset_password_page_id = $options['custom_pages']['reset_password'];
+
+    return esc_url( get_permalink( $translator->get_translated_post_id( $custom_reset_password_page_id ) ) );
+  }
+
+  /**
+   * Check if reset password page exists and contains shortcode
    * 
    * @since   0.0.1
    */
@@ -440,7 +510,7 @@ class Humble_LMS_Admin {
   }
 
   /**
-   * Check if registration page exists and contains shortcode
+   * Check if user profile page exists and contains shortcode
    * 
    * @since   0.0.1
    */
@@ -462,11 +532,23 @@ class Humble_LMS_Admin {
       return;
 
     if( $username === '' || $password === '' ) {
-      wp_redirect( $this->login_page );
+      wp_redirect( $this->login_page());
       exit();
     }
 
     return $user;
+  }
+
+  /**
+   * Redirect after login based on selected language.
+   * 
+   * @since   0.0.1
+   */
+  public function humble_lms_login_redirect( $redirect_to, $request, $user) {
+    $translator = new Humble_LMS_Translator;
+    $redirect_to = esc_url( get_permalink( $translator->get_translated_post_id( url_to_postid( home_url() ) ) ) );
+
+    return $redirect_to;
   }
 
   /**
@@ -631,7 +713,8 @@ class Humble_LMS_Admin {
           do_action( 'wp_login', $user_login );
           
           // Redirect user
-          wp_redirect( add_query_arg( 'humble-lms-welcome', '1', home_url( $wp->request ) ) );
+          $translator = new Humble_LMS_Translator;
+          wp_redirect( add_query_arg( 'humble-lms-welcome', '1', $translator->home_url() ) );
           exit;
         }
       }
@@ -755,8 +838,8 @@ class Humble_LMS_Admin {
       return;
     
     $errors = retrieve_password();
-    $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
-    $lost_password_page = $this->humble_lms_lost_password_page_exists() ? $this->lost_password_page : site_url('wp-login.php?action=lostpassword');
+    $login_page = $this->login_page();
+    $lost_password_page = $this->lost_password_page();
 
     if( is_wp_error( $errors ) ) {
       $redirect_url = $lost_password_page;
@@ -789,23 +872,23 @@ class Humble_LMS_Admin {
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
     $request_uri = $_SERVER['REQUEST_URI'];
   
-    if( $this->humble_lms_login_page_exists() && $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-      wp_redirect( $this->login_page );
+    if( $page_viewed === 'wp-login.php' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $this->login_page());
       exit;
     }
 
-    elseif( $this->humble_lms_registration_page_exists() && strpos($request_uri, 'wp-login.php?action=register') !== false && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-      wp_redirect( $this->registration_page );
+    elseif( strpos($request_uri, 'wp-login.php?action=register') !== false && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $this->registration_page() );
       exit;
     }
 
-    elseif( $this->humble_lms_lost_password_page_exists() && $page_viewed === 'wp-login.php?action=lostpassword' && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-      wp_redirect( $this->lost_password_page );
+    elseif( $page_viewed === 'wp-login.php?action=lostpassword' && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+      wp_redirect( $this->lost_password_page() );
       exit;
     }
 
-    elseif( $this->humble_lms_lost_password_page_exists() && $page_viewed === 'wp-login.php?action=lostpassword' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-      wp_redirect( $this->lost_password_page );
+    elseif( $page_viewed === 'wp-login.php?action=lostpassword' && $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+      wp_redirect( $this->lost_password_page() );
       exit;
     }
   }
@@ -817,8 +900,8 @@ class Humble_LMS_Admin {
    */
   public function redirect_custom_password_reset() {
     if( $this->humble_lms_reset_password_page_exists() && 'GET' === $_SERVER['REQUEST_METHOD'] ) {
-      $reset_password_page = $this->reset_password_page;
-      $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
+      $reset_password_page = $this->reset_password_page();
+      $login_page = $this->login_page();
       $user = check_password_reset_key( $_REQUEST['key'], $_REQUEST['login'] );
 
       if( ! $user || is_wp_error( $user ) ) {
@@ -844,7 +927,8 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function custom_login_failed() {
-    $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
+    $translator = new Humble_LMS_Translator;
+    $login_page = $this->login_page();
     wp_redirect( add_query_arg( 'login', 'failed', $login_page ) );
     exit;
   }
@@ -855,8 +939,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function logout_redirect() {
-    $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
-    wp_redirect( add_query_arg( 'login', 'false', $login_page ) );
+    wp_redirect( add_query_arg( 'login', 'false', $this->login_page() ) );
     exit;
   }
 
@@ -864,9 +947,11 @@ class Humble_LMS_Admin {
    * Resets the user's password if the password reset form was submitted.
    */
   public function do_password_reset() {
+    $translator = new Humble_LMS_Translator;
+
     if( $this->humble_lms_reset_password_page_exists() && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-      $login_page = $this->humble_lms_login_page_exists() ? $this->login_page : wp_login_url();
-      $reset_password_page = $this->reset_password_page;
+      $login_page = $this->login_page();
+      $reset_password_page = $this->reset_password_page();
 
       $rp_key = $_REQUEST['rp_key'];
       $rp_login = $_REQUEST['rp_login'];
@@ -977,7 +1062,6 @@ class Humble_LMS_Admin {
       $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
       $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
       $message .= sprintf( __('If you have any problems, please contact us via email to %s.'), get_option('admin_email') ) . "\r\n\r\n";
-      $message .= __( 'Bye!' );
     } else {
       $date_format = 'F j, Y';
       $date = current_time( $date_format );

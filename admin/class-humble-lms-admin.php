@@ -1412,8 +1412,11 @@ class Humble_LMS_Admin {
         $res->sections['screenshots'] = $remote->sections->screenshots;
       }
 
-      if( ! empty( $remote->sections->banners ) ) {
-        $res->banners = $remote->sections->banners;
+      if( ! empty( $remote->banners ) ) {
+        $res->banners = array(
+          'low' => $remote->banners->low,
+          'high' => $remote->banners->high,
+        );
       }
 
       return $res;

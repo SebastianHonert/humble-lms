@@ -59,7 +59,7 @@ if( PHP_VERSION_ID < 70300 ) {
 /**
  * Current plugin version.
  */
-define( 'HUMBLE_LMS_VERSION', '0.0.2' );
+define( 'HUMBLE_LMS_VERSION', '0.0.6' );
 
 /**
  * The code that runs during plugin activation.

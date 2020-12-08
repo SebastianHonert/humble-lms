@@ -347,7 +347,7 @@ function humble_lms_fixed_price_mb() {
   $calculator = new Humble_LMS_Calculator();
 
   $sell = get_post_meta($post->ID, 'humble_lms_is_for_sale', true);
-  $price = $calculator->format_price( get_post_meta($post->ID, 'humble_lms_fixed_price', true) );
+  $price = $calculator->format_price( get_post_meta($post->ID, 'humble_lms_fixed_price', true ) );
 
   $options = get_option('humble_lms_options');
   $currency = isset( $options['currency'] ) ? $options['currency'] : 'USD';

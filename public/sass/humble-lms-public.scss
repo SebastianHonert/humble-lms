@@ -443,6 +443,13 @@ input[type='submit'].humble-lms-btn--error:active,
   filter: grayscale(100%);
 }
 
+.humble-lms-btn--small {
+  font-size: .875em;
+  height: 2.875rem;
+  line-height: 2.875rem;
+  padding: 0 .875em;
+}
+
 /* Messages */
 
 .humble-lms-message {
@@ -1430,6 +1437,51 @@ input[type='submit'].humble-lms-btn--error:active,
 .tippy-box *:last-child {
   margin-bottom: 0;
   padding-bottom: 0;
+}
+
+/* Coupons */
+.humble-lms-coupon-input-wrapper {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.humble-lms-coupon-input-wrapper--activated {
+  margin-bottom: 0;
+}
+
+.humble-lms-coupon-input-wrapper + .humble-lms-checkout-memberships {
+  margin-top: 2em;
+}
+
+.humble-lms-coupon-input-wrapper--activated + .humble-lms-checkout-memberships {
+  margin-top: 1em;
+}
+
+.humble-lms-coupon-active {
+  font-weight: 600;
+  color: $color-success;
+}
+
+.humble-lms-invalid-coupon-code {
+  display: none;
+  font-weight: 600;
+  color: $color-error;
+  margin-top: .5em;
+}
+
+a.humble-lms-deactivate-coupon,
+a.humble-lms-deactivate-coupon:hover,
+a.humble-lms-deactivate-coupon:visited,
+a.humble-lms-deactivate-coupon:focus {
+  color: $color-primary;
+  text-decoration: none;
+  border: none;
+  background: none;
+}
+
+a.humble-lms-deactivate-coupon:hover,
+a.humble-lms-deactivate-coupon:focus {
+  color: darken($color-primary, 5%);
 }
 
 /* Responsive */

@@ -369,7 +369,7 @@ jQuery(document).ready(function($) {
             }
   
             if (typeof price === 'undefined' || ! price) {
-              alert(humble_lms.membership_price_undefined)
+              alert(humble_lms.price_undefined)
               return
             }
   
@@ -432,7 +432,7 @@ jQuery(document).ready(function($) {
           }
       
           if (typeof price === 'undefined' || ! price) {
-            alert(humble_lms.membership_price_undefined)
+            alert(humble_lms.price_undefined)
             return
           }
 
@@ -649,6 +649,62 @@ jQuery(document).ready(function($) {
             opacity : [1, 'swing'],
         }, 1000 + Math.ceil(Math.random() * 250))
     }
+  })
+
+  // Activate coupon
+  $('.humble-lms-btn--activate-coupon').on('click', function() {
+    let code = $(this).parent('.humble-lms-coupon-input-wrapper').find('.humble-lms-input--coupon-code').val()
+
+    if (typeof code === 'undefined' || !code) {
+      return
+    }
+
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'activate_coupon',
+        code: code
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        loadingLayer(false)
+        alert('Sorry, an error occured.')
+        console.error(errorThrown)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        if (response === 'activated') {
+          location.reload(true)
+        } else {
+          loadingLayer(false)
+          $('.humble-lms-invalid-coupon-code').show(0)
+        }
+      }
+    })
+  })
+
+  // Deactivate coupon
+  $('.humble-lms-deactivate-coupon').on('click', function() {
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'deactivate_coupon'
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        loadingLayer(false)
+        alert('Sorry, an error occured.')
+        console.error(errorThrown)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        location.reload(true)
+      }
+    })
   })
 
 })

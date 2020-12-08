@@ -181,6 +181,11 @@ class Humble_LMS {
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-calculator.php';
 
+    /**
+     * The class handling coupon discounts.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-humble-lms-coupon.php';
+
     $this->loader = new Humble_LMS_Loader();
 
   }
@@ -393,6 +398,10 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_nopriv_validate_membership_price', $plugin_ajax, 'validate_membership_price' );
     $this->loader->add_action( 'wp_ajax_create_invoice', $plugin_ajax, 'create_invoice' );
     $this->loader->add_action( 'wp_ajax_nopriv_create_invoice', $plugin_ajax, 'create_invoice' );
+    $this->loader->add_action( 'wp_ajax_activate_coupon', $plugin_ajax, 'activate_coupon' );
+    $this->loader->add_action( 'wp_ajax_nopriv_activate_coupon', $plugin_ajax, 'activate_coupon' );
+    $this->loader->add_action( 'wp_ajax_deactivate_coupon', $plugin_ajax, 'deactivate_coupon' );
+    $this->loader->add_action( 'wp_ajax_nopriv_deactivate_coupon', $plugin_ajax, 'deactivate_coupon' );
 
   }
 

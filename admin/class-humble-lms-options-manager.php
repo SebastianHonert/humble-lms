@@ -596,6 +596,15 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for activiating the use of coupons.
+     *
+     * @since    0.0.5
+     */
+    public function has_coupons() {
+      return isset( $this->options['use_coupons'] ) && 1 === $this->options['use_coupons'] ? 1 : 0;
+    }
+
+    /**
      * PayPal currency.
      *
      * @since    0.0.1

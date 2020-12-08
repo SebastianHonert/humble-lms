@@ -154,7 +154,7 @@ class Humble_LMS_Public {
       'nonce' => wp_create_nonce( 'humble_lms' ),
       'confirmResetUserProgress' => __('Are you sure? This will irrevocably reset your learning progress, including awards and certificates.', 'humble-lms'),
       'membership_undefined' => __('Invalid membership type, checkout cancelled.', 'humble-lms'),
-      'membership_price_undefined' => __('Invalid price value, checkout cancelled.', 'humble-lms'),
+      'price_undefined' => __('Invalid price value, checkout cancelled.', 'humble-lms'),
       'post_id_undefined' => __('Invalid content ID, checkout cancelled.', 'humble-lms'),
       'is_user_logged_in' => is_user_logged_in() ? true : false,
       'current_user_id' => get_current_user_id(),

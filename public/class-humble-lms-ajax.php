@@ -31,6 +31,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $this->quiz = new Humble_LMS_Quiz;
       $this->translator = new Humble_LMS_Translator;
       $this->calculator = new Humble_LMS_Calculator;
+      $this->coupon = new Humble_LMS_Coupon;
 
     }
     
@@ -286,6 +287,33 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       update_option('humble_lms_invoice_counter', $invoice_counter);
 
+      // Coupon discount
+      $coupon_details = array(
+        'id' => '',
+        'code' => '',
+        'type' => '',
+        'value' => '',
+      );
+
+      $active_coupon_id = get_user_meta( $user_id, 'humble_lms_active_coupon', true );
+      $active_coupon_code = get_post_meta( $active_coupon_id, 'humble_lms_coupon_code', true );
+
+      if( $this->coupon->validate( $active_coupon_code, $user_id ) ) {
+        $coupon = get_post( $active_coupon_id );
+        $coupon_code = get_post_meta( $coupon->ID, 'humble_lms_coupon_code', true );
+        $coupon_type = get_post_meta( $coupon->ID, 'humble_lms_coupon_type', true );
+        $coupon_value = get_post_meta( $coupon->ID, 'humble_lms_coupon_value', true );
+
+        $coupon_details = array(
+          'id' => $coupon->ID,
+          'code' => $coupon_code,
+          'type' => $coupon_type,
+          'value' => $coupon_value,
+        );
+
+        $this->coupon->redeem( $coupon->ID, $user_id );
+      }
+
       // Set order details
       $details = $_POST['details'];
       $order_details = array (
@@ -313,6 +341,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'invoice_number' => $invoice_prefix . $invoice_counter,
         'has_vat' => $this->calculator->has_vat(),
         'vat' => $this->calculator->get_vat(),
+        'coupon_id' => sanitize_text_field( $coupon_details['id'] ),
+        'coupon_code' => sanitize_text_field( $coupon_details['code'] ),
+        'coupon_type' => sanitize_text_field( $coupon_details['type'] ),
+        'coupon_value' => sanitize_text_field( $coupon_details['value'] ),
       );
 
       $order_details['description'] = $this->content_manager->get_content_description_by_reference_id( $order_details['reference_id'] );
@@ -424,6 +456,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $order_html .= __('Update time', 'humble-lms') . ': ' . $order_details['update_time'] . '<br>';
       $order_html .= __('Reference ID', 'humble-lms') . ': ' . $order_details['reference_id'] . '<br>';
       $order_html .= __('Value', 'humble-lms') . ': ' . $order_details['currency_code'] . ' ' . $order_details['value'] . '</p>';
+
+      if( ! empty( $order_details['coupon_id'] ) ) {
+        $order_html .= '<p><strong>' . __('Coupon details', 'humble-lms') . '</strong></p>';
+        $order_html .= '<p>' . __('Coupon ID', 'humble-lms') . ': ' . $order_details['coupon_id'] . '<br>';
+        $order_html .= __('Coupon code', 'humble-lms') . ': ' . $order_details['coupon_code'] . '<br>';
+        $order_html .= __('Coupon type', 'humble-lms') . ': ' . $order_details['coupon_type'] . '<br>';
+        $order_html .= __('Coupon value', 'humble-lms') . ': ' . $order_details['coupon_value'] . '</p>';
+      }
 
       if( $context !== 'membership' ) {
         $order_html .= '<br>' . __('Link to content', 'humble-lms') . ': ' . esc_url( get_permalink( $order_details['reference_id'] ) );
@@ -550,6 +590,43 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       });
 
       return $file;
+    }
+
+    /**
+     * Activate a coupon for a single user.
+     * 
+     * @return Bool
+     * @since 0.0.3
+     */
+    public function activate_coupon() {
+      if( ! is_user_logged_in() || ! isset( $_POST['code'] ) ) {
+        die;
+      }
+
+      $user_id = get_current_user_id();
+      $code = sanitize_text_field( $_POST['code'] );
+      $activated = $this->coupon->validate( $code, $user_id, true );
+
+      echo $activated ? json_encode( 'activated' ) : json_encode( 'not activated' );
+      die;
+    }
+
+    /**
+     * Deactivate coupon for a single user.
+     * 
+     * @return Bool
+     * @since 0.0.3
+     */
+    public function deactivate_coupon() {
+      if( ! is_user_logged_in() ) {
+        die;
+      }
+
+      $user_id = get_current_user_id();
+      $deactivated = $this->coupon->deactivate_for_user( $user_id );
+
+      echo $deactivated ? json_encode( 'deactivated' ) : json_encode( 'not deactivated' );
+      die;
     }
     
   }

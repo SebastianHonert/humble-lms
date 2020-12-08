@@ -27,8 +27,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.1
      */
     public function currency() {
-      $options = $this->options;
-      $currency = isset( $options['currency'] ) ? $options['currency'] : '';
+      $currency = isset( $this->options['currency'] ) ? $this->options['currency'] : '';
 
       return $currency;
     }
@@ -43,8 +42,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.1
      */
     public function has_vat() {
-      $options = $this->options;
-      $has_vat = isset( $options['has_vat'] ) ? $options['has_vat'] : null;
+      $has_vat = isset( $this->options['has_vat'] ) ? $this->options['has_vat'] : null;
 
       if( empty( $has_vat ) || ! isset( $has_vat) || ( $has_vat !== 1 && $has_vat !== 2 ) ) {
         return 0;
@@ -65,9 +63,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         return 0;
       }
 
-      $options = $this->options;
-
-      $vat = isset( $options['vat'] ) ? $options['vat'] : null;
+      $vat = isset( $this->options['vat'] ) ? $this->options['vat'] : null;
       
       if( empty( $vat ) || ! isset( $vat) ) {
         return 0;
@@ -104,6 +100,8 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         $price = $price + ( $price / 100 * 19 );
       }
 
+      $price = $this->calculate_discount( $price );
+
       return $this->format_price( $price );
     }
 
@@ -129,7 +127,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       // Return price without vat
       if( ! $vat ) {
-        return $price;
+        return $this->calculate_discount( $price );
       }
 
       $price = $this->get_vat_price( $price );
@@ -300,19 +298,20 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         return 0.00;
       }
 
-      $price = Humble_LMS_Content_Manager::display_price( $post_id );
-
+      $price = $this->display_price( $post_id );
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
 
       if( $user_membership === 'free' || ! $user_membership ) {
         return $price;
       } else {
         $membership = Humble_LMS_Content_Manager::get_membership_by_slug( $user_membership );
-        $user_membership_price = Humble_LMS_Content_Manager::display_price( $membership->ID );
+        $user_membership_price = $this->display_price( $membership->ID );
       }
 
       $price = $price - $user_membership_price;
       $price = $price < 0 ? 0 : $price;
+
+      $price = $this->calculate_discount( $price );
 
       return $this->format_price( $price );
     }
@@ -327,7 +326,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       if( 'humble_lms_track' !== get_post_type( $track_id ) ) {
         return 0.00;
       }
-
+  
       $courses = Humble_LMS_Content_Manager::get_track_courses( $track_id, true );
 
       if( empty( $courses ) ) {
@@ -351,11 +350,13 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       foreach( $courses as $course_id ) {
         $course_price = get_post_meta( $course_id, 'humble_lms_fixed_price', true );
-
+  
         if( isset( $course_price ) && ! empty( $course_price ) ) {
           $sum += $course_price;
         }
       }
+
+      $sum = $this->calculate_discount( $sum );
 
       return $this->format_price( $sum );
     }
@@ -367,6 +368,8 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.3
      */
     public function is_track_purchase_lucrative( $price = 0, $track_id = null, $user_id = null ) {
+      $price = $this->calculate_discount( $price );
+
       if( ! get_user_by( 'id', $user_id ) ) {
         if( ! is_user_logged_in() ) {
           return true;
@@ -394,6 +397,113 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       }
 
       return false;
+    }
+
+    /**
+     * Calculate discount for a price.
+     * 
+     * @return Float
+     * @since 0.0.7
+     */
+    public function calculate_discount( $price = 0.00 ) {
+      if( $price === 0.00 ) {
+        return $price;
+      }
+
+      $coupon = new Humble_LMS_Coupon;
+      $options_manager = new Humble_LMS_Admin_Options_Manager;
+  
+      $price = $options_manager->has_coupons() ? $coupon->calculate_price( $price ) : $price;
+
+      return $this->format_price( $price );
+    }
+
+    /**
+     * Get price of items that can be sold for a fixed price.
+     * 
+     * @return  float
+     * @since   0.0.1
+     */
+    public function get_price( $post_id = null, $with_vat = false ) {
+      $price = 0.00;
+
+      if( ! get_post( $post_id ) )
+        return $price;
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course'
+      );
+
+      if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
+        return $price;
+      
+      $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
+      $price = $this->calculate_discount( $price );
+      $price = $this->format_price( $price );
+
+      if( ! $with_vat ) {
+        return $price;
+      }
+
+      // Value added tax
+      $vat = $this->get_vat();
+      $has_vat = $this->has_vat();
+
+      if( $has_vat === 0 || $vat === 0 || ! $vat ) {
+        return $price;
+      }
+
+      if( $has_vat === 1 ) { // Inclusive of vat
+        $price = $price / (100 + $vat ) * 100;
+      } else if( $has_vat === 2 ) { // Exclusive of vat
+        $price = $price + ( $price / 100 * $vat );
+      }
+
+      $price = $this->format_price( $price );
+
+      return $price;
+    }
+
+    /**
+     * Get price of items that can be sold for a fixed price.
+     * 
+     * @return  float
+     * @since   0.0.1
+     */
+    public function display_price( $post_id = null ) {
+      $price = 0.00;
+
+      if( ! get_post( $post_id ) )
+        return $price;
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course',
+        'humble_lms_mbship',
+      );
+
+      if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
+        return $price;
+
+      $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
+      $price = $this->calculate_discount( $price );
+
+      // Value added tax
+      $vat = $this->get_vat();
+      $has_vat = $this->has_vat();
+
+      if( $has_vat === 0 || $vat === 0 || ! $vat ) {
+        return $this->format_price( $price );
+      }
+
+      if( $has_vat === 1 ) { // Inclusive of vat
+        $price = $price;
+      } else if( $has_vat === 2 ) { // Exclusive of vat
+        $price = $price + ( $price / 100 * $vat );
+      }
+
+      return $this->format_price( $price );
     }
 
   }

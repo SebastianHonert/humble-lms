@@ -148,6 +148,10 @@ function humble_lms_order_details_mb() {
   echo '<label for="invoice-number">' . __('Invoice #', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="invoice_number" value="' . $transaction_details['invoice_number'] . '"></p>';
 
+  // User ID meta
+  echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';
+  echo '<input class="widefat" type="number" name="humble_lms_txn_user_id" value="' . $user_id_txn . '" disabled="disabled">';
+
   echo '<br><p><strong>' . __('Billing information', 'humble-lms') . '</strong></p>';
 
   echo '<label for="first-name">' . __('First name', 'humble-lms') . '</label>';
@@ -174,9 +178,20 @@ function humble_lms_order_details_mb() {
   echo '<label for="vat_id">' . __('VAT ID', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="vat_id" value="' . $transaction_details['vat_id'] . '"></p>';
 
-  // User ID meta
-  echo '<label for="user_id_txn">' . __('User ID', 'humble-lms') . '</label>';
-  echo '<input class="widefat" type="number" name="humble_lms_txn_user_id" value="' . $user_id_txn . '" disabled="disabled">';
+  // Coupon details
+  echo '<br><p><strong>' . __('Coupon details', 'humble-lms') . '</strong></p>';
+
+  echo '<label for="coupon_id">' . __('Coupon ID', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="coupon_id" value="' . $transaction_details['coupon_id'] . '"></p>';
+
+  echo '<label for="coupon_code">' . __('Coupon code', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="coupon_code" value="' . $transaction_details['coupon_code'] . '"></p>';
+
+  echo '<label for="coupon_type">' . __('Coupon_type', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="coupon_type" value="' . $transaction_details['coupon_type'] . '"></p>';
+
+  echo '<label for="coupon_value">' . __('Coupon value', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="coupon_value" value="' . $transaction_details['coupon_value'] . '"></p>';
 
   // Invoice
   echo '<p><a class="button" href="' . esc_url( get_permalink( $post->ID ) ) . '" target="_blank">' . __('Show invoice', 'humble-lms') . '</a> <input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></p>';

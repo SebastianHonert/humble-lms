@@ -1041,7 +1041,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
           $content .= $transaction['first_name'] . ' ' . $transaction['last_name'] . '<br>';
           $content .= $transaction['address'] . '<br>';
           $content .= $transaction['postcode'] . ' ' . $transaction['city'] . '<br>';
-          $content .= $transaction['country'] . ' ' . $transaction['country'] . '<br>';
+          $content .= $transaction['country'] . '<br>';
           $content .= $transaction['vat_id'] ? $transaction['vat_id'] : '';
         $content .= '</div>';
       $content .= '</div>';

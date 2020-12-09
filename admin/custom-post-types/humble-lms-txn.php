@@ -103,6 +103,9 @@ function humble_lms_order_details_mb() {
   echo '<label for="user_id">' . __('User ID', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="user_id" value="' . $user_id . '"></p>';
 
+  echo '<label for="description">' . __('Description', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="description" value="' . $transaction_details['description'] . '"></p>';
+
   echo '<label for="order_id">' . __('Order ID', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="order_id" value="' . $transaction_details['order_id'] . '"></p>';
 
@@ -225,6 +228,7 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
 
   $txn_meta['humble_lms_order_details'] = array(
     'user_id' => (int)$_POST['user_id'],
+    'description' => sanitize_text_field( $_POST['description'] ),
     'order_id' => sanitize_text_field( $_POST['order_id'] ),
     'email_address' => sanitize_email( $_POST['email_address'] ),
     'payer_id' => sanitize_text_field( $_POST['payer_id'] ),
@@ -250,6 +254,12 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
     'address' => sanitize_text_field( $_POST['address'] ),
     'company' => sanitize_text_field( $_POST['company'] ),
     'vat_id' => sanitize_text_field( $_POST['vat_id'] ),
+
+    // Coupon
+    'coupon_id' => (int)$_POST['coupon_id'],
+    'coupon_code' => sanitize_text_field( $_POST['coupon_code'] ),
+    'coupon_type' => $_POST['coupon_type'] === 'percent' ? 'percent' : 'fixed_amount',
+    'coupon_value' => sanitize_text_field( $_POST['coupon_value'] ),
   );
 
   if( $txn_meta['humble_lms_order_details']['vat'] > 100 || $txn_meta['humble_lms_order_details']['vat'] < 0 ) {

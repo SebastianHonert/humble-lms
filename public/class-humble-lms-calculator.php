@@ -259,56 +259,56 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       $content_manager = new Humble_LMS_Content_Manager;
       $transaction = $content_manager->transaction_details( $txn_id );
+      $has_coupon = $this->transaction_has_coupon( $txn_id );
+
+      if( $has_coupon ) {
+        switch( $transaction['coupon_type'] ) {
+          case 'percent':
+            $transaction['value'] = $transaction['value'] * 100 / (100 - $transaction['coupon_value'] );
+            $sum['discount_string'] = $this->format_price( $transaction['coupon_value'] ) . '%';
+          break;
+          case 'fixed_amount':
+            $transaction['value'] = 2 === $transaction['has_vat'] ? $transaction['value'] + $transaction['coupon_value'] + ( $transaction['coupon_value'] * $transaction['vat'] / 100 ) : $transaction['value'] + $transaction['coupon_value'];
+            $sum['discount_string'] = $this->currency() . '&nbsp;' . $this->format_price( $transaction['coupon_value'] );
+          break;
+          default:
+          break;
+        }
+      }
 
       if( 1 === $transaction['has_vat'] ) {
         $sum['price'] = $transaction['value'];
+
+        if( $has_coupon ) {
+          $sum['discount'] = $transaction['coupon_type'] === 'percent' ? $sum['price'] / 100 * $transaction['coupon_value'] : $transaction['coupon_value'];
+        }
+
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
         $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
-        $sum['vat_diff'] = ( $transaction['value'] / 100 ) * $transaction['vat'];
-        $sum['subtotal'] = $transaction['value'];
-        $sum['total'] = $transaction['value'];
+        $sum['vat_diff'] = ( $sum['subtotal'] / 100 ) * $transaction['vat'];
+        $sum['total'] = $sum['subtotal'];
       } else if( 2 === $transaction['has_vat'] ) {
         $sum['price'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
+
+        if( $has_coupon ) {
+          $sum['discount'] = $transaction['coupon_type'] === 'percent' ? $sum['price'] / 100 * $transaction['coupon_value'] : $transaction['coupon_value'];
+        }
+
         $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
-        $sum['vat_diff'] = $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'];
-        $sum['subtotal'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
-        $sum['total'] = $transaction['value'];
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
+        $sum['vat_diff'] = $sum['subtotal'] / 100 * $transaction['vat'];
+        $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
       } else {
         $sum['price'] = $transaction['value'];
+
+        if( $has_coupon ) {
+          $sum['discount'] = $transaction['coupon_type'] === 'percent' ? $sum['price'] / 100 * $transaction['coupon_value'] : $transaction['coupon_value'];
+        }
+
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
         $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
         $sum['vat_diff'] = 0;
-        $sum['subtotal'] = $transaction['value'];
-        $sum['total'] = $transaction['value'];
-      }
-
-      if( $this->transaction_has_coupon( $txn_id ) ) {
-        // Calculate coupon discount
-        switch( $transaction['coupon_type'] ) {
-          case 'percent':
-            // $sum['price'] = $transaction['value'];
-            // $sum['discount'] = $sum['price'] / 100 * $transaction['coupon_value'];
-            // $sum['subtotal'] = $sum['subtotal'] - $sum['discount'];
-            $sum['discount_string'] = $transaction['coupon_value'] . '&nbsp;%';
-          break;
-          case 'fixed_amount':
-            // $sum['discount'] = $transaction['coupon_value'];
-            // $sum['subtotal'] = $sum['subtotal'] - $sum['discount'];
-            // $sum['discount_string'] = $this->currency() . '&nbsp;' . $transaction['coupon_value'];
-          break;
-          default:
-            break;
-        }
-
-        if( 1 === $transaction['has_vat'] ) {
-          $sum['vat_diff'] = ( $sum['subtotal'] / 100 ) * $transaction['vat'];
-        } else if( 2 === $transaction['has_vat'] ) {
-          $sum['vat_diff'] = $sum['subtotal'] / 100 * $transaction['vat'];
-        }
-
-        $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
-      }
-
-      if( $sum['total'] < 1.00 ) {
-        $sum['total'] = 1.00;
+        $sum['total'] = $sum['subtotal'];
       }
 
       $sum['price'] = $this->format_price( $sum['price'] );

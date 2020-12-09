@@ -1067,24 +1067,22 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( $this->calculator->transaction_has_coupon( $transaction_id ) ) {
         $content .= '<tr id="humble-lms-discount">';
           $content .= '<td colspan="2">' . __('Discount', 'humble-lms') . '</td>';
-          $content .= '<td>-' . $sum['discount_string'] . '</td>';
+          $content .= '<td>- ' . $sum['discount_string'] . '</td>';
           $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['discount'] . '</td>';
         $content .= '</tr>';
       }
 
       $content .= '<tr id="humble-lms-subtotal">';
-        $content .= '<td colspan="2"></td>';
-        $content .= '<td>' . __('Subtotal', 'humble-lms') . '</td>';
+        $content .= '<td colspan="3">' . __('Subtotal', 'humble-lms') . '</td>';
         $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['subtotal'] . '</td>';
       $content .= '</tr>';
       $content .= '<tr id="humble-lms-taxes">';
-        $content .= '<td colspan="2"></td>';
+        $content .= '<td colspan="2">' . __('VAT', 'humble-lms') . '</td>';
         $content .= '<td>' . $sum['vat_string'] . '</td>';
         $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['vat_diff'] . '</td>';
       $content .= '</tr>';
-      $content .= '<tr class="humble-lms-total">';
-        $content .= '<td colspan="2"></td>';
-        $content .= '<td>' . __('Total', 'humble-lms') . '</td>';
+      $content .= '<tr id="humble-lms-total">';
+        $content .= '<td colspan="3">' . __('Total', 'humble-lms') . '</td>';
         $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['total'] . '</td>';
       $content .= '</tr>';
 

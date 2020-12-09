@@ -173,7 +173,8 @@ body.humble-lms-invoice {
   background: #fafafa;
 }
 
-.humble-lms-total {
+#humble-lms-subtotal,
+#humble-lms-total {
   font-weight: 700;
 }
 

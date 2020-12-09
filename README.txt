@@ -2,7 +2,7 @@
 Contributors: shonert
 Tags: lms, learning management system, online courses
 Requires at least: 5.3
-Tested up to: 5.3.2
+Tested up to: 5.6
 Stable tag: 5.3
 Requires PHP: 7.2
 License: GPLv2 or later

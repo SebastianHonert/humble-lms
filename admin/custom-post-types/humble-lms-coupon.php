@@ -74,7 +74,7 @@ function humble_lms_coupon_add_meta_boxes()
   add_meta_box( 'humble_lms_coupon_code_mb', __('Coupon code', 'humble-lms'), 'humble_lms_coupon_code_mb', 'humble_lms_coupon', 'normal', 'default' );
   add_meta_box( 'humble_lms_coupon_type_mb', __('Coupon type', 'humble-lms'), 'humble_lms_coupon_type_mb', 'humble_lms_coupon', 'normal', 'default' );
   add_meta_box( 'humble_lms_coupon_value_mb', __('Coupon value', 'humble-lms'), 'humble_lms_coupon_value_mb', 'humble_lms_coupon', 'normal', 'default' );
-  add_meta_box( 'humble_lms_coupon_targets_mb', __('Coupon target', 'humble-lms'), 'humble_lms_coupon_targets_mb', 'humble_lms_coupon', 'normal', 'default' );
+  // add_meta_box( 'humble_lms_coupon_targets_mb', __('Coupon target', 'humble-lms'), 'humble_lms_coupon_targets_mb', 'humble_lms_coupon', 'normal', 'default' );
   add_meta_box( 'humble_lms_coupon_users_mb', __('Limit to specific users', 'humble-lms'), 'humble_lms_coupon_users_mb', 'humble_lms_coupon', 'normal', 'default' );
 }
 
@@ -153,22 +153,22 @@ function humble_lms_coupon_value_mb()
 
 // Coupon target
 
-function humble_lms_coupon_targets_mb()
-{
-  global $post;
+// function humble_lms_coupon_targets_mb()
+// {
+//   global $post;
 
-  $coupon_targets = get_post_meta( $post->ID, 'humble_lms_coupon_targets', false );
-  $coupon_targets = ! isset( $coupon_targets[0] ) || ! is_array( $coupon_targets[0] ) || ! $coupon_targets[0] ? [] : $coupon_targets[0];
+//   $coupon_targets = get_post_meta( $post->ID, 'humble_lms_coupon_targets', false );
+//   $coupon_targets = ! isset( $coupon_targets[0] ) || ! is_array( $coupon_targets[0] ) || ! $coupon_targets[0] ? [] : $coupon_targets[0];
 
-  $coupon_valid_for_tracks = in_array( 'track', $coupon_targets ) ? 'checked' : '';
-  $coupon_valid_for_courses = in_array( 'course', $coupon_targets ) ? 'checked' : '';
-  $coupon_valid_for_memberships = in_array( 'membership', $coupon_targets ) ? 'checked' : '';
+//   $coupon_valid_for_tracks = in_array( 'track', $coupon_targets ) ? 'checked' : '';
+//   $coupon_valid_for_courses = in_array( 'course', $coupon_targets ) ? 'checked' : '';
+//   $coupon_valid_for_memberships = in_array( 'membership', $coupon_targets ) ? 'checked' : '';
 
-  echo '<p><input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_track" value="track" ' . $coupon_valid_for_tracks . '> ' . __('Tracks', 'humble-lms') . '<br>';
-  echo '<input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_course" value="course" ' . $coupon_valid_for_courses . '> ' . __('Courses', 'humble-lms') . '<br>';
-  echo '<input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_membership" value="membership" ' . $coupon_valid_for_memberships . '> ' . __('Memberships', 'humble-lms') . '</p>';
-  echo '<p class="description">' . __('Select the content types this coupon will be valid for.', 'humble-lms') . '</p>';
-}
+//   echo '<p><input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_track" value="track" ' . $coupon_valid_for_tracks . '> ' . __('Tracks', 'humble-lms') . '<br>';
+//   echo '<input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_course" value="course" ' . $coupon_valid_for_courses . '> ' . __('Courses', 'humble-lms') . '<br>';
+//   echo '<input type="checkbox" name="humble_lms_coupon_targets[]" id="humble_lms_coupon_targets_membership" value="membership" ' . $coupon_valid_for_memberships . '> ' . __('Memberships', 'humble-lms') . '</p>';
+//   echo '<p class="description">' . __('Select the content types this coupon will be valid for.', 'humble-lms') . '</p>';
+// }
 
 // Coupon limit to specific users
 
@@ -235,19 +235,19 @@ function humble_lms_save_coupon_meta_boxes( $post_id, $post )
     }
   }
 
-  $coupon_meta['humble_lms_coupon_targets'] = isset( $_POST['humble_lms_coupon_targets'] ) ? $_POST['humble_lms_coupon_targets'] : [];
-  $allowed_targets = array( 'track', 'course', 'membership' );
+  // $coupon_meta['humble_lms_coupon_targets'] = isset( $_POST['humble_lms_coupon_targets'] ) ? $_POST['humble_lms_coupon_targets'] : [];
+  // $allowed_targets = array( 'track', 'course', 'membership' );
 
-  if( ! empty( $coupon_meta['humble_lms_coupon_targets'] ) ) {
-    foreach( $coupon_meta['humble_lms_coupon_targets'] as $key => $target ) {
-      if( ! in_array( $target, $allowed_targets ) ) {
-        unset( $coupon_meta['humble_lms_coupon_targets'][$key] );
-        continue;
-      }
+  // if( ! empty( $coupon_meta['humble_lms_coupon_targets'] ) ) {
+  //   foreach( $coupon_meta['humble_lms_coupon_targets'] as $key => $target ) {
+  //     if( ! in_array( $target, $allowed_targets ) ) {
+  //       unset( $coupon_meta['humble_lms_coupon_targets'][$key] );
+  //       continue;
+  //     }
 
-      $coupon_meta['humble_lms_coupon_targets'][$key] = sanitize_text_field( $target );
-    }
-  }
+  //     $coupon_meta['humble_lms_coupon_targets'][$key] = sanitize_text_field( $target );
+  //   }
+  // }
 
   $coupon_meta['humble_lms_coupon_users'] = isset( $_POST['humble_lms_coupon_users'] ) ? $_POST['humble_lms_coupon_users'] : [];
 

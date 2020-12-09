@@ -260,7 +260,7 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
 
       $coupon_type = get_post_meta( $active_coupon_id, 'humble_lms_coupon_type', true );
       $coupon_value = get_post_meta( $active_coupon_id, 'humble_lms_coupon_value', true );
-      $coupon_targets = get_post_meta( $active_coupon_id, 'humble_lms_coupon_targets', true );
+      // $coupon_targets = get_post_meta( $active_coupon_id, 'humble_lms_coupon_targets', true );
 
       switch( $coupon_type ) {
         case 'fixed_amount':

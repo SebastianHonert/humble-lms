@@ -2007,23 +2007,42 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return;
       }
 
-      $active_coupon = get_user_meta( get_current_user_id(), 'humble_lms_active_coupon', true );
-      $active_coupon_code = get_post_meta( $active_coupon, 'humble_lms_coupon_code', true);
+      // Testing: Clear redeemed and active coupon(s)
+      // $this->coupon->clear_for_user( get_current_user_id() );
 
-      if( empty( $active_coupon ) || ! $this->coupon->validate( $active_coupon_code, get_current_user_id() ) ) {
-        $html = '<div class="humble-lms-coupon-input-wrapper">';
-          $html .= '<label for="humble-lms-coupon-code">' . __('Do you have a coupon?', 'humble-lms') . '</label>';
-          $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32">';
-          $html .= '<button class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small">' . __('Redeem', 'humble-lms') . '</button>';
-          $html .= '<p class="humble-lms-invalid-coupon-code">' . __('The coupon code you entered is invalid.', 'humble-lms') . '</p>';
-        $html .= '</div>';
+      $coupon_code = false;
+      $active_coupon = false;
+      $user_id = get_current_user_id();
+      $show_invalid_coupon_message = false;
+
+      if( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+        $this->coupon->deactivate_for_user( $user_id );
       }
 
+      if( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+        $coupon_code = isset( $_POST['humble-lms-coupon-code'] ) ? sanitize_text_field( $_POST['humble-lms-coupon-code'] ) : '';
+        $coupon_is_valid = $this->coupon->validate( $coupon_code, $user_id );
+        $coupon_id = $this->coupon->exists( $coupon_code );
+        $active_coupon = get_post( $coupon_id );
+        $show_invalid_coupon_message = $coupon_is_valid ? false : true;
+      }
+
+      if( 'POST' !== $_SERVER['REQUEST_METHOD'] || ! $this->coupon->validate( $coupon_code, $user_id ) ) {
+        $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post">';
+          $html .= '<label for="humble-lms-coupon-code">' . __('Do you have a coupon?', 'humble-lms') . '</label>';
+          $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32">';
+          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small" value="' . __('Redeem', 'humble-lms') . '">';
+          $html .= $show_invalid_coupon_message ? '<p class="humble-lms-invalid-coupon-code">' . __('The code you entered is invalid.', 'humble-lms') . '</p>' : '';
+        $html .= '</form>';
+      }
+      
       else {
-        $coupon = get_post( $active_coupon );
+        if( $coupon_is_valid ) {
+          $this->coupon->redeem( $coupon_id, $user_id );
+        }
 
         $html = '<div class="humble-lms-coupon-input-wrapper humble-lms-coupon-input-wrapper--activated">';
-        $html .= '<p>' . __('Active coupon', 'humble-lms') . ': <span class="humble-lms-coupon-active">' . $coupon->post_title . ' </span> | <a class="humble-lms-deactivate-coupon">' . __('Remove', 'humble-lms') . '</a></p>';
+        $html .= '<p>' . __('Active coupon', 'humble-lms') . ': <span class="humble-lms-coupon-active">' . $active_coupon->post_title . ' </span></p>';
         $html .= '</div>';
       }
 

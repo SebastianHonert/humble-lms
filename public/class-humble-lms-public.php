@@ -165,7 +165,9 @@ class Humble_LMS_Public {
       'tippy_theme' => isset( $options['tippy_theme'] ) ? $options['tippy_theme'] : 'default',
       'toggle_syllabus_text_close' => __('Close syllabus', 'humble-lms'),
       'toggle_syllabus_text_expand' => __('Expand syllabus', 'humble-lms'),
-      'user_syllabus_state' => get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) ? get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) : 'expanded' 
+      'user_syllabus_state' => get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) ? get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) : 'expanded',
+      'redeem_coupon_confirm_message' => __('Are you sure? You can only redeem a coupon once for the currently selected content!', 'humble-lms'),
+      'general_error' => __('Sorry, an error occured.', 'humble-lms'),
     ) );
   }
 

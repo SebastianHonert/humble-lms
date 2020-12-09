@@ -242,22 +242,23 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @return Array
      * @since 0.0.3
      */
-    public function sum_transaction( $post_id = null ) {
+    public function sum_transaction( $txn_id = null ) {
       $sum = array(
         'price' => 0,
+        'discount' => 0,
+        'discount_string' => '',
         'subtotal' => 0,
         'total' => 0,
-        'vat' => 0,
         'vat_diff' => 0,
         'vat_string' => '',
       );
 
-      if( 'humble_lms_txn' !== get_post_type( $post_id ) ) {
+      if( 'humble_lms_txn' !== get_post_type( $txn_id ) ) {
         return $sum;
       }
 
       $content_manager = new Humble_LMS_Content_Manager;
-      $transaction = $content_manager->transaction_details( $post_id );
+      $transaction = $content_manager->transaction_details( $txn_id );
 
       if( 1 === $transaction['has_vat'] ) {
         $sum['price'] = $transaction['value'];
@@ -266,25 +267,75 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         $sum['subtotal'] = $transaction['value'];
         $sum['total'] = $transaction['value'];
       } else if( 2 === $transaction['has_vat'] ) {
-        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
         $sum['price'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
-        $sum['subtotal'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
+        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
         $sum['vat_diff'] = $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'];
+        $sum['subtotal'] = $transaction['value'] - ( $transaction['value'] / ( 100 + $transaction['vat'] ) * $transaction['vat'] );
         $sum['total'] = $transaction['value'];
       } else {
-        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
         $sum['price'] = $transaction['value'];
-        $sum['subtotal'] = $transaction['value'];
+        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $transaction['vat'] . '%';
         $sum['vat_diff'] = 0;
+        $sum['subtotal'] = $transaction['value'];
         $sum['total'] = $transaction['value'];
       }
 
+      if( $this->transaction_has_coupon( $txn_id ) ) {
+        // Calculate coupon discount
+        switch( $transaction['coupon_type'] ) {
+          case 'percent':
+            // $sum['price'] = $transaction['value'];
+            // $sum['discount'] = $sum['price'] / 100 * $transaction['coupon_value'];
+            // $sum['subtotal'] = $sum['subtotal'] - $sum['discount'];
+            $sum['discount_string'] = $transaction['coupon_value'] . '&nbsp;%';
+          break;
+          case 'fixed_amount':
+            // $sum['discount'] = $transaction['coupon_value'];
+            // $sum['subtotal'] = $sum['subtotal'] - $sum['discount'];
+            // $sum['discount_string'] = $this->currency() . '&nbsp;' . $transaction['coupon_value'];
+          break;
+          default:
+            break;
+        }
+
+        if( 1 === $transaction['has_vat'] ) {
+          $sum['vat_diff'] = ( $sum['subtotal'] / 100 ) * $transaction['vat'];
+        } else if( 2 === $transaction['has_vat'] ) {
+          $sum['vat_diff'] = $sum['subtotal'] / 100 * $transaction['vat'];
+        }
+
+        $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
+      }
+
+      if( $sum['total'] < 1.00 ) {
+        $sum['total'] = 1.00;
+      }
+
       $sum['price'] = $this->format_price( $sum['price'] );
+      $sum['discount'] = $this->format_price( $sum['discount'] );
+      $sum['coupon_value'] = $this->format_price( $transaction['coupon_value'] );
       $sum['subtotal'] = $this->format_price( $sum['subtotal'] );
       $sum['total'] = $this->format_price( $sum['total'] );
       $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
       
       return $sum;
+    }
+
+    /**
+     * Check if a transaction has complete coupon info.
+     * 
+     * @since 0.0.7
+     * @return Boolean
+     */
+    public function transaction_has_coupon( $txn_id = null ) {
+      if( ! $txn_id || 'humble_lms_txn' !== get_post_type( $txn_id ) ) {
+        return false;
+      }
+
+      $content_manager = new Humble_LMS_Content_Manager;
+      $transaction = $content_manager->transaction_details( $txn_id );
+
+      return ! empty( $transaction['coupon_id'] ) && ! empty( $transaction['coupon_code'] ) && ! empty( $transaction['coupon_type'] ) && ! empty( $transaction['coupon_value'] );
     }
 
     /**

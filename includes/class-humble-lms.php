@@ -396,6 +396,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_nopriv_toggle_syllabus_height', $plugin_ajax, 'toggle_syllabus_height' );
     $this->loader->add_action( 'wp_ajax_validate_membership_price', $plugin_ajax, 'validate_membership_price' );
     $this->loader->add_action( 'wp_ajax_nopriv_validate_membership_price', $plugin_ajax, 'validate_membership_price' );
+    $this->loader->add_action( 'wp_ajax_validate_price', $plugin_ajax, 'validate_price' );
+    $this->loader->add_action( 'wp_ajax_nopriv_validate_price', $plugin_ajax, 'validate_price' );
     $this->loader->add_action( 'wp_ajax_create_invoice', $plugin_ajax, 'create_invoice' );
     $this->loader->add_action( 'wp_ajax_nopriv_create_invoice', $plugin_ajax, 'create_invoice' );
     $this->loader->add_action( 'wp_ajax_activate_coupon', $plugin_ajax, 'activate_coupon' );

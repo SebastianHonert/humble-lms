@@ -132,10 +132,10 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
       }
 
       array_push( $redeemed, $coupon_id );
-      $redeemed = array_unique( $redeemed );
-      update_user_meta( $user_id, 'humble_lms_redeemed_coupons', $redeemed );
 
-      $this->deactivate_for_user( $user_id );
+      $redeemed = array_unique( $redeemed );
+
+      update_user_meta( $user_id, 'humble_lms_redeemed_coupons', $redeemed );
 
       return true;
     }

@@ -399,7 +399,7 @@ jQuery(document).ready(function($) {
                 dataType: 'json',
                 error: function(MLHttpRequest, textStatus, errorThrown) {
                   loadingLayer(false)
-                  alert('Sorry, there has been an error processing your transaction.')
+                  alert(humble_lms.general_error)
                   console.error(errorThrown)
                 },
                 success: function(response, textStatus, XMLHttpRequest) {
@@ -462,7 +462,7 @@ jQuery(document).ready(function($) {
               dataType: 'json',
               error: function(MLHttpRequest, textStatus, errorThrown) {
                 loadingLayer(false)
-                alert('Sorry, there has been an error processing your transaction.')
+                alert(humble_lms.general_error)
                 console.error(errorThrown)
               },
               success: function(response, textStatus, XMLHttpRequest) {
@@ -652,59 +652,43 @@ jQuery(document).ready(function($) {
   })
 
   // Activate coupon
-  $('.humble-lms-btn--activate-coupon').on('click', function() {
-    let code = $(this).parent('.humble-lms-coupon-input-wrapper').find('.humble-lms-input--coupon-code').val()
+  $('#humble-lms-redeem-coupon').on('submit', function(e) {
+    let code = $(this).find('.humble-lms-input--coupon-code').val()
 
     if (typeof code === 'undefined' || !code) {
-      return
+      return false
+    }
+
+    let confirm_redeem = confirm(humble_lms.redeem_coupon_confirm_message)
+
+    console.log(confirm_redeem)
+
+    if (!confirm_redeem) {
+      return false;
     }
 
     loadingLayer(true)
 
     $.ajax({
+      async: false,
       url: humble_lms.ajax_url,
       type: 'POST',
       data: {
         action: 'activate_coupon',
-        code: code
+        code: code,
       },
       dataType: 'json',
       error: function(MLHttpRequest, textStatus, errorThrown) {
         loadingLayer(false)
-        alert('Sorry, an error occured.')
-        console.error(errorThrown)
+        alert(humble_lms.general_error)
+        console.log(errorThrown)
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        if (response === 'activated') {
-          location.reload(true)
-        } else {
-          loadingLayer(false)
-          $('.humble-lms-invalid-coupon-code').show(0)
-        }
-      }
-    })
-  })
-
-  // Deactivate coupon
-  $('.humble-lms-deactivate-coupon').on('click', function() {
-    loadingLayer(true)
-
-    $.ajax({
-      url: humble_lms.ajax_url,
-      type: 'POST',
-      data: {
-        action: 'deactivate_coupon'
+        return false
       },
-      dataType: 'json',
-      error: function(MLHttpRequest, textStatus, errorThrown) {
-        loadingLayer(false)
-        alert('Sorry, an error occured.')
-        console.error(errorThrown)
-      },
-      success: function(response, textStatus, XMLHttpRequest) {
-        location.reload(true)
-      }
     })
+
+    return true
   })
 
 })

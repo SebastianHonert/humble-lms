@@ -1206,26 +1206,12 @@ input[type='submit'].humble-lms-btn--error:active,
 
 .humble-lms-coupon-active {
   font-weight: 600;
-  color: #188e6e; }
+  color: #444bb1; }
 
 .humble-lms-invalid-coupon-code {
-  display: none;
   font-weight: 600;
   color: #8a2738;
   margin-top: .5em; }
-
-a.humble-lms-deactivate-coupon,
-a.humble-lms-deactivate-coupon:hover,
-a.humble-lms-deactivate-coupon:visited,
-a.humble-lms-deactivate-coupon:focus {
-  color: #444bb1;
-  text-decoration: none;
-  border: none;
-  background: none; }
-
-a.humble-lms-deactivate-coupon:hover,
-a.humble-lms-deactivate-coupon:focus {
-  color: #3d439f; }
 
 /* Responsive */
 @media screen and (max-width: 767px) {

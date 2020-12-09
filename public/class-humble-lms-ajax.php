@@ -298,7 +298,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       $active_coupon_id = get_user_meta( $user_id, 'humble_lms_active_coupon', true );
       $active_coupon_code = get_post_meta( $active_coupon_id, 'humble_lms_coupon_code', true );
 
-      if( $this->coupon->validate( $active_coupon_code, $user_id ) ) {
+      if( $this->coupon->exists( $active_coupon_code ) ) {
         $coupon = get_post( $active_coupon_id );
         $coupon_code = get_post_meta( $coupon->ID, 'humble_lms_coupon_code', true );
         $coupon_type = get_post_meta( $coupon->ID, 'humble_lms_coupon_type', true );
@@ -311,7 +311,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
           'value' => $coupon_value,
         );
 
-        $this->coupon->redeem( $coupon->ID, $user_id );
+        $this->coupon->deactivate_for_user( $user_id );
       }
 
       // Set order details
@@ -548,10 +548,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
     }
 
     /**
-     * Get price for a membership
+     * Validate membership prices on checkout.
      * 
-     * @since   0.0.2
-     * @return   void
+     * @since 0.0.2
+     * @return void
      */
     public function validate_membership_price() {
       $membership_slug = sanitize_text_field( $_POST['membership'] );
@@ -563,6 +563,26 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $price = $this->calculator->upgrade_membership_price( $membership->ID );
+      $price = $this->calculator->format_price( $price );
+
+      echo json_encode( $price );
+
+      die;
+    }
+
+    /**
+     * Validate price for tracks and courses on checkout.
+     * 
+     * @since 0.0.7
+     * @return void
+     */
+    public function validate_price() {
+      if( ! isset( $_POST['post_id'] ) ) {
+        echo json_encode( 'missing data');
+        die;
+      }
+      
+      $price = $this->calculator->get_price( (int)$_POST['post_id'] );
       $price = $this->calculator->format_price( $price );
 
       echo json_encode( $price );
@@ -605,9 +625,9 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
 
       $user_id = get_current_user_id();
       $code = sanitize_text_field( $_POST['code'] );
-      $activated = $this->coupon->validate( $code, $user_id, true );
+      $activate = $this->coupon->validate( $code, $user_id, true );
 
-      echo $activated ? json_encode( 'activated' ) : json_encode( 'not activated' );
+      echo $activate ? json_encode( 'activated' ) : json_encode( 'not activated' );
       die;
     }
 

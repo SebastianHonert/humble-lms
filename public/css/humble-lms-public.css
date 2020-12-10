@@ -279,7 +279,7 @@ input[type='submit'].humble-lms-btn,
   font-weight: 700;
   height: 3.25rem;
   letter-spacing: 1px;
-  line-height: 3.25rem;
+  line-height: 3.2rem;
   padding: 0 1.25rem;
   text-align: center;
   text-decoration: none;
@@ -370,7 +370,8 @@ input[type='submit'].humble-lms-btn--error:active,
   pointer-events: none;
   filter: grayscale(100%); }
 
-.humble-lms-btn--small {
+.humble-lms-btn--small,
+input[type='button'].humble-lms-btn--small {
   font-size: .875em;
   height: 2.875rem;
   line-height: 2.875rem;
@@ -1054,6 +1055,9 @@ input[type='submit'].humble-lms-btn--error:active,
   font-size: 1.5em;
   padding: 0 0 .5em; }
 
+.humble-lms-lightbox-button-wrapper {
+  padding-bottom: .5em; }
+
 /* Checkout */
 .humble-lms-checkout-memberships {
   display: block;
@@ -1202,7 +1206,7 @@ input[type='submit'].humble-lms-btn--error:active,
   margin-top: 2em; }
 
 .humble-lms-coupon-input-wrapper--activated + .humble-lms-checkout-memberships {
-  margin-top: 1em; }
+  margin-top: .5em; }
 
 .humble-lms-coupon-active {
   font-weight: 600;
@@ -1237,7 +1241,13 @@ input[type='submit'].humble-lms-btn--error:active,
     padding-bottom: .5em; }
 
   .humble-lms-widget:not(:first-of-type) {
-    margin-top: 1.5em; } }
+    margin-top: 1.5em; }
+
+  .humble-lms-btn--small,
+  input[type='button'].humble-lms-btn--small {
+    font-size: .93875em;
+    height: 2.5rem;
+    line-height: 2.5rem; } }
 @media screen and (max-width: 480px) {
   .humble-lms-course-tile .humble-lms-course-title {
     font-size: 1.75em; } }

@@ -214,6 +214,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'vat', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'hide_vat', __('Display prices without additional VAT', 'humble-lms'), array( $this, 'hide_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
 
       add_settings_field( 'seller_info', __('Seller info', 'humble-lms'), array( $this, 'seller_info' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
@@ -655,6 +656,19 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Option for displaying prices without additional VAT.
+     *
+     * @since    0.0.7
+     */
+    public function hide_vat() {
+      $hide_vat = isset( $this->options['hide_vat'] ) ? (int)$this->options['hide_vat'] : 0;
+      $checked = $hide_vat === 1 ? 'checked' : '';
+  
+      echo '<p><input id="hide_vat" name="humble_lms_options[hide_vat]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, display prices without additional VAT.', 'humble-lms') . '</p>';
+      echo '<p class="description">' . __('This option only affects the frontend display of prices for tracks and courses. The final price including VAT will show in the checkout lightbox.', 'humble-lms') . '</p>';
+    }
+
+    /**
      * Custom checkout email.
      *
      * @since    0.0.1
@@ -943,6 +957,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             $options['vat'] = 100;
           }
         }
+
+        $options['hide_vat'] = isset( $input['hide_vat'] ) ? 1 : 0;
 
         if( isset( $input['email_checkout'] ) ) {
           $options['email_checkout'] = wp_kses( $input['email_checkout'], $allowed_tags );

@@ -122,7 +122,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $color = get_post_meta( $track_id, 'humble_lms_track_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = Humble_LMS_Admin_Options_Manager::has_sales() && get_post_meta( $track_id, 'humble_lms_is_for_sale', true );
-      $price = ! $this->user->purchased( $track_id ) ? $this->calculator->currency() . ' ' . $this->calculator->display_price( $track_id ) : null;
+      $price = ! $this->user->purchased( $track_id ) ? $this->calculator->currency() . ' ' . $this->calculator->display_price( $track_id, true ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
         $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
@@ -262,7 +262,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $color = get_post_meta( $course_id, 'humble_lms_course_color', true );
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = Humble_LMS_Admin_Options_Manager::has_sales() && get_post_meta( $course_id, 'humble_lms_is_for_sale', true );
-      $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->calculator->display_price( $course_id ) : null;
+      $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->calculator->display_price( $course_id, true ) : null;
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
       $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
@@ -454,6 +454,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       
       $html = '';
       $widget = filter_var( $widget, FILTER_VALIDATE_BOOLEAN );
+
       $allowed_templates = array(
         'humble_lms_lesson',
         'humble_lms_course',
@@ -1762,32 +1763,32 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $html .= '<p>' . __('Please select the membership type you would like to purchase. You can upgrade your membership status anytime you want. Your current membership status is', 'humble-lms') . ' <strong>&raquo;' . ucfirst( $user_membership ) . '&laquo;</strong>.</p>';
 
       $html .= $this->coupon_input();
-      
+
       $html .= '<div class="humble-lms-checkout-memberships">';
 
-      foreach( $memberships as $membership ) {
-        $price = $this->calculator->upgrade_membership_price( $membership->ID );
-        $sum = $this->calculator->sum_price( $price );
-        $description = get_post_meta( $membership->ID, 'humble_lms_mbship_description', true );
-        $purchased = $price === 0.00 || $user_membership === $membership->post_name;
-        
-        $class = $purchased ? 'disabled' : '';
+        foreach( $memberships as $membership ) {
+          $price = $this->calculator->get_price( $membership->ID, false );
+          $sum = $this->calculator->sum_price( $price );
+          $description = get_post_meta( $membership->ID, 'humble_lms_mbship_description', true );
+          $purchased = $price === 0.00 || $user_membership === $membership->post_name;
+          
+          $class = $purchased ? 'disabled' : '';
 
-        $html .= '<div class="humble-lms-checkout-membership ' . $class . '">';
-          $html .= '<div class="humble-lms-checkout-membership-input">';
-            $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $sum['total'] . '">';
-            $html .= $membership->post_title;
-            $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $sum['total']  . '*</span>';
-            $html .= $purchased ? '' : ' <span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $sum['subtotal'] . ' ' . $sum['vat_string'] . '</span>';
-          $html .= '</div>';
-
-          if( $description ) {
-            $html .= '<div class="humble-lms-checkout-membership-description">';
-              $html .= $description;
+          $html .= '<div class="humble-lms-checkout-membership ' . $class . '">';
+            $html .= '<div class="humble-lms-checkout-membership-input">';
+              $html .= $purchased ? '' : '<input readonly type="radio" name="humble_lms_membership" value="' . $membership->post_name . '" data-price="' . $sum['total'] . '">';
+              $html .= $membership->post_title;
+              $html .= $purchased ? '' : '<span class="humble-lms-checkout-membership-price">' .  $currency . '&nbsp;' . $sum['total'] . '*</span>';
+              $html .= $purchased ? '' : ' <span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $sum['subtotal'] . ' ' . $sum['vat_string'] . '</span>';
             $html .= '</div>';
-          }
-        $html .= '</div>';
-      }
+
+            if( $description ) {
+              $html .= '<div class="humble-lms-checkout-membership-description">';
+                $html .= $description;
+              $html .= '</div>';
+            }
+          $html .= '</div>';
+        }
 
       $html .= '</div>';
 
@@ -1797,7 +1798,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Buy now button
-      $html .= '<button class="humble-lms-btn humble-lms-btn--disabled humble-lms-btn--success humble-lms-btn--purchase humble-lms-btn--purchase-membership">' . __('Buy now', 'humble-lms') . '</a></button>';
+      $html .= '<button class="humble-lms-btn humble-lms-btn--disabled humble-lms-btn--success humble-lms-btn--purchase humble-lms-btn--purchase-membership" data-target="checkout">' . __('Buy now', 'humble-lms') . '</a></button>';
 
       // Paypal container
       $memberships = $this->content_manager::get_memberships();
@@ -1819,12 +1820,28 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
       
       $html .= '<div class="humble-lms-lightbox-wrapper">';
-        $html .= '<div class="humble-lms-lightbox">';
+        $html .= '<div data-id="checkout" class="humble-lms-lightbox">';
           $html .= '<div class="humble-lms-lightbox-title">' . __('Buy membership', 'humble-lms') . '</div>';
-          $html .= '<p>' . get_the_title( $membership->ID ) . ', <strong>' . $currency . ' ' . $price . '*</strong><br>';
-          $html .= '<span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $price . ' ' . $sum['vat_string'] . '</span>';
+          $html .= '<p></p>';
           $html .= '<div id="humble-lms-paypal-buttons" data-membership="" data-price="" data-context="membership"></div>';
         $html .= '</div>';
+
+        $html .= $this->confirm_redeem_coupon_lightbox();
+      $html .= '</div>';
+
+      return $html;
+    }
+
+    /**
+     * Confirm message for redeeming a coupon.
+     * 
+     * @since 0.0.7
+     */
+    public function confirm_redeem_coupon_lightbox() {
+      $html = '<div data-id="redeem" class="humble-lms-lightbox">';
+        $html .= '<div class="humble-lms-lightbox-title">' . __('Redeem discount', 'humble-lms') . '</div>';
+        $html .= '<p>' . __('Please note that you can only redeem a coupon <strong>once for the currently selected content</strong>. Do you want to proceed?', 'humble-lms') . '</p>';
+        $html .= '<p class="humble-lms-lightbox-button-wrapper"><a class="humble-lms-btn humble-lms-btn--small humble-lms-redeem-coupon-confirm">' . __('Redeem discount', 'humble-lms') . '</a> <a class="humble-lms-redeem-coupon-cancel humble-lms-btn humble-lms-btn--error humble-lms-btn--small humble-lms-toggle-lightbox">' . __('Cancel', 'humble-lms') . '</a></p>';
       $html .= '</div>';
 
       return $html;
@@ -1870,12 +1887,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( ! $this->user->purchased( $post_id ) ) {
         $html .= $this->purchase_message();
         $html .= '<div class="humble-lms-lightbox-wrapper">';
-          $html .= '<div class="humble-lms-lightbox">';
+          $html .= '<div class="humble-lms-lightbox" data-id="checkout">';
             $html .= '<div class="humble-lms-lightbox-title">' . __('Purchase now', 'humble-lms') . '</div>';
             $html .= '<p>' . get_the_title( $post_id ) . ', <strong>' . $currency . ' ' . $display_price . '*</strong><br>';
             $html .= '<span class="humble-lms-checkout-membership-price__tax">*' . $currency . ' ' . $price . ' ' . $sum['vat_string'] . '</span>';
-            $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $display_price . '" data-context="single"></div>';
+            $html .= '<div id="humble-lms-paypal-buttons-single-item" data-post-id="' . $post_id . '" data-price="' . $price . '" data-context="single"></div>';
           $html .= '</div>';
+
+          $html .= $this->confirm_redeem_coupon_lightbox();
         $html .= '</div>';
       }
 
@@ -1927,7 +1946,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       $price = $this->calculator->get_price( $post->ID, false ); 
       $price_vat = $this->calculator->get_price( $post->ID, true );
-      $price_displayed = $this->calculator->display_price( $post->ID );
+      $price_displayed = $this->calculator->display_price( $post->ID, true );
 
       switch( get_post_type( $post->ID ) ) {
         case 'humble_lms_course':
@@ -1953,7 +1972,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
                 $html .= $this->coupon_input();
-                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';
@@ -1972,7 +1991,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
                 $html .= $this->coupon_input();
-                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';
@@ -2028,10 +2047,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       if( 'POST' !== $_SERVER['REQUEST_METHOD'] || ! $this->coupon->validate( $coupon_code, $user_id ) ) {
-        $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post">';
+        $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post" onkeypress="return event.keyCode!==13">';
           $html .= '<label for="humble-lms-coupon-code">' . __('Do you have a coupon?', 'humble-lms') . '</label>';
           $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32">';
-          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small" value="' . __('Redeem', 'humble-lms') . '">';
+          $html .= '<button type="button" class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small humble-lms-toggle-lightbox" data-target="redeem">' . __('Redeem discount', 'humble-lms') . '</button>';
           $html .= $show_invalid_coupon_message ? '<p class="humble-lms-invalid-coupon-code">' . __('The code you entered is invalid.', 'humble-lms') . '</p>' : '';
         $html .= '</form>';
       }

@@ -320,7 +320,7 @@ jQuery(document).ready(function($) {
 
       let membership = $('#humble-lms-paypal-buttons').data('membership')
       membership = membership.charAt(0).toUpperCase() + membership.slice(1)
-      $('.humble-lms-lightbox p').html(membership + ', <strong>' + humble_lms.currency + ' ' + $('#humble-lms-paypal-buttons').data('price') + '</strong>')
+      $('.humble-lms-lightbox[data-id="checkout"] p').html(membership + ', <strong>' + humble_lms.currency + ' ' + $('#humble-lms-paypal-buttons').data('price') + '</strong>')
       $('.humble-lms-btn--purchase-membership').removeClass('humble-lms-btn--disabled').addClass('humble-lms-toggle-lightbox')
     })
 
@@ -356,6 +356,9 @@ jQuery(document).ready(function($) {
         setTimeout(function() {
           $('.humble-lms-lightbox-wrapper').css('display', 'none')
         }, 100)
+
+        console.log(validated_price.toString())
+        console.log(price)
 
         return
       }
@@ -481,8 +484,28 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   $(document).on('click', '.humble-lms-toggle-lightbox', function() {
+    let target = $(this).data('target')
+
+    if (typeof target === 'undefined' || !target ) {
+      console.log('Lightox target not defined.')
+      $('.humble-lms-lightbox-wrapper').fadeOut(animSpeed)
+      return
+    }
+
+    if (target === 'redeem') {
+      let code = $('.humble-lms-input--coupon-code').val()
+      if (typeof code === 'undefined' || !code) {
+        return
+      }
+    }
+
+    let lightbox = $('.humble-lms-lightbox[data-id="' + target + '"')
+
+    $('.humble-lms-lightbox').hide(0)
+    lightbox.show(0)
+
     if ($('.humble-lms-lightbox-wrapper').css('display') === 'none') {
-      $('.humble-lms-lightbox-wrapper').css('display', 'flex')
+      $('.humble-lms-lightbox-wrapper').css('display', 'flex').hide(0).fadeIn(animSpeed)
     } else {
       $('.humble-lms-lightbox-wrapper').fadeOut(animSpeed)
     }
@@ -652,22 +675,13 @@ jQuery(document).ready(function($) {
   })
 
   // Activate coupon
-  $('#humble-lms-redeem-coupon').on('submit', function(e) {
-    let code = $(this).find('.humble-lms-input--coupon-code').val()
+  $('.humble-lms-redeem-coupon-confirm').on('click', function() {
+    let code = $('#humble-lms-redeem-coupon').find('.humble-lms-input--coupon-code').val()
 
     if (typeof code === 'undefined' || !code) {
-      return false
+      alert('No code...')
+      return
     }
-
-    let confirm_redeem = confirm(humble_lms.redeem_coupon_confirm_message)
-
-    console.log(confirm_redeem)
-
-    if (!confirm_redeem) {
-      return false;
-    }
-
-    loadingLayer(true)
 
     $.ajax({
       async: false,
@@ -684,11 +698,9 @@ jQuery(document).ready(function($) {
         console.log(errorThrown)
       },
       success: function(response, textStatus, XMLHttpRequest) {
-        return false
+        $('#humble-lms-redeem-coupon').submit()
       },
     })
-
-    return true
   })
 
 })

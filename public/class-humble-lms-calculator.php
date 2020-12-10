@@ -197,7 +197,9 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $price = $this->format_price( $price );
 
       $sum = array(
-        'price' => $price,
+        'price' => 0,
+        'discount' => 0,
+        'discount_string' => '',
         'subtotal' => 0,
         'total' => 0,
         'vat' => 0,
@@ -208,27 +210,72 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $vat = $this->get_vat();
       $has_vat = $this->has_vat();
 
-      if( 1 === $has_vat ) {
-        $sum['price'] = $price;
-        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $vat . '%';
-        $sum['vat_diff'] = ( $price / 100 ) * $vat;
-        $sum['subtotal'] = $price;
-        $sum['total'] = $price;
-      } else if( 2 === $has_vat ) {
-        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
-        $sum['price'] = $price - ($price / ( 100 + $vat ) * $vat );
-        $sum['subtotal'] = $price - ( $price / ( 100 + $vat ) * $vat );
-        $sum['vat_diff'] = $price / ( 100 + $vat ) * $vat;
-        $sum['total'] = $price;
-      } else {
-        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';
-        $sum['price'] = $price;
-        $sum['subtotal'] = $price;
-        $sum['vat_diff'] = 0;
-        $sum['total'] = $price;
+      // Active coupon
+      $has_coupon = false;
+      $coupon_value = 0;
+      $active_coupon_id = get_user_meta( get_current_user_id(), 'humble_lms_active_coupon', true);
+
+      $coupon_manager = new Humble_LMS_Coupon;
+      $coupon = get_post( $active_coupon_id );
+
+      if( $coupon ) {
+        $has_coupon = true;
+
+        $coupon_code = get_post_meta( $active_coupon_id, 'humble_lms_coupon_code', true );
+        $coupon_type = get_post_meta( $active_coupon_id, 'humble_lms_coupon_type', true );
+        $coupon_value = get_post_meta( $active_coupon_id, 'humble_lms_coupon_value', true );
+
+        switch( $coupon_type ) {
+          case 'percent':
+            $sum['discount_string'] = $this->format_price( $coupon_value ) . '%';
+          break;
+          case 'fixed_amount':
+            $sum['discount_string'] = $this->currency() . '&nbsp;' . $this->format_price( $coupon_value );
+          break;
+          default:
+          break;
+        }
       }
 
+      if( 1 === $has_vat ) {
+        $sum['price'] = $price;
+
+        if( $has_coupon ) {
+          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
+        }
+
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
+        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['vat_diff'] = ( $sum['subtotal'] / 100 ) * $vat;
+        $sum['total'] = $sum['subtotal'];
+      } else if( 2 === $has_vat ) {
+        $sum['price'] = $price;
+
+        if( $has_coupon ) {
+          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
+        }
+
+        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
+        $sum['vat_diff'] = $sum['subtotal'] / 100 * $vat;
+        $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
+      } else {
+        $sum['price'] = $price;
+
+        if( $has_coupon ) {
+          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
+        }
+
+        $sum['subtotal'] = $sum['price'] - $sum['discount'];
+        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['vat_diff'] = 0;
+        $sum['total'] = $sum['subtotal'];
+      }
+
+  
       $sum['price'] = $this->format_price( $sum['price'] );
+      $sum['discount'] = $this->format_price( $sum['discount'] );
+      $sum['coupon_value'] = $this->format_price( $coupon_value );
       $sum['subtotal'] = $this->format_price( $sum['subtotal'] );
       $sum['total'] = $this->format_price( $sum['total'] );
       $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
@@ -349,14 +396,14 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         return 0.00;
       }
 
-      $price = $this->display_price( $post_id );
+      $price = $this->get_price( $post_id );
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
 
       if( $user_membership === 'free' || ! $user_membership ) {
-        return $price;
+        return $this->calculate_discount( $price );
       } else {
         $membership = Humble_LMS_Content_Manager::get_membership_by_slug( $user_membership );
-        $user_membership_price = $this->display_price( $membership->ID );
+        $user_membership_price = $this->get_price( $membership->ID );
       }
 
       $price = $price - $user_membership_price;
@@ -483,7 +530,8 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       $allowed_post_types = array(
         'humble_lms_track',
-        'humble_lms_course'
+        'humble_lms_course',
+        'humble_lms_mbship',
       );
 
       if( ! in_array( get_post_type( $post_id ), $allowed_post_types ) )
@@ -522,7 +570,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @return  float
      * @since   0.0.1
      */
-    public function display_price( $post_id = null ) {
+    public function display_price( $post_id = null, $hide_vat = false ) {
       $price = 0.00;
 
       if( ! get_post( $post_id ) )
@@ -539,6 +587,15 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
 
       $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
       $price = $this->calculate_discount( $price );
+
+      // Hide additional VAT?
+      if( $hide_vat ) {
+        $_hide_vat = $this->options['hide_vat'];
+
+        if( 1 === $_hide_vat ) {
+          return $this->format_price( $price );
+        }
+      }
 
       // Value added tax
       $vat = $this->get_vat();

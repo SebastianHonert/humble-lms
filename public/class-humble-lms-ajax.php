@@ -563,9 +563,9 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       }
 
       $price = $this->calculator->upgrade_membership_price( $membership->ID );
-      $price = $this->calculator->format_price( $price );
+      $sum_price = $this->calculator->sum_price ( $price );
 
-      echo json_encode( $price );
+      echo json_encode( $sum_price['total'] );
 
       die;
     }

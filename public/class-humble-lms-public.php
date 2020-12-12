@@ -147,6 +147,7 @@ class Humble_LMS_Public {
     // Humble LMS
     wp_enqueue_script( 'humble-lms-inview', plugin_dir_url( __FILE__ ) . 'js/inview.js', array( 'jquery' ), $this->version, true );
     wp_enqueue_script( 'humble-lms-quiz', plugin_dir_url( __FILE__ ) . 'js/humble-lms-quiz.js', array( 'jquery' ), $this->version, true );
+    wp_enqueue_script( 'humble-lms-checkout', plugin_dir_url( __FILE__ ) . 'js/humble-lms-checkout.js', array( 'jquery' ), $this->version, true );
     wp_enqueue_script( $this->humble_lms, plugin_dir_url( __FILE__ ) . 'js/humble-lms-public.js', array( 'jquery' ), $this->version, true );
     
     wp_localize_script( $this->humble_lms, 'humble_lms', array(

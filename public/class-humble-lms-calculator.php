@@ -91,6 +91,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $has_vat = $this->has_vat();
 
       if( 0 === $has_vat ) {
+        $price = $this->calculate_discount( $price );
         return $this->format_price( $price );
       }
 
@@ -184,12 +185,12 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
     }
 
     /**
-     * Get price, subtotal, total, and VAT difference for a single price value.
+     * Get price, subtotal, total, discount, and VAT / VAT difference for a single price value.
      * 
      * @return Array
      * @since 0.0.3
      */
-    public function sum_price( $price = null ) {
+    public function sum_price( $price = null, $coupon_id = false ) {
       if( ! $price ) {
         return 0.00;
       }
@@ -213,9 +214,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       // Active coupon
       $has_coupon = false;
       $coupon_value = 0;
-      $active_coupon_id = get_user_meta( get_current_user_id(), 'humble_lms_active_coupon', true);
-
-      $coupon_manager = new Humble_LMS_Coupon;
+      $active_coupon_id = false !== $coupon_id && 'humble_lms_coupon' === get_post_type( $coupon_id ) ? $coupon_id : get_user_meta( get_current_user_id(), 'humble_lms_active_coupon', true );
       $coupon = get_post( $active_coupon_id );
 
       if( $coupon ) {
@@ -237,39 +236,27 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         }
       }
 
+      if( $has_coupon ) {
+        $sum['discount'] = $coupon_type === 'percent' ? ( $price * 100 / ( 100 - $coupon_value ) ) / 100 * $coupon_value : $coupon_value;
+      }
+
+      $sum['price'] = $price;
+
       if( 1 === $has_vat ) {
-        $sum['price'] = $price;
-
-        if( $has_coupon ) {
-          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
-        }
-
-        $sum['subtotal'] = $sum['price'] - $sum['discount'];
-        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $vat . '%';
+        $sum['subtotal'] = $sum['price'];
+        $sum['total'] = $sum['price'];
         $sum['vat_diff'] = ( $sum['subtotal'] / 100 ) * $vat;
-        $sum['total'] = $sum['subtotal'];
+        $sum['vat_string'] = __('incl. Tax', 'humble-lms') . ' ' . $vat . '%';
       } else if( 2 === $has_vat ) {
-        $sum['price'] = $price;
-
-        if( $has_coupon ) {
-          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
-        }
-
-        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
-        $sum['subtotal'] = $sum['price'] - $sum['discount'];
-        $sum['vat_diff'] = $sum['subtotal'] / 100 * $vat;
+        $sum['subtotal'] = $sum['price'];
+        $sum['vat_diff'] = $sum['price'] / 100 * $vat;
         $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
+        $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
       } else {
-        $sum['price'] = $price;
-
-        if( $has_coupon ) {
-          $sum['discount'] = $coupon_type === 'percent' ? $sum['price'] / 100 * $coupon_value : $coupon_value;
-        }
-
         $sum['subtotal'] = $sum['price'] - $sum['discount'];
-        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';
-        $sum['vat_diff'] = 0;
         $sum['total'] = $sum['subtotal'];
+        $sum['vat_diff'] = 0;
+        $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';
       }
 
   
@@ -278,6 +265,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $sum['coupon_value'] = $this->format_price( $coupon_value );
       $sum['subtotal'] = $this->format_price( $sum['subtotal'] );
       $sum['total'] = $this->format_price( $sum['total'] );
+      $sum['vat'] = $this->format_price( $vat );
       $sum['vat_diff'] = $this->format_price( $sum['vat_diff'] );
       
       return $sum;
@@ -400,7 +388,10 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $user_membership = get_user_meta( get_current_user_id(), 'humble_lms_membership', true );
 
       if( $user_membership === 'free' || ! $user_membership ) {
-        return $this->calculate_discount( $price );
+        $price = $this->format_price( $price );
+        // $price = $this->calculate_discount( $price );
+
+        return $price;
       } else {
         $membership = Humble_LMS_Content_Manager::get_membership_by_slug( $user_membership );
         $user_membership_price = $this->get_price( $membership->ID );
@@ -409,7 +400,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $price = $price - $user_membership_price;
       $price = $price < 0 ? 0 : $price;
 
-      $price = $this->calculate_discount( $price );
+      // $price = $this->calculate_discount( $price );
 
       return $this->format_price( $price );
     }
@@ -503,7 +494,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @return Float
      * @since 0.0.7
      */
-    public function calculate_discount( $price = 0.00 ) {
+    public function calculate_discount( $price = 0.00, $_coupon_id = false ) {
       if( $price === 0.00 ) {
         return $price;
       }
@@ -511,7 +502,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       $coupon = new Humble_LMS_Coupon;
       $options_manager = new Humble_LMS_Admin_Options_Manager;
   
-      $price = $options_manager->has_coupons() ? $coupon->calculate_price( $price ) : $price;
+      $price = $options_manager->has_coupons() ? $coupon->calculate_price( $price, $_coupon_id ) : $price;
 
       return $this->format_price( $price );
     }
@@ -522,7 +513,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @return  float
      * @since   0.0.1
      */
-    public function get_price( $post_id = null, $with_vat = false ) {
+    public function get_price( $post_id = null, $with_vat = false, $discount = true ) {
       $price = 0.00;
 
       if( ! get_post( $post_id ) )
@@ -538,8 +529,10 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         return $price;
       
       $price = get_post_meta($post_id, 'humble_lms_fixed_price', true);
-      $price = $this->calculate_discount( $price );
+      $price = $discount ? $this->calculate_discount( $price ) : $price;
       $price = $this->format_price( $price );
+
+      return $price;
 
       if( ! $with_vat ) {
         return $price;

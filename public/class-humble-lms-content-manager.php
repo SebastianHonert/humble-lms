@@ -1109,6 +1109,26 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       return $html;
     }
 
+    /**
+     * Get coupons (published / unpublished)
+     *
+     * @param   bool
+     * @return  Array
+     * @since   0.0.1
+     */
+    public function get_coupons( $published = false, $translation = true ) {
+      $args = array(
+        'post_type' => 'humble_lms_coupon',
+        'posts_per_page' => -1,
+        'post_status' => $published ? 'publish' : 'any',
+        'lang' => $translation ? $this->translator->current_language() : '',
+      );
+  
+      $coupons = get_posts( $args );
+
+      return $coupons;
+    }
+
   }
   
 }

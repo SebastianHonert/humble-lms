@@ -317,6 +317,8 @@ jQuery(document).ready(function($) {
       $(this).parent().parent().addClass('checked')
       $('#humble-lms-paypal-buttons').data('price', $(this).data('price'))
       $('#humble-lms-paypal-buttons').data('membership', $(this).val())
+      $('#humble-lms-paypal-buttons').data('coupon-id', $(this).data('coupon-id'))
+      $('#humble-lms-paypal-buttons').data('original-price', $(this).data('original-price'))
 
       let membership = $('#humble-lms-paypal-buttons').data('membership')
       membership = membership.charAt(0).toUpperCase() + membership.slice(1)
@@ -325,14 +327,21 @@ jQuery(document).ready(function($) {
     })
 
     $('.humble-lms-btn--purchase-membership').on('click', function() {
+      loadingLayer(true)
+
       $('#humble-lms-paypal-buttons').empty()
 
       let validated_price
       let price = $('#humble-lms-paypal-buttons').data('price')
       let membership = $('#humble-lms-paypal-buttons').data('membership')
+      let coupon_id = $('#humble-lms-paypal-buttons').data('coupon-id')
 
       if (typeof membership === 'undefined' || !membership) {
         return
+      }
+
+      if (typeof coupon_id === 'undefined' || !coupon_id) {
+        coupon_id = 0
       }
 
       $.ajax({
@@ -341,6 +350,7 @@ jQuery(document).ready(function($) {
         type: 'POST',
         data: {
           action: 'validate_membership_price',
+          coupon_id: coupon_id,
           membership: membership
         },
         dataType: 'json',
@@ -355,13 +365,13 @@ jQuery(document).ready(function($) {
       if (validated_price.toString() !== price.toString()) {
         setTimeout(function() {
           $('.humble-lms-lightbox-wrapper').css('display', 'none')
+          loadingLayer(false)
         }, 100)
-
-        console.log(validated_price.toString())
-        console.log(price)
 
         return
       }
+
+      loadingLayer(false)
 
       if (humble_lms.is_user_logged_in && typeof paypal !== 'undefined' && $('#humble-lms-paypal-buttons').length !== 0) {
         paypal.Buttons({
@@ -390,7 +400,7 @@ jQuery(document).ready(function($) {
   
             return actions.order.capture().then(function(details) {
               loadingLayer(true)
-  
+
               $.ajax({
                 url: humble_lms.ajax_url,
                 type: 'POST',
@@ -413,7 +423,6 @@ jQuery(document).ready(function($) {
           }
         }).render('#humble-lms-paypal-buttons')
       }
-
     })
   })()
 

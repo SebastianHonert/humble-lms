@@ -562,8 +562,10 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
+      $coupon_id = isset( $_POST['coupon_id'] ) && 'humble_lms_coupon' === get_post_type( (int)$_POST['coupon_id'] ) ? (int)$_POST['coupon_id'] : 0;
       $price = $this->calculator->upgrade_membership_price( $membership->ID );
-      $sum_price = $this->calculator->sum_price ( $price );
+      $price = $this->calculator->calculate_discount( $price, $coupon_id );
+      $sum_price = $this->calculator->sum_price( $price, $coupon_id );
 
       echo json_encode( $sum_price['total'] );
 

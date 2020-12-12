@@ -71,9 +71,9 @@ register_post_type( 'humble_lms_coupon', $args );
 
 function humble_lms_coupon_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_coupon_code_mb', __('Coupon code', 'humble-lms'), 'humble_lms_coupon_code_mb', 'humble_lms_coupon', 'normal', 'default' );
-  add_meta_box( 'humble_lms_coupon_type_mb', __('Coupon type', 'humble-lms'), 'humble_lms_coupon_type_mb', 'humble_lms_coupon', 'normal', 'default' );
-  add_meta_box( 'humble_lms_coupon_value_mb', __('Coupon value', 'humble-lms'), 'humble_lms_coupon_value_mb', 'humble_lms_coupon', 'normal', 'default' );
+  add_meta_box( 'humble_lms_coupon_code_mb', __('Code', 'humble-lms'), 'humble_lms_coupon_code_mb', 'humble_lms_coupon', 'normal', 'default' );
+  add_meta_box( 'humble_lms_coupon_type_mb', __('Type', 'humble-lms'), 'humble_lms_coupon_type_mb', 'humble_lms_coupon', 'normal', 'default' );
+  add_meta_box( 'humble_lms_coupon_value_mb', __('Discount', 'humble-lms'), 'humble_lms_coupon_value_mb', 'humble_lms_coupon', 'normal', 'default' );
   // add_meta_box( 'humble_lms_coupon_targets_mb', __('Coupon target', 'humble-lms'), 'humble_lms_coupon_targets_mb', 'humble_lms_coupon', 'normal', 'default' );
   add_meta_box( 'humble_lms_coupon_users_mb', __('Limit to specific users', 'humble-lms'), 'humble_lms_coupon_users_mb', 'humble_lms_coupon', 'normal', 'default' );
 }

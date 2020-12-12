@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-12-10 23:20+0100\n"
+"POT-Creation-Date: 2020-12-11 00:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -468,7 +468,7 @@ msgstr "Max. Anzahl gespeicherter Quiz-Auswertungen"
 
 #: admin/class-humble-lms-options-manager.php:201
 msgid "TippyJS tooltips theme"
-msgstr ""
+msgstr "TippyJS tooltips theme"
 
 #: admin/class-humble-lms-options-manager.php:202
 msgid "Delete plugin data on uninstall"
@@ -1477,24 +1477,17 @@ msgid "Filter Coupons list"
 msgstr "Gutscheine filtern"
 
 #: admin/custom-post-types/humble-lms-coupon.php:74
-#: admin/custom-post-types/humble-lms-txn.php:190
-#: public/class-humble-lms-ajax.php:463
-#: public/class-humble-lms-shortcodes.php:1579
-msgid "Coupon code"
-msgstr "Gutschein-Code"
+msgid "Code"
+msgstr "Code"
 
 #: admin/custom-post-types/humble-lms-coupon.php:75
-#: public/class-humble-lms-ajax.php:464
-#: public/class-humble-lms-shortcodes.php:1580
-msgid "Coupon type"
-msgstr "Gutschein-Typ"
+msgid "Type"
+msgstr "Typ"
 
 #: admin/custom-post-types/humble-lms-coupon.php:76
-#: admin/custom-post-types/humble-lms-txn.php:196
-#: public/class-humble-lms-ajax.php:465
-#: public/class-humble-lms-shortcodes.php:1581
-msgid "Coupon value"
-msgstr "Gutschein-Wert"
+#: public/class-humble-lms-content-manager.php:1069
+msgid "Discount"
+msgstr "Rabatt"
 
 #: admin/custom-post-types/humble-lms-coupon.php:78
 msgid "Limit to specific users"
@@ -2615,9 +2608,22 @@ msgstr "Gutschein-Details"
 msgid "Coupon ID"
 msgstr "Gutschein ID"
 
+#: admin/custom-post-types/humble-lms-txn.php:190
+#: public/class-humble-lms-ajax.php:463
+#: public/class-humble-lms-shortcodes.php:1579
+#: public/class-humble-lms-shortcodes.php:2051
+msgid "Coupon code"
+msgstr "Gutschein-Code"
+
 #: admin/custom-post-types/humble-lms-txn.php:193
 msgid "Coupon_type"
 msgstr "Gutschein-Typ"
+
+#: admin/custom-post-types/humble-lms-txn.php:196
+#: public/class-humble-lms-ajax.php:465
+#: public/class-humble-lms-shortcodes.php:1581
+msgid "Coupon value"
+msgstr "Gutschein-Wert"
 
 #: admin/custom-post-types/humble-lms-txn.php:200
 msgid "Show invoice"
@@ -2785,6 +2791,11 @@ msgstr "Informationen zum Benutzerprofil"
 msgid "PayPal transaction details"
 msgstr "PayPal Transaktionsdetails"
 
+#: public/class-humble-lms-ajax.php:464
+#: public/class-humble-lms-shortcodes.php:1580
+msgid "Coupon type"
+msgstr "Gutschein-Typ"
+
 #: public/class-humble-lms-ajax.php:469
 msgid "Link to content"
 msgstr "Link zum Inhalt"
@@ -2854,10 +2865,6 @@ msgstr "Menge"
 #: public/class-humble-lms-shortcodes.php:1556
 msgid "Amount"
 msgstr "Preis"
-
-#: public/class-humble-lms-content-manager.php:1069
-msgid "Discount"
-msgstr "Rabatt"
 
 #: public/class-humble-lms-content-manager.php:1076
 msgid "Subtotal"
@@ -3636,10 +3643,6 @@ msgstr "Kaufen für"
 msgid "Complete billing details"
 msgstr "Rechnungsdaten vervollständigen"
 
-#: public/class-humble-lms-shortcodes.php:2051
-msgid "Do you have a coupon?"
-msgstr "Hast du einen Coupon?"
-
 #: public/class-humble-lms-shortcodes.php:2054
 msgid "The code you entered is invalid."
 msgstr "Der eingegebene Code ist ungültig."
@@ -3659,6 +3662,9 @@ msgstr "Seiten"
 #: public/partials/humble-lms-track-archive.php:10
 msgid "Course Tracks"
 msgstr "Lernpfade"
+
+#~ msgid "Do you have a coupon?"
+#~ msgstr "Hast du einen Coupon?"
 
 #~ msgid "Bye!"
 #~ msgstr "Bis bald!"

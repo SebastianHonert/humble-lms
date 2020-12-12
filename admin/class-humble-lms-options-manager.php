@@ -253,7 +253,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     public function humble_lms_options_section_registration() {
-      // TODO: options
+      echo '<p><em>' . __('Configure the registration options for your website.', 'humble-lms') . '</em></p>';
     }
 
     public function humble_lms_options_section_paypal() {

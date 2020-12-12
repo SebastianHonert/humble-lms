@@ -240,12 +240,12 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
      * @return Float
      * @since 0.0.7
      */
-    public function calculate_price( $price = 0.00 ) {
+    public function calculate_price( $price = 0.00, $_coupon_id = false ) {
       if( ! is_user_logged_in() || $price === 0.00 ) {
         return $price;
       }
 
-      $active_coupon_id = $this->get_active_coupon_id();
+      $active_coupon_id = $_coupon_id ? $_coupon_id : $this->get_active_coupon_id();
 
       if( false === $active_coupon_id ) {
         return $price;
@@ -254,7 +254,7 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
       $coupon = get_post( $active_coupon_id );
       $coupon_code = get_post_meta( $active_coupon_id, 'humble_lms_coupon_code', true );
 
-      if( ! $this->validate( $coupon_code, get_current_user_id() ) ) {
+      if( ! $_coupon_id && ! $this->validate( $coupon_code, get_current_user_id() ) ) {
         return $price;
       }
 
@@ -274,8 +274,8 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
           break;
       }
 
-      if( $price <= 1 ) {
-        $price = 1.00;
+      if( $price < 0.00 ) {
+        $price = 0.00;
       }
 
       return $price;

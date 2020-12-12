@@ -269,7 +269,7 @@ class Humble_LMS_Admin {
     // Purchased content
     $tracks = $content_manager->get_tracks();
     $courses = $content_manager->get_courses();
-    $purchased = get_user_meta( $user->ID, 'humble_lms_purchased_content', false );
+    $purchased = get_user_meta( $user->ID, 'humble_lms_purchased_content', true );
 
     $content = array();
 
@@ -290,8 +290,29 @@ class Humble_LMS_Admin {
     echo '<h4>' . __('Purchased content', 'humble-lms') . '</h4>';
     echo '<select name="humble_lms_purchased_content[]" id="humble_lms_purchased_content" class="humble-lms-user-purchased-courses humble-lms-searchable" multiple="multiple">';
       foreach( $content as $item ) {
-        $selected = in_array( $item['post_id'], $purchased[0] ) ? 'selected="selected"' : '';
+        $selected = in_array( $item['post_id'], $purchased ) ? 'selected="selected"' : '';
         echo '<option name="humble_lms_purchased_content[]"  value="' . $item['post_id'] . '" ' . $selected . '>' . $item['post_title'] . '</option>';
+      }
+    echo '</select>';
+
+    // Redeemed coupons
+    $coupons = $content_manager->get_coupons();
+    $redeemed = get_user_meta( $user->ID, 'humble_lms_redeemed_coupons', true );
+
+    $redeemed_coupons = array();
+  
+    foreach( $coupons as $coupon ) {
+      array_push( $redeemed_coupons, array(
+        'post_id' => $coupon->ID,
+        'post_title' => $coupon->post_title . ' (' . __('Coupon', 'humble-lms') . ', ID ' . $coupon->ID . ')',
+      ));
+    }
+
+    echo '<h4>' . __('Redeemed coupons', 'humble-lms') . '</h4>';
+    echo '<select name="humble_lms_redeemed_coupons[]" id="humble_lms_redeemed_coupons" class="humble-lms-user-redeemed-coupons humble-lms-searchable" multiple="multiple">';
+      foreach( $redeemed_coupons as $coupon ) {
+        $selected = in_array( $coupon['post_id'], $redeemed ) ? 'selected="selected"' : '';
+        echo '<option name="humble_lms_redeemed_coupons[]"  value="' . $coupon['post_id'] . '" ' . $selected . '>' . $coupon['post_title'] . '</option>';
       }
     echo '</select>';
   }
@@ -307,6 +328,7 @@ class Humble_LMS_Admin {
     $was_instructor = isset( $_POST['humble_lms_was_instructor'] );
     $email_agreement = isset( $_POST['humble_lms_email_agreement'] );
     $purchased_content = isset( $_POST['humble_lms_purchased_content'] ) ? $_POST['humble_lms_purchased_content'] : [];
+    $redeemed_coupons = isset( $_POST['humble_lms_redeemed_coupons'] ) ? $_POST['humble_lms_redeemed_coupons'] : [];
     
     if( ! $is_instructor && $was_instructor ) {
       $user->remove_instructor_status( $user_id );
@@ -318,6 +340,7 @@ class Humble_LMS_Admin {
       update_user_meta( $user_id, 'humble_lms_membership', sanitize_text_field( $_POST['humble_lms_membership'] ) );
       update_user_meta( $user_id, 'humble_lms_email_agreement', $email_agreement );
       update_user_meta( $user_id, 'humble_lms_purchased_content', $purchased_content );
+      update_user_meta( $user_id, 'humble_lms_redeemed_coupons', $redeemed_coupons );
     }
   }
 

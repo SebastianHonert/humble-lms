@@ -2,6 +2,20 @@ jQuery(document).ready(function($) {
   'use strict'
 
   /**
+   * Show/hide loading layer/spinner
+   * 
+   * @since   0.0.1
+   */
+  function loadingLayer(show = false) {
+    let loadingLayer = $('.humble-lms-loading-layer')
+    if (show) {
+      loadingLayer.css('display', 'flex')
+    } else {
+      loadingLayer.hide(0)
+    }
+  }
+
+  /**
    * Render PayPal buttons (checkout/memberships).
    * 
    * @since   0.0.1

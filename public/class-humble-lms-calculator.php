@@ -253,7 +253,7 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
         $sum['total'] = $sum['subtotal'] + $sum['vat_diff'];
         $sum['vat_string'] = __('plus Tax', 'humble-lms') . ' ' . $vat . '%';
       } else {
-        $sum['subtotal'] = $sum['price'] - $sum['discount'];
+        $sum['subtotal'] = $sum['price'];
         $sum['total'] = $sum['subtotal'];
         $sum['vat_diff'] = 0;
         $sum['vat_string'] = __('Tax', 'humble-lms') . ' ' . $vat . '%';

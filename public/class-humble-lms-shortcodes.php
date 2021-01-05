@@ -2054,7 +2054,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( 'POST' !== $_SERVER['REQUEST_METHOD'] || ! $this->coupon->validate( $coupon_code, $user_id ) ) {
         $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post" onkeypress="return event.keyCode!==13">';
           $html .= '<label for="humble-lms-coupon-code">' . __('Coupon code', 'humble-lms') . '</label>';
-          $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32">';
+          $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32" autocomplete="off">';
           $html .= '<button type="button" class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small humble-lms-toggle-lightbox" data-target="redeem">' . __('Redeem discount', 'humble-lms') . '</button>';
           $html .= $show_invalid_coupon_message ? '<p class="humble-lms-invalid-coupon-code">' . __('The code you entered is invalid.', 'humble-lms') . '</p>' : '';
         $html .= '</form>';

@@ -320,7 +320,7 @@ class Humble_LMS_Public {
     if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success') {
       $html .= '<div class="humble-lms-message humble-lms-message--success">
         <span class="humble-lms-message-title">' . __('Purchase completed', 'humble-lms') . '</span>
-        <span class="humble-lms-message-content">' . __('Thank you for your purchase. A confirmation email is on it\'s way to your inbox. Enjoy our online courses!', 'humble-lms') . '</span> 
+        <span class="humble-lms-message-content">' . __('Thank you for your purchase. A confirmation email is on its way to your inbox. Enjoy our online courses!', 'humble-lms') . '</span> 
       </div>';
     }
 

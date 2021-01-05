@@ -215,6 +215,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'vat', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'hide_vat', __('Display prices without additional VAT', 'humble-lms'), array( $this, 'hide_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'countries_without_vat', __('Countries without VAT', 'humble-lms'), array( $this, 'countries_without_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
 
       add_settings_field( 'seller_info', __('Seller info', 'humble-lms'), array( $this, 'seller_info' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
@@ -669,6 +670,26 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Countries without VAT.
+     *
+     * @since    0.0.1
+     */
+    function countries_without_vat()
+    {
+      $countries = $this->countries;
+      $countries_without_vat = isset( $this->options['countries_without_vat'] ) ? maybe_unserialize( $this->options['countries_without_vat'] ) : [];
+
+      echo '<select multiple size="20" class="humble-lms-searchable" id="countries_without_vat" placeholder="' . __('Wich countries should be billed without VAT?', 'humble-lms') . '" name="humble_lms_options[countries_without_vat][]" data-content="countries_without_vat"  multiple="multiple">';
+        foreach( $countries as $key => $country ) {
+          $selected = in_array( $country, $countries_without_vat ) ? 'selected' : '';
+          echo '<option data-id="' . $country . '" value="' . $country . '" ' . $selected . '>' . $country . '</option>';
+        }
+      echo '</select>';
+      echo '<input class="humble-lms-multiselect-value" id="humble_lms_countries_without_vat" name="humble_lms_options[countries_without_vat]" type="hidden" value="' . implode(',', $countries_without_vat) . '">';
+      echo '<p class="description">' . __('Billing for the selected countries will be accounted for without VAT.', 'humble-lms') . '</p>';
+    }
+
+    /**
      * Custom checkout email.
      *
      * @since    0.0.1
@@ -959,6 +980,12 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         }
 
         $options['hide_vat'] = isset( $input['hide_vat'] ) ? 1 : 0;
+
+        if( isset( $input['countries_without_vat'] ) ) {
+          $options['countries_without_vat'] = ! empty( $input['countries_without_vat'] ) ? serialize( explode( ',', $input['countries_without_vat'] ) ) : [];
+        } else {
+          $options['countries_without_vat'] = [];
+        }
 
         if( isset( $input['email_checkout'] ) ) {
           $options['email_checkout'] = wp_kses( $input['email_checkout'], $allowed_tags );

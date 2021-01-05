@@ -42,6 +42,10 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.1
      */
     public function has_vat() {
+      if( ! $this->user_country_has_vat() ) {
+        return false;
+      }
+
       $has_vat = isset( $this->options['has_vat'] ) ? $this->options['has_vat'] : null;
 
       if( empty( $has_vat ) || ! isset( $has_vat) || ( $has_vat !== 1 && $has_vat !== 2 ) ) {
@@ -57,6 +61,10 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * @since 0.0.1
      */
     public function get_vat() {
+      if( ! $this->user_country_has_vat() ) {
+        return 0;
+      }
+
       $has_vat = $this->has_vat();
       
       if( ! isset( $has_vat ) || empty( $has_vat ) || $has_vat == 0 ) {
@@ -70,6 +78,31 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       }
 
       return (int)$vat;
+    }
+
+    /**
+     * Check if user country has VAT.
+     * 
+     * @since 0.0.8
+     */
+    public function user_country_has_vat( $user_id = null ) {
+      if( ! $user_id ) {
+        if( ! is_user_logged_in() ) {
+          return true;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      $country = get_user_meta( $user_id, 'humble_lms_country', true );
+
+      if( ! $country ) {
+        return true;
+      }
+
+      $countries_without_vat = maybe_unserialize( $this->options['countries_without_vat'] );
+
+      return ! in_array( $country, $countries_without_vat );
     }
 
     /**

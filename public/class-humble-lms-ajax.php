@@ -650,6 +650,25 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
       echo $deactivated ? json_encode( 'deactivated' ) : json_encode( 'not deactivated' );
       die;
     }
+
+    /**
+     * Purchase withiout billing (price = 0.00)
+     * 
+     * @since 0.0.8
+     */
+    public function purchase_without_billing() {
+      $post_id = (int)$_POST['post_id'];
+      $purchased = $this->user->purchase( $post_id );
+      $deactivate_coupon = $this->coupon->deactivate_for_user( get_current_user_id() );
+
+      if( ! $purchased ) {
+        echo json_encode('Something went wrong.');
+      } else {
+        echo json_encode('success');
+      }
+
+      die;
+    }
     
   }
   

@@ -1314,6 +1314,74 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
       return $transactions;
     }
 
+    /**
+     * Purchase content based on post type.
+     * 
+     * @return Boolean
+     * @since 0.0.8
+     */
+    public function purchase( $post_id = null, $user_id = null ) {
+      if( ! $user_id ) {
+        if( ! is_user_logged_in() ) {
+          return;
+        } else {
+          $user_id = get_current_user_id();
+        }
+      }
+
+      if( ! $post_id ) {
+        return;
+      }
+
+      $post_type = get_post_type( $post_id );
+
+      $allowed_post_types = array(
+        'humble_lms_track',
+        'humble_lms_course',
+        'humble_lms_mbship'
+      );
+
+      if( ! in_array( $post_type, $allowed_post_types ) ) {
+        return;
+      }
+
+      switch( $post_type )
+      {
+        // TODO: purchase membership
+        case 'humble_lms_mbship':
+          return true;
+          break;
+  
+        // Tracks and courses
+        default:
+          $purchased = get_user_meta( $user_id, 'humble_lms_purchased_content', false );
+          $purchased = is_array( $purchased[0] ) ? $purchased[0] : [];
+          $post_type = get_post_type( $post_id );
+
+          if( ! in_array( $post_id, $purchased ) ) {
+            array_push( $purchased, $post_id );
+          }
+
+          if( $post_type === 'humble_lms_track' ) {
+            $courses = Humble_LMS_Content_Manager::get_track_courses( $post_id );
+            foreach( $courses as $course_id ) {
+              if( ! in_array( $course_id, $purchased ) ) {
+                array_push( $purchased, $course_id );
+              }
+            }
+          }
+
+          $purchased = array_unique( $purchased, SORT_REGULAR );
+          
+          update_user_meta( $user_id, 'humble_lms_purchased_content', $purchased );
+
+          return true;
+          break;
+      }
+
+      return;
+    }
+
   }
 
 }

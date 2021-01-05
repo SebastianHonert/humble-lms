@@ -1976,8 +1976,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
+                $price_greater_than_zero = $price > 0.00;
+                $toggle_lightbox_class = $price_greater_than_zero ? 'humble-lms-toggle-lightbox' : 'humble-lms-purchase-without-billing';
+
                 $html .= $this->coupon_input();
-                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase ' . $toggle_lightbox_class . '" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';
@@ -1995,8 +1998,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               if( ! $this->user->billing_information_complete( get_current_user_id() ) ) {
                 $html .= $this->complete_billing_details_html();
               } else {
+                $price_greater_than_zero = $price > 0.00;
+                $toggle_lightbox_class = $price_greater_than_zero ? 'humble-lms-toggle-lightbox' : 'humble-lms-purchase-without-billing';
+
                 $html .= $this->coupon_input();
-                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase humble-lms-toggle-lightbox" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
+                $html .= '<button class="humble-lms-btn humble-lms-btn--success humble-lms-btn--purchase ' . $toggle_lightbox_class . '" data-target="checkout">' . __('Buy now for', 'humble-lms') . ' ' . $this->options_manager->get_currency() . ' ' . $price_displayed . '*</button>';
               }
             $html .= '</div>';
           $html .= '</div>';

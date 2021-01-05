@@ -207,9 +207,9 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
      * 
      * @since 0.0.1
      */
-    public function format_price( $price = 0 ) {
+    public function format_price( $price = 0.00 ) {
       if( ! $price ) {
-        return 0.00;
+        return number_format((float)0, 2, '.', '');
       }
 
       $price = number_format((float)$price, 2, '.', '');
@@ -270,7 +270,11 @@ if( ! class_exists( 'Humble_LMS_Calculator' ) ) {
       }
 
       if( $has_coupon ) {
-        $sum['discount'] = $coupon_type === 'percent' ? ( $price * 100 / ( 100 - $coupon_value ) ) / 100 * $coupon_value : $coupon_value;
+        if( $coupon_type === 'percent' && ( $coupon_value == 100 || $coupon_value === 100.00 ) ) {
+          $sum['discount'] = $price;
+        } else {
+          $sum['discount'] = $coupon_type === 'percent' ? ( $price * 100 / ( 100 - $coupon_value ) ) / 100 * $coupon_value : $coupon_value;
+        }
       }
 
       $sum['price'] = $price;

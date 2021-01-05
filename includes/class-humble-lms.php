@@ -404,6 +404,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_nopriv_activate_coupon', $plugin_ajax, 'activate_coupon' );
     $this->loader->add_action( 'wp_ajax_deactivate_coupon', $plugin_ajax, 'deactivate_coupon' );
     $this->loader->add_action( 'wp_ajax_nopriv_deactivate_coupon', $plugin_ajax, 'deactivate_coupon' );
+    $this->loader->add_action( 'wp_ajax_purchase_without_billing', $plugin_ajax, 'purchase_without_billing' );
+    $this->loader->add_action( 'wp_ajax_nopriv_purchase_without_billing', $plugin_ajax, 'purchase_without_billing' );
 
   }
 

@@ -324,6 +324,13 @@ class Humble_LMS_Public {
       </div>';
     }
 
+    if( isset( $_GET['purchase'] ) && $_GET['purchase'] === 'success-no-billing') {
+      $html .= '<div class="humble-lms-message humble-lms-message--success">
+        <span class="humble-lms-message-title">' . __('Purchase completed', 'humble-lms') . '</span>
+        <span class="humble-lms-message-content">' . __('Thank you for your purchase. Enjoy our online courses!', 'humble-lms') . '</span> 
+      </div>';
+    }
+
     // Course has ended / not started yet
     if( isset( $_GET['access'] ) && sanitize_text_field( $_GET['access'] === 'timeframe' ) && ! current_user_can('manage_options' ) ) {
       $course_is_open = $content_manager->course_is_open( $course_id );

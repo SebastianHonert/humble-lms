@@ -145,6 +145,10 @@ jQuery(document).ready(function($) {
       let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
       let price = $('#humble-lms-paypal-buttons-single-item').data('price')
 
+      if (price <= 0.00) {
+        return
+      }
+
       paypal.Buttons({
         createOrder: function(data, actions) {
           if (typeof post_id === 'undefined' || ! post_id) {
@@ -227,6 +231,39 @@ jQuery(document).ready(function($) {
         $('#humble-lms-redeem-coupon').submit()
       },
     })
+  })
+
+  /**
+   * Purchase without billing (price = 0.00)
+   * 
+   * @since 0.0.8
+   */
+  $('.humble-lms-purchase-without-billing').on('click', function() {
+    loadingLayer(true)
+
+    let post_id = $('#humble-lms-paypal-buttons-single-item').data('post-id')
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'purchase_without_billing',
+        post_id: post_id
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        loadingLayer(false)
+        alert(humble_lms.general_error)
+        console.error(errorThrown)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        window.location = window.location.pathname + '?purchase=success-no-billing'
+      }
+    })
+
+    loadingLayer(false)
+
+    return
   })
 
 })

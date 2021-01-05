@@ -728,8 +728,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       $seller_info = isset( $this->options['seller_info'] ) ? wp_kses( $this->options['seller_info'], $allowed_tags ) : '';
 
-      echo '<p class="description">' . __('Your personal and/or company information. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, p, strong.', 'humble-lms') . '</p>';
-      echo '<p><textarea class="widefat" id="seller_info" name="humble_lms_options[seller_info]" rows="7">' . $seller_info . '</textarea></p>';
+      echo '<p class="description">' . __('Your personal and/or company information, e.g. name, address, phone number etc. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
+      echo '<p><input class="widefat" id="seller_info" name="humble_lms_options[seller_info]" value="' . esc_html( $seller_info ) . '"></p>';
       echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 

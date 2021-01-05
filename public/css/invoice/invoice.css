@@ -94,7 +94,7 @@ body.humble-lms-invoice {
 #humble-lms-seller-logo {
   padding: 0;
   margin: 0;
-  max-height: 3cm;
+  max-height: 2cm;
   max-width: 100%;
 }
 
@@ -110,14 +110,20 @@ body.humble-lms-invoice {
   clear: both;
 }
 
-#humble-lms-seller-info {
-  margin: .5cm 0 .5cm;
+#humble-lms-info-left {
+  margin: 0 0 .5cm;
   float: left;
   width: 50%;
 }
 
-#humble-lms-customer-info {
-  margin: .5cm 0 .5cm;
+#humble-lms-seller-info {
+  display: block;
+  margin-bottom: .5cm;
+  font-size: 11px;
+}
+
+#humble-lms-info-right {
+  margin: 0 0 .5cm;
   float: left;
   text-align: right;
   width: 50%;
@@ -182,4 +188,20 @@ h1 {
   font-size: 27px;
   font-weight: 700;
   padding: 0 0 1cm;
+}
+
+.fold {
+  position: absolute;
+  left: 0;
+  width: .375cm;
+  height: 1px;
+  background: #666;
+}
+
+.fold.fold--one {
+  top: 87mm;
+}
+
+.fold.fold--two {
+  top: 192mm;
 }

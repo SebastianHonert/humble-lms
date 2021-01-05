@@ -1026,23 +1026,30 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $css = dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/invoice/invoice.css';
 
       $sum = $this->calculator->sum_transaction( $transaction_id );
+
+      $content = '<div class="fold fold--one"></div>';
+      $content .= '<div class="fold fold--two"></div>';
       
-      $content = '<img id="humble-lms-seller-logo" src="' . $invoice_template_data['seller_logo'] . '" alt="" />';
+      $content .= '<img id="humble-lms-seller-logo" src="' . $invoice_template_data['seller_logo'] . '" alt="" />';
 
       $content .= '<div id="humble-lms-seller-customer-info">';
-        $content .= '<div id="humble-lms-seller-info">' . $invoice_template_data['seller_info'] . '</div>';
-        $content .= '<div id="humble-lms-customer-info">';
+        $content .= '<div id="humble-lms-seller-info"><span class="humble-lms-seller-info-small">' . $invoice_template_data['seller_info'] . '</span></div>';
+        $content .= '<div id="humble-lms-info-left">';
           $content .= '<p>';
-            $content .= $transaction['invoice_number'] ? '<p>' . __('Invoice #', 'humble-lms') . ' ' . $transaction['invoice_number'] . '<br>' : '';
-            $content .= __('Date', 'humble-lms') . ': ' . $date . '<br>';
-            $content .= __('Due', 'humble-lms') . ': ' . $date;
-          $content .= '</p>';
-          $content .= $transaction['company'] ? '<strong>' . $transaction['company'] . '</strong><br>' : '';
+          $content .= $transaction['company'] ? $transaction['company'] . '<br>' : '';
           $content .= $transaction['first_name'] . ' ' . $transaction['last_name'] . '<br>';
           $content .= $transaction['address'] . '<br>';
           $content .= $transaction['postcode'] . ' ' . $transaction['city'] . '<br>';
           $content .= $transaction['country'] . '<br>';
           $content .= $transaction['vat_id'] ? $transaction['vat_id'] : '';
+          $content .= '</p>';
+        $content .= '</div>';
+        $content .= '<div id="humble-lms-info-right">';
+          $content .= '<p>';
+            $content .= $transaction['invoice_number'] ? '<p>' . __('Invoice #', 'humble-lms') . ' ' . $transaction['invoice_number'] . '<br>' : '';
+            $content .= __('Date', 'humble-lms') . ': ' . $date . '<br>';
+            $content .= __('Due', 'humble-lms') . ': ' . $date;
+          $content .= '</p>';
         $content .= '</div>';
       $content .= '</div>';
 

@@ -17,16 +17,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @param    class    $access   Public access class
      */
     public function __construct() {
-
-      $this->license_status = 0;
-      $this->secret_key = '5fba5d909a6c83.38241175';
-      $this->license_server_url = 'https://humblelms.de';
-      $this->item_reference = 'Humble LMS';
       $this->license_key = '';
-
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->translator = new Humble_LMS_Translator;
+      $this->license_manager = new Humble_LMS_License_Manager;
       $this->options = get_option('humble_lms_options');
       $this->active = 'reporting-users';
       $this->page_sections = array();
@@ -728,8 +723,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
       $seller_info = isset( $this->options['seller_info'] ) ? wp_kses( $this->options['seller_info'], $allowed_tags ) : '';
 
-      echo '<p class="description">' . __('Your personal and/or company information, e.g. name, address, phone number etc. Allowed HTML tags: a, br, em, strong.', 'humble-lms') . '</p>';
-      echo '<p><input class="widefat" id="seller_info" name="humble_lms_options[seller_info]" value="' . esc_html( $seller_info ) . '"></p>';
+      echo '<p class="description">' . __('Your personal and/or company information. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, p, strong.', 'humble-lms') . '</p>';
+      echo '<p><textarea class="widefat" id="seller_info" name="humble_lms_options[seller_info]" rows="7">' . $seller_info . '</textarea></p>';
       echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 
@@ -855,7 +850,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       if( 1 === $license_status ) {
         echo '<p class="humble-lms-message humble-lms-message--success">' . __('You\'re plugin license has been activated.', 'humble-lms') . '</p>';
       } else {
-        echo '<p class="humble-lms-message humble-lms-message--error">' . __('Plugin not activated. Please enter your license key.', 'humble-lms') . '</p>';
+        echo '<p class="humble-lms-message humble-lms-message--error">' . __('Plugin not activated. Please enter your license key and click "Activate".', 'humble-lms') . '</p>';
       }
 
       echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
@@ -1004,23 +999,19 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       if( $active === 'license' ) {
-        $options['license_key'] = sanitize_text_field( $input['license_key'] );
-
         // Activate license
         if( isset( $_REQUEST['activate_license'] ) ) {
+          $options['license_key'] = sanitize_text_field( $input['license_key'] );
+  
           if( 0 === $options['license_status'] ) {
-            $license_key = $options['license_key'];
-    
-            // API query parameters
             $api_params = array(
               'slm_action' => 'slm_activate',
               'secret_key' => $this->secret_key,
-              'license_key' => $license_key,
+              'license_key' => $options['license_key'],
               'registered_domain' => $_SERVER['SERVER_NAME'],
               'item_reference' => urlencode( $this->item_reference ),
             );
     
-            // Send query to the license manager server
             $query = esc_url_raw( add_query_arg( $api_params, $this->license_server_url ) );
             $response = wp_remote_get( $query, array(
               'timeout' => 20,
@@ -1035,22 +1026,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             
             if( isset( $license_data ) && $license_data->result == 'success' ) {
               $options['license_status'] = 1;
-            } else {
-              $options['license_key'] = '';
             }
           }
         }
       
         // Deactivate license
         if ( isset( $_REQUEST['deactivate_license'] ) ) {
+          // $deactivate = $this->license_manager->deactivate( $secret_key, $license_key, $server_name, $item_reference )
           if( 1 === $options['license_status'] ) {
-            $options['license_key'] = sanitize_text_field( $input['license_key'] );
-            $license_key = $options['license_key'];
-
             $api_params = array(
               'slm_action' => 'slm_deactivate',
               'secret_key' => $this->secret_key,
-              'license_key' => $license_key,
+              'license_key' => $options['license_key'],
               'registered_domain' => $_SERVER['SERVER_NAME'],
               'item_reference' => urlencode( $this->item_reference ),
             );
@@ -1068,9 +1055,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               
               if( isset( $license_data ) && $license_data->result == 'success' ) {
                 $options['license_status'] = 0;
-                $options['license_key'] = '';
-              }
-              else {
+              } else {
                 $options['license_status'] = 1;
               }
             }

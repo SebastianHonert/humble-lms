@@ -82,8 +82,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( ! $track_id || get_post_type( $track_id ) !== 'humble_lms_track' )
         return $track_courses;
 
-      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', false );
-      $track_courses = isset( $track_courses[0] ) && is_array( $track_courses[0] ) && ! empty( $track_courses[0] ) && ( isset( $track_courses[0][0] ) && $track_courses[0][0] !== '' ) ? $track_courses[0] : [];
+      $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
+      $track_courses = is_array( $track_courses ) ? $track_courses : [];
 
       if( empty( $track_courses ) ) {
         return $track_courses;
@@ -570,8 +570,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( ! $quiz_id || get_post_type( $quiz_id ) !== 'humble_lms_quiz' )
         return $quiz_questions;
 
-      $quiz_questions = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', false );
-      $quiz_questions = isset( $quiz_questions[0] ) && ! empty( $quiz_questions[0] ) ? $quiz_questions[0] : [];
+      $quiz_questions = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', true );
+      $quiz_questions = is_array( $quiz_questions ) ? $quiz_questions : [];
       $quiz_questions = array_unique( $quiz_questions );
 
       return $quiz_questions;
@@ -600,8 +600,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( ! in_array( $post_type, $allowed_post_types ) )
         return $instructors;
 
-      $instructors = get_post_meta( $post_id, 'humble_lms_instructors', false );
-      $instructors = isset( $instructors[0] ) && ! empty( $instructors[0] ) && ( isset( $instructors[0][0] ) && $instructors[0][0] !== '' ) ? $instructors[0] : [];
+      $instructors = get_post_meta( $post_id, 'humble_lms_instructors', true );
+      $instructors = is_array( $instructors ) ? $instructors : [];
 
       return $instructors;
     }
@@ -619,8 +619,8 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       if( ! $lesson_id || get_post_type( $lesson_id ) !== 'humble_lms_lesson' )
         return $lesson_quizzes;
 
-      $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', false );
-      $lesson_quizzes = isset( $lesson_quizzes[0] ) && ! empty( $lesson_quizzes[0] ) && ( isset( $lesson_quizzes[0][0] ) && $lesson_quizzes[0][0] !== '' ) ? $lesson_quizzes[0] : [];
+      $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', true );
+      $lesson_quizzes = is_array( $lesson_quizzes ) ? $lesson_quizzes : [];
       $lesson_quizzes = array_unique( $lesson_quizzes );
 
       return $lesson_quizzes;

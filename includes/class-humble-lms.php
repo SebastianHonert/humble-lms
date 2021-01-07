@@ -70,7 +70,7 @@ class Humble_LMS {
     if ( defined( 'HUMBLE_LMS_VERSION' ) ) {
       $this->version = HUMBLE_LMS_VERSION;
     } else {
-      $this->version = '0.0.8';
+      $this->version = '0.0.9';
     }
     $this->humble_lms = 'humble-lms';
 
@@ -123,6 +123,11 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-syllabus.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-instructors.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-progress-bar.php';
+
+    /**
+     * The class provides licensing functionalities.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-license-manager.php';
 
     /**
      * The class providing options management functionalities.

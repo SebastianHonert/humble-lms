@@ -85,7 +85,7 @@ function humble_lms_quiz_questions_mb() {
 
   $args = array(
     'post_type' => 'humble_lms_question',
-    'post_status' => 'publish',
+    'post_status' => 'any',
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
@@ -123,14 +123,16 @@ function humble_lms_quiz_questions_mb() {
     echo '<div id="humble-lms-admin-quiz-questions">';
       echo '<select class="humble-lms-searchable" data-content="quiz_questions"  multiple="multiple">';
         foreach( $selected_questions as $question ) {
+          $post_status = get_post_status( $question->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
           echo '<option data-id="' . $question->ID . '" value="' . $question->ID . '" ';
             if( is_array( $quiz_questions ) && in_array( $question->ID, $quiz_questions ) ) { echo 'selected'; }
-          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')</option>';
+          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')' . $post_status . '</option>';
         }
         foreach( $questions as $question ) {
+          $post_status = get_post_status( $question->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
           echo '<option data-id="' . $question->ID . '" value="' . $question->ID . '" ';
             if( is_array( $quiz_questions ) && in_array( $question->ID, $quiz_questions ) ) { echo 'selected'; }
-          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')</option>';
+          echo '>' . $question->post_title . ' (ID ' . $question->ID . ')' . $post_status . '</option>';
         }
       echo '</select>';
       echo '<input class="humble-lms-multiselect-value" id="humble_lms_quiz_questions" name="humble_lms_quiz_questions" type="hidden" value="' . implode(',', $quiz_questions) . '">';

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-01-05 18:14+0100\n"
+"POT-Creation-Date: 2021-01-07 10:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -1706,7 +1706,7 @@ msgid "Allowed HTML tags"
 msgstr "Erlaubte HTML-Tags"
 
 #: admin/custom-post-types/humble-lms-course.php:195
-#: admin/custom-post-types/humble-lms-course.php:245
+#: admin/custom-post-types/humble-lms-course.php:247
 msgid "Add lesson"
 msgstr "Lektion hinzufügen"
 
@@ -1720,19 +1720,19 @@ msgstr "Bitte geben Sie einen Titel ein."
 
 #: admin/custom-post-types/humble-lms-course.php:198
 #: admin/custom-post-types/humble-lms-quiz.php:116
-#: admin/custom-post-types/humble-lms-track.php:130
+#: admin/custom-post-types/humble-lms-track.php:132
 msgid "Create and add"
 msgstr "Erzeugen und hinzufügen"
 
 #: admin/custom-post-types/humble-lms-course.php:198
 #: admin/custom-post-types/humble-lms-quiz.php:116
-#: admin/custom-post-types/humble-lms-track.php:130
+#: admin/custom-post-types/humble-lms-track.php:132
 msgid "Close"
 msgstr "Schließen"
 
 #: admin/custom-post-types/humble-lms-course.php:199
 #: admin/custom-post-types/humble-lms-quiz.php:117
-#: admin/custom-post-types/humble-lms-track.php:131
+#: admin/custom-post-types/humble-lms-track.php:133
 msgid "Content added – click to edit."
 msgstr "Inhalt hinzugefügt – jetzt bearbeiten."
 
@@ -1748,51 +1748,60 @@ msgstr "Titel der Sektion (optional)"
 msgid "Lessons in this section"
 msgstr "Lektion(en) in dieser Sektion"
 
-#: admin/custom-post-types/humble-lms-course.php:245
+#: admin/custom-post-types/humble-lms-course.php:234
+#: admin/custom-post-types/humble-lms-course.php:240
+#: admin/custom-post-types/humble-lms-quiz.php:126
+#: admin/custom-post-types/humble-lms-quiz.php:132
+#: admin/custom-post-types/humble-lms-track.php:111
+#: admin/custom-post-types/humble-lms-track.php:117
+msgid "(draft)"
+msgstr "(Entwurf)"
+
+#: admin/custom-post-types/humble-lms-course.php:247
 msgid "Remove this section"
 msgstr "Sektion entfernen"
 
-#: admin/custom-post-types/humble-lms-course.php:245
+#: admin/custom-post-types/humble-lms-course.php:247
 msgid "Hide/Show"
 msgstr "Ein-/Ausblenden"
 
-#: admin/custom-post-types/humble-lms-course.php:253
+#: admin/custom-post-types/humble-lms-course.php:255
 msgid "Add section"
 msgstr "Sektion hinzufügen"
 
-#: admin/custom-post-types/humble-lms-course.php:303
+#: admin/custom-post-types/humble-lms-course.php:305
 #: admin/custom-post-types/humble-lms-lesson.php:178
 msgid "No instructors found. Please add one or more instructors first."
 msgstr ""
 "Keine Kursleiter*innen gefunden. Fügen Sie zuerst eine*n Kursleiter*in hinzu."
 
-#: admin/custom-post-types/humble-lms-course.php:316
+#: admin/custom-post-types/humble-lms-course.php:318
 msgid ""
 "Yes, the lessons in this course need to be completed in consecutive order."
 msgstr ""
 "Ja, die Lektionen in diesem Kurs müssen in der richtigen Reihenfolge "
 "abgeschlossen werden."
 
-#: admin/custom-post-types/humble-lms-course.php:339
+#: admin/custom-post-types/humble-lms-course.php:341
 msgid "Yes, display the featured image on the course page."
 msgstr "Ja, Beitragsbild auf der Kursseite anzeigen."
 
-#: admin/custom-post-types/humble-lms-course.php:356
+#: admin/custom-post-types/humble-lms-course.php:358
 msgid "Yes, sell this course for a fixed price."
 msgstr "Ja, diesen Kurs zu einem festen Preis verkaufen."
 
-#: admin/custom-post-types/humble-lms-course.php:357
+#: admin/custom-post-types/humble-lms-course.php:359
 #: admin/custom-post-types/humble-lms-membership.php:43
-#: admin/custom-post-types/humble-lms-track.php:188
+#: admin/custom-post-types/humble-lms-track.php:190
 #: public/class-humble-lms-content-manager.php:1064
 #: public/class-humble-lms-shortcodes.php:137
 #: public/class-humble-lms-shortcodes.php:277
 msgid "Price"
 msgstr "Preis"
 
-#: admin/custom-post-types/humble-lms-course.php:358
+#: admin/custom-post-types/humble-lms-course.php:360
 #: admin/custom-post-types/humble-lms-membership.php:61
-#: admin/custom-post-types/humble-lms-track.php:189
+#: admin/custom-post-types/humble-lms-track.php:191
 msgid ""
 "Prices must be 2 digit decimals. Based on your browser language settings the "
 "saved value will sometimes be displayed with a comma instead of a dot."
@@ -2247,7 +2256,7 @@ msgid "Max. number of attempts"
 msgstr "Max. Anzahl Lösungsversuche"
 
 #: admin/custom-post-types/humble-lms-quiz.php:113
-#: admin/custom-post-types/humble-lms-quiz.php:145
+#: admin/custom-post-types/humble-lms-quiz.php:147
 msgid "Add question"
 msgstr "Quizfrage hinzufügen"
 
@@ -2259,29 +2268,29 @@ msgstr "Titel der Frage"
 msgid "Please add a question title."
 msgstr "Bitte geben Sie einen Titel für die Frage ein."
 
-#: admin/custom-post-types/humble-lms-quiz.php:141
+#: admin/custom-post-types/humble-lms-quiz.php:143
 msgid "No quiz questions found. Please add one or more question first."
 msgstr ""
 "Keine Quizfragen gefunden. Bitte fügen Sie zuerst eine Quizfrage hinzu."
 
-#: admin/custom-post-types/humble-lms-quiz.php:166
+#: admin/custom-post-types/humble-lms-quiz.php:168
 msgid "Include quiz result in course results."
 msgstr "Quiz-Ergebnis in Kurs-Ergebnis einbeziehen."
 
-#: admin/custom-post-types/humble-lms-quiz.php:177
+#: admin/custom-post-types/humble-lms-quiz.php:179
 msgid "Students have to pass this quiz in order to complete the lesson."
 msgstr ""
 "Lerner/innen müssen dieses Quiz bestehen, um die Lektion erfolgreich "
 "abzuschließen."
 
-#: admin/custom-post-types/humble-lms-quiz.php:192
+#: admin/custom-post-types/humble-lms-quiz.php:194
 msgid ""
 "A value of \"0\" means that the number of attempts per user is not limited."
 msgstr ""
 "Eine Wert von „0“ bedeutet, dass die Anzahl der Lösungsversuche nicht "
 "eingeschränkt wird."
 
-#: admin/custom-post-types/humble-lms-quiz.php:203
+#: admin/custom-post-types/humble-lms-quiz.php:205
 msgid "Shuffle all answers in this quiz."
 msgstr "Alle Antworten in diesem Quiz mischen."
 
@@ -2365,20 +2374,20 @@ msgstr "Wählen Sie eine Farbe für die Lernpfad-Kachel (optional)"
 msgid "Sell this track for a fixed price"
 msgstr "Diesen Lernpfad zu einem festen Preis verkaufen"
 
-#: admin/custom-post-types/humble-lms-track.php:127
-#: admin/custom-post-types/humble-lms-track.php:134
+#: admin/custom-post-types/humble-lms-track.php:129
+#: admin/custom-post-types/humble-lms-track.php:136
 msgid "Add course"
 msgstr "Kurs hinzufügen"
 
-#: admin/custom-post-types/humble-lms-track.php:128
+#: admin/custom-post-types/humble-lms-track.php:130
 msgid "Course title"
 msgstr "Kurstitel"
 
-#: admin/custom-post-types/humble-lms-track.php:129
+#: admin/custom-post-types/humble-lms-track.php:131
 msgid "Please add a course title."
 msgstr "Bitte geben Sie einen Kurstitel ein."
 
-#: admin/custom-post-types/humble-lms-track.php:187
+#: admin/custom-post-types/humble-lms-track.php:189
 msgid "Yes, sell this track for a fixed price."
 msgstr "Ja, Lernpfad zu einem festen Preis verkaufen."
 

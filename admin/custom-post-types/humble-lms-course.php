@@ -177,7 +177,7 @@ function humble_lms_course_sections_mb()
 
   $args = array(
     'post_type' => 'humble_lms_lesson',
-    'post_status' => 'publish',
+    'post_status' => 'any',
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
@@ -207,7 +207,7 @@ function humble_lms_course_sections_mb()
 
       $args = array(
         'post_type' => 'humble_lms_lesson',
-        'post_status' => 'publish',
+        'post_status' => 'any',
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
@@ -231,14 +231,16 @@ function humble_lms_course_sections_mb()
           echo '<label for="humble_lms_course_section_title" class="humble-lms-course-section-title-label">' . __('Lessons in this section', 'humble-lms') . '</label>';
           echo '<select class="humble-lms-searchable" data-content="course_lessons-' . ($key + 1) . '"  multiple="multiple">';
             foreach( $lessons as $lesson ) {
+              $post_status = get_post_status( $lesson->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
               echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
                 if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-              echo '>' . $lesson->post_title . '</option>';
+              echo '>' . $lesson->post_title . $post_status . '</option>';
             }
             foreach( $selected_lessons as $lesson ) {
+              $post_status = get_post_status( $lesson->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
               echo '<option data-id="' . $lesson->ID . '" value="' . $lesson->ID . '" ';
                 if( is_array( $section_lessons ) && in_array( $lesson->ID, $section_lessons ) ) { echo 'selected'; }
-              echo '>' . $lesson->post_title . '</option>';
+              echo '>' . $lesson->post_title . $post_status . '</option>';
             }
           echo '</select>';
         echo '</div>';

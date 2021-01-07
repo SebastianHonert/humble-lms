@@ -86,7 +86,7 @@ function humble_lms_track_courses_mb()
 
   $args = array(
     'post_type' => 'humble_lms_course',
-    'post_status' => 'publish',
+    'post_status' => 'any',
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
@@ -108,14 +108,16 @@ function humble_lms_track_courses_mb()
   echo '<div id="humble-lms-admin-track-courses humble_lms_multiselect_track_courses">';
     echo '<select class="humble-lms-searchable" data-content="track_courses" multiple="multiple">';
       foreach( $selected_courses as $course ) {
+        $post_status = get_post_status( $course->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
         echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
           if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
-        echo '>' . $course->post_title . '</option>';
+        echo '>' . $course->post_title . $post_status . '</option>';
       }
       foreach( $courses as $course ) {
+        $post_status = get_post_status( $course->ID ) !== 'publish' ? ' ' . __('(draft)', 'humble-lms') : '';
         echo '<option data-id="' . $course->ID . '" value="' . $course->ID . '" ';
           if( is_array( $track_courses ) && in_array( $course->ID, $track_courses ) ) { echo 'selected'; }
-        echo '>' . $course->post_title . '</option>';
+        echo '>' . $course->post_title . $post_status . '</option>';
       }
     echo '</select>';
     echo '<input class="humble-lms-multiselect-value" id="humble_lms_track_courses" name="humble_lms_track_courses" type="hidden" value="' . implode(',', $track_courses) . '">';

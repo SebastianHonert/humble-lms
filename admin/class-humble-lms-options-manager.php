@@ -17,11 +17,11 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @param    class    $access   Public access class
      */
     public function __construct() {
+      $this->license_status = 0;
       $this->license_key = '';
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->translator = new Humble_LMS_Translator;
-      $this->license_manager = new Humble_LMS_License_Manager;
       $this->options = get_option('humble_lms_options');
       $this->active = 'reporting-users';
       $this->page_sections = array();
@@ -999,67 +999,19 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       }
 
       if( $active === 'license' ) {
+        $license_manager = new Humble_LMS_License_Manager;
+
         // Activate license
         if( isset( $_REQUEST['activate_license'] ) ) {
           $options['license_key'] = sanitize_text_field( $input['license_key'] );
-  
-          if( 0 === $options['license_status'] ) {
-            $api_params = array(
-              'slm_action' => 'slm_activate',
-              'secret_key' => $this->secret_key,
-              'license_key' => $options['license_key'],
-              'registered_domain' => $_SERVER['SERVER_NAME'],
-              'item_reference' => urlencode( $this->item_reference ),
-            );
-    
-            $query = esc_url_raw( add_query_arg( $api_params, $this->license_server_url ) );
-            $response = wp_remote_get( $query, array(
-              'timeout' => 20,
-              'sslverify' => false
-            ) );
-    
-            if( is_wp_error( $response ) ) {
-              $options['license_status'] = 0;
-            }
-            
-            $license_data = json_decode( wp_remote_retrieve_body( $response ) );
-            
-            if( isset( $license_data ) && $license_data->result == 'success' ) {
-              $options['license_status'] = 1;
-            }
-          }
+          $activate = $license_manager->activate( $options['license_key'] );
+          $options['license_status'] = $activate ? 1 : 0;
         }
       
         // Deactivate license
-        if ( isset( $_REQUEST['deactivate_license'] ) ) {
-          // $deactivate = $this->license_manager->deactivate( $secret_key, $license_key, $server_name, $item_reference )
-          if( 1 === $options['license_status'] ) {
-            $api_params = array(
-              'slm_action' => 'slm_deactivate',
-              'secret_key' => $this->secret_key,
-              'license_key' => $options['license_key'],
-              'registered_domain' => $_SERVER['SERVER_NAME'],
-              'item_reference' => urlencode( $this->item_reference ),
-            );
-
-            $query = esc_url_raw( add_query_arg($api_params, $this->license_server_url ) );
-            $response = wp_remote_get( $query, array(
-              'timeout' => 20,
-              'sslverify' => false
-            ) );
-
-            if( is_wp_error( $response ) ) {
-              $options['license_status'] = 1;
-            } else {
-              $license_data = json_decode( wp_remote_retrieve_body( $response ) );
-              
-              if( isset( $license_data ) && $license_data->result == 'success' ) {
-                $options['license_status'] = 0;
-              } else {
-                $options['license_status'] = 1;
-              }
-            }
-          }
+        if( isset( $_REQUEST['deactivate_license'] ) ) {
+          $deactivate = $license_manager->activate( $options['license_key'], false );
+          $options['license_status'] = $deactivate ? 0 : 1;
         }
       }
 

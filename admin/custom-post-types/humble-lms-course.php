@@ -175,17 +175,6 @@ function humble_lms_course_sections_mb()
     );
   }
 
-  $args = array(
-    'post_type' => 'humble_lms_lesson',
-    'post_status' => 'any',
-    'posts_per_page' => -1,
-    'orderby' => 'title',
-    'order' => 'ASC',
-    'lang' => $translator->current_language(),
-  );
-
-  $lessons = get_posts( $args );
-
   // Course sections wrapper
   echo '<div id="humble-lms-admin-course-sections" class="list-group">';
 

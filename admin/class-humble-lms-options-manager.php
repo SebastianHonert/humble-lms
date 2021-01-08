@@ -17,8 +17,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @param    class    $access   Public access class
      */
     public function __construct() {
-      $this->license_status = 0;
-      $this->license_key = '';
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->translator = new Humble_LMS_Translator;
@@ -110,7 +108,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $nav_tab_registration = $active === 'registration' ? 'nav-tab-active' : '';
         $nav_tab_paypal = $active === 'paypal' ? 'nav-tab-active' : '';
         $nav_tab_billing = $active === 'billing' ? 'nav-tab-active' : '';
-        $nav_tab_license = $active === 'license' ? 'nav-tab-active' : '';
 
         echo '<h2 class="nav-tab-wrapper">
           <a href="' . $this->admin_url . '&active=reporting-users" class="nav-tab ' . $nav_tab_reporting_users . '">' . __('Users', 'humble-lms') . '</a>
@@ -119,7 +116,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           <a href="' . $this->admin_url . '&active=registration" class="nav-tab ' . $nav_tab_registration . '">' . __('Registration', 'humble-lms') . '</a>
           <a href="' . $this->admin_url . '&active=paypal" class="nav-tab ' . $nav_tab_paypal . '">PayPal</a>
           <a href="' . $this->admin_url . '&active=billing" class="nav-tab ' . $nav_tab_billing . '">' . __('Billing', 'humble-lms'). '</a>
-          <a href="' . $this->admin_url . '&active=license" class="nav-tab ' . $nav_tab_license . '">' . __('License', 'humble-lms'). '</a>
         </h2>';
 
         echo '<form method="post" action="options.php">';
@@ -152,10 +148,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
               do_settings_sections('humble_lms_options_billing');
               submit_button();
               break;
-            case 'license':
-              settings_fields('humble_lms_options_license');
-              do_settings_sections('humble_lms_options_license');
-              break;
           }
         echo '</form>';
 
@@ -173,15 +165,13 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       register_setting( 'humble_lms_options_registration', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_paypal', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
       register_setting( 'humble_lms_options_billing', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
-      register_setting( 'humble_lms_options_license', 'humble_lms_options', array( 'sanitize_callback' => array( $this, 'humble_lms_options_validate' ) ) );
-      
+
       add_settings_section('humble_lms_options_section_reporting_users', '', array( $this, 'humble_lms_options_section_reporting_users' ), 'humble_lms_options_reporting_users' );
       add_settings_section('humble_lms_options_section_reporting_courses', __('Reporting: Courses', 'humble-lms'), array( $this, 'humble_lms_options_section_reporting_courses' ), 'humble_lms_options_reporting_courses' );
       add_settings_section('humble_lms_options_section_options', __('Options', 'humble-lms'), array( $this, 'humble_lms_options_section_options' ), 'humble_lms_options' );
       add_settings_section('humble_lms_options_section_registration', __('User Registration', 'humble-lms'), array( $this, 'humble_lms_options_section_registration' ), 'humble_lms_options_registration' );
       add_settings_section('humble_lms_options_section_paypal', 'PayPal', array( $this, 'humble_lms_options_section_paypal' ), 'humble_lms_options_paypal' );
       add_settings_section('humble_lms_options_section_billing', __('Billing', 'humble-lms'), array( $this, 'humble_lms_options_section_billing' ), 'humble_lms_options_billing' );
-      add_settings_section('humble_lms_options_section_license', __('License', 'humble-lms'), array( $this, 'humble_lms_options_section_license' ), 'humble_lms_options_license' );
 
       add_settings_field( 'tiles_per_page', __('Tiles per page (track/course archive)', 'humble-lms'), array( $this, 'tiles_per_page' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -220,7 +210,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'invoice_text_after', __('Invoice text (after)', 'humble-lms'), array( $this, 'invoice_text_after' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
       add_settings_field( 'invoice_text_footer', __('Invoice footer text', 'humble-lms'), array( $this, 'invoice_text_footer' ), 'humble_lms_options_billing', 'humble_lms_options_section_billing');
 
-      add_settings_field( 'license_settings', __('License key', 'humble-lms'), array( $this, 'license_settings' ), 'humble_lms_options_license', 'humble_lms_options_section_license');    
     }
 
     /**
@@ -258,10 +247,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
     public function humble_lms_options_section_billing() {
       echo '<p><em>' . __('Set up your billing information and invoice layout.', 'humble-lms') . '</em></p>';
-    }
-
-    public function humble_lms_options_section_license() {
-      echo '<p><em>' . __('Enter your license code to activate the Humble LMS plugin.', 'humble-lms') . '</em></p>';
     }
 
     /**
@@ -828,35 +813,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
-     * License settings
-     *
-     * @since    0.0.3
-     */
-    function license_settings()
-    {
-      $license_status = isset( $this->options['license_status'] ) ? absint( $this->options['license_status'] ) : 0;
-      $license_key = isset( $this->options['license_key'] ) ? sanitize_text_field( $this->options['license_key'] ) : '';
-
-      echo '<p><input class="widefat" type="text" id="html_license_key" name="humble_lms_options[license_key]"  value="' . sanitize_text_field( $license_key ) . '"></p>';
-
-      echo '<p class="submit">';
-        if( 0 === $license_status ) {
-          echo '<input type="submit" name="activate_license" value="' . __('Activate', 'humble-lms') . '" class="button-primary" />';
-        } else {
-          echo '<input type="submit" name="deactivate_license" value="' . __('Deactivate', 'humble-lms') . '" class="button" />';
-        }
-      echo '</p>';
-
-      if( 1 === $license_status ) {
-        echo '<p class="humble-lms-message humble-lms-message--success">' . __('You\'re plugin license has been activated.', 'humble-lms') . '</p>';
-      } else {
-        echo '<p class="humble-lms-message humble-lms-message--error">' . __('Plugin not activated. Please enter your license key and click "Activate".', 'humble-lms') . '</p>';
-      }
-
-      echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
-    }
-
-    /**
      * Validate options on save.
      *
      * @param   array
@@ -996,23 +952,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['invoice_text_footer'] =  wp_kses( $input['invoice_text_footer'], $allowed_tags );
 
         update_option( 'humble_lms_invoice_counter', absint( $input['invoice_counter'] ) );
-      }
-
-      if( $active === 'license' ) {
-        $license_manager = new Humble_LMS_License_Manager;
-
-        // Activate license
-        if( isset( $_REQUEST['activate_license'] ) ) {
-          $options['license_key'] = sanitize_text_field( $input['license_key'] );
-          $activate = $license_manager->activate( $options['license_key'] );
-          $options['license_status'] = $activate ? 1 : 0;
-        }
-      
-        // Deactivate license
-        if( isset( $_REQUEST['deactivate_license'] ) ) {
-          $deactivate = $license_manager->activate( $options['license_key'], false );
-          $options['license_status'] = $deactivate ? 0 : 1;
-        }
       }
 
       return $options;

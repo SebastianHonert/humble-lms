@@ -151,11 +151,8 @@ class Humble_LMS_Activator {
 
     if( ! isset( $options ) ) {
       update_option('humble_lms_options', array(
-        'license_status' => 0,
         'secret_key' => '5fba5d909a6c83.38241175',
-        'license_server_url' => 'https://humblelms.de',
         'item_reference' => 'Humble LMS',
-        'license_key' => '',
         'delete_plugin_data_on_uninstall' => 0,
         'has_sales' => 0,
         'use_coupons' => 0,

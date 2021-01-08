@@ -125,11 +125,6 @@ class Humble_LMS {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/widgets/class-humble-lms-progress-bar.php';
 
     /**
-     * The class provides licensing functionalities.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-license-manager.php';
-
-    /**
      * The class providing options management functionalities.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-humble-lms-options-manager.php';

@@ -149,7 +149,7 @@ class Humble_LMS_Activator {
     // Set default plugin options
     $options = get_option('humble_lms_options');
 
-    if( ! isset( $options ) ) {
+    if( ! isset( $options ) || ! is_array( $options ) ) {
       update_option('humble_lms_options', array(
         'secret_key' => '5fba5d909a6c83.38241175',
         'item_reference' => 'Humble LMS',

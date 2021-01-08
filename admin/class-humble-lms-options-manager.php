@@ -36,11 +36,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         'certificate' => __('Certificates', 'humble-lms'),
       );
 
-      $this->default_button_labels = array(
-        'Mark lesson as complete',
-        'Mark lesson as incomplete',
-      );
-
       $this->custom_pages = array(
         'login' => 0,
         'registration' => 0,
@@ -180,7 +175,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'sort_tracks_by_category', __('Sort tracks by category?', 'humble-lms'), array( $this, 'sort_tracks_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'sort_courses_by_category', __('Sort courses by category?', 'humble-lms'), array( $this, 'sort_courses_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
-      add_settings_field( 'button_labels', __('Button texts', 'humble-lms'), array( $this, 'button_labels' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'max_evaluations', __('Max. number of logged quiz evaluations', 'humble-lms'), array( $this, 'max_evaluations' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tippy_theme', __('TippyJS tooltips theme', 'humble-lms'), array( $this, 'tippy_theme' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -352,20 +346,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<input id="messages" name="humble_lms_options[messages][]" type="checkbox" value="' . $key . '" ' . $checked . '>' . $message . '<br>';
       }
       echo '</p>';
-    }
-
-    /**
-     * Option for lesson complete/incomplete button texts.
-     *
-     * @since    0.0.1
-     */
-    public function button_labels() {
-      $button_labels = isset( $this->options['button_labels'] ) ? $this->options['button_labels'] : $this->default_button_labels;
-
-      echo '<p><strong>' . __('Mark lesson as complete', 'humble-lms') . '</strong></p>';
-      echo '<p><input type="text" maxlength="32" id="button_labels_complete" name="humble_lms_options[button_labels][]" value="' . $button_labels[0] . '" placeholder="' . __($this->default_button_labels[0], 'humble-lms') . '"></p>';
-      echo '<p><strong>' . __('Mark lesson as incomplete', 'humble-lms') . '</strong></p>';
-      echo '<p><input type="text" maxlength="32" id="button_labels_incomplete" name="humble_lms_options[button_labels][]" value="' . $button_labels[1] . '" placeholder="' . __($this->default_button_labels[1], 'humble-lms') . '"></p>';
     }
 
     /**
@@ -709,7 +689,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $seller_info = isset( $this->options['seller_info'] ) ? wp_kses( $this->options['seller_info'], $allowed_tags ) : '';
 
       echo '<p class="description">' . __('Your personal and/or company information. Line breaks will be recognized automatically. Allowed HTML tags: a, br, em, p, strong.', 'humble-lms') . '</p>';
-      echo '<p><textarea class="widefat" id="seller_info" name="humble_lms_options[seller_info]" rows="7">' . $seller_info . '</textarea></p>';
+      echo '<p><input type="text" class="widefat" id="seller_info" name="humble_lms_options[seller_info]" rows="7" value="' . $seller_info . '"></p>';
       echo '<input type="hidden" name="humble_lms_options[active]" value="' . $this->active . '">';
     }
 
@@ -860,11 +840,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         
         if( isset( $input['messages'] ) )
           $options['messages'] = $input['messages'];
-
-        if( isset( $input['button_labels'] ) ) {
-          $options['button_labels'][0] = sanitize_text_field( $input['button_labels'][0] );
-          $options['button_labels'][1] = sanitize_text_field( $input['button_labels'][1] );
-        }
         
         if( isset( $input['custom_pages'] ) )
           $options['custom_pages'] = $input['custom_pages'];
@@ -1386,20 +1361,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     public function get_currency() {
       $options = get_option('humble_lms_options');
       return isset( $options['currency'] ) && in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
-    }
-
-    /**
-     * Get button labels.
-     *
-     * @return  string
-     * @since   0.0.1
-     */
-    public function get_button_labels() {
-      $options = get_option('humble_lms_options');
-      $button_labels = array();
-      $button_labels[0] = isset( $options['button_labels'][0] ) && ! empty( $options['button_labels'][0] ) && $options['button_labels'][0] !== '' ? $options['button_labels'][0] : __($this->default_button_labels[0], 'humble-lms');
-      $button_labels[1] = isset( $options['button_labels'][1] ) && ! empty( $options['button_labels'][1] ) && $options['button_labels'][1] !== '' ? $options['button_labels'][1] : __($this->default_button_labels[1], 'humble-lms');
-      return $button_labels;
     }
     
   }

@@ -683,11 +683,10 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         $html .= '<input type="hidden" name="quiz-ids" id="quiz-ids" value="' . $quiz_ids_string . '">';
         $html .= '<input type="hidden" name="lesson-completed" id="lesson-completed" value="' . $lesson_completed . '">';
 
-        $button_labels = $this->options_manager->get_button_labels();
         if( $lesson_completed ) {
-          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . $button_labels[1] . '">';
+          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--success" value="' . __('Mark lesson as incomplete', 'humble-lms') . '">';
         } else {
-          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . $button_labels[0] . '">';
+          $html .= '<input type="submit" class="humble-lms-btn humble-lms-btn--error" value="' . __('Mark lesson as complete', 'humble-lms') . '">';
         }
       $html .= '</form>';
 

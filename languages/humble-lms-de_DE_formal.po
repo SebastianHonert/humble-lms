@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-01-08 18:28+0100\n"
+"POT-Creation-Date: 2021-01-08 20:07+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -2937,7 +2937,7 @@ msgstr "Sie müssen diesen Kurs erst kaufen."
 #: public/class-humble-lms-public.php:322
 #: public/class-humble-lms-public.php:329
 msgid "Purchase completed"
-msgstr "Transaktion abgeschlossen"
+msgstr "Danke für Ihren Einkauf"
 
 #: public/class-humble-lms-public.php:323
 msgid ""
@@ -3580,7 +3580,7 @@ msgstr "Mitgliedschaft kaufen"
 #: public/class-humble-lms-shortcodes.php:1848
 #: public/class-humble-lms-shortcodes.php:2063
 msgid "Redeem discount"
-msgstr "Rabatt einlösen"
+msgstr "Gutschein einlösen"
 
 #: public/class-humble-lms-shortcodes.php:1847
 msgid ""
@@ -3652,7 +3652,7 @@ msgstr "Kaufen für"
 
 #: public/class-humble-lms-shortcodes.php:2023
 msgid "Complete billing details"
-msgstr "Rechnungsdaten vervollständigen"
+msgstr "Rechnungsdaten angeben"
 
 #: public/class-humble-lms-shortcodes.php:2064
 msgid "The code you entered is invalid."

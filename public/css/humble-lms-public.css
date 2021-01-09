@@ -1041,7 +1041,8 @@ input[type='button'].humble-lms-btn--small {
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7); }
+  background: rgba(0, 0, 0, 0.7);
+  overflow: hidden; }
 
 .humble-lms-lightbox {
   box-sizing: border-box;
@@ -1049,7 +1050,9 @@ input[type='button'].humble-lms-btn--small {
   max-width: 90%;
   padding: 1em;
   background: #fff;
-  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.4); }
+  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.4);
+  max-height: 90%;
+  overflow: auto; }
 
 .humble-lms-lightbox-title {
   font-size: 1.5em;

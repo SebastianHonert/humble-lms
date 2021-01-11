@@ -461,21 +461,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'humble_lms_track',
       );
 
-      // Inside a lesson?
-      if( $post->post_type === 'humble_lms_lesson' ) {
-        $instructors = $this->content_manager->get_instructors( $post->ID );
-      }
-
-      // Inside a course?
-      if( empty( $instructors ) ) {
-        if( $post->post_type === 'humble_lms_course' ) {
-          $post_id = $post->ID;
-        } else {
-          $post_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
-        }
-        
-        $instructors = $this->content_manager->get_instructors( $post_id );
-      }
+      $instructors = $this->content_manager->get_instructors( $post->ID );
 
       $html .= '<div class="humble-lms-instructors ' . $class . '" style="' . $style . '">';
 

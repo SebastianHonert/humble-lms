@@ -83,7 +83,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return $track_courses;
 
       $track_courses = get_post_meta( $track_id, 'humble_lms_track_courses', true );
-      $track_courses = is_array( $track_courses ) ? $track_courses : [];
+      $track_courses = is_array( $track_courses ) && ! empty( $track_courses[0] ) ? $track_courses : [];
 
       if( empty( $track_courses ) ) {
         return $track_courses;
@@ -191,7 +191,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $course_sections = get_post_meta( $course_id, 'humble_lms_course_sections', true );
       $course_sections = json_decode( $course_sections, true );
 
-      if( ! is_array( $course_sections ) ) {
+      if( ! is_array( $course_sections ) || empty( $course_sections[0] ) ) {
         $course_sections = array(
           array(
             'title' => '',
@@ -601,7 +601,16 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return $instructors;
 
       $instructors = get_post_meta( $post_id, 'humble_lms_instructors', true );
-      $instructors = is_array( $instructors ) ? $instructors : [];
+      $instructors = is_array( $instructors ) && isset( $instructors[0] ) && ! empty( $instructors[0] ) ? $instructors : [];
+
+      if( ! is_admin() && empty( $instructors ) && $post_type === 'humble_lms_lesson' ) {
+        $parent_course = (new Humble_LMS_Content_Manager)->get_parent_course( $post_id );
+
+        if( $parent_course ) {
+          $instructors = get_post_meta( $parent_course->ID, 'humble_lms_instructors', true );
+          $instructors = is_array( $instructors ) && isset( $instructors[0] ) && ! empty( $instructors[0] ) ? $instructors : [];
+        }
+      }
 
       return $instructors;
     }
@@ -620,7 +629,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return $lesson_quizzes;
 
       $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', true );
-      $lesson_quizzes = is_array( $lesson_quizzes ) ? $lesson_quizzes : [];
+      $lesson_quizzes = is_array( $lesson_quizzes ) && ! empty( $lesson_quizzes[0] ) ? $lesson_quizzes : [];
       $lesson_quizzes = array_unique( $lesson_quizzes );
 
       return $lesson_quizzes;

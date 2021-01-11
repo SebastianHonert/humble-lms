@@ -128,6 +128,26 @@
   font-weight: 600;
 }
 
+.humble-lms-label-new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  left: -.26125em;
+  top: .1em;
+  z-index: 1;
+  background: #b5224b;
+  color: $color-light;
+  padding: .25em .5em .25em calc(.5em + 1px);
+  transform: rotate(-20deg);
+  font-size: .6125em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
 /* Syllabus */
 
 nav.humble-lms-syllabus {

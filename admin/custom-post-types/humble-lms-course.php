@@ -69,10 +69,11 @@ function humble_lms_course_add_meta_boxes()
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_consecutive_order_mb', __('Order of completion', 'humble-lms'), 'humble_lms_course_consecutive_order_mb', 'humble_lms_course', 'normal', 'default' );
-  add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_color_mb', __('Select a color for the course tile (optional)', 'humble-lms'), 'humble_lms_course_color_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_show_featured_image_mb', __('Display featured image', 'humble-lms'), 'humble_lms_course_show_featured_image_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_is_new_mb', __('List course as new content' , 'humble-lms'), 'humble_lms_course_is_new_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_fixed_price_mb', __('Sell this course for a fixed price', 'humble-lms'), 'humble_lms_fixed_price_mb', 'humble_lms_course', 'normal', 'default' );
+  add_meta_box( 'humble_lms_course_instructors_mb', __('Select instructor(s) for this course (optional)', 'humble-lms'), 'humble_lms_course_instructors_mb', 'humble_lms_course', 'normal', 'default' );
 }
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
@@ -330,6 +331,17 @@ function humble_lms_course_show_featured_image_mb() {
   echo '<p><input type="checkbox" name="humble_lms_course_show_featured_image" id="humble_lms_course_show_featured_image" value="1" ' . $checked . '>' . __('Yes, display the featured image on the course page.', 'humble-lms') . '</p>';
 }
 
+// List course as new content
+
+function humble_lms_course_is_new_mb() {
+  global $post;
+
+  $is_new = get_post_meta($post->ID, 'humble_lms_course_is_new', true);
+  $checked = $is_new ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_course_is_new" id="humble_lms_course_is_new" value="1" ' . $checked . '>' . __('Yes, list this course as new.', 'humble-lms') . '</p>';
+}
+
 // Sell for a fixed price meta box
 
 function humble_lms_fixed_price_mb() {
@@ -405,6 +417,7 @@ function humble_lms_save_course_meta_boxes( $post_id, $post )
   $course_meta['humble_lms_instructors'] = array_map( 'esc_attr', $course_meta['humble_lms_instructors'] );
   $course_meta['humble_lms_course_color'] = isset( $_POST['humble_lms_course_color'] ) ? sanitize_hex_color( $_POST['humble_lms_course_color'] ) : '';
   $course_meta['humble_lms_course_show_featured_image'] = (int)$_POST['humble_lms_course_show_featured_image'];
+  $course_meta['humble_lms_course_is_new'] = (int)$_POST['humble_lms_course_is_new'];
   $course_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? $calculator->format_price( $_POST['humble_lms_fixed_price'] ) : 0.00;
   $course_meta['humble_lms_is_for_sale'] = $course_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
 

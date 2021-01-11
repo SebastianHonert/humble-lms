@@ -68,6 +68,7 @@ function humble_lms_track_add_meta_boxes()
   add_meta_box( 'humble_lms_track_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_track_duration_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_position_mb', __('Position on track archive page (low = first)', 'humble-lms'), 'humble_lms_track_position_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_color_mb', __('Select a color for the track tile (optional)', 'humble-lms'), 'humble_lms_track_color_mb', 'humble_lms_track', 'normal', 'default' );
+  add_meta_box( 'humble_lms_track_is_new_mb', __('List track as new content' , 'humble-lms'), 'humble_lms_track_is_new_mb', 'humble_lms_track', 'normal', 'default' );
   add_meta_box( 'humble_lms_track_fixed_price_mb', __('Sell this track for a fixed price', 'humble-lms'), 'humble_lms_track_fixed_price_mb', 'humble_lms_track', 'normal', 'default' );
 }
 
@@ -174,6 +175,17 @@ function humble_lms_track_color_mb()
   echo '<input type="text" class="humble_lms_color_picker"" name="humble_lms_track_color" id="humble_lms_track_color" value="' . $color . '">';
 }
 
+// List track as new content
+
+function humble_lms_track_is_new_mb() {
+  global $post;
+
+  $is_new = get_post_meta($post->ID, 'humble_lms_track_is_new', true);
+  $checked = $is_new ? 'checked' : '';
+
+  echo '<p><input type="checkbox" name="humble_lms_track_is_new" id="humble_lms_track_is_new" value="1" ' . $checked . '>' . __('Yes, list this track as new.', 'humble-lms') . '</p>';
+}
+
 // Sell for a fixed price meta box
 
 function humble_lms_track_fixed_price_mb() {
@@ -224,6 +236,7 @@ function humble_lms_save_track_meta_boxes( $post_id, $post )
   $track_meta['humble_lms_track_duration'] = sanitize_text_field( $_POST['humble_lms_track_duration'] );
   $track_meta['humble_lms_track_position'] = ! (int) $_POST['humble_lms_track_position'] ? '1' : (int) $_POST['humble_lms_track_position'];
   $track_meta['humble_lms_track_color'] = isset( $_POST['humble_lms_track_color'] ) ? sanitize_hex_color( $_POST['humble_lms_track_color'] ) : '';
+  $track_meta['humble_lms_track_is_new'] = (int)$_POST['humble_lms_track_is_new'];
   $track_meta['humble_lms_fixed_price'] = isset( $_POST['humble_lms_fixed_price'] ) ? $calculator->format_price( $_POST['humble_lms_fixed_price'] ) : 0.00;
   $track_meta['humble_lms_is_for_sale'] = $track_meta['humble_lms_fixed_price'] !== 0.00 && isset( $_POST['humble_lms_is_for_sale'] ) ? 1 : 0;
 

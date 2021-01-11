@@ -123,8 +123,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = Humble_LMS_Admin_Options_Manager::has_sales() && get_post_meta( $track_id, 'humble_lms_is_for_sale', true );
       $price = ! $this->user->purchased( $track_id ) ? $this->calculator->currency() . ' ' . $this->calculator->display_price( $track_id, true ) : null;
+      $is_new = get_post_meta( $track_id, 'humble_lms_track_is_new', true );
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'"">';
+
+        if( 1 == $is_new ) {
+          $html .= $this->label_new_html();
+        }
+
         $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $track_id ) ) . '" class="humble-lms-course-tile">';
           $html .= '<div class="humble-lms-16-9">';
             $html .= '<div class="humble-lms-course-title">';
@@ -263,8 +269,14 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $overlay_color = $color !== '' ? 'background-color:' . $color : '';
       $is_for_sale = Humble_LMS_Admin_Options_Manager::has_sales() && get_post_meta( $course_id, 'humble_lms_is_for_sale', true );
       $price = ! $this->user->purchased( $course_id ) ? $this->options_manager->get_currency() . ' ' . $this->calculator->display_price( $course_id, true ) : null;
+      $is_new = get_post_meta( $course_id, 'humble_lms_course_is_new', true );
 
       $html = '<div class="humble-lms-course-tile-wrapper humble-lms-flex-column--' . $tile_width . ' ' . $completed . ' ' . $class . '" style="' . $style .'">';
+
+      if( 1 == $is_new ) {
+        $html .= $this->label_new_html();
+      }
+
       $html .= '<a style="' . $overlay_color . '; background-image: url(' . $featured_img_url . ')" href="' . esc_url( get_permalink( $course_id ) ) . '" class="humble-lms-course-tile">';
         $html .= '<div class="humble-lms-16-9">';
           $html .= '<div class="humble-lms-course-title">';
@@ -2062,6 +2074,16 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       return $html;
+    }
+
+    /**
+     * New content info on course/track tiles.
+     * 
+     * @return String
+     * @since 0.1.2
+     */
+    public function label_new_html() {
+      return '<div class="humble-lms-label-new">' . __('New', 'humble-lms') . '</div>';
     }
     
   }

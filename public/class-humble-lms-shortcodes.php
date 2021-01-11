@@ -1952,7 +1952,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       switch( get_post_type( $post->ID ) ) {
         case 'humble_lms_course':
-          $html = '<div class="humble-lms-message humble-lms-message--success">';
+          $html = '<div id="humble-lms-purchase-message" class="humble-lms-message humble-lms-message--success">';
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this course', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this course.', 'humble-lms') . '</p>';
@@ -1987,7 +1987,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             return '';
           }
 
-          $html = '<div class="humble-lms-message humble-lms-message--success">';
+          $html = '<div id="humble-lms-purchase-message" class="humble-lms-message humble-lms-message--success">';
             $html .= '<div class="humble-lms-message-title">' . __('Purchase this track', 'humble-lms') . '</div>';
             $html .= '<div class="humble-lms-message-content">';
               $html .= '<p>' . __('Please click the button below if your would like to purchase this track and all its containing courses.', 'humble-lms') . '</p>';
@@ -2055,7 +2055,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       if( 'POST' !== $_SERVER['REQUEST_METHOD'] || ! $this->coupon->validate( $coupon_code, $user_id ) ) {
-        $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post" onkeypress="return event.keyCode!==13">';
+        $html = '<form id="humble-lms-redeem-coupon" class="humble-lms-coupon-input-wrapper" method="post" action="' . esc_html( $_SERVER['REQUEST_URI'] ) . '#humble-lms-purchase-message" onkeypress="return event.keyCode!==13">';
           $html .= '<label for="humble-lms-coupon-code">' . __('Coupon code', 'humble-lms') . '</label>';
           $html .= '<input type="text" name="humble-lms-coupon-code" class="humble-lms-input--coupon-code" value="" maxlength="32" autocomplete="off">';
           $html .= '<button type="button" class="humble-lms-btn humble-lms-btn--activate-coupon humble-lms-btn--small humble-lms-toggle-lightbox" data-target="redeem">' . __('Redeem discount', 'humble-lms') . '</button>';

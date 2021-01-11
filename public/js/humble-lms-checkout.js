@@ -209,7 +209,6 @@ jQuery(document).ready(function($) {
     let code = $('#humble-lms-redeem-coupon').find('.humble-lms-input--coupon-code').val()
 
     if (typeof code === 'undefined' || !code) {
-      alert('No code...')
       return
     }
 

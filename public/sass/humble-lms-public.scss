@@ -137,14 +137,13 @@
   left: -.26125em;
   top: .1em;
   z-index: 1;
-  background: #b5224b;
+  background: #b31866;
   color: $color-light;
-  padding: .25em .5em .25em calc(.5em + 1px);
+  padding: 0.125em 0.5em 0.125em calc(.5em + 1px);
   transform: rotate(-20deg);
-  font-size: .6125em;
+  font-size: .875em;
   font-weight: 600;
   letter-spacing: 1px;
-  border-radius: 3px;
   pointer-events: none;
 }
 

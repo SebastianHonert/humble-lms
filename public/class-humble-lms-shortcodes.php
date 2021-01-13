@@ -795,29 +795,81 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @return string
      * @since   0.0.1
      */
-    function user_awards() {
-      if( ! is_user_logged_in() )
+    function user_awards( $atts = null ) {
+      if( ! is_user_logged_in() ) {
         return $this->display_login_text();
+      }
 
-      $awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', false );
+      extract( shortcode_atts( array (
+        'ids' => '',
+        'style' => '',
+        'class' => '',
+      ), $atts ) );
 
-      if( isset( $awards[0] ) && ! empty( $awards[0] ) ) {
-        foreach( $awards[0] as $key => $id ) {
-          if( get_post_status( $id ) !== 'publish' ) {
-            unset( $awards[0][$key] );
+      $_ids = [];
+      $user_awards_alternatives = [];
+      $user_awards = get_user_meta( get_current_user_id(), 'humble_lms_awards', true );
+
+      if( ! empty( $ids ) ) {
+        if( strpos( $ids, '|' ) !== false ) {
+          $ids_array = explode('|', $ids);
+          
+          foreach( $ids_array as $key => $id_array ) {
+            $continue = false;
+            $id_array = explode(',', $id_array);
+            $id_array = array_reverse( $id_array );
+
+            if( count( $id_array ) === 1 ) {
+              if( ! isset( $ids_array[$key+1] ) ) {
+                if( get_post_status( $id_array[0] ) === 'publish' && in_array( $id_array[0], $user_awards ) ) {
+                  array_push( $user_awards_alternatives, $id_array[0] );
+                }
+              }
+            } else {
+              foreach( $id_array as $key => $id ) {
+                if( ! $continue ) {
+                  if( get_post_status( $id ) === 'publish' && in_array( $id, $user_awards ) ) {
+                    array_push( $user_awards_alternatives, $id );
+                    $continue = true;
+                  }
+                } else {
+                  continue;
+                }
+              }
+            }
+          }
+
+          $ids = array_unique( $user_awards_alternatives );
+        } else {
+          $ids = ! empty( $ids ) ? explode(',', $ids) : [];
+        }
+      } else {
+        $ids = $user_awards;
+      }
+
+      if( is_array( $ids ) && ! empty( $ids[0] ) ) {
+        foreach( $ids as $key => $id ) {
+          if( get_post_status( $id ) !== 'publish' || ! in_array( $id, $user_awards ) ) {
+            unset( $ids[$key] );
           }
         }
+
+        $ids = array_values( $ids );
+      } else {
+        $ids = [];
       }
+
+      $user_awards = $ids;
 
       $html = '';
 
-      if( ! isset( $awards[0] ) || ! $awards[0] || empty( $awards[0] ) ) {
+      if( empty( $user_awards ) ) {
         $html .= '<p>' . __('You have not received any awards yet.', 'humble-lms') . '</p>';
       } else {
         $html .= '<div class="humble-lms-awards-list">';
-        foreach( $awards[0] as $award ) {
+        foreach( $user_awards as $user_award ) {
           $html .= '<div class="humble-lms-awards-list-item">';
-          $html .= '<img src="' . get_the_post_thumbnail_url( $award ) . '" title="' . get_the_title( $award ) . '" alt="' . get_the_title( $award ) . '" />';
+          $html .= '<img src="' . get_the_post_thumbnail_url( $user_award ) . '" title="' . get_the_title( $user_award ) . '" alt="' . get_the_title( $user_award ) . '" />';
           $html .= '</div>';
         }
         $html .= '</div>';

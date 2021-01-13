@@ -143,3 +143,25 @@ body.humble-lms-certificate.landscape {
 #humble-lms-certificate a:hover {
   text-decoration: underline;
 }
+
+/* Awards */
+.humble-lms-awards-list {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.humble-lms-awards-list-item {
+  flex: 0 0 22%;
+  position: relative;
+  display: inline-block;
+  margin: 0 .25cm .25cm;
+}
+
+.humble-lms-awards-list-item img {
+  max-width: 100%;
+}

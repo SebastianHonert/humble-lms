@@ -144,21 +144,21 @@ body.humble-lms-certificate.landscape {
   text-decoration: underline;
 }
 
-/* Awards */
 .humble-lms-awards-list {
+  display: block;
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  margin: 0 0;
+  padding: 0 0;
+  display: block;
   width: 100%;
-  overflow: hidden;
+  text-align: center;
 }
 
 .humble-lms-awards-list-item {
-  flex: 0 0 22%;
   position: relative;
+  margin: 0 auto;
   display: inline-block;
+  width: 21%;
   margin: 0 .25cm .25cm;
 }
 

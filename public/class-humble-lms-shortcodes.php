@@ -866,7 +866,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       if( empty( $user_awards ) ) {
         $html .= '<p>' . __('You have not received any awards yet.', 'humble-lms') . '</p>';
       } else {
-        $html .= '<div class="humble-lms-awards-list">';
+        $html .= '<div class="humble-lms-awards-list ' . $class . '" style="' . $style . '">';
         foreach( $user_awards as $user_award ) {
           $html .= '<div class="humble-lms-awards-list-item">';
           $html .= '<img src="' . get_the_post_thumbnail_url( $user_award ) . '" title="' . get_the_title( $user_award ) . '" alt="' . get_the_title( $user_award ) . '" />';

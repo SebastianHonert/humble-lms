@@ -98,8 +98,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         }
       }
 
-      $track_courses = array_values( $track_courses );
-      $track_courses = array_unique( $track_courses );
+      $track_courses = array_values( array_unique( $track_courses ) );
       
       return $track_courses;
     }
@@ -149,7 +148,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         }
       }
 
-      $course_lessons = array_unique( $course_lessons );
+      $course_lessons = array_values( $course_lessons );
 
       return $course_lessons;
     }
@@ -213,7 +212,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
           }
         }
 
-        $course_sections[$section_key]['lessons'] = array_unique( $lessons );
+        $course_sections[$section_key]['lessons'] = array_values( array_unique( $lessons ) );
       }
 
       return $course_sections;
@@ -376,7 +375,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         }
       }
 
-      $course_quizzes = array_unique( $course_quizzes );
+      $course_quizzes = array_values( array_unique( $course_quizzes ) );
 
       return $course_quizzes;
     }
@@ -430,7 +429,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         }
       }
 
-      $track_quizzes = array_unique( $track_quizzes );
+      $track_quizzes = array_values( array_unique( $track_quizzes ) );
       
       return $track_quizzes;
     }
@@ -572,7 +571,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $quiz_questions = get_post_meta( $quiz_id, 'humble_lms_quiz_questions', true );
       $quiz_questions = is_array( $quiz_questions ) ? $quiz_questions : [];
-      $quiz_questions = array_unique( $quiz_questions );
+      $quiz_questions = array_values( array_unique( $quiz_questions ) );
 
       return $quiz_questions;
     }
@@ -630,7 +629,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $lesson_quizzes = get_post_meta( $lesson_id, 'humble_lms_quizzes', true );
       $lesson_quizzes = is_array( $lesson_quizzes ) && ! empty( $lesson_quizzes[0] ) ? $lesson_quizzes : [];
-      $lesson_quizzes = array_unique( $lesson_quizzes );
+      $lesson_quizzes = array_values( array_unique( $lesson_quizzes ) );
 
       return $lesson_quizzes;
     }

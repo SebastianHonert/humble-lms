@@ -171,7 +171,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'tiles_per_page', __('Tiles per page (track/course archive)', 'humble-lms'), array( $this, 'tiles_per_page' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_track', __('Track archive tile width', 'humble-lms'), array( $this, 'tile_width_track' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'tile_width_course', __('Course archive tile width', 'humble-lms'), array( $this, 'tile_width_course' ), 'humble_lms_options', 'humble_lms_options_section_options');
-      add_settings_field( 'syllabus_max_height', __('Syllabus max. height in px', 'humble-lms'), array( $this, 'syllabus_max_height' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'sort_tracks_by_category', __('Sort tracks by category?', 'humble-lms'), array( $this, 'sort_tracks_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'sort_courses_by_category', __('Sort courses by category?', 'humble-lms'), array( $this, 'sort_courses_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -287,16 +286,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         echo '<option value="' . $value . '" ' . $selected . '>' . $key . '</option>';
       });
       echo '</select>';
-    }
-
-    /**
-     * Option for syllabus max height.
-     *
-     * @since    0.0.1
-     */
-    public function syllabus_max_height() {
-      $syllabus_max_height = isset( $this->options['syllabus_max_height'] ) ? (int)$this->options['syllabus_max_height'] : 640;
-      echo '<input type="number" min="0" max="9999" step="1" id="syllabus_max_height" name="humble_lms_options[syllabus_max_height]" value="' . $syllabus_max_height . '">';
     }
 
     /**
@@ -825,9 +814,6 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
         if( isset( $input['tiles_per_page'] ) )
           $options['tiles_per_page'] = (int)$input['tiles_per_page'];
-
-        if( isset( $input['syllabus_max_height'] ) )
-          $options['syllabus_max_height'] = (int)$input['syllabus_max_height'];
 
         if( isset( $input['sort_tracks_by_category'] ) )
           $options['sort_tracks_by_category'] = (int)$input['sort_tracks_by_category'];

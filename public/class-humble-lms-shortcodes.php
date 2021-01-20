@@ -336,8 +336,9 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         'class' => '',
       ), $atts ) );
 
-      if( is_single() && get_post_type() === 'humble_lms_lesson' )
+      if( is_single() && get_post_type() === 'humble_lms_lesson' ) {
         $context = 'lesson';
+      }
 
       if( $context === 'lesson' ) {
         $syllabus_class = 'humble-lms-syllabus--lesson';
@@ -376,6 +377,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Course Syllabus
+      $user_syllabus_state = get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true );
+
       $html .= '<nav class="humble-lms-syllabus ' . $class . ' ' . $syllabus_class . '" style="' . $style . '">';
         $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
@@ -385,7 +388,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           $html .= '<ul class="humble-lms-syllabus-lessons">';
 
           $lesson_index = 0;
-  
+
           foreach( $sections as $key => $section ) {
 
             $set_title = true;
@@ -400,31 +403,49 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               continue;
             }
 
-            foreach( $section_lessons as $key => $id ) {
-              $lesson_index++;
-              $lesson = get_post( $id );
-              $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
-              $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
-              $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
-              $locked = $this->access_handler->can_access_lesson( $lesson->ID, $course_id ) === 'allowed' ? '' : '<i class="ti-lock"></i>';
-              $html .= $section_title && $set_title ? '<li class="humble-lms-syllabus-section-title">' . $section_title . '</li>' : '';
+            // Syllabus section
+            $section_active = $lesson_id && in_array( $lesson_id, $section_lessons );
+            $section_active_class = $section_active || $context !== 'lesson' ? 'humble-lms-syllabus-section--active' : '';
+            $section_is_visible_class = $section_active || $context !== 'lesson' || $user_syllabus_state === 'expanded' ? 'humble-lms-syllabus-section-is-visible' : '';
+            
+            $html .='<div class="humble-lms-syllabus-section ' . $section_active_class . ' ' . $section_is_visible_class . '">';
 
-              if( $set_title ) {
-                $set_title = false;
-              }
+              $class_section_title_first = $lesson_index === 1 ? 'humble-lms-syllabus-section-title--first' : '';
+              $html .= $section_title && $set_title ? '<li class="humble-lms-syllabus-section-title ' . $class_section_title_first . '"><span class="humble-lms-toggle-syllabus-section">' . $section_title . '&nbsp;<span class="humble-lms-syllabus-section-toggle-icon"></span></span></li>' : '';
 
-              $html .= '<li tabindex="0" class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
-              $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson_index . '. ' . $lesson->post_title . '</span>';
-              $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
-              $html .= '</li>';
-            }
+              $html .= '<div class="humble-lms-syllabus-section-inner">';
+
+                foreach( $section_lessons as $key => $id ) {
+                  $lesson_index++;
+                  $lesson = get_post( $id );
+                  $description = $context === 'course' ? get_post_meta( $lesson->ID, 'humble_lms_lesson_description', true ) : '';
+                  $class_lesson_current = $lesson->ID === $lesson_id ? 'humble-lms-syllabus-lesson--current' : '';
+                  $class_lesson_completed = $this->user->completed_lesson( get_current_user_id(), $lesson->ID ) ? 'humble-lms-syllabus-lesson--completed' : '';
+                  $locked = $this->access_handler->can_access_lesson( $lesson->ID, $course_id ) === 'allowed' ? '' : '<i class="ti-lock"></i>';
+                  
+                  if( $set_title ) {
+                    $set_title = false;
+                  }
+
+                  $html .= '<li tabindex="0" class="humble-lms-syllabus-lesson humble-lms-open-lesson ' . $class_lesson_current . ' ' . $class_lesson_completed . '" data-lesson-id="' . $lesson->ID  . '" data-course-id="' . $course_id . '">';
+                  $html .= '<span class="humble-lms-syllabus-title">' . $locked . $lesson_index . '. ' . $lesson->post_title . '</span>';
+                  $html .= $description? '<span class="humble-lms-syllabus-description">' . $description . '</span>' : '';
+                  $html .= '</li>';
+                }
+
+              $html .= '</div>'; // Syllabus section inner
+            $html .= '</div>'; // Syllabus section
           }
           
           $html .= '</ul>';
+
+          if( 'lesson' === $context ) {
+            $toggle_syllabus_label = $user_syllabus_state === 'expanded' ? __('Collapse syllabus', 'humble-lms') : __('Expand syllabus', 'humble-lms');
+            $html .= '<a class="humble-lms-toggle-syllabus">' . $toggle_syllabus_label . '</a>';
+          }
         }
 
       $html .= '</nav>';
-      $html .= '<a class="humble-lms-toggle-syllabus">' . __('Close syllabus', 'humble-lms') . '</a>';
 
       // Meta information
       if( $lesson_id ) {
@@ -623,6 +644,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       ), $atts ) );
 
       $lessons = $this->content_manager->get_course_lessons( $course_id );
+
       $key = array_search( $post->ID, $lessons );
       $is_first = $key === array_key_first( $lessons );
       $is_last = $key === array_key_last( $lessons );
@@ -839,7 +861,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             }
           }
 
-          $ids = array_unique( $user_awards_alternatives );
+          $ids = array_values( array_unique( $user_awards_alternatives ) );
         } else {
           $ids = ! empty( $ids ) ? explode(',', $ids) : [];
         }

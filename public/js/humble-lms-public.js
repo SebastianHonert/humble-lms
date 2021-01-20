@@ -352,37 +352,22 @@ jQuery(document).ready(function($) {
    * @since   0.0.1
    */
   const handleSyllabus = (function() {
-    let syllabus = $('.humble-lms-syllabus--lesson')
     let syllabus_state = humble_lms.user_syllabus_state
     let toggleButton = $('.humble-lms-toggle-syllabus')
-    let syllabus_max_height = humble_lms.syllabus_max_height;
-    let syllabus_height = syllabus.innerHeight()
 
-    if (humble_lms.is_user_logged_in && (syllabus_height > syllabus_max_height)) {
-      toggleButton.css('display', 'block')
-    }
-
-    function toggleSyllabusHeight(ajax = false) {
-      let syllabus_height = syllabus.innerHeight()
-      
+    function toggleSyllabus(ajax = false) {      
       function expand_syllabus() {
-        syllabus.css({'height':'auto'})
-        syllabus_height = syllabus.innerHeight()
-        $('.humble-lms-toggle-syllabus').text(humble_lms.toggle_syllabus_text_close)
+        $('.humble-lms-syllabus-section').addClass('humble-lms-syllabus-section-is-visible')
+        toggleButton.text(humble_lms.toggle_syllabus_text_close)
         syllabus_state = 'expanded'
       }
 
       function close_syllabus() {
-        syllabus.css({'height':syllabus_max_height + 'px'})
-        syllabus_height = syllabus.innerHeight()
-        $('.humble-lms-toggle-syllabus').text(humble_lms.toggle_syllabus_text_expand)
+        $('.humble-lms-syllabus-section').not('.humble-lms-syllabus-section--active').removeClass('humble-lms-syllabus-section-is-visible')
+        toggleButton.text(humble_lms.toggle_syllabus_text_expand)
+        let syllabusOffsetTop = $('.humble-lms-syllabus').offset().top
+        window.scrollTo(0, syllabusOffsetTop-128)
         syllabus_state = 'closed'
-      }
-
-      if (!syllabus_state || syllabus_state === 'expanded') {
-        expand_syllabus()
-      } else {
-        close_syllabus()
       }
 
       if (ajax) {
@@ -414,10 +399,29 @@ jQuery(document).ready(function($) {
     }
 
     toggleButton.on('click', function() {
-      toggleSyllabusHeight(true)
+      toggleSyllabus(true)
+    })
+  })()
+
+  /**
+   * Toggle syllabus sections.
+   * 
+   * @since   0.1.4
+   */
+  const toggleSyllabusSections = (function() {
+    let sections = $('.humble-lms-syllabus-section')
+
+    if (sections.length === 0) {
+      return
+    }
+
+    sections.each(function (key, section) {
+      $(section).not('.humble-lms-syllabus-section--active').find('.humble-lms-syllabus-section-inner').addClass('humble-lms-syllabus-section-is-visible')
     })
 
-    toggleSyllabusHeight(false)
+    $('.humble-lms-toggle-syllabus-section').on('click', function() {
+      $(this).parent().parent().toggleClass('humble-lms-syllabus-section-is-visible')
+    })
   })()
 
   /**

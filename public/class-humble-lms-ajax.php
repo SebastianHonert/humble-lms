@@ -395,7 +395,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
             }
           }
 
-          $purchased = array_unique( $purchased, SORT_REGULAR );
+          $purchased = array_values( array_unique( $purchased, SORT_REGULAR ) );
           
           update_user_meta( $order_details['user_id'], 'humble_lms_purchased_content', $purchased );
 

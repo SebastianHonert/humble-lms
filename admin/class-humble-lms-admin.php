@@ -1205,7 +1205,7 @@ class Humble_LMS_Admin {
           }
         }
 
-        $courses_array = array_unique( $courses_array, SORT_REGULAR );
+        $courses_array = array_values( array_unique( $courses_array, SORT_REGULAR ) );
 
         foreach( $courses_array as $course ) {
           echo '<a href="' . get_edit_post_link( $course['id'] ) . '">' . $course['name'] . '</a>';
@@ -1275,7 +1275,7 @@ class Humble_LMS_Admin {
           }
         }
 
-        $quizzes_array = array_unique( $quizzes_array, SORT_REGULAR );
+        $quizzes_array = array_values( array_unique( $quizzes_array, SORT_REGULAR ) );
 
         foreach( $quizzes_array as $quiz ) {
           echo '<a href="' . get_edit_post_link( $quiz['id'] ) . '">' . $quiz['name'] . '</a>';
@@ -1345,7 +1345,7 @@ class Humble_LMS_Admin {
           }
         }
 
-        $tracks_array = array_unique( $tracks_array, SORT_REGULAR );
+        $tracks_array = array_values( array_unique( $tracks_array, SORT_REGULAR ) );
 
         foreach( $tracks_array as $track ) {
           echo '<a href="' . get_edit_post_link( $track['id'] ) . '">' . $track['name'] . '</a>';

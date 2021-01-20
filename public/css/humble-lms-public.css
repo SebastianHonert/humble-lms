@@ -19,7 +19,7 @@
 
 .humble-lms-course-tile {
   position: relative;
-  background: #444bb1;
+  background-color: #444bb1;
   color: #fff;
   background-size: cover;
   background-position: center center;
@@ -117,7 +117,7 @@
   z-index: 1;
   background: #b31866;
   color: #fff;
-  padding: 0.25em 0.5em 0.25em calc(.5em + 1px);
+  padding: 0.125em 0.5em 0.125em calc(.5em + 1px);
   transform: rotate(-20deg);
   font-size: .875em;
   font-weight: 600;
@@ -127,15 +127,16 @@
 /* Syllabus */
 nav.humble-lms-syllabus {
   display: block;
-  overflow: auto; }
+  overflow: auto;
+  position: relative; }
 
 .humble-lms-toggle-syllabus {
   position: relative;
-  display: none;
+  display: block;
   font-size: .75em;
   letter-spacing: 1px;
   padding: .5em;
-  margin-top: .75em;
+  margin: 1em 0 0;
   text-align: center;
   background: #f3f3f3;
   color: #777;
@@ -152,14 +153,47 @@ ul.humble-lms-syllabus-lessons {
   margin: 0 0;
   padding: 0 0; }
 
-.humble-lms-syllabus-section-title {
-  font-size: 1.25em;
-  display: block;
-  margin: 1.5em 0 .6125em;
-  font-weight: 600; }
+.humble-lms-syllabus-section:not(.humble-lms-syllabus-section-is-visible) .humble-lms-syllabus-section-inner {
+  display: none; }
 
-.humble-lms-syllabus-section-title:first-of-type {
-  margin-top: 0; }
+.humble-lms-syllabus-section.humble-lms-syllabus-section-is-visible {
+  display: block;
+  margin-bottom: 1em; }
+
+.humble-lms-syllabus-section-title {
+  font-size: 1.125em;
+  display: block;
+  padding: 0 0;
+  font-weight: 600;
+  margin-bottom: .375em; }
+
+.single-humble_lms_lesson .humble-lms-syllabus-section-title {
+  font-style: italic; }
+
+.single-humble_lms_lesson .humble-lms-syllabus-section-toggle-icon::after {
+  font-style: normal; }
+
+.humble-lms-syllabus-section-title a {
+  color: #444bb1; }
+
+.humble-lms-syllabus-section-title--first {
+  margin-top: 0;
+  padding-top: 0; }
+
+.humble-lms-toggle-syllabus-section {
+  cursor: pointer;
+  display: block; }
+
+.humble-lms-syllabus-section-title .humble-lms-syllabus-section-toggle-icon::after {
+  font-family: 'themify';
+  content: "\e64b";
+  display: inline-block;
+  font-size: .6125em;
+  margin-right: -1em;
+  color: #444bb1; }
+
+.humble-lms-syllabus-section-is-visible .humble-lms-syllabus-section-title .humble-lms-syllabus-section-toggle-icon::after {
+  content: "\e648"; }
 
 body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
   font-size: .75em; }

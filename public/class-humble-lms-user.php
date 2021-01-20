@@ -1190,7 +1190,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
         }
       }
 
-      $purchases = array_unique( $purchases, SORT_REGULAR );
+      $purchases = array_values( array_unique( $purchases, SORT_REGULAR ) );
 
       return $purchases;
     }
@@ -1371,7 +1371,7 @@ if( ! class_exists( 'Humble_LMS_Public_User' ) ) {
             }
           }
 
-          $purchased = array_unique( $purchased, SORT_REGULAR );
+          $purchased = array_values( array_unique( $purchased, SORT_REGULAR ) );
           
           update_user_meta( $user_id, 'humble_lms_purchased_content', $purchased );
 

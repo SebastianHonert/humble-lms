@@ -289,7 +289,7 @@ class Humble_LMS_Admin {
     echo '<h4>' . __('Purchased content', 'humble-lms') . '</h4>';
     echo '<select name="humble_lms_purchased_content[]" id="humble_lms_purchased_content" class="humble-lms-user-purchased-courses humble-lms-searchable" multiple="multiple">';
       foreach( $content as $item ) {
-        $selected = in_array( $item['post_id'], $purchased ) ? 'selected="selected"' : '';
+        $selected = is_array( $purchased ) && in_array( $item['post_id'], $purchased ) ? 'selected="selected"' : '';
         echo '<option name="humble_lms_purchased_content[]"  value="' . $item['post_id'] . '" ' . $selected . '>' . $item['post_title'] . '</option>';
       }
     echo '</select>';

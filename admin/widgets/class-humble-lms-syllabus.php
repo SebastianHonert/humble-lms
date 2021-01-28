@@ -27,16 +27,18 @@ class Humble_LMS_Widget_Syllabus extends WP_Widget
     $instance_title = isset( $instance['title'] ) ? $instance['title'] : '';
     $title = apply_filters( 'widget_title', $instance_title, $instance, $this->id_base );
 
-    echo $args['before_widget'];
-
-    if( ! empty( $title ) ) {
-      echo $args['before_title'];
-      echo __($title, 'humble-lms');
-      echo $args['after_title'];
+    if( empty( $title ) ) {
+      $title = __('Syllabus', 'humble-lms');
     }
 
-    echo do_shortcode('[humble_lms_syllabus]');
+    $toggle_syllabus_icon = '−';
+    $toggle_syllabus_label = __('Collapse syllabus', 'humble-lms');
 
+    echo $args['before_widget'];
+    echo $args['before_title'];
+    echo __($title, 'humble-lms') . '<a class="humble-lms-toggle-syllabus" title="' . $toggle_syllabus_label . '">' . $toggle_syllabus_icon . '</a>';
+    echo $args['after_title'];
+    echo do_shortcode('[humble_lms_syllabus]');
     echo $args['after_widget'];
   }
 

@@ -347,80 +347,73 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Toggle syllabus.
-   * 
-   * @since   0.0.1
-   */
-  const handleSyllabus = (function() {
-    let syllabus_state = humble_lms.user_syllabus_state
-    let toggleButton = $('.humble-lms-toggle-syllabus')
-
-    function toggleSyllabus(ajax = false) {      
-      function expand_syllabus() {
-        $('.humble-lms-syllabus-section').addClass('humble-lms-syllabus-section-is-visible')
-        toggleButton.text(humble_lms.toggle_syllabus_text_close)
-        syllabus_state = 'expanded'
-      }
-
-      function close_syllabus() {
-        $('.humble-lms-syllabus-section').not('.humble-lms-syllabus-section--active').removeClass('humble-lms-syllabus-section-is-visible')
-        toggleButton.text(humble_lms.toggle_syllabus_text_expand)
-        let syllabusOffsetTop = $('.humble-lms-syllabus').offset().top
-        window.scrollTo(0, syllabusOffsetTop-128)
-        syllabus_state = 'closed'
-      }
-
-      if (ajax) {
-        loadingLayer(true)
-        $.ajax({
-          url: humble_lms.ajax_url,
-          type: 'POST',
-          data: {
-            action: 'toggle_syllabus_height',
-            syllabusState: syllabus_state,
-            nonce: humble_lms.nonce
-          },
-          dataType: 'json',
-          error: function(MLHttpRequest, textStatus, errorThrown) {
-            console.error(errorThrown)
-            loadingLayer(true)
-          },
-          success: function(response, textStatus, XMLHttpRequest) {
-            if (response === 'closed') {
-              close_syllabus()
-            } else {
-              expand_syllabus()
-            }
-
-            loadingLayer(false)
-          }
-        })
-      }
-    }
-
-    toggleButton.on('click', function() {
-      toggleSyllabus(true)
-    })
-  })()
-
-  /**
-   * Toggle syllabus sections.
+   * Toggle syllabus and sections.
    * 
    * @since   0.1.4
    */
   const toggleSyllabusSections = (function() {
+    let syllabus_state = humble_lms.syllabus_state
+    let toggleButton = $('.humble-lms-toggle-syllabus')
     let sections = $('.humble-lms-syllabus-section')
 
-    if (sections.length === 0) {
+    if (sections.length < 2) {
       return
     }
 
-    sections.each(function (key, section) {
-      $(section).not('.humble-lms-syllabus-section--active').find('.humble-lms-syllabus-section-inner').addClass('humble-lms-syllabus-section-is-visible')
+    toggleButton.show(0)
+    $('.humble-lms-syllabus-section-toggle-icon').css('display', 'inline-block')
+    $('.humble-lms-toggle-syllabus-section').css({
+      'display': 'inline-block',
+      'cursor': 'pointer'
     })
 
+    function toggleSyllabus(expand = false) {    
+      if (syllabus_state === 'closed' || expand === true) {
+        $('.humble-lms-syllabus-section').addClass('humble-lms-syllabus-section-is-visible')
+        toggleButton.text(humble_lms.toggle_syllabus_text_close)
+        toggleButton.prop('title', humble_lms.toggle_syllabus_label_close)
+        syllabus_state = 'expanded'
+      } else {
+        $('.humble-lms-syllabus-section').removeClass('humble-lms-syllabus-section-is-visible')
+        toggleButton.text(humble_lms.toggle_syllabus_text_expand)
+        toggleButton.prop('title', humble_lms.toggle_syllabus_labeö_expand)
+        syllabus_state = 'closed'
+      }
+    }
+
+    toggleButton.on('click', function() {
+      toggleSyllabus()
+    })
+
+    // Toggle syllabus sections
     $('.humble-lms-toggle-syllabus-section').on('click', function() {
+      let closed = 0
+      let expanded = 0
+
+      if (sections.length < 2) {
+        return
+      }
+  
       $(this).parent().parent().toggleClass('humble-lms-syllabus-section-is-visible')
+
+      $('.humble-lms-syllabus-section').each(function (key, section) {
+        if ($(section).hasClass('humble-lms-syllabus-section-is-visible')) {
+          expanded++
+        } else {
+          closed++
+        }
+      })
+
+      if (closed === 0) {
+        toggleSyllabus(true)
+      }
+
+      if (expanded === 0) {
+        toggleSyllabus()
+      }
+
+      closed = 0
+      expanded = 0
     })
   })()
 

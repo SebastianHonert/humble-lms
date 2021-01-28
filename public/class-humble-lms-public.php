@@ -163,9 +163,11 @@ class Humble_LMS_Public {
       'currency' => $this->options_manager->get_currency(),
       'has_sales' => Humble_LMS_Admin_Options_Manager::has_sales(),
       'tippy_theme' => isset( $options['tippy_theme'] ) ? $options['tippy_theme'] : 'default',
-      'toggle_syllabus_text_close' => __('Collapse syllabus', 'humble-lms'),
-      'toggle_syllabus_text_expand' => __('Expand syllabus', 'humble-lms'),
-      'user_syllabus_state' => get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) ? get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true ) : 'expanded',
+      'toggle_syllabus_text_close' => '−',
+      'toggle_syllabus_text_expand' => '+',
+      'toggle_syllabus_label_close' => __('Collapse syllabus', 'humble-lms'),
+      'toggle_syllabus_label_expand' => __('Expand syllabus', 'humble-lms'),
+      'syllabus_state' => 'expanded',
       'general_error' => __('Sorry, an error occured.', 'humble-lms'),
     ) );
   }

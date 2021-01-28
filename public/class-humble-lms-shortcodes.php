@@ -377,8 +377,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       // Course Syllabus
-      $user_syllabus_state = get_user_meta( get_current_user_id(), 'humble_lms_syllabus_state', true );
-
       $html .= '<nav class="humble-lms-syllabus ' . $class . ' ' . $syllabus_class . '" style="' . $style . '">';
         $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
 
@@ -406,9 +404,8 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
             // Syllabus section
             $section_active = $lesson_id && in_array( $lesson_id, $section_lessons );
             $section_active_class = $section_active || $context !== 'lesson' ? 'humble-lms-syllabus-section--active' : '';
-            $section_is_visible_class = $section_active || $context !== 'lesson' || $user_syllabus_state === 'expanded' ? 'humble-lms-syllabus-section-is-visible' : '';
-            
-            $html .='<div class="humble-lms-syllabus-section ' . $section_active_class . ' ' . $section_is_visible_class . '">';
+
+            $html .='<div class="humble-lms-syllabus-section humble-lms-syllabus-section-is-visible ' . $section_active_class . '">';
 
               $class_section_title_first = $lesson_index === 1 ? 'humble-lms-syllabus-section-title--first' : '';
               $html .= $section_title && $set_title ? '<li class="humble-lms-syllabus-section-title ' . $class_section_title_first . '"><span class="humble-lms-toggle-syllabus-section">' . $section_title . '&nbsp;<span class="humble-lms-syllabus-section-toggle-icon"></span></span></li>' : '';
@@ -438,11 +435,6 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
           }
           
           $html .= '</ul>';
-
-          if( 'lesson' === $context ) {
-            $toggle_syllabus_label = $user_syllabus_state === 'expanded' ? __('Collapse syllabus', 'humble-lms') : __('Expand syllabus', 'humble-lms');
-            $html .= '<a class="humble-lms-toggle-syllabus">' . $toggle_syllabus_label . '</a>';
-          }
         }
 
       $html .= '</nav>';

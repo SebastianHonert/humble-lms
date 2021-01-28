@@ -367,8 +367,8 @@ jQuery(document).ready(function($) {
       'cursor': 'pointer'
     })
 
-    function toggleSyllabus(expand = false) {    
-      if (syllabus_state === 'closed' || expand === true) {
+    function toggleSyllabus(action = null) {    
+      if (action === 'expand' || (action === null && syllabus_state === 'closed')) {
         $('.humble-lms-syllabus-section').addClass('humble-lms-syllabus-section-is-visible')
         toggleButton.text(humble_lms.toggle_syllabus_text_close)
         toggleButton.prop('title', humble_lms.toggle_syllabus_label_close)
@@ -390,6 +390,8 @@ jQuery(document).ready(function($) {
       let closed = 0
       let expanded = 0
 
+      console.log(closed, expanded)
+
       if (sections.length < 2) {
         return
       }
@@ -404,16 +406,13 @@ jQuery(document).ready(function($) {
         }
       })
 
+      console.log(expanded, closed)
+
       if (closed === 0) {
-        toggleSyllabus(true)
+        toggleSyllabus('expand')
+      } else if (expanded === 0) {
+        toggleSyllabus('close')
       }
-
-      if (expanded === 0) {
-        toggleSyllabus()
-      }
-
-      closed = 0
-      expanded = 0
     })
   })()
 

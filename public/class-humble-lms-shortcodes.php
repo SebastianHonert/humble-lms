@@ -378,7 +378,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
 
       // Course Syllabus
       $html .= '<nav class="humble-lms-syllabus ' . $class . ' ' . $syllabus_class . '" style="' . $style . '">';
-        $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '</h2>';
+        $html .= $lesson_id ? '' : '<h2>' . __('Syllabus', 'humble-lms') . '<a class="humble-lms-toggle-syllabus" title="' . __('Collapse syllabus', 'humble-lms') . '">−</a></h2>';
 
         if( ! $course_id ) {
           $html .= '<p>' . __('Looking for the course syllabus? It seems that you have accessed this lesson directly so it is not related to a specific course. Please open the course and start your learning activities from there.', 'humble-lms') . '</p>';

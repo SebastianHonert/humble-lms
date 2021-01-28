@@ -36,7 +36,7 @@ class Humble_LMS_Widget_Syllabus extends WP_Widget
 
     echo $args['before_widget'];
     echo $args['before_title'];
-    echo __($title, 'humble-lms') . '<a class="humble-lms-toggle-syllabus" title="' . $toggle_syllabus_label . '">' . $toggle_syllabus_icon . '</a>';
+    echo __($title, 'humble-lms') . '&nbsp;<a class="humble-lms-toggle-syllabus" title="' . $toggle_syllabus_label . '">' . $toggle_syllabus_icon . '</a>';
     echo $args['after_title'];
     echo do_shortcode('[humble_lms_syllabus]');
     echo $args['after_widget'];

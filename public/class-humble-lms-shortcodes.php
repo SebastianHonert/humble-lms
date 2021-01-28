@@ -327,6 +327,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      */
     public function syllabus( $atts = null ) {
       global $post;
+
       $html = '';
 
       extract( shortcode_atts( array (

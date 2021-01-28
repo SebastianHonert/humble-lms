@@ -134,9 +134,8 @@ nav.humble-lms-syllabus {
 .humble-lms-toggle-syllabus {
   position: relative;
   display: none;
-  margin: 0 -1em 0 .125em;
-  color: #444bb1;
-  font-weight: 400; }
+  margin: 0 -1em 0 0;
+  color: #444bb1; }
 
 ul.humble-lms-syllabus-lessons {
   display: block;
@@ -178,7 +177,6 @@ ul.humble-lms-syllabus-lessons {
   display: none; }
 
 .humble-lms-syllabus-section-title .humble-lms-syllabus-section-toggle-icon::after {
-  font-family: 'themify';
   content: "+";
   display: inline-block;
   font-size: 1;

@@ -151,10 +151,10 @@ ul.humble-lms-syllabus-lessons {
   margin-bottom: 1em; }
 
 .humble-lms-syllabus-section-title {
-  font-size: 1.125em;
+  font-size: 1.25em;
   display: block;
   padding: 0 0;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: .375em; }
 
 .single-humble_lms_lesson .humble-lms-syllabus-section-title {
@@ -191,28 +191,21 @@ body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
 
 li.humble-lms-syllabus-lesson {
   display: block;
-  background: #f0f0f5;
   font-weight: 400;
-  padding: .75em;
+  padding: .25em .6125em;
   cursor: pointer;
-  transition: all .3s ease-in-out; }
-
-li.humble-lms-syllabus-lesson:hover,
-li.humble-lms-syllabus-lesson:focus,
-li.humble-lms-syllabus-lesson--current {
-  background: #e7e7ef; }
+  transition: all .3s ease-in-out;
+  background: linear-gradient(45deg, #f8f8fc, rgba(255, 255, 255, 0)); }
 
 li.humble-lms-syllabus-lesson--current {
-  box-shadow: inset 2px 0 0 #444bb1; }
+  box-shadow: inset 2px 0 0 #5e63b1; }
 
 li.humble-lms-syllabus-lesson--completed.humble-lms-syllabus-lesson--current {
-  box-shadow: inset 2px 0 0 #188e6e; }
+  box-shadow: inset 2px 0 0 #178567; }
 
 li.humble-lms-syllabus-lesson--completed {
   color: #06211a;
-  background: #e3f5f0; }
-  li.humble-lms-syllabus-lesson--completed:hover, li.humble-lms-syllabus-lesson--completed:focus {
-    background: #cdede4; }
+  background: linear-gradient(45deg, #e7fbf6, rgba(255, 255, 255, 0)); }
   li.humble-lms-syllabus-lesson--completed .humble-lms-syllabus-title {
     color: #06211a; }
 
@@ -220,14 +213,17 @@ li.humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .25em; }
 
 li.humble-lms-syllabus-lesson span {
-  display: block; }
+  display: inline-block; }
 
 .humble-lms-syllabus-title {
   font-weight: 400;
-  font-size: 1.25em;
+  font-size: 1.125em;
   display: flex;
-  align-items: center;
-  color: #444bb1; }
+  align-items: center; }
+
+.single-humble_lms_course li.humble-lms-syllabus-lesson {
+  font-size: .875em;
+  padding: .37em .75em; }
 
 .humble-lms-syllabus-description {
   font-weight: 400;

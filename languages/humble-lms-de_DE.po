@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-02-08 15:26+0100\n"
+"POT-Creation-Date: 2021-02-08 16:07+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -755,7 +755,7 @@ msgid "Yes, apply small business VAT scheme."
 msgstr "Ja, Kleinunternehmerregelung anwenden."
 
 #: admin/class-humble-lms-options-manager.php:629
-#: public/class-humble-lms-content-manager.php:1110
+#: public/class-humble-lms-content-manager.php:1043
 msgid ""
 "As a small entrepreneur I am tax-exempt according to Art. 19 I German VAT "
 "Act."
@@ -1487,7 +1487,7 @@ msgid "Type"
 msgstr "Typ"
 
 #: admin/custom-post-types/humble-lms-coupon.php:76
-#: public/class-humble-lms-content-manager.php:1087
+#: public/class-humble-lms-content-manager.php:1099
 msgid "Discount"
 msgstr "Rabatt"
 
@@ -1775,7 +1775,7 @@ msgstr "Ja, Kurs zu einem festen Preis verkaufen."
 #: admin/custom-post-types/humble-lms-course.php:360
 #: admin/custom-post-types/humble-lms-membership.php:43
 #: admin/custom-post-types/humble-lms-track.php:202
-#: public/class-humble-lms-content-manager.php:1075
+#: public/class-humble-lms-content-manager.php:1087
 #: public/class-humble-lms-shortcodes.php:143
 #: public/class-humble-lms-shortcodes.php:289
 msgid "Price"
@@ -2006,7 +2006,7 @@ msgstr "Mitgliedschaften"
 
 #: admin/custom-post-types/humble-lms-membership.php:44
 #: admin/custom-post-types/humble-lms-txn.php:106
-#: public/class-humble-lms-content-manager.php:1073
+#: public/class-humble-lms-content-manager.php:1085
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -2579,7 +2579,7 @@ msgid "VAT type (0 = none, 1 = inclusive, 2 = exclusive)"
 msgstr "USt.-Typ (0 = keine, 1 = inklusive, 2 = exklusive)"
 
 #: admin/custom-post-types/humble-lms-txn.php:154
-#: public/class-humble-lms-content-manager.php:1060
+#: public/class-humble-lms-content-manager.php:1072
 msgid "Invoice #"
 msgstr "Rechnung #"
 
@@ -2885,38 +2885,42 @@ msgstr "Steuern"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: public/class-humble-lms-content-manager.php:1061
+#: public/class-humble-lms-content-manager.php:1048
+msgid "Service not subject to domestic taxes."
+msgstr "Nicht im Inland steuerbare Leistung."
+
+#: public/class-humble-lms-content-manager.php:1073
 msgid "Date"
 msgstr "Datum"
 
-#: public/class-humble-lms-content-manager.php:1062
+#: public/class-humble-lms-content-manager.php:1074
 msgid "Due"
 msgstr "Fällig"
 
-#: public/class-humble-lms-content-manager.php:1067
-#: public/class-humble-lms-content-manager.php:1124
+#: public/class-humble-lms-content-manager.php:1079
+#: public/class-humble-lms-content-manager.php:1136
 #: public/class-humble-lms-shortcodes.php:1610
 msgid "Invoice"
 msgstr "Rechnung"
 
-#: public/class-humble-lms-content-manager.php:1074
+#: public/class-humble-lms-content-manager.php:1086
 msgid "Quantity"
 msgstr "Menge"
 
-#: public/class-humble-lms-content-manager.php:1076
+#: public/class-humble-lms-content-manager.php:1088
 #: public/class-humble-lms-shortcodes.php:1621
 msgid "Amount"
 msgstr "Preis"
 
-#: public/class-humble-lms-content-manager.php:1094
+#: public/class-humble-lms-content-manager.php:1106
 msgid "Subtotal"
 msgstr "Zwischensumme"
 
-#: public/class-humble-lms-content-manager.php:1098
+#: public/class-humble-lms-content-manager.php:1110
 msgid "VAT"
 msgstr "USt."
 
-#: public/class-humble-lms-content-manager.php:1103
+#: public/class-humble-lms-content-manager.php:1115
 msgid "Total"
 msgstr "Gesamt"
 

@@ -148,10 +148,11 @@ ul.humble-lms-syllabus-lessons {
 
 .humble-lms-syllabus-section.humble-lms-syllabus-section-is-visible {
   display: block;
-  margin-bottom: 1em; }
+  margin-bottom: 1.375em; }
 
 .humble-lms-syllabus-section-title {
   font-size: 1.25em;
+  font-style: italic;
   display: block;
   padding: 0 0;
   font-weight: 500;
@@ -192,7 +193,7 @@ body.single-humble_lms_lesson ul.humble-lms-syllabus-lessons {
 li.humble-lms-syllabus-lesson {
   display: block;
   font-weight: 400;
-  padding: .25em .6125em;
+  padding: .375em .6125em;
   cursor: pointer;
   transition: all .3s ease-in-out;
   background: linear-gradient(45deg, #f8f8fc, rgba(255, 255, 255, 0)); }
@@ -213,7 +214,7 @@ li.humble-lms-syllabus-lesson:not(:first-child) {
   margin-top: .25em; }
 
 li.humble-lms-syllabus-lesson span {
-  display: inline-block; }
+  display: block; }
 
 .humble-lms-syllabus-title {
   font-weight: 400;
@@ -222,8 +223,8 @@ li.humble-lms-syllabus-lesson span {
   align-items: center; }
 
 .single-humble_lms_course li.humble-lms-syllabus-lesson {
-  font-size: .875em;
-  padding: .37em .75em; }
+  font-size: .93875em;
+  padding: .6125em .75em; }
 
 .humble-lms-syllabus-description {
   font-weight: 400;

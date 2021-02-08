@@ -1755,6 +1755,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
               $html .= '<div class="humble-lms-quiz-question ' . $question_type . '" data-id="' . $question->ID . '">';
                 $title = get_post_meta( $question->ID, 'humble_lms_question', true );
                 $html .= '<h3 class="humble-lms-quiz-question-title">' . htmlspecialchars( $title ) . '</h3>';
+
+                $featured_image_url = get_the_post_thumbnail_url( $question->ID, 'large' );
+                if( $featured_image_url ) {
+                  $html .= '<img class="humble-lms-quiz-question-image" src="' . $featured_image_url . '" alt="" />';
+                }
                 
                 switch( $question_type ) {
                   case 'single_choice':

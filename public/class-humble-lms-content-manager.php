@@ -950,6 +950,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         'invoice_text_before' => $options['invoice_text_before'],
         'invoice_text_after' => $options['invoice_text_after'],
         'invoice_text_footer' => $options['invoice_text_footer'],
+        'small_business' => $options['small_business'],
       );
 
       return $template_data;
@@ -1004,6 +1005,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         'invoice_number' => isset( $order_details['invoice_number'] ) ? $order_details['invoice_number'] : null,
         'has_vat' => isset( $order_details['has_vat'] ) ? $order_details['has_vat'] : $this->calculator->has_vat(),
         'vat' => isset( $order_details['vat'] ) ? $order_details['vat'] : $this->calculator->get_vat(),
+        'small_business' => isset( $order_details['small_business'] ) ? $order_details['small_business'] : 0,
         'coupon_id' => isset( $order_details['coupon_id'] ) ? $order_details['coupon_id'] : '',
         'coupon_code' => isset( $order_details['coupon_code'] ) ? $order_details['coupon_code'] : '',
         'coupon_type' => isset( $order_details['coupon_type'] ) ? $order_details['coupon_type'] : '',
@@ -1024,6 +1026,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return;
       }
 
+      $options = get_option('humble_lms_options');
       $user_manager = new Humble_LMS_Public_User;
       $transaction = $this->transaction_details( $transaction_id );
 
@@ -1035,6 +1038,18 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
 
       $sum = $this->calculator->sum_transaction( $transaction_id );
 
+      // Check small business option and domestic tax info
+      if( $transaction['small_business'] == 1 ) {
+        $small_business_text = ! empty( $options['small_business_invoice_text'] ) ? $options['small_business_invoice_text'] : __('As a small entrepreneur I am tax-exempt according to Art. 19 I German VAT Act.', 'humble-lms');
+      } else {
+        $small_business_text = '';
+      }
+
+      $domestic_taxes_text = $this->calculator->user_country_has_vat( $transaction['user_id'] ) ? '' : __('Service not subject to domestic taxes.', 'humble-lms');
+      $invoice_has_additional_tax_info = ! empty( $small_business_text ) || ! empty( $domestic_taxes_text );
+      $invoice_additional_tax_info_string = $invoice_has_additional_tax_info ? '*' : '';
+
+      // Invoice content
       $content = '<div class="fold fold--one"></div>';
       $content .= '<div class="fold fold--two"></div>';
       
@@ -1092,7 +1107,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['subtotal'] . '</td>';
       $content .= '</tr>';
       $content .= '<tr id="humble-lms-taxes">';
-        $content .= '<td colspan="2">' . __('VAT', 'humble-lms') . '</td>';
+        $content .= '<td colspan="2">' . __('VAT', 'humble-lms') . $invoice_additional_tax_info_string . '</td>';
         $content .= '<td>' . $sum['vat_string'] . '</td>';
         $content .= '<td>' . $transaction['currency_code'] . ' ' . $sum['vat_diff'] . '</td>';
       $content .= '</tr>';
@@ -1104,7 +1119,12 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
       $content .= '</table>';
 
       $content .= '<div id="humble-lms-invoice-text-after">' . wpautop( $invoice_template_data['invoice_text_after'] ) . '</div>';
-      $content .= '<div id="humble-lms-invoice-text-footer"><div>' . wpautop( $invoice_template_data['invoice_text_footer'] ) . '</div></div>';
+      $content .= '<div id="humble-lms-invoice-text-footer"><div>';
+      $content .= wpautop( $invoice_template_data['invoice_text_footer'] );
+      if( $invoice_has_additional_tax_info ) {
+        $content .= '<div id="humble-lms-invoice-taxes-additional-info">' . $invoice_additional_tax_info_string . $domestic_taxes_text . ' ' . $small_business_text . '</div>';
+      }
+      $content .= '</div></div>';
 
         
       $html = '<!DOCTYPE html>

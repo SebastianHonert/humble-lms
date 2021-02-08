@@ -192,6 +192,8 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'currency', __('Currency', 'humble-lms'), array( $this, 'currency' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'has_vat', __('Prices include value added tax (vat)', 'humble-lms'), array( $this, 'has_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'vat', __('Value added tax (VAT) in %', 'humble-lms'), array( $this, 'vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'small_business', __('Apply small business VAT scheme?', 'humble-lms'), array( $this, 'small_business' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
+      add_settings_field( 'small_business_invoice_text', __('Small business VAT scheme invoice text', 'humble-lms'), array( $this, 'small_business_invoice_text' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'hide_vat', __('Display prices without additional VAT', 'humble-lms'), array( $this, 'hide_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'countries_without_vat', __('Countries without VAT', 'humble-lms'), array( $this, 'countries_without_vat' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
       add_settings_field( 'email_checkout', __('Checkout confirmation email', 'humble-lms'), array( $this, 'email_checkout' ), 'humble_lms_options_paypal', 'humble_lms_options_section_paypal');
@@ -606,6 +608,31 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     }
 
     /**
+     * Small business VAT scheme
+     *
+     * @since    0.1.4
+     */
+    public function small_business() {
+      $small_business = isset( $this->options['small_business'] ) ? (int)$this->options['small_business'] : 0;
+      $checked = $small_business === 1 ? 'checked' : '';
+  
+      echo '<p><input id="small_business" name="humble_lms_options[small_business]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, apply small business VAT scheme.', 'humble-lms') . '</p>';
+    }
+
+    /**
+     * PayPal client ID.
+     *
+     * @since    0.1.4
+     */
+    function small_business_invoice_text()
+    {
+      $small_business_invoice_text = ! empty( $this->options['small_business_invoice_text'] ) ? $this->options['small_business_invoice_text'] : __('As a small entrepreneur I am tax-exempt according to Art. 19 I German VAT Act.', 'humble-lms');
+
+      echo '<p class="description">' . __('This text will only be displayed on your invoices if the option above is checked.', 'humble-lms') . '</p>';
+      echo '<p><input type="text" class="widefat" name="humble_lms_options[small_business_invoice_text]" value="' . $small_business_invoice_text . '"></p>';
+    }
+
+    /**
      * Option for displaying prices without additional VAT.
      *
      * @since    0.0.7
@@ -890,6 +917,9 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
             $options['vat'] = 100;
           }
         }
+
+        $options['small_business'] = isset( $input['small_business'] ) ? 1 : 0;
+        $options['small_business_invoice_text'] = sanitize_text_field( $input['small_business_invoice_text'] );
 
         $options['hide_vat'] = isset( $input['hide_vat'] ) ? 1 : 0;
 

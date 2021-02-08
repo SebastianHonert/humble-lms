@@ -142,10 +142,13 @@ function humble_lms_order_details_mb() {
   echo '<label for="value">' . __('Value', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="text" name="value" value="' . $transaction_details['value'] . '"></p>';
 
-  echo '<label for="vat">' . __('vat in %', 'humble-lms') . '</label>';
+  echo '<label for="vat">' . __('VAT in %', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="number" min="0" max="100" step="1" name="vat" value="' . $transaction_details['vat'] . '"></p>';
 
-  echo '<label for="vat-type">' . __('vat type (0 = none, 1 = inclusive, 2 = exclusive)', 'humble-lms') . '</label>';
+  echo '<label for="small-business">' . __('Small business VAT scheme', 'humble-lms') . '</label>';
+  echo '<p class="humble-lms-less-margin"><input class="widefat" type="number" min="0" max="1" name="small_business" value="' . $transaction_details['small_business'] . '"></p>';
+
+  echo '<label for="vat-type">' . __('VAT type (0 = none, 1 = inclusive, 2 = exclusive)', 'humble-lms') . '</label>';
   echo '<p class="humble-lms-less-margin"><input class="widefat" type="number" min="0" max="2" step="1" name="has_vat" value="' . $transaction_details['has_vat'] . '"></p>';
 
   echo '<label for="invoice-number">' . __('Invoice #', 'humble-lms') . '</label>';
@@ -243,6 +246,7 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
     'value' => sanitize_text_field( $_POST['value'] ),
     'vat' => (int)$_POST['vat'],
     'has_vat' => (int)$_POST['has_vat'],
+    'small_business' => (int)$_POST['small_business'],
     'invoice_number' => sanitize_text_field( $_POST['invoice_number'] ),
 
     // Billing information
@@ -268,6 +272,10 @@ function humble_lms_save_txn_meta_boxes( $post_id, $post )
 
   if( $txn_meta['humble_lms_order_details']['has_vat'] < 0 || $txn_meta['humble_lms_order_details']['has_vat'] > 2 ) {
     $txn_meta['humble_lms_order_details']['has_vat'] = 0;
+  }
+
+  if( $txn_meta['humble_lms_order_details']['small_business'] < 0 || $txn_meta['humble_lms_order_details']['small_business'] > 1 ) {
+    $txn_meta['humble_lms_order_details']['small_business'] = 0;
   }
 
   $txn_meta['humble_lms_txn_user_id'] = (int)$_POST['user_id'];

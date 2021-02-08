@@ -341,6 +341,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         'invoice_number' => $invoice_prefix . $invoice_counter,
         'has_vat' => $this->calculator->has_vat(),
         'vat' => $this->calculator->get_vat(),
+        'small_business' => isset( $options['small_business'] ) && $options['small_business'] == 1 ? 1 : 0,
         'coupon_id' => sanitize_text_field( $coupon_details['id'] ),
         'coupon_code' => sanitize_text_field( $coupon_details['code'] ),
         'coupon_type' => sanitize_text_field( $coupon_details['type'] ),

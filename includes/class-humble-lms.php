@@ -70,7 +70,7 @@ class Humble_LMS {
     if ( defined( 'HUMBLE_LMS_VERSION' ) ) {
       $this->version = HUMBLE_LMS_VERSION;
     } else {
-      $this->version = '0.1.4';
+      $this->version = '0.1.5';
     }
     $this->humble_lms = 'humble-lms';
 

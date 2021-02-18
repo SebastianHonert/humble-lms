@@ -12,7 +12,7 @@ if (have_posts()):
   while (have_posts()): the_post();
   
   $options = get_option('humble_lms_options');
-  if( $options['has_lesson_progress_bar'] === 1 ) {
+  if( isset( $options['has_lesson_progress_bar'] ) && $options['has_lesson_progress_bar'] === 1 ) {
     $content_manager = new Humble_LMS_Content_Manager;
     $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
     $parent_course = $course_id ? get_post( $course_id ) : $content_manager->get_parent_course( get_the_ID() );

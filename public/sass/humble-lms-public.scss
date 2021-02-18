@@ -1017,6 +1017,22 @@ input[type='button'].humble-lms-btn--small {
   );
 }
 
+.humble-lms-progress-bar--lesson {
+  margin-bottom: 1.75em;
+}
+
+.humble-lms-progress-bar-label {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-size: .875em;
+}
+
+.humble-lms-progress-bar-label span {
+  color: $color-success;
+  font-weight: 500;
+}
+
 /* Loading layer/spinner */
 
 .humble-lms-loading-layer {

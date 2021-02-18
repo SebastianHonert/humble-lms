@@ -830,6 +830,19 @@ input[type='button'].humble-lms-btn--small {
   background: #188e6e;
   background: repeating-linear-gradient(125deg, #188e6e, #188e6e 0.5em, #178567 0.5em, #178567 1em); }
 
+.humble-lms-progress-bar--lesson {
+  margin-bottom: 1.75em; }
+
+.humble-lms-progress-bar-label {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-size: .875em; }
+
+.humble-lms-progress-bar-label span {
+  color: #188e6e;
+  font-weight: 500; }
+
 /* Loading layer/spinner */
 .humble-lms-loading-layer {
   position: fixed;

@@ -9,13 +9,26 @@ get_header();
 
 if (have_posts()):
   
-  while (have_posts()): the_post(); ?>
+  while (have_posts()): the_post();
+  
+  $options = get_option('humble_lms_options');
+  if( $options['has_lesson_progress_bar'] === 1 ) {
+    $content_manager = new Humble_LMS_Content_Manager;
+    $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
+    $parent_course = $course_id ? get_post( $course_id ) : $content_manager->get_parent_course( get_the_ID() );
+
+    if( isset( $parent_course->ID ) ) { 
+      echo do_shortcode('[humble_lms_progress_bar is_before_lesson="1" course_id="' . $parent_course->ID . '" show_label="1"]');
+    }
+  }
+
+  ?>
 
   <h1 class="humble-lms-lesson-single-title"><?php echo get_the_title(); ?></h1>
 
   <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
-  <div class="humble-lms-flex-columns">
-    <div class="humble-lms-flex-column--two-third">
+    <div class="humble-lms-flex-columns">
+      <div class="humble-lms-flex-column--two-third">
   <?php endif; ?>
 
   <div class="humble-lms-lesson-content">
@@ -52,9 +65,10 @@ if (have_posts()):
   </div>
 
     <?php if( is_active_sidebar('humble-lms-sidebar') ): ?>
-      </div>
-      <div class="humble-lms-flex-column--third humble-lms-sidebar">
-        <?php dynamic_sidebar('humble-lms-sidebar'); ?>
+        </div>
+        <div class="humble-lms-flex-column--third humble-lms-sidebar">
+          <?php dynamic_sidebar('humble-lms-sidebar'); ?>
+        </div>
       </div>
     <?php endif; ?>
 

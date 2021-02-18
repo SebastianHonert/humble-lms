@@ -309,11 +309,32 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
      * @since   0.0.1
      */
     function progress_bar( $atts = null ) {
+      global $post;
+
       extract( shortcode_atts( array (
-        'progress' => 0
+        'progress' => 0,
+        'course_id' => 0,
+        'is_before_lesson' => 0,
+        'show_label' => 0, 
       ), $atts ) );
 
-      $html = '<div class="humble-lms-progress-bar">';
+      if( $course_id !== 0 && get_current_user_id() ) {
+        $progress = $this->user->course_progress( $course_id, get_current_user_id() );
+      }
+      
+      else if( isset( $post->ID ) && get_post_type( $post->ID ) === 'humble_lms_course' ) {
+        $progress = $this->user->course_progress( $post->ID, get_current_user_id() );
+      }
+
+      $html = '';
+      $is_before_lesson = filter_var( $is_before_lesson, FILTER_VALIDATE_BOOLEAN );
+      $progress_bar_additional_class = $is_before_lesson ? 'humble-lms-progress-bar--lesson' : '';
+
+      if( $show_label !== 0 ) {
+        $html .= '<p class="humble-lms-progress-bar-label"><span>' . $progress . '%</span></p>';
+      }
+  
+      $html .= '<div class="humble-lms-progress-bar ' . $progress_bar_additional_class . '">';
       $html .= '<div class="humble-lms-progress-bar-inner" data-value="' . $progress . '"></div>';
       $html .= '</div>';
 

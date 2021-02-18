@@ -49,7 +49,7 @@ class Humble_LMS_Widget_Progress_Bar extends WP_Widget
       echo $args['after_title'];
     }
   
-    echo do_shortcode('[humble_lms_progress_bar progress="' . $progress . '"]');
+    echo do_shortcode('[humble_lms_progress_bar progress="' . $progress . '" show_label="1"]');
 
     echo $args['after_widget'];
   }

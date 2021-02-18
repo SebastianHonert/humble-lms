@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-02-08 16:07+0100\n"
+"POT-Creation-Date: 2021-02-18 12:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sebastian Honert <sebastian.honert@gmail.com>\n"
 "Language-Team: \n"
@@ -118,11 +118,11 @@ msgstr "Dieser Nutzer ist ein/e Kurstrainer/in."
 #: admin/class-humble-lms-admin.php:1140
 #: admin/custom-post-types/humble-lms-txn.php:169
 #: public/class-humble-lms-ajax.php:438
-#: public/class-humble-lms-shortcodes.php:1073
-#: public/class-humble-lms-shortcodes.php:1130
-#: public/class-humble-lms-shortcodes.php:1386
-#: public/class-humble-lms-shortcodes.php:1440
-#: public/class-humble-lms-shortcodes.php:1635
+#: public/class-humble-lms-shortcodes.php:1094
+#: public/class-humble-lms-shortcodes.php:1151
+#: public/class-humble-lms-shortcodes.php:1407
+#: public/class-humble-lms-shortcodes.php:1461
+#: public/class-humble-lms-shortcodes.php:1656
 msgid "Country"
 msgstr "Land"
 
@@ -136,9 +136,9 @@ msgstr "Bitte wähle ein Land"
 #: admin/custom-post-types/humble-lms-membership.php:16
 #: admin/custom-post-types/humble-lms-membership.php:17
 #: public/class-humble-lms-content-manager.php:931
-#: public/class-humble-lms-shortcodes.php:1362
-#: public/class-humble-lms-shortcodes.php:1593
-#: public/class-humble-lms-shortcodes.php:1814
+#: public/class-humble-lms-shortcodes.php:1383
+#: public/class-humble-lms-shortcodes.php:1614
+#: public/class-humble-lms-shortcodes.php:1835
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
@@ -151,13 +151,13 @@ msgid "Free"
 msgstr "Kostenlos"
 
 #: admin/class-humble-lms-admin.php:265
-#: admin/class-humble-lms-options-manager.php:185
-#: public/class-humble-lms-shortcodes.php:1108
+#: admin/class-humble-lms-options-manager.php:186
+#: public/class-humble-lms-shortcodes.php:1129
 msgid "Email agreement"
 msgstr "E-Mail Einwilligung"
 
 #: admin/class-humble-lms-admin.php:266
-#: public/class-humble-lms-shortcodes.php:1109
+#: public/class-humble-lms-shortcodes.php:1130
 msgid ""
 "Yes, I wish to receive emails from this website which are essential for "
 "participating in the online courses."
@@ -171,21 +171,21 @@ msgstr ""
 #: admin/custom-post-types/humble-lms-track.php:39
 #: admin/custom-post-types/humble-lms-track.php:40
 #: public/class-humble-lms-content-manager.php:920
-#: public/class-humble-lms-shortcodes.php:450
-#: public/class-humble-lms-shortcodes.php:1589
+#: public/class-humble-lms-shortcodes.php:471
+#: public/class-humble-lms-shortcodes.php:1610
 #: public/partials/humble-lms-course-single.php:26
 msgid "Track"
 msgstr "Lernpfad"
 
 #: admin/class-humble-lms-admin.php:285
-#: admin/class-humble-lms-options-manager.php:1281
+#: admin/class-humble-lms-options-manager.php:1296
 #: admin/custom-post-types/humble-lms-course.php:5
 #: admin/custom-post-types/humble-lms-course.php:7
 #: admin/custom-post-types/humble-lms-course.php:39
 #: admin/custom-post-types/humble-lms-course.php:40
 #: public/class-humble-lms-content-manager.php:922
-#: public/class-humble-lms-shortcodes.php:451
-#: public/class-humble-lms-shortcodes.php:1591
+#: public/class-humble-lms-shortcodes.php:472
+#: public/class-humble-lms-shortcodes.php:1612
 msgid "Course"
 msgstr "Kurs"
 
@@ -230,7 +230,7 @@ msgid "Please select your country."
 msgstr "Bitte wähle ein Land aus."
 
 #: admin/class-humble-lms-admin.php:638 admin/class-humble-lms-admin.php:784
-#: public/class-humble-lms-shortcodes.php:1207
+#: public/class-humble-lms-shortcodes.php:1228
 msgid "Please enter a valid email address."
 msgstr "Bitte gib eine gültige E-Mail-Adresse an."
 
@@ -359,13 +359,13 @@ msgstr "Deine Zugangsdaten"
 #: admin/class-humble-lms-options-manager.php:109
 #: admin/custom-post-types/humble-lms-course.php:4
 #: admin/custom-post-types/humble-lms-course.php:6
-#: public/class-humble-lms-shortcodes.php:1531
+#: public/class-humble-lms-shortcodes.php:1552
 #: public/partials/humble-lms-course-archive.php:10
 msgid "Courses"
 msgstr "Kurse"
 
 #: admin/class-humble-lms-admin.php:1244
-#: admin/class-humble-lms-options-manager.php:1205
+#: admin/class-humble-lms-options-manager.php:1220
 #: admin/custom-post-types/humble-lms-quiz.php:4
 #: admin/custom-post-types/humble-lms-quiz.php:6
 msgid "Quizzes"
@@ -373,10 +373,10 @@ msgstr "Quizze"
 
 #: admin/class-humble-lms-admin.php:1314
 #: admin/class-humble-lms-options-manager.php:34
-#: admin/class-humble-lms-options-manager.php:1111
+#: admin/class-humble-lms-options-manager.php:1126
 #: admin/custom-post-types/humble-lms-track.php:4
 #: admin/custom-post-types/humble-lms-track.php:6
-#: public/class-humble-lms-shortcodes.php:1519
+#: public/class-humble-lms-shortcodes.php:1540
 msgid "Tracks"
 msgstr "Lernpfade"
 
@@ -387,14 +387,14 @@ msgid "Lessons"
 msgstr "Lektionen"
 
 #: admin/class-humble-lms-options-manager.php:35
-#: admin/class-humble-lms-options-manager.php:1151
+#: admin/class-humble-lms-options-manager.php:1166
 #: admin/custom-post-types/humble-lms-award.php:4
 #: admin/custom-post-types/humble-lms-award.php:6
 msgid "Awards"
 msgstr "Auszeichnungen"
 
 #: admin/class-humble-lms-options-manager.php:36
-#: admin/class-humble-lms-options-manager.php:1178
+#: admin/class-humble-lms-options-manager.php:1193
 #: admin/custom-post-types/humble-lms-certificate.php:4
 #: admin/custom-post-types/humble-lms-certificate.php:6
 msgid "Certificates"
@@ -414,7 +414,7 @@ msgid "Options"
 msgstr "Optionen"
 
 #: admin/class-humble-lms-options-manager.php:111
-#: admin/class-humble-lms-options-manager.php:352
+#: admin/class-humble-lms-options-manager.php:365
 msgid "Registration"
 msgstr "Registrierung"
 
@@ -452,199 +452,207 @@ msgid "Sort courses by category?"
 msgstr "Kurse nach Kategorien sortieren?"
 
 #: admin/class-humble-lms-options-manager.php:176
+msgid "Display progress bar above lesson content?"
+msgstr "Fortschrittsbalken über Lektionen anzeigen?"
+
+#: admin/class-humble-lms-options-manager.php:177
 msgid "Which messages should be shown when students complete a lesson?"
 msgstr ""
 "Welche Hinweise sollen angezeigt werden, wenn ein Nutzer eine Lektion "
 "abschließt?"
 
-#: admin/class-humble-lms-options-manager.php:177
+#: admin/class-humble-lms-options-manager.php:178
 msgid "Custom page IDs"
 msgstr "Systemseiten-IDs"
 
-#: admin/class-humble-lms-options-manager.php:178
+#: admin/class-humble-lms-options-manager.php:179
 msgid "Max. number of logged quiz evaluations"
 msgstr "Max. Anzahl gespeicherter Quiz-Auswertungen"
 
-#: admin/class-humble-lms-options-manager.php:179
+#: admin/class-humble-lms-options-manager.php:180
 msgid "TippyJS tooltips theme"
 msgstr "TippyJS tooltips theme"
 
-#: admin/class-humble-lms-options-manager.php:180
+#: admin/class-humble-lms-options-manager.php:181
 msgid "Delete plugin data on uninstall"
 msgstr "Plugin-Daten beim entfernen des Plugins löschen"
 
-#: admin/class-humble-lms-options-manager.php:182
+#: admin/class-humble-lms-options-manager.php:183
 msgid "Which countries should be included (multiselect)?"
 msgstr "Welche Länder sollen angezeigt werden (Mehrfachauswahl)?"
 
-#: admin/class-humble-lms-options-manager.php:183
+#: admin/class-humble-lms-options-manager.php:184
 msgid "Welcome email"
 msgstr "Begrüßungsnachricht (E-Mail)"
 
-#: admin/class-humble-lms-options-manager.php:184
+#: admin/class-humble-lms-options-manager.php:185
 msgid "Lost password email"
 msgstr "Passwort verloren (E-Mail)"
 
-#: admin/class-humble-lms-options-manager.php:186
+#: admin/class-humble-lms-options-manager.php:187
 msgid "Terms of service (TOS) and privacy policy"
 msgstr "Allg. Geschäftsbedingungen (AGB) und Datenschutzerklärung"
 
-#: admin/class-humble-lms-options-manager.php:187
+#: admin/class-humble-lms-options-manager.php:188
 msgid "Google reCAPTCHA"
 msgstr "Google reCAPTCHA"
 
-#: admin/class-humble-lms-options-manager.php:189
+#: admin/class-humble-lms-options-manager.php:190
 msgid "Activate online sales?"
 msgstr "Online-Verkäufe aktivieren?"
 
-#: admin/class-humble-lms-options-manager.php:191
+#: admin/class-humble-lms-options-manager.php:192
 msgid "Use coupons?"
 msgstr "Gutscheine verwenden?"
 
-#: admin/class-humble-lms-options-manager.php:192
+#: admin/class-humble-lms-options-manager.php:193
 msgid "Currency"
 msgstr "Währungscode"
 
-#: admin/class-humble-lms-options-manager.php:193
+#: admin/class-humble-lms-options-manager.php:194
 msgid "Prices include value added tax (vat)"
 msgstr "Preise mit Umsatzsteuer ausweisen (USt.)"
 
-#: admin/class-humble-lms-options-manager.php:194
+#: admin/class-humble-lms-options-manager.php:195
 msgid "Value added tax (VAT) in %"
 msgstr "Umsatzsteuer (USt.) in %"
 
-#: admin/class-humble-lms-options-manager.php:195
+#: admin/class-humble-lms-options-manager.php:196
 msgid "Apply small business VAT scheme?"
 msgstr "Kleinunternehmerregelung anwenden?"
 
-#: admin/class-humble-lms-options-manager.php:196
+#: admin/class-humble-lms-options-manager.php:197
 msgid "Small business VAT scheme invoice text"
 msgstr "Rechnungstext für Kleinunternehmerregelung"
 
-#: admin/class-humble-lms-options-manager.php:197
+#: admin/class-humble-lms-options-manager.php:198
 msgid "Display prices without additional VAT"
 msgstr "Preise ohne USt.-Aufschlag anzeigen"
 
-#: admin/class-humble-lms-options-manager.php:198
+#: admin/class-humble-lms-options-manager.php:199
 msgid "Countries without VAT"
 msgstr "Länder ohne USt."
 
-#: admin/class-humble-lms-options-manager.php:199
+#: admin/class-humble-lms-options-manager.php:200
 msgid "Checkout confirmation email"
 msgstr "E-Mail Bestellbestätigung"
 
-#: admin/class-humble-lms-options-manager.php:201
+#: admin/class-humble-lms-options-manager.php:202
 msgid "Seller info"
 msgstr "Infos zum Verkäufer"
 
-#: admin/class-humble-lms-options-manager.php:202
+#: admin/class-humble-lms-options-manager.php:203
 msgid "Logo"
 msgstr "Logo"
 
-#: admin/class-humble-lms-options-manager.php:203
+#: admin/class-humble-lms-options-manager.php:204
 msgid "Invoice ID prefix"
 msgstr "Rechnungspräfix"
 
-#: admin/class-humble-lms-options-manager.php:204
+#: admin/class-humble-lms-options-manager.php:205
 msgid "Invoice text (before)"
 msgstr "Rechnungstext (vor)"
 
-#: admin/class-humble-lms-options-manager.php:205
+#: admin/class-humble-lms-options-manager.php:206
 msgid "Invoice text (after)"
 msgstr "Rechnungstext (nach)"
 
-#: admin/class-humble-lms-options-manager.php:206
+#: admin/class-humble-lms-options-manager.php:207
 msgid "Invoice footer text"
 msgstr "Rechnungstext (Footer)"
 
-#: admin/class-humble-lms-options-manager.php:219
+#: admin/class-humble-lms-options-manager.php:220
 msgid "Registered users"
 msgstr "Registrierte Nutzer/innen"
 
-#: admin/class-humble-lms-options-manager.php:232
+#: admin/class-humble-lms-options-manager.php:233
 msgid "Display options and general settings"
 msgstr "Anzeigeoptionen und allg. Einstellungen"
 
-#: admin/class-humble-lms-options-manager.php:236
+#: admin/class-humble-lms-options-manager.php:237
 msgid "Configure the registration options for your website."
 msgstr "Konfiguriere die Optionen für die Registrierung auf deiner Webseite."
 
-#: admin/class-humble-lms-options-manager.php:240
+#: admin/class-humble-lms-options-manager.php:241
 msgid "In order to use PayPal you need to register a developer account first."
 msgstr "Um PayPal zu verwenden, wird ein PayPal-Entwickleraccount benötigt."
 
-#: admin/class-humble-lms-options-manager.php:240
+#: admin/class-humble-lms-options-manager.php:241
 msgid "Register developer account"
 msgstr "Entwickleraccount registrieren"
 
-#: admin/class-humble-lms-options-manager.php:244
+#: admin/class-humble-lms-options-manager.php:245
 msgid "Set up your billing information and invoice layout."
 msgstr "Konfiguriere deine Rechnungsdaten und das Layout."
 
-#: admin/class-humble-lms-options-manager.php:268
-#: admin/class-humble-lms-options-manager.php:285
+#: admin/class-humble-lms-options-manager.php:269
+#: admin/class-humble-lms-options-manager.php:286
 msgid "Default tile width"
 msgstr "Standard-Kachelbreite"
 
-#: admin/class-humble-lms-options-manager.php:303
-#: admin/class-humble-lms-options-manager.php:319
+#: admin/class-humble-lms-options-manager.php:304
+#: admin/class-humble-lms-options-manager.php:320
 msgid "No"
 msgstr "Nein"
 
-#: admin/class-humble-lms-options-manager.php:305
-#: admin/class-humble-lms-options-manager.php:321
+#: admin/class-humble-lms-options-manager.php:306
+#: admin/class-humble-lms-options-manager.php:322
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/class-humble-lms-options-manager.php:350
+#: admin/class-humble-lms-options-manager.php:335
+msgid "Yes, show the progress bar."
+msgstr "Ja, Fortschrittsbalken anzeigen."
+
+#: admin/class-humble-lms-options-manager.php:363
 #: public/class-humble-lms-ajax.php:432
-#: public/class-humble-lms-shortcodes.php:995
-#: public/class-humble-lms-shortcodes.php:1184
-#: public/class-humble-lms-shortcodes.php:1241
+#: public/class-humble-lms-shortcodes.php:1016
+#: public/class-humble-lms-shortcodes.php:1205
+#: public/class-humble-lms-shortcodes.php:1262
 msgid "Login"
 msgstr "Anmelden"
 
-#: admin/class-humble-lms-options-manager.php:350
-#: admin/class-humble-lms-options-manager.php:352
-#: admin/class-humble-lms-options-manager.php:354
-#: admin/class-humble-lms-options-manager.php:356
-#: admin/class-humble-lms-options-manager.php:358
+#: admin/class-humble-lms-options-manager.php:363
+#: admin/class-humble-lms-options-manager.php:365
+#: admin/class-humble-lms-options-manager.php:367
+#: admin/class-humble-lms-options-manager.php:369
+#: admin/class-humble-lms-options-manager.php:371
 msgid "Edit page"
 msgstr "Seite bearbeiten"
 
-#: admin/class-humble-lms-options-manager.php:354
+#: admin/class-humble-lms-options-manager.php:367
 msgid "Lost Password"
 msgstr "Passwort verloren"
 
-#: admin/class-humble-lms-options-manager.php:356
-#: public/class-humble-lms-shortcodes.php:1236
-#: public/class-humble-lms-shortcodes.php:1298
+#: admin/class-humble-lms-options-manager.php:369
+#: public/class-humble-lms-shortcodes.php:1257
+#: public/class-humble-lms-shortcodes.php:1319
 msgid "Reset Password"
 msgstr "Passwort zurücksetzen"
 
-#: admin/class-humble-lms-options-manager.php:358
+#: admin/class-humble-lms-options-manager.php:371
 msgid "User Profile"
 msgstr "Nutzerprofil"
 
-#: admin/class-humble-lms-options-manager.php:405
+#: admin/class-humble-lms-options-manager.php:418
 msgid "Yes, delete plugin data on uninstall."
 msgstr "Ja, Plugin-Daten beim Entfernen des Plugins löschen"
 
-#: admin/class-humble-lms-options-manager.php:417
+#: admin/class-humble-lms-options-manager.php:430
 msgid "Wich countries would you like to include?"
 msgstr "Welche Länder sollen auswählbar sein?"
 
-#: admin/class-humble-lms-options-manager.php:425
+#: admin/class-humble-lms-options-manager.php:438
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: admin/class-humble-lms-options-manager.php:425
+#: admin/class-humble-lms-options-manager.php:438
 msgid "Deselect all"
 msgstr "Alle entfernen"
 
-#: admin/class-humble-lms-options-manager.php:437
-#: admin/class-humble-lms-options-manager.php:456
-#: admin/class-humble-lms-options-manager.php:678
+#: admin/class-humble-lms-options-manager.php:450
+#: admin/class-humble-lms-options-manager.php:469
+#: admin/class-humble-lms-options-manager.php:691
 msgid ""
 "This email will be send in text/html format. You can use the following "
 "strings to include specific information in your email:"
@@ -652,21 +660,21 @@ msgstr ""
 "Diese E-Mail wird als text/html versendet. Bitte nutze nachfolgende "
 "Zeichenketten, um spezielle Informationen in deiner E-Mail anzuzeigen:"
 
-#: admin/class-humble-lms-options-manager.php:442
+#: admin/class-humble-lms-options-manager.php:455
 msgid "Test email: Welcome"
 msgstr "Test-Nachricht: Begrüßung"
 
-#: admin/class-humble-lms-options-manager.php:443
-#: admin/class-humble-lms-options-manager.php:462
-#: admin/class-humble-lms-options-manager.php:684
+#: admin/class-humble-lms-options-manager.php:456
+#: admin/class-humble-lms-options-manager.php:475
+#: admin/class-humble-lms-options-manager.php:697
 msgid "Send a test email"
 msgstr "Testnachricht senden"
 
-#: admin/class-humble-lms-options-manager.php:461
+#: admin/class-humble-lms-options-manager.php:474
 msgid "Test email: Lost password"
 msgstr "Testnachricht: Passwort verloren"
 
-#: admin/class-humble-lms-options-manager.php:475
+#: admin/class-humble-lms-options-manager.php:488
 msgid ""
 "Yes, make the agreement for receiving essential emails from this website "
 "required at registration."
@@ -674,23 +682,23 @@ msgstr ""
 "Ja, die Einwilligung in den Erhalt von E-Mails soll bei der Registrierung "
 "ein Pflichtfeld sein."
 
-#: admin/class-humble-lms-options-manager.php:489
+#: admin/class-humble-lms-options-manager.php:502
 msgid "Yes, show the terms of service checkbox (required input field)."
 msgstr "Ja, zeige die AGB- und Datenschutz-Checkbox im Registrierungsformular."
 
-#: admin/class-humble-lms-options-manager.php:490
+#: admin/class-humble-lms-options-manager.php:503
 msgid "Link to your terms of service (TOS)"
 msgstr "Link zur Seite mit den AGB"
 
-#: admin/class-humble-lms-options-manager.php:491
+#: admin/class-humble-lms-options-manager.php:504
 msgid "Link to your privacy policy"
 msgstr "Link zur Datenschutzerklärung"
 
-#: admin/class-humble-lms-options-manager.php:492
+#: admin/class-humble-lms-options-manager.php:505
 msgid "WordPress privacy policy page"
 msgstr "WordPress-Datenschutzerklärung"
 
-#: admin/class-humble-lms-options-manager.php:493
+#: admin/class-humble-lms-options-manager.php:506
 msgid ""
 "Links will be placed automatically if you fill in the URL fields. Otherwise "
 "a text without links will be displayed."
@@ -698,63 +706,63 @@ msgstr ""
 "Links werden automatisch platziert, sobald du die entsprechende URL "
 "eingibst. Andernfalls wird ein Text ohne Link angezeigt."
 
-#: admin/class-humble-lms-options-manager.php:508
+#: admin/class-humble-lms-options-manager.php:521
 msgid "Enable reCAPTCHA in registration form"
 msgstr "Aktiviere reCAPTCHA bei der Registrierung"
 
-#: admin/class-humble-lms-options-manager.php:509
+#: admin/class-humble-lms-options-manager.php:522
 msgid "Website key"
 msgstr "Websiten-Schlüssel"
 
-#: admin/class-humble-lms-options-manager.php:510
+#: admin/class-humble-lms-options-manager.php:523
 msgid "Secret key"
 msgstr "Geheimer Schlüssel"
 
-#: admin/class-humble-lms-options-manager.php:511
+#: admin/class-humble-lms-options-manager.php:524
 msgid ""
 "Make sure you adjust your data privacy disclaimer to include Google "
 "reCAPTCHA."
 msgstr ""
 "Bitte pass die Datenschutzerklärung für die Verwendung von reCAPTCHA an."
 
-#: admin/class-humble-lms-options-manager.php:511
+#: admin/class-humble-lms-options-manager.php:524
 msgid "More infos on Google reCAPTCHA"
 msgstr "Weitere Informationen über Google reCAPTCHA"
 
-#: admin/class-humble-lms-options-manager.php:523
+#: admin/class-humble-lms-options-manager.php:536
 msgid "Yes, activate online sales (PayPal Client ID required, see below)."
 msgstr ""
 "Ja, Online-Verkäufe aktivieren (es wird eine PayPal Client ID benötigt, "
 "siehe unten)."
 
-#: admin/class-humble-lms-options-manager.php:548
+#: admin/class-humble-lms-options-manager.php:561
 msgid "Yes, use coupons."
 msgstr "Ja, Gutscheine verwenden"
 
-#: admin/class-humble-lms-options-manager.php:590
+#: admin/class-humble-lms-options-manager.php:603
 msgid "Without vat"
 msgstr "Ohne USt."
 
-#: admin/class-humble-lms-options-manager.php:592
+#: admin/class-humble-lms-options-manager.php:605
 msgid "Including VAT"
 msgstr "Inklusive USt."
 
-#: admin/class-humble-lms-options-manager.php:594
+#: admin/class-humble-lms-options-manager.php:607
 msgid "Excluding VAT"
 msgstr "Exklusive USt."
 
-#: admin/class-humble-lms-options-manager.php:595
+#: admin/class-humble-lms-options-manager.php:608
 msgid ""
 "Would you like to list your prices inclusive of, exclusive of, or without "
 "value added taxes?"
 msgstr ""
 "Sollen Preise inklusive, exklusive, oder ohne Umsatzsteuer angezeigt werden?"
 
-#: admin/class-humble-lms-options-manager.php:619
+#: admin/class-humble-lms-options-manager.php:632
 msgid "Yes, apply small business VAT scheme."
 msgstr "Ja, Kleinunternehmerregelung anwenden."
 
-#: admin/class-humble-lms-options-manager.php:629
+#: admin/class-humble-lms-options-manager.php:642
 #: public/class-humble-lms-content-manager.php:1043
 msgid ""
 "As a small entrepreneur I am tax-exempt according to Art. 19 I German VAT "
@@ -762,7 +770,7 @@ msgid ""
 msgstr ""
 "Gemäß § 19 Abs. 1 UStG enthält der ausgewiesene Betrag keine Umsatzsteuer."
 
-#: admin/class-humble-lms-options-manager.php:631
+#: admin/class-humble-lms-options-manager.php:644
 msgid ""
 "This text will only be displayed on your invoices if the option above is "
 "checked."
@@ -770,11 +778,11 @@ msgstr ""
 "Der Text wird auf der Rechnung angezeigt, wenn die vorangehende Option "
 "(Kleinunternehmer) aktiv ist."
 
-#: admin/class-humble-lms-options-manager.php:644
+#: admin/class-humble-lms-options-manager.php:657
 msgid "Yes, display prices without additional VAT."
 msgstr "Ja, Preise ohne USt.-Aufschlag anzeigen."
 
-#: admin/class-humble-lms-options-manager.php:645
+#: admin/class-humble-lms-options-manager.php:658
 msgid ""
 "This option only affects the frontend display of prices for tracks and "
 "courses. The final price including VAT will show in the checkout lightbox."
@@ -782,23 +790,23 @@ msgstr ""
 "Diese Option betrifft die Darstellung der Preise von Lernpfaden und Kursen. "
 "Der endgültige Preis wird in der Checkout-Lightbox angezeigt."
 
-#: admin/class-humble-lms-options-manager.php:658
+#: admin/class-humble-lms-options-manager.php:671
 msgid "Wich countries should be billed without VAT?"
 msgstr "Für welche Länder sollen die Preise ohne USt. ausgewiesen werden?"
 
-#: admin/class-humble-lms-options-manager.php:665
+#: admin/class-humble-lms-options-manager.php:678
 msgid "Billing for the selected countries will be accounted for without VAT."
 msgstr "Die Abrechnung für die gewählten Länder erfolgt ohne USt."
 
-#: admin/class-humble-lms-options-manager.php:677
+#: admin/class-humble-lms-options-manager.php:690
 msgid "If you leave this field blank, a default email will be sent."
 msgstr "Wenn du dieses Feld leer lässt, wird die Standard-Mail verschickt."
 
-#: admin/class-humble-lms-options-manager.php:683
+#: admin/class-humble-lms-options-manager.php:696
 msgid "Test email: Checkout"
 msgstr "Test-Nachricht: Kasse"
 
-#: admin/class-humble-lms-options-manager.php:707
+#: admin/class-humble-lms-options-manager.php:720
 msgid ""
 "Your personal and/or company information. Allowed HTML tags: a, br, em, p, "
 "strong."
@@ -806,11 +814,11 @@ msgstr ""
 "Angaben zu dir und/oder deinem Unternehmen. Erlaubte HTML-Tags: a, br, em, "
 "p, strong."
 
-#: admin/class-humble-lms-options-manager.php:721
+#: admin/class-humble-lms-options-manager.php:734
 msgid "You company or personal logo (URL)"
 msgstr "Logo (URL)"
 
-#: admin/class-humble-lms-options-manager.php:736
+#: admin/class-humble-lms-options-manager.php:749
 msgid ""
 "Invoice IDs will increment automatically (1,2,3&hellip;). You can add a "
 "prefix to the invoice ID here."
@@ -818,11 +826,11 @@ msgstr ""
 "Rechnungsnummern werden automatisch erhöht (1,2,3&hellip;). Du kannst ein "
 "Präfix zur Rechnungsnummer hinzufügen."
 
-#: admin/class-humble-lms-options-manager.php:739
+#: admin/class-humble-lms-options-manager.php:752
 msgid "Current invoice number"
 msgstr "Aktuelle Rechnungsnummer"
 
-#: admin/class-humble-lms-options-manager.php:761
+#: admin/class-humble-lms-options-manager.php:774
 msgid ""
 "Text displayed before the table of purchased items. Line breaks will be "
 "recognized automatically. Allowed HTML tags: a, br, em, strong."
@@ -830,7 +838,7 @@ msgstr ""
 "Text vor der Tabelle mit den Rechnungsdaten. Zeilenumbrüche werden "
 "automatisch erkannt. Erlaubte HTML-Tags: a, br, em, p, strong"
 
-#: admin/class-humble-lms-options-manager.php:784
+#: admin/class-humble-lms-options-manager.php:797
 msgid ""
 "Text displayed after the table of purchased items. Line breaks will be "
 "recognized automatically. Allowed HTML tags: a, br, em, strong."
@@ -838,7 +846,7 @@ msgstr ""
 "Text nach der Tabelle mit den Rechnungsdaten. Zeilenumbrüche werden "
 "automatisch erkannt. Erlaubte HTML-Tags: a, br, em, p, strong"
 
-#: admin/class-humble-lms-options-manager.php:807
+#: admin/class-humble-lms-options-manager.php:820
 msgid ""
 "Text displayed at the bottom of your invoices. Line breaks will be "
 "recognized automatically. Allowed HTML tags: a, br, em, strong."
@@ -846,73 +854,73 @@ msgstr ""
 "Text am Seitenende der Rechnung. Zeilenumbrüche werden automatisch erkannt. "
 "Erlaubte HTML-Tags: a, br, em, p, strong"
 
-#: admin/class-humble-lms-options-manager.php:1030
+#: admin/class-humble-lms-options-manager.php:1045
 msgid "Users per page"
 msgstr "Nutzer pro Seite"
 
-#: admin/class-humble-lms-options-manager.php:1058
+#: admin/class-humble-lms-options-manager.php:1073
 msgid "Please provide a valid user ID."
 msgstr "Bitte gib eine gültige Nutzer-ID ein."
 
-#: admin/class-humble-lms-options-manager.php:1065
+#: admin/class-humble-lms-options-manager.php:1080
 msgid "Registered"
 msgstr "Registriert"
 
-#: admin/class-humble-lms-options-manager.php:1112
 #: admin/class-humble-lms-options-manager.php:1127
-#: admin/class-humble-lms-options-manager.php:1152
-#: admin/class-humble-lms-options-manager.php:1179
+#: admin/class-humble-lms-options-manager.php:1142
+#: admin/class-humble-lms-options-manager.php:1167
+#: admin/class-humble-lms-options-manager.php:1194
 #: public/class-humble-lms-shortcodes.php:151
 #: public/class-humble-lms-shortcodes.php:297
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: admin/class-humble-lms-options-manager.php:1126
+#: admin/class-humble-lms-options-manager.php:1141
 msgid "Courses and Lessons"
 msgstr "Kurse und Lektionen"
 
-#: admin/class-humble-lms-options-manager.php:1153
-#: admin/class-humble-lms-options-manager.php:1180
+#: admin/class-humble-lms-options-manager.php:1168
+#: admin/class-humble-lms-options-manager.php:1195
 msgid "Action"
 msgstr "Aktion"
 
-#: admin/class-humble-lms-options-manager.php:1163
+#: admin/class-humble-lms-options-manager.php:1178
 msgid "Grant / revoke"
 msgstr "Zuweisen / aberkennen"
 
-#: admin/class-humble-lms-options-manager.php:1169
+#: admin/class-humble-lms-options-manager.php:1184
 msgid "No awards available."
 msgstr "Keine Auszeichnungen vorhanden."
 
-#: admin/class-humble-lms-options-manager.php:1190
+#: admin/class-humble-lms-options-manager.php:1205
 msgid "Issue / revoke"
 msgstr "Zuweisen / aberkennen"
 
-#: admin/class-humble-lms-options-manager.php:1196
+#: admin/class-humble-lms-options-manager.php:1211
 msgid "No certificates available."
 msgstr "Keine Zertifikate vorhanden."
 
-#: admin/class-humble-lms-options-manager.php:1206
+#: admin/class-humble-lms-options-manager.php:1221
 msgid "Attempts"
 msgstr "Versuche"
 
-#: admin/class-humble-lms-options-manager.php:1256
+#: admin/class-humble-lms-options-manager.php:1271
 msgid "No quiz evaluations available."
 msgstr "Keine Quiz-Auswertungen vorhanden."
 
-#: admin/class-humble-lms-options-manager.php:1263
+#: admin/class-humble-lms-options-manager.php:1278
 msgid "Reset learning progress for this user?"
 msgstr "Lernfortschritt für diesen Nutzer zurücksetzen?"
 
-#: admin/class-humble-lms-options-manager.php:1268
+#: admin/class-humble-lms-options-manager.php:1283
 msgid "Back"
 msgstr "Zurück"
 
-#: admin/class-humble-lms-options-manager.php:1282
+#: admin/class-humble-lms-options-manager.php:1297
 msgid "Completed (counting only user role \"Student\")"
 msgstr "Abgeschlossen (nur Rolle „Student“ wird gezählt)"
 
-#: admin/class-humble-lms-options-manager.php:1295
+#: admin/class-humble-lms-options-manager.php:1310
 msgid "No courses available."
 msgstr "Keine Kurse verfügbar."
 
@@ -1602,7 +1610,7 @@ msgid "Access level"
 msgstr "Berechtigung"
 
 #: admin/custom-post-types/humble-lms-course.php:68
-#: public/class-humble-lms-shortcodes.php:574
+#: public/class-humble-lms-shortcodes.php:595
 msgid "Timeframe"
 msgstr "Zeitfenster"
 
@@ -2472,14 +2480,14 @@ msgstr "Login-Kennung"
 #: admin/custom-post-types/humble-lms-txn.php:94
 #: admin/custom-post-types/humble-lms-txn.php:163
 #: public/class-humble-lms-ajax.php:436
-#: public/class-humble-lms-shortcodes.php:1633
+#: public/class-humble-lms-shortcodes.php:1654
 msgid "First name"
 msgstr "Vorname"
 
 #: admin/custom-post-types/humble-lms-txn.php:95
 #: admin/custom-post-types/humble-lms-txn.php:166
 #: public/class-humble-lms-ajax.php:437
-#: public/class-humble-lms-shortcodes.php:1634
+#: public/class-humble-lms-shortcodes.php:1655
 msgid "Last name"
 msgstr "Nachname"
 
@@ -2497,25 +2505,25 @@ msgstr "Mit der Nutzer-ID dieser Transaktion ist kein/e Benutzer/in verknüpft."
 
 #: admin/custom-post-types/humble-lms-txn.php:103
 #: admin/custom-post-types/humble-lms-txn.php:158
-#: public/class-humble-lms-shortcodes.php:1620
+#: public/class-humble-lms-shortcodes.php:1641
 msgid "User ID"
 msgstr "Nutzer-ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:109
 #: public/class-humble-lms-ajax.php:450
-#: public/class-humble-lms-shortcodes.php:1623
+#: public/class-humble-lms-shortcodes.php:1644
 msgid "Order ID"
 msgstr "Order-ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:112
-#: public/class-humble-lms-shortcodes.php:1088
-#: public/class-humble-lms-shortcodes.php:1401
+#: public/class-humble-lms-shortcodes.php:1109
+#: public/class-humble-lms-shortcodes.php:1422
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
 #: admin/custom-post-types/humble-lms-txn.php:115
 #: public/class-humble-lms-ajax.php:446
-#: public/class-humble-lms-shortcodes.php:1625
+#: public/class-humble-lms-shortcodes.php:1646
 msgid "Payer ID"
 msgstr "Payer ID"
 
@@ -2524,19 +2532,19 @@ msgid "Transaction status"
 msgstr "Transaktionsstatus"
 
 #: admin/custom-post-types/humble-lms-txn.php:121
-#: public/class-humble-lms-shortcodes.php:1627
+#: public/class-humble-lms-shortcodes.php:1648
 msgid "Payment service provider"
 msgstr "Bezahldienstleister"
 
 #: admin/custom-post-types/humble-lms-txn.php:124
 #: public/class-humble-lms-ajax.php:451
-#: public/class-humble-lms-shortcodes.php:1628
+#: public/class-humble-lms-shortcodes.php:1649
 msgid "Create time"
 msgstr "Erstellt"
 
 #: admin/custom-post-types/humble-lms-txn.php:127
 #: public/class-humble-lms-ajax.php:452
-#: public/class-humble-lms-shortcodes.php:1629
+#: public/class-humble-lms-shortcodes.php:1650
 msgid "Update time"
 msgstr "Aktualisiert"
 
@@ -2552,12 +2560,12 @@ msgstr "Nachname"
 
 #: admin/custom-post-types/humble-lms-txn.php:136
 #: public/class-humble-lms-ajax.php:453
-#: public/class-humble-lms-shortcodes.php:1618
+#: public/class-humble-lms-shortcodes.php:1639
 msgid "Reference ID"
 msgstr "Referenz ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:139
-#: public/class-humble-lms-shortcodes.php:1622
+#: public/class-humble-lms-shortcodes.php:1643
 msgid "Currency code"
 msgstr "Währungscode"
 
@@ -2585,52 +2593,52 @@ msgstr "Rechnung #"
 
 #: admin/custom-post-types/humble-lms-txn.php:161
 #: public/class-humble-lms-ajax.php:435
-#: public/class-humble-lms-shortcodes.php:1127
-#: public/class-humble-lms-shortcodes.php:1423
+#: public/class-humble-lms-shortcodes.php:1148
+#: public/class-humble-lms-shortcodes.php:1444
 msgid "Billing information"
 msgstr "Rechnungsdaten"
 
 #: admin/custom-post-types/humble-lms-txn.php:172
 #: public/class-humble-lms-ajax.php:439
-#: public/class-humble-lms-shortcodes.php:1144
-#: public/class-humble-lms-shortcodes.php:1454
-#: public/class-humble-lms-shortcodes.php:1636
+#: public/class-humble-lms-shortcodes.php:1165
+#: public/class-humble-lms-shortcodes.php:1475
+#: public/class-humble-lms-shortcodes.php:1657
 msgid "Postcode"
 msgstr "Postleitzahl"
 
 #: admin/custom-post-types/humble-lms-txn.php:175
 #: public/class-humble-lms-ajax.php:440
-#: public/class-humble-lms-shortcodes.php:1148
-#: public/class-humble-lms-shortcodes.php:1458
-#: public/class-humble-lms-shortcodes.php:1637
+#: public/class-humble-lms-shortcodes.php:1169
+#: public/class-humble-lms-shortcodes.php:1479
+#: public/class-humble-lms-shortcodes.php:1658
 msgid "City"
 msgstr "Stadt"
 
 #: admin/custom-post-types/humble-lms-txn.php:178
 #: public/class-humble-lms-ajax.php:441
-#: public/class-humble-lms-shortcodes.php:1638
+#: public/class-humble-lms-shortcodes.php:1659
 msgid "Address"
 msgstr "Addresse"
 
 #: admin/custom-post-types/humble-lms-txn.php:181
 #: public/class-humble-lms-ajax.php:442
-#: public/class-humble-lms-shortcodes.php:1156
-#: public/class-humble-lms-shortcodes.php:1466
-#: public/class-humble-lms-shortcodes.php:1639
+#: public/class-humble-lms-shortcodes.php:1177
+#: public/class-humble-lms-shortcodes.php:1487
+#: public/class-humble-lms-shortcodes.php:1660
 msgid "Company"
 msgstr "Unternehmen"
 
 #: admin/custom-post-types/humble-lms-txn.php:184
 #: public/class-humble-lms-ajax.php:443
-#: public/class-humble-lms-shortcodes.php:1160
-#: public/class-humble-lms-shortcodes.php:1470
-#: public/class-humble-lms-shortcodes.php:1640
+#: public/class-humble-lms-shortcodes.php:1181
+#: public/class-humble-lms-shortcodes.php:1491
+#: public/class-humble-lms-shortcodes.php:1661
 msgid "VAT ID"
 msgstr "USt.-Id."
 
 #: admin/custom-post-types/humble-lms-txn.php:188
 #: public/class-humble-lms-ajax.php:457
-#: public/class-humble-lms-shortcodes.php:1643
+#: public/class-humble-lms-shortcodes.php:1664
 msgid "Coupon details"
 msgstr "Gutschein-Details"
 
@@ -2641,8 +2649,8 @@ msgstr "Gutschein ID"
 
 #: admin/custom-post-types/humble-lms-txn.php:193
 #: public/class-humble-lms-ajax.php:459
-#: public/class-humble-lms-shortcodes.php:1644
-#: public/class-humble-lms-shortcodes.php:2132
+#: public/class-humble-lms-shortcodes.php:1665
+#: public/class-humble-lms-shortcodes.php:2153
 msgid "Coupon code"
 msgstr "Gutschein-Code"
 
@@ -2652,7 +2660,7 @@ msgstr "Gutschein-Typ"
 
 #: admin/custom-post-types/humble-lms-txn.php:199
 #: public/class-humble-lms-ajax.php:461
-#: public/class-humble-lms-shortcodes.php:1646
+#: public/class-humble-lms-shortcodes.php:1667
 msgid "Coupon value"
 msgstr "Gutschein-Wert"
 
@@ -2762,7 +2770,7 @@ msgid "Provider"
 msgstr "Kursanbieter"
 
 #: admin/custom-taxonomies/humble-lms-provider.php:6
-#: public/class-humble-lms-shortcodes.php:529
+#: public/class-humble-lms-shortcodes.php:550
 msgid "Providers"
 msgstr "Kursanbieter"
 
@@ -2779,13 +2787,13 @@ msgid "Humble LMS Syllabus"
 msgstr "Humble LMS Kursplan"
 
 #: admin/widgets/class-humble-lms-syllabus.php:31
-#: public/class-humble-lms-shortcodes.php:382
+#: public/class-humble-lms-shortcodes.php:403
 msgid "Syllabus"
 msgstr "Kursplan"
 
 #: admin/widgets/class-humble-lms-syllabus.php:35
 #: public/class-humble-lms-public.php:168
-#: public/class-humble-lms-shortcodes.php:382
+#: public/class-humble-lms-shortcodes.php:403
 msgid "Collapse syllabus"
 msgstr "Kursplan einklappen"
 
@@ -2834,7 +2842,7 @@ msgid "PayPal transaction details"
 msgstr "PayPal Transaktionsdetails"
 
 #: public/class-humble-lms-ajax.php:460
-#: public/class-humble-lms-shortcodes.php:1645
+#: public/class-humble-lms-shortcodes.php:1666
 msgid "Coupon type"
 msgstr "Gutschein-Typ"
 
@@ -2899,7 +2907,7 @@ msgstr "Fällig"
 
 #: public/class-humble-lms-content-manager.php:1079
 #: public/class-humble-lms-content-manager.php:1136
-#: public/class-humble-lms-shortcodes.php:1610
+#: public/class-humble-lms-shortcodes.php:1631
 msgid "Invoice"
 msgstr "Rechnung"
 
@@ -2908,7 +2916,7 @@ msgid "Quantity"
 msgstr "Menge"
 
 #: public/class-humble-lms-content-manager.php:1088
-#: public/class-humble-lms-shortcodes.php:1621
+#: public/class-humble-lms-shortcodes.php:1642
 msgid "Amount"
 msgstr "Preis"
 
@@ -2945,7 +2953,7 @@ msgid "Invalid content ID, checkout cancelled."
 msgstr "Ungültiger Inhalt (ID), der Vorgang wurde abgebrochen."
 
 #: public/class-humble-lms-public.php:162
-#: public/class-humble-lms-shortcodes.php:1876
+#: public/class-humble-lms-shortcodes.php:1897
 msgid "Buy now"
 msgstr "Jetzt kaufen"
 
@@ -3090,7 +3098,7 @@ msgstr "Nicht angegeben"
 
 #: public/class-humble-lms-shortcodes.php:150
 #: public/class-humble-lms-shortcodes.php:296
-#: public/class-humble-lms-shortcodes.php:447
+#: public/class-humble-lms-shortcodes.php:468
 msgid "Duration"
 msgstr "Dauer"
 
@@ -3102,11 +3110,11 @@ msgstr "Dieser Lernpfad beinhaltet keine Kurse."
 msgid "No courses found."
 msgstr "Keine Kurse gefunden."
 
-#: public/class-humble-lms-shortcodes.php:377
+#: public/class-humble-lms-shortcodes.php:398
 msgid "There are no lessons attached to this course"
 msgstr "Diesem Kurs sind keine Lektionen zugeordnet"
 
-#: public/class-humble-lms-shortcodes.php:385
+#: public/class-humble-lms-shortcodes.php:406
 msgid ""
 "Looking for the course syllabus? It seems that you have accessed this lesson "
 "directly so it is not related to a specific course. Please open the course "
@@ -3116,235 +3124,235 @@ msgstr ""
 "aufgerufen. Sie kann daher keinem Kurs zugeordnet werden. Bitte öffne den "
 "entsprechenden Kurs, um fortzufahren."
 
-#: public/class-humble-lms-shortcodes.php:459
+#: public/class-humble-lms-shortcodes.php:480
 msgid "Start the course now"
 msgstr "Kurs jetzt starten"
 
-#: public/class-humble-lms-shortcodes.php:503
+#: public/class-humble-lms-shortcodes.php:524
 msgid "No instructors available."
 msgstr "Keine Kursleitung zugewiesen."
 
-#: public/class-humble-lms-shortcodes.php:549
+#: public/class-humble-lms-shortcodes.php:570
 msgid "Providers not specified."
 msgstr "Kursanbieter nicht angegeben."
 
-#: public/class-humble-lms-shortcodes.php:583
+#: public/class-humble-lms-shortcodes.php:604
 msgid "Timeframe information not available. Please provide a valid course ID."
 msgstr ""
 "Keine Informationen zur Kurslaufzeit verfügbar. Bitte gib eine gültige Kurs-"
 "ID an."
 
-#: public/class-humble-lms-shortcodes.php:599
+#: public/class-humble-lms-shortcodes.php:620
 msgid "This course will be opened indefinitely."
 msgstr "Dieser Kurs ist auf unbestimmte Zeit geöffnet."
 
-#: public/class-humble-lms-shortcodes.php:601
+#: public/class-humble-lms-shortcodes.php:622
 #, php-format
 msgid "This course starts on %s and ends on %s."
 msgstr "Dieser Kurs beginnt am %s und endet am %s."
 
-#: public/class-humble-lms-shortcodes.php:603
+#: public/class-humble-lms-shortcodes.php:624
 #, php-format
 msgid "This course starts on %s."
 msgstr "Dieser Kurs beginnt am %s."
 
-#: public/class-humble-lms-shortcodes.php:605
+#: public/class-humble-lms-shortcodes.php:626
 #, php-format
 msgid "This course ends on %s."
 msgstr "Dieser Kurs endet am %s."
 
-#: public/class-humble-lms-shortcodes.php:678
+#: public/class-humble-lms-shortcodes.php:699
 msgid "Check your answers"
 msgstr "Prüfe deine Antworten"
 
-#: public/class-humble-lms-shortcodes.php:678
+#: public/class-humble-lms-shortcodes.php:699
 msgid "Quiz passed. Try again?"
 msgstr "Quiz gelöst. Erneut versuchen?"
 
-#: public/class-humble-lms-shortcodes.php:701
+#: public/class-humble-lms-shortcodes.php:722
 msgid "Mark lesson as incomplete"
 msgstr "Lektion zurücksetzen"
 
-#: public/class-humble-lms-shortcodes.php:703
+#: public/class-humble-lms-shortcodes.php:724
 msgid "Mark lesson as complete"
 msgstr "Lektion abschließen"
 
-#: public/class-humble-lms-shortcodes.php:710
+#: public/class-humble-lms-shortcodes.php:731
 msgid "Back to course overview"
 msgstr "Zurück zur Kursübersicht"
 
-#: public/class-humble-lms-shortcodes.php:712
+#: public/class-humble-lms-shortcodes.php:733
 msgid "Previous lesson"
 msgstr "Vorherige Lektion"
 
-#: public/class-humble-lms-shortcodes.php:716
+#: public/class-humble-lms-shortcodes.php:737
 msgid "Back to first lesson"
 msgstr "Zurück zur ersten Lektion"
 
-#: public/class-humble-lms-shortcodes.php:718
+#: public/class-humble-lms-shortcodes.php:739
 msgid "Next lesson"
 msgstr "Nächste Lektion"
 
-#: public/class-humble-lms-shortcodes.php:775
+#: public/class-humble-lms-shortcodes.php:796
 msgid "No tracks available."
 msgstr "Keine Lernpfade vorhanden."
 
-#: public/class-humble-lms-shortcodes.php:883
+#: public/class-humble-lms-shortcodes.php:904
 msgid "You have not received any awards yet."
 msgstr "Du hast noch keine Auszeichnungen erhalten."
 
-#: public/class-humble-lms-shortcodes.php:921
+#: public/class-humble-lms-shortcodes.php:942
 msgid "You have not been issued any certificates yet."
 msgstr "Du hast noch keine Zertifikate erworben."
 
-#: public/class-humble-lms-shortcodes.php:946
-#: public/class-humble-lms-shortcodes.php:1313
+#: public/class-humble-lms-shortcodes.php:967
+#: public/class-humble-lms-shortcodes.php:1334
 #, php-format
 msgid "Please %s first."
 msgstr "Bitte erst %s."
 
-#: public/class-humble-lms-shortcodes.php:960
+#: public/class-humble-lms-shortcodes.php:981
 msgid "Login failed."
 msgstr "Anmeldung fehlgeschlagen."
 
-#: public/class-humble-lms-shortcodes.php:960
+#: public/class-humble-lms-shortcodes.php:981
 msgid "Username and password do not match."
 msgstr "Nutzername und Passwort stimmen nicht überein."
 
-#: public/class-humble-lms-shortcodes.php:968
+#: public/class-humble-lms-shortcodes.php:989
 msgid "You have successfully been logged out."
 msgstr "Du wurdest erfolgreich abgemeldet."
 
-#: public/class-humble-lms-shortcodes.php:972
+#: public/class-humble-lms-shortcodes.php:993
 #, php-format
 msgid "Invalid key. Please try to %s again."
 msgstr "Ungültiger Schlüssel. Bitte versuche es erneut: %s."
 
-#: public/class-humble-lms-shortcodes.php:972
-#: public/class-humble-lms-shortcodes.php:976
+#: public/class-humble-lms-shortcodes.php:993
+#: public/class-humble-lms-shortcodes.php:997
 msgid "reset your password"
 msgstr "Passwort zurücksetzen"
 
-#: public/class-humble-lms-shortcodes.php:976
+#: public/class-humble-lms-shortcodes.php:997
 #, php-format
 msgid "Expired key. Please try to %s again."
 msgstr "Schlüssel abgelaufen. Bitte versuche es erneut: %s."
 
-#: public/class-humble-lms-shortcodes.php:980
+#: public/class-humble-lms-shortcodes.php:1001
 msgid "Password changed successfully. Please sign in below."
 msgstr "Passwort erfolgreich zurückgesetzt. Bitte melde dich an."
 
-#: public/class-humble-lms-shortcodes.php:985
+#: public/class-humble-lms-shortcodes.php:1006
 msgid "Please check your email inbox for a link to reset your password."
 msgstr ""
 "Ein Link zum Zurücksetzen deines Passworts wurde dir per E-Mail gesendet."
 
-#: public/class-humble-lms-shortcodes.php:992
-#: public/class-humble-lms-shortcodes.php:1055
-#: public/class-humble-lms-shortcodes.php:1369
+#: public/class-humble-lms-shortcodes.php:1013
+#: public/class-humble-lms-shortcodes.php:1076
+#: public/class-humble-lms-shortcodes.php:1390
 msgid "Username"
 msgstr "Nutzername"
 
-#: public/class-humble-lms-shortcodes.php:993
-#: public/class-humble-lms-shortcodes.php:1097
-#: public/class-humble-lms-shortcodes.php:1410
+#: public/class-humble-lms-shortcodes.php:1014
+#: public/class-humble-lms-shortcodes.php:1118
+#: public/class-humble-lms-shortcodes.php:1431
 msgid "Password"
 msgstr "Passwort"
 
-#: public/class-humble-lms-shortcodes.php:994
+#: public/class-humble-lms-shortcodes.php:1015
 msgid "Remember me"
 msgstr "Erinnere dich an mich"
 
-#: public/class-humble-lms-shortcodes.php:999
-#: public/class-humble-lms-shortcodes.php:1184
+#: public/class-humble-lms-shortcodes.php:1020
+#: public/class-humble-lms-shortcodes.php:1205
 msgid "Lost your password?"
 msgstr "Passwort verloren?"
 
-#: public/class-humble-lms-shortcodes.php:999
-#: public/class-humble-lms-shortcodes.php:1241
+#: public/class-humble-lms-shortcodes.php:1020
+#: public/class-humble-lms-shortcodes.php:1262
 msgid "Register"
 msgstr "Registrieren"
 
-#: public/class-humble-lms-shortcodes.php:1001
-#: public/class-humble-lms-shortcodes.php:1015
-#: public/class-humble-lms-shortcodes.php:1197
-#: public/class-humble-lms-shortcodes.php:1254
+#: public/class-humble-lms-shortcodes.php:1022
+#: public/class-humble-lms-shortcodes.php:1036
+#: public/class-humble-lms-shortcodes.php:1218
+#: public/class-humble-lms-shortcodes.php:1275
 msgid "You are already signed in."
 msgstr "Du bist bereits angemeldet."
 
-#: public/class-humble-lms-shortcodes.php:1019
+#: public/class-humble-lms-shortcodes.php:1040
 msgid "This site is currently not open for registration."
 msgstr "Die Registrierung ist derzeit nicht möglich."
 
-#: public/class-humble-lms-shortcodes.php:1028
-#: public/class-humble-lms-shortcodes.php:1219
-#: public/class-humble-lms-shortcodes.php:1260
-#: public/class-humble-lms-shortcodes.php:1264
-#: public/class-humble-lms-shortcodes.php:1279
-#: public/class-humble-lms-shortcodes.php:1329
+#: public/class-humble-lms-shortcodes.php:1049
+#: public/class-humble-lms-shortcodes.php:1240
+#: public/class-humble-lms-shortcodes.php:1281
+#: public/class-humble-lms-shortcodes.php:1285
+#: public/class-humble-lms-shortcodes.php:1300
+#: public/class-humble-lms-shortcodes.php:1350
 msgid "Error"
 msgstr "Fehler"
 
-#: public/class-humble-lms-shortcodes.php:1060
-#: public/class-humble-lms-shortcodes.php:1373
+#: public/class-humble-lms-shortcodes.php:1081
+#: public/class-humble-lms-shortcodes.php:1394
 msgid "First Name"
 msgstr "Vorname"
 
-#: public/class-humble-lms-shortcodes.php:1060
-#: public/class-humble-lms-shortcodes.php:1064
+#: public/class-humble-lms-shortcodes.php:1081
+#: public/class-humble-lms-shortcodes.php:1085
 msgid "Required for certification."
 msgstr "Wird für Zertifikate benötigt."
 
-#: public/class-humble-lms-shortcodes.php:1064
-#: public/class-humble-lms-shortcodes.php:1377
+#: public/class-humble-lms-shortcodes.php:1085
+#: public/class-humble-lms-shortcodes.php:1398
 msgid "Last Name"
 msgstr "Nachname"
 
-#: public/class-humble-lms-shortcodes.php:1068
-#: public/class-humble-lms-shortcodes.php:1381
+#: public/class-humble-lms-shortcodes.php:1089
+#: public/class-humble-lms-shortcodes.php:1402
 msgid "Academic title"
 msgstr "Titel / Akademischer Grad"
 
-#: public/class-humble-lms-shortcodes.php:1075
-#: public/class-humble-lms-shortcodes.php:1132
-#: public/class-humble-lms-shortcodes.php:1388
-#: public/class-humble-lms-shortcodes.php:1442
+#: public/class-humble-lms-shortcodes.php:1096
+#: public/class-humble-lms-shortcodes.php:1153
+#: public/class-humble-lms-shortcodes.php:1409
+#: public/class-humble-lms-shortcodes.php:1463
 msgid "Please select your country"
 msgstr "Bitte wähle dein Land"
 
-#: public/class-humble-lms-shortcodes.php:1092
-#: public/class-humble-lms-shortcodes.php:1405
+#: public/class-humble-lms-shortcodes.php:1113
+#: public/class-humble-lms-shortcodes.php:1426
 msgid "Confirm email address"
 msgstr "E-Mail-Adresse bestätigen"
 
-#: public/class-humble-lms-shortcodes.php:1098
-#: public/class-humble-lms-shortcodes.php:1411
+#: public/class-humble-lms-shortcodes.php:1119
+#: public/class-humble-lms-shortcodes.php:1432
 msgid "Min. 12 characters, at least 1 letter and 1 number"
 msgstr "Mind. 12 Zeichen, mind. 1 Buchstabe und 1 Zahl"
 
-#: public/class-humble-lms-shortcodes.php:1103
-#: public/class-humble-lms-shortcodes.php:1416
+#: public/class-humble-lms-shortcodes.php:1124
+#: public/class-humble-lms-shortcodes.php:1437
 msgid "Password again"
 msgstr "Passwort wiederholen"
 
-#: public/class-humble-lms-shortcodes.php:1115
+#: public/class-humble-lms-shortcodes.php:1136
 msgid "TOS / privacy policy"
 msgstr "AGB / Datenschutz"
 
-#: public/class-humble-lms-shortcodes.php:1117
+#: public/class-humble-lms-shortcodes.php:1138
 msgid "terms of service"
 msgstr "Allgemeine Geschäftsbedingungen"
 
-#: public/class-humble-lms-shortcodes.php:1118
+#: public/class-humble-lms-shortcodes.php:1139
 msgid "privacy policy"
 msgstr "Datenschutzerklärung"
 
-#: public/class-humble-lms-shortcodes.php:1120
+#: public/class-humble-lms-shortcodes.php:1141
 #, php-format
 msgid "I agree to the %s and I have read and accepted the %s."
 msgstr "Ich stimme den %s zu und habe die %s gelesen und akzeptiert."
 
-#: public/class-humble-lms-shortcodes.php:1128
+#: public/class-humble-lms-shortcodes.php:1149
 msgid ""
 "If you would like to purchase anything on this website you will have to "
 "enter your billing information. Of course you can leave the required fields "
@@ -3353,42 +3361,42 @@ msgstr ""
 "Falls du einen unserer Kurse kaufen möchtest, musst du deine Rechnungsdaten "
 "eingeben. Natürlich kannst du das aber auch zu einem späteren Zeitpunkt tun."
 
-#: public/class-humble-lms-shortcodes.php:1130
-#: public/class-humble-lms-shortcodes.php:1144
-#: public/class-humble-lms-shortcodes.php:1148
-#: public/class-humble-lms-shortcodes.php:1152
-#: public/class-humble-lms-shortcodes.php:1440
-#: public/class-humble-lms-shortcodes.php:1454
-#: public/class-humble-lms-shortcodes.php:1458
-#: public/class-humble-lms-shortcodes.php:1462
+#: public/class-humble-lms-shortcodes.php:1151
+#: public/class-humble-lms-shortcodes.php:1165
+#: public/class-humble-lms-shortcodes.php:1169
+#: public/class-humble-lms-shortcodes.php:1173
+#: public/class-humble-lms-shortcodes.php:1461
+#: public/class-humble-lms-shortcodes.php:1475
+#: public/class-humble-lms-shortcodes.php:1479
+#: public/class-humble-lms-shortcodes.php:1483
 msgid "Required for billing."
 msgstr "Benötigt für Rechnung."
 
-#: public/class-humble-lms-shortcodes.php:1152
-#: public/class-humble-lms-shortcodes.php:1462
+#: public/class-humble-lms-shortcodes.php:1173
+#: public/class-humble-lms-shortcodes.php:1483
 msgid "Address/Street/Number"
 msgstr "Anschrift/Straße/Hausnummer"
 
-#: public/class-humble-lms-shortcodes.php:1156
-#: public/class-humble-lms-shortcodes.php:1160
-#: public/class-humble-lms-shortcodes.php:1466
-#: public/class-humble-lms-shortcodes.php:1470
+#: public/class-humble-lms-shortcodes.php:1177
+#: public/class-humble-lms-shortcodes.php:1181
+#: public/class-humble-lms-shortcodes.php:1487
+#: public/class-humble-lms-shortcodes.php:1491
 msgid "Optional for billing."
 msgstr "Optional für Rechnung."
 
-#: public/class-humble-lms-shortcodes.php:1177
+#: public/class-humble-lms-shortcodes.php:1198
 msgid "Register Your Account"
 msgstr "Nutzerkonto registrieren"
 
-#: public/class-humble-lms-shortcodes.php:1203
+#: public/class-humble-lms-shortcodes.php:1224
 msgid "Check your email for a link to reset your password."
 msgstr "Wir haben dir eine E-Mail zum Zurücksetzen deines Passworts geschickt."
 
-#: public/class-humble-lms-shortcodes.php:1211
+#: public/class-humble-lms-shortcodes.php:1232
 msgid "There are no users registered with this email address."
 msgstr "Keine registrierten Nutzer/innen mit dieser E-Mail-Adresse."
 
-#: public/class-humble-lms-shortcodes.php:1227
+#: public/class-humble-lms-shortcodes.php:1248
 msgid ""
 "Please enter your email address and we will send you a link you can use to "
 "pick a new password."
@@ -3396,15 +3404,15 @@ msgstr ""
 "Bitte gib deine E-Mail-Adresse ein und wir senden dir einen Link zum "
 "Zurücksetzen deines Passworts."
 
-#: public/class-humble-lms-shortcodes.php:1231
+#: public/class-humble-lms-shortcodes.php:1252
 msgid "Your email address"
 msgstr "Deine E-Mail-Adresse"
 
-#: public/class-humble-lms-shortcodes.php:1260
+#: public/class-humble-lms-shortcodes.php:1281
 msgid "The passwords you entered do not match."
 msgstr "Die angegebenen Passwörter stimmen nicht überein."
 
-#: public/class-humble-lms-shortcodes.php:1264
+#: public/class-humble-lms-shortcodes.php:1285
 msgid ""
 "Your new password should be at least 12 characters long and contain min. 1 "
 "letter and 1 number."
@@ -3412,190 +3420,190 @@ msgstr ""
 "Dein neues Passwort sollte mind. 12 Zeichen lang sein und 1 Buchstaben und 1 "
 "Zahl beinhalten."
 
-#: public/class-humble-lms-shortcodes.php:1287
+#: public/class-humble-lms-shortcodes.php:1308
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: public/class-humble-lms-shortcodes.php:1291
+#: public/class-humble-lms-shortcodes.php:1312
 msgid "Repeat new password"
 msgstr "Passwort wiederholen"
 
-#: public/class-humble-lms-shortcodes.php:1322
+#: public/class-humble-lms-shortcodes.php:1343
 msgid "You progress was reset successfully."
 msgstr "Dein Lernfortschritt wurde zurückgesetzt."
 
-#: public/class-humble-lms-shortcodes.php:1334
+#: public/class-humble-lms-shortcodes.php:1355
 msgid "Account information updated."
 msgstr "Profildaten aktualisiert."
 
-#: public/class-humble-lms-shortcodes.php:1364
+#: public/class-humble-lms-shortcodes.php:1385
 msgid "Upgrade your account"
 msgstr "Mitgliedschaft hochstufen"
 
-#: public/class-humble-lms-shortcodes.php:1369
-#: public/class-humble-lms-shortcodes.php:1373
-#: public/class-humble-lms-shortcodes.php:1377
+#: public/class-humble-lms-shortcodes.php:1390
+#: public/class-humble-lms-shortcodes.php:1394
+#: public/class-humble-lms-shortcodes.php:1398
 msgid "Can't be changed"
 msgstr "Kann nicht geändert werden"
 
-#: public/class-humble-lms-shortcodes.php:1429
+#: public/class-humble-lms-shortcodes.php:1450
 msgid "Pflease complete your billing information."
 msgstr "Bitte vervollständige deine Rechnungsdaten."
 
-#: public/class-humble-lms-shortcodes.php:1433
+#: public/class-humble-lms-shortcodes.php:1454
 msgid "Your billing information is complete."
 msgstr "Deine Rechnungsdaten sind vollständig."
 
-#: public/class-humble-lms-shortcodes.php:1478
+#: public/class-humble-lms-shortcodes.php:1499
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: public/class-humble-lms-shortcodes.php:1504
-#: public/class-humble-lms-shortcodes.php:1533
+#: public/class-humble-lms-shortcodes.php:1525
+#: public/class-humble-lms-shortcodes.php:1554
 msgid "You have not purchased any courses yet."
 msgstr "Du hast noch keine Kurse gekauft."
 
-#: public/class-humble-lms-shortcodes.php:1521
+#: public/class-humble-lms-shortcodes.php:1542
 msgid "You have not purchased any tracks yet."
 msgstr "Du hast noch keine Lernpfade gekauft."
 
-#: public/class-humble-lms-shortcodes.php:1562
+#: public/class-humble-lms-shortcodes.php:1583
 msgid "No transactions found."
 msgstr "Keine Transaktionen gefunden."
 
-#: public/class-humble-lms-shortcodes.php:1610
+#: public/class-humble-lms-shortcodes.php:1631
 msgid "Download (PDF)"
 msgstr "Download (PDF)"
 
-#: public/class-humble-lms-shortcodes.php:1613
+#: public/class-humble-lms-shortcodes.php:1634
 #, php-format
 msgid "Looking for an invoice? Please %s"
 msgstr "Suchst du deine Rechnung? Bitte %s"
 
-#: public/class-humble-lms-shortcodes.php:1613
+#: public/class-humble-lms-shortcodes.php:1634
 msgid "update your billing information first"
 msgstr "aktualisiere zunächst deine Rechnungsdaten"
 
-#: public/class-humble-lms-shortcodes.php:1616
+#: public/class-humble-lms-shortcodes.php:1637
 msgid "PayPal transaction data"
 msgstr "PayPal Transaktionsdaten"
 
-#: public/class-humble-lms-shortcodes.php:1617
+#: public/class-humble-lms-shortcodes.php:1638
 msgid "Transaction ID"
 msgstr "Transaktions-ID"
 
-#: public/class-humble-lms-shortcodes.php:1619
+#: public/class-humble-lms-shortcodes.php:1640
 msgid "URL"
 msgstr "URL"
 
-#: public/class-humble-lms-shortcodes.php:1624
+#: public/class-humble-lms-shortcodes.php:1645
 msgid "Email adress"
 msgstr "E-Mail-Adresse"
 
-#: public/class-humble-lms-shortcodes.php:1626
+#: public/class-humble-lms-shortcodes.php:1647
 msgid "Status"
 msgstr "Status"
 
-#: public/class-humble-lms-shortcodes.php:1630
+#: public/class-humble-lms-shortcodes.php:1651
 msgid "Given name (PayPal)"
 msgstr "Vorname (PayPal)"
 
-#: public/class-humble-lms-shortcodes.php:1631
+#: public/class-humble-lms-shortcodes.php:1652
 msgid "Surname (PayPal)"
 msgstr "Nachname (PayPal)"
 
-#: public/class-humble-lms-shortcodes.php:1632
+#: public/class-humble-lms-shortcodes.php:1653
 msgid "Billing details"
 msgstr "Rechnugsdetails"
 
-#: public/class-humble-lms-shortcodes.php:1671
+#: public/class-humble-lms-shortcodes.php:1692
 msgid "Please enter at least one valid quiz ID."
 msgstr "Bitte mind. 1 gültige Quiz-ID angeben."
 
-#: public/class-humble-lms-shortcodes.php:1678
+#: public/class-humble-lms-shortcodes.php:1699
 msgid "One or more quiz ID seems to be invalid."
 msgstr "Eine oder mehrere Quiz-IDs scheinen ungültig zu sein."
 
-#: public/class-humble-lms-shortcodes.php:1696
-#: public/class-humble-lms-shortcodes.php:1706
+#: public/class-humble-lms-shortcodes.php:1717
+#: public/class-humble-lms-shortcodes.php:1727
 msgid "Attempts exceeded"
 msgstr "Lösungsversuche überschritten"
 
-#: public/class-humble-lms-shortcodes.php:1697
-#: public/class-humble-lms-shortcodes.php:1707
+#: public/class-humble-lms-shortcodes.php:1718
+#: public/class-humble-lms-shortcodes.php:1728
 msgid "You exceeded the maximum number of attempts for this quiz."
 msgstr ""
 "Du hast die maximale Anzahl an Lösungsversuchen für dieses Quiz "
 "überschritten."
 
-#: public/class-humble-lms-shortcodes.php:1700
-#: public/class-humble-lms-shortcodes.php:1713
+#: public/class-humble-lms-shortcodes.php:1721
+#: public/class-humble-lms-shortcodes.php:1734
 msgid "Quiz completed"
 msgstr "Quiz gelöst"
 
-#: public/class-humble-lms-shortcodes.php:1701
-#: public/class-humble-lms-shortcodes.php:1714
+#: public/class-humble-lms-shortcodes.php:1722
+#: public/class-humble-lms-shortcodes.php:1735
 msgid "You successfully completed this quiz."
 msgstr "Du hast dieses Quiz erfolgreich abgeschlossen."
 
-#: public/class-humble-lms-shortcodes.php:1723
+#: public/class-humble-lms-shortcodes.php:1744
 msgid "Well done!"
 msgstr "Gut gemacht!"
 
-#: public/class-humble-lms-shortcodes.php:1724
+#: public/class-humble-lms-shortcodes.php:1745
 msgid "You passed this quiz with a score of"
 msgstr "Quiz bestanden mit einer Punktzahl von"
 
-#: public/class-humble-lms-shortcodes.php:1727
+#: public/class-humble-lms-shortcodes.php:1748
 msgid "Bummer"
 msgstr "Schade"
 
-#: public/class-humble-lms-shortcodes.php:1728
+#: public/class-humble-lms-shortcodes.php:1749
 msgid "You failed this quiz with a score of"
 msgstr "Du hast das Quiz nicht bestanden mit"
 
-#: public/class-humble-lms-shortcodes.php:1738
+#: public/class-humble-lms-shortcodes.php:1759
 msgid "Attention, limited attempts!"
 msgstr "Achtung, begrenzte Lösungsversuche!"
 
-#: public/class-humble-lms-shortcodes.php:1739
+#: public/class-humble-lms-shortcodes.php:1760
 msgid "Maximum attempts"
 msgstr "Maximale Lösungsversuche"
 
-#: public/class-humble-lms-shortcodes.php:1740
+#: public/class-humble-lms-shortcodes.php:1761
 msgid "Remaining attempts"
 msgstr "Verbleibende Lösungsversuche"
 
-#: public/class-humble-lms-shortcodes.php:1785
+#: public/class-humble-lms-shortcodes.php:1806
 msgid "No quizzes found."
 msgstr "Keine Quizze gefunden."
 
-#: public/class-humble-lms-shortcodes.php:1815
+#: public/class-humble-lms-shortcodes.php:1836
 #, php-format
 msgid "If you would like to purchase a premium memberhsip please %s and %s."
 msgstr "Wenn Du eine Mitgliedschaft abschließen möchtest, bitte %s und %s."
 
-#: public/class-humble-lms-shortcodes.php:1815
-#: public/class-humble-lms-shortcodes.php:2010
-#: public/class-humble-lms-shortcodes.php:2016
+#: public/class-humble-lms-shortcodes.php:1836
+#: public/class-humble-lms-shortcodes.php:2031
+#: public/class-humble-lms-shortcodes.php:2037
 msgid "register an account"
 msgstr "registriere einen Account"
 
-#: public/class-humble-lms-shortcodes.php:1815
-#: public/class-humble-lms-shortcodes.php:2010
-#: public/class-humble-lms-shortcodes.php:2016
+#: public/class-humble-lms-shortcodes.php:1836
+#: public/class-humble-lms-shortcodes.php:2031
+#: public/class-humble-lms-shortcodes.php:2037
 msgid "log in"
 msgstr "melde dich an."
 
-#: public/class-humble-lms-shortcodes.php:1824
+#: public/class-humble-lms-shortcodes.php:1845
 msgid "No memberships available at the moment."
 msgstr "Keine Mitgliedschaften gefunden."
 
-#: public/class-humble-lms-shortcodes.php:1828
+#: public/class-humble-lms-shortcodes.php:1849
 msgid "Woohoo, your account has been upgraded! 😊"
 msgstr "Vielen Dank, Dein Account wurde erfolgreich hochgestuft."
 
-#: public/class-humble-lms-shortcodes.php:1833
+#: public/class-humble-lms-shortcodes.php:1854
 msgid ""
 "Please select the membership type you would like to purchase. You can "
 "upgrade your membership status anytime you want. Your current membership "
@@ -3604,25 +3612,25 @@ msgstr ""
 "Bitte wähle die Mitgliedschaft, die du abschließen möchtest. Du kannst deine "
 "Mitgliedschaft jederzeit hoch stufen. Deine aktuelle Mitgliedschaft:"
 
-#: public/class-humble-lms-shortcodes.php:1882
+#: public/class-humble-lms-shortcodes.php:1903
 msgid "No memberships found."
 msgstr "Keine Mitgliedschaften gefunden."
 
-#: public/class-humble-lms-shortcodes.php:1891
+#: public/class-humble-lms-shortcodes.php:1912
 msgid "Please provide your PayPal credentials first."
 msgstr "Bitte gib zuerst deine PayPal-Zugangsdaten an."
 
-#: public/class-humble-lms-shortcodes.php:1899
+#: public/class-humble-lms-shortcodes.php:1920
 msgid "Buy membership"
 msgstr "Mitgliedschaft kaufen"
 
-#: public/class-humble-lms-shortcodes.php:1917
-#: public/class-humble-lms-shortcodes.php:1919
-#: public/class-humble-lms-shortcodes.php:2134
+#: public/class-humble-lms-shortcodes.php:1938
+#: public/class-humble-lms-shortcodes.php:1940
+#: public/class-humble-lms-shortcodes.php:2155
 msgid "Redeem discount"
 msgstr "Gutschein einlösen"
 
-#: public/class-humble-lms-shortcodes.php:1918
+#: public/class-humble-lms-shortcodes.php:1939
 msgid ""
 "Please note that you can only redeem a coupon <strong>once for the currently "
 "selected content</strong>. Do you want to proceed?"
@@ -3630,43 +3638,43 @@ msgstr ""
 "Denk daran, dass eine Gutschein nur <strong>1x für den aktuell gewählten "
 "Inhalt</strong> eingelöst werden kann. Möchtest du das jetzt tun?"
 
-#: public/class-humble-lms-shortcodes.php:1919
+#: public/class-humble-lms-shortcodes.php:1940
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: public/class-humble-lms-shortcodes.php:1966
+#: public/class-humble-lms-shortcodes.php:1987
 msgid "Purchase now"
 msgstr "Jetzt kaufen"
 
-#: public/class-humble-lms-shortcodes.php:2009
-#: public/class-humble-lms-shortcodes.php:2029
+#: public/class-humble-lms-shortcodes.php:2030
+#: public/class-humble-lms-shortcodes.php:2050
 msgid "Purchase this course"
 msgstr "Diesen Kurs kaufen"
 
-#: public/class-humble-lms-shortcodes.php:2010
+#: public/class-humble-lms-shortcodes.php:2031
 #, php-format
 msgid "If you would like to purchase this course please %s and %s."
 msgstr "Wenn du diesen Kurs kaufen möchtest, %s und %s."
 
-#: public/class-humble-lms-shortcodes.php:2015
-#: public/class-humble-lms-shortcodes.php:2064
+#: public/class-humble-lms-shortcodes.php:2036
+#: public/class-humble-lms-shortcodes.php:2085
 msgid "Purchase this track"
 msgstr "Diesen Lernpfad kaufen"
 
-#: public/class-humble-lms-shortcodes.php:2016
+#: public/class-humble-lms-shortcodes.php:2037
 #, php-format
 msgid ""
 "If you would like to purchase all courses in this track please %s and %s."
 msgstr ""
 "Wenn du alle Kurse in diesem Lernpfad kaufen möchtest, bitte %s und %s."
 
-#: public/class-humble-lms-shortcodes.php:2031
+#: public/class-humble-lms-shortcodes.php:2052
 msgid ""
 "Please click the button below if your would like to purchase this course."
 msgstr ""
 "Bitte klicke den nachfolgenden Button, wenn du diesen Kurs kaufen möchtest."
 
-#: public/class-humble-lms-shortcodes.php:2041
+#: public/class-humble-lms-shortcodes.php:2062
 #, php-format
 msgid ""
 "You can also purchase the complete course track %s instead of the single "
@@ -3674,12 +3682,12 @@ msgid ""
 msgstr ""
 "Du kannst diesen Kurs auch als Teil des vollständigen Lernpfads %s erwerben."
 
-#: public/class-humble-lms-shortcodes.php:2053
-#: public/class-humble-lms-shortcodes.php:2075
+#: public/class-humble-lms-shortcodes.php:2074
+#: public/class-humble-lms-shortcodes.php:2096
 msgid "Buy now for"
 msgstr "Jetzt kaufen für"
 
-#: public/class-humble-lms-shortcodes.php:2066
+#: public/class-humble-lms-shortcodes.php:2087
 msgid ""
 "Please click the button below if your would like to purchase this track and "
 "all its containing courses."
@@ -3687,23 +3695,23 @@ msgstr ""
 "Bitte klicke den nachfolgenden Button, wenn du diesen Lernpfad und alle "
 "enthaltenen Kurse kaufen möchtest."
 
-#: public/class-humble-lms-shortcodes.php:2092
+#: public/class-humble-lms-shortcodes.php:2113
 msgid "Buy for"
 msgstr "Kaufen für"
 
-#: public/class-humble-lms-shortcodes.php:2094
+#: public/class-humble-lms-shortcodes.php:2115
 msgid "Complete billing details"
 msgstr "Rechnungsdaten angeben"
 
-#: public/class-humble-lms-shortcodes.php:2135
+#: public/class-humble-lms-shortcodes.php:2156
 msgid "The code you entered is invalid."
 msgstr "Der eingegebene Code ist ungültig."
 
-#: public/class-humble-lms-shortcodes.php:2145
+#: public/class-humble-lms-shortcodes.php:2166
 msgid "Active coupon"
 msgstr "Aktiver Gutschein"
 
-#: public/class-humble-lms-shortcodes.php:2159
+#: public/class-humble-lms-shortcodes.php:2180
 msgid "New"
 msgstr "Neu"
 
@@ -3711,7 +3719,7 @@ msgstr "Neu"
 msgid "Back to home page"
 msgstr "Zurück zur Startseite"
 
-#: public/partials/humble-lms-lesson-single.php:38
+#: public/partials/humble-lms-lesson-single.php:51
 msgid "Pages"
 msgstr "Seiten"
 

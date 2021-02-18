@@ -1480,6 +1480,14 @@ class Humble_LMS_Admin {
         $res->new_version = $remote->version;
         $res->tested = $remote->tested;
         $res->package = $remote->download_url;
+
+        if( ! empty( $remote->icons ) ) {
+          $res->icons = array(
+            '1x' => $remote->icons->low,
+            '2x' => $remote->icons->high,
+          );
+        }
+
         $transient->response[$res->plugin] = $res;
         $transient->checked[$res->plugin] = $remote->version;
       }

@@ -231,30 +231,17 @@ li.humble-lms-syllabus-lesson {
   background: linear-gradient(45deg, lighten($color-primary, 50), rgba(255,255,255,0));
 }
 
-li.humble-lms-syllabus-lesson:hover,
-li.humble-lms-syllabus-lesson:focus,
-li.humble-lms-syllabus-lesson--current {
-  // background: desaturate(lighten($color-primary, 44%), 25%);
-}
-
 li.humble-lms-syllabus-lesson--current {
   box-shadow: inset 2px 0 0 lighten(desaturate($color-primary, 10), 5);
-  // background: linear-gradient(45deg, lighten($color-primary, 47%), rgba(255,255,255,0));
 }
 
 li.humble-lms-syllabus-lesson--completed.humble-lms-syllabus-lesson--current {
   box-shadow: inset 2px 0 0 darken($color-success, 2%);
-  // background: linear-gradient(45deg, lighten($color-success, 56%), rgba(255,255,255,0));
 }
 
 li.humble-lms-syllabus-lesson--completed {
   color: darken($color-success, 25%);
   background: linear-gradient(45deg, lighten($color-success, 62%), rgba(255,255,255,0));
-  // background: desaturate(lighten($color-success, 60%), 25%);
-  &:hover,
-  &:focus {
-    // bsection-titleackground: desaturate(lighten($color-success, 54%), 25%);
-  }
   .humble-lms-syllabus-title {
     color: darken($color-success, 25%);
   }

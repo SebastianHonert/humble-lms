@@ -64,6 +64,7 @@ register_post_type( 'humble_lms_lesson', $args );
 
 function humble_lms_lesson_add_meta_boxes() {
   add_meta_box( 'humble_lms_lesson_description_mb', __('What is this lesson about?', 'humble-lms'), 'humble_lms_lesson_description_mb', 'humble_lms_lesson', 'normal', 'default' );
+  add_meta_box( 'humble_lms_lesson_is_full_width_mb', __('Apply full width layout?', 'humble-lms'), 'humble_lms_lesson_is_full_width_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_membership_mb', __('Membership access level', 'humble-lms'), 'humble_lms_lesson_membership_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_access_levels_mb', __('Who can access this lesson?', 'humble-lms'), 'humble_lms_lesson_access_levels_mb', 'humble_lms_lesson', 'normal', 'default' );
   add_meta_box( 'humble_lms_lesson_instructors_mb', __('Select instructor(s) for this lesson (optional)', 'humble-lms'), 'humble_lms_lesson_instructors_mb', 'humble_lms_lesson', 'normal', 'default' );
@@ -83,6 +84,17 @@ function humble_lms_lesson_description_mb() {
 
   echo '<p>' . __('Describe the content of this lesson in a few words. Allowed HTML-tags: strong, em, b, i.', 'humble-lms') . '</p>';
   echo '<textarea rows="5" class="widefat" name="humble_lms_lesson_description" id="humble_lms_lesson_description">' . $description . '</textarea>';
+}
+
+// Full width content
+
+function humble_lms_lesson_is_full_width_mb() {
+  global $post;
+
+  $is_full_width = get_post_meta( $post->ID, 'humble_lms_lesson_is_full_width', true );
+  $checked = $is_full_width ? 'checked' : '';
+
+  echo '<input type="checkbox" name="humble_lms_lesson_is_full_width" value="1" ' . $checked . '> ' . __('Yes, apply full width layout for this lesson.', 'humble-lms') . '<br>';
 }
 
 // Membership meta box
@@ -269,6 +281,7 @@ function humble_lms_save_lesson_meta_boxes( $post_id, $post )
   );
 
   $lesson_meta['humble_lms_lesson_description'] = wp_kses( $_POST['humble_lms_lesson_description'], $allowed_tags );
+  $lesson_meta['humble_lms_lesson_is_full_width'] = (int)$_POST['humble_lms_lesson_is_full_width'];
   $lesson_meta['humble_lms_membership'] = sanitize_text_field( $_POST['humble_lms_membership'] );
   $lesson_meta['humble_lms_lesson_access_levels'] = isset( $_POST['humble_lms_lesson_access_levels'] ) ? $_POST['humble_lms_lesson_access_levels'] : [];
   $lesson_meta['humble_lms_lesson_access_levels'] = array_map( 'esc_attr', $lesson_meta['humble_lms_lesson_access_levels'] );

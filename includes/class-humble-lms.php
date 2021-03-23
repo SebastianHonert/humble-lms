@@ -70,7 +70,7 @@ class Humble_LMS {
     if ( defined( 'HUMBLE_LMS_VERSION' ) ) {
       $this->version = HUMBLE_LMS_VERSION;
     } else {
-      $this->version = '0.1.5';
+      $this->version = '0.1.6';
     }
     $this->humble_lms = 'humble-lms';
 
@@ -347,6 +347,7 @@ class Humble_LMS {
     $this->loader->add_action( 'set_current_user', $plugin_public, 'hide_admin_bar' );
     $this->loader->add_action( 'add_meta_boxes', $plugin_public, 'add_post_page_meta_box_membership_access_level' );
     $this->loader->add_action( 'save_post', $plugin_public, 'save_post_page_meta_box_membership_access_level' );
+    $this->loader->add_filter( 'body_class', $plugin_public, 'add_body_classes' );
     $this->loader->add_filter( 'archive_template', $plugin_public, 'humble_lms_archive_templates' );
     $this->loader->add_filter( 'single_template', $plugin_public, 'humble_lms_single_templates' );
     $this->loader->add_filter( 'the_content', $plugin_public, 'humble_lms_add_content_to_pages' );

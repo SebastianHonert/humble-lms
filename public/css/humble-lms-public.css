@@ -760,8 +760,8 @@ input[type='button'].humble-lms-btn--small {
   margin: 0 1.5em 1.5em 0; }
 
 .humble-lms-awards-list-item img {
-  height: 7em;
-  width: auto; }
+  height: auto;
+  width: 7em; }
 
 /* Certificates list */
 .humble-lms-certificates-list-item * {
@@ -930,6 +930,19 @@ input[type='button'].humble-lms-btn--small {
 
 .humble-lms-flex-column--three-fifth {
   width: calc(3/5 * 100% - (1 - 3/5) * 1.5em); }
+
+/* Full width lessons */
+body.humble-lms-lesson-full-width .humble-lms-flex-column--lesson {
+  width: 100%; }
+
+body.humble-lms-lesson-full-width .humble-lms-sidebar {
+  margin-top: 2rem;
+  font-size: 1.125em; }
+
+body.humble-lms-lesson-full-width .humble-lms-sidebar h2 {
+  font-size: 1.125em;
+  padding-bottom: 0;
+  margin-bottom: .75em; }
 
 /* Sidebars */
 .humble-lms-widget h2 {

@@ -31,7 +31,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      */
     public function can_access_lesson( $lesson_id = null, $course_id = null, $track_id = null ) {
       // Administrators can access all content
-      if( current_user_can('manage_options') )
+      if( current_user_can('edit_pages') )
         return 'allowed';
 
       if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
@@ -85,7 +85,7 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      * @since 0.0.2
      */
     public function user_can_access_post( $post_id = null ) {
-      if( current_user_can('manage_options') ) {
+      if( current_user_can('edit_pages') ) {
         return true;
       }
 

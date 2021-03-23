@@ -657,4 +657,27 @@ class Humble_LMS_Public {
     update_post_meta( $post_id, 'humble_lms_membership', $access_level );
   }
 
+  /**
+   * Add body classes.
+   * 
+   * @since 0.1.6
+   */
+  public function add_body_classes( $classes ) {
+    global $post;
+
+    if( ! isset( $post->ID ) ) {
+      return $classes;
+    }
+
+    if( get_post_type( $post->ID ) === 'humble_lms_lesson') {
+      $is_full_width = get_post_meta( $post->ID, 'humble_lms_lesson_is_full_width', true );
+
+      if( (int)$is_full_width === 1 ) {
+        $classes[] = 'humble-lms-lesson-full-width';
+      }
+    }
+
+    return $classes;
+  }
+
 }

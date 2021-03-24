@@ -43,7 +43,6 @@ class Humble_LMS_Activator {
    */
   public function add_custom_pages( $blog_id = null ) {
     if( is_multisite() && $blog_id ) {
-      $current_blog_id = get_current_blog_id();
       switch_to_blog( $blog_id );
     }
 
@@ -132,7 +131,7 @@ class Humble_LMS_Activator {
       wp_insert_post( $custom_page_user_profile );
 
     if( is_multisite() && $blog_id ) {
-      switch_to_blog( $current_blog_id );
+      restore_current_blog();
     }
   }
 
@@ -143,7 +142,6 @@ class Humble_LMS_Activator {
    */
   public function init_options( $blog_id = null ) {
     if( is_multisite() && $blog_id ) {
-      $current_blog_id = get_current_blog_id();
       switch_to_blog( $blog_id );
     }
 
@@ -212,7 +210,7 @@ class Humble_LMS_Activator {
     }
 
     if( is_multisite() && $blog_id ) {
-      switch_to_blog( $current_blog_id );
+      restore_current_blog();
     }
  
   }

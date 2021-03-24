@@ -568,6 +568,11 @@ class Humble_LMS_Admin {
    */
   public function humble_lms_login_redirect( $redirect_to, $request, $user) {
     $translator = new Humble_LMS_Translator;
+
+    if( ! get_option('page_on_front') ) {
+      return $translator->home_url();
+    }
+
     $redirect_to = esc_url( get_permalink( $translator->get_translated_post_id( url_to_postid( home_url() ) ) ) );
 
     return $redirect_to;

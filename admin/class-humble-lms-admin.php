@@ -50,7 +50,7 @@ class Humble_LMS_Admin {
 
     $this->humble_lms = $humble_lms;
     $this->version = $version;
-    $this->options = get_option('humble_lms_options');
+    $this->options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
   }
 
@@ -128,7 +128,7 @@ class Humble_LMS_Admin {
    * @since    0.0.1
    */
   public function register_custom_post_types() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-track.php';
     require_once plugin_dir_path( __FILE__ ) . 'custom-post-types/humble-lms-course.php';
@@ -417,7 +417,7 @@ class Humble_LMS_Admin {
     }
 
     $translator = new Humble_LMS_Translator;
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     $custom_login_page_id = $options['custom_pages']['login'];
 
     return esc_url( get_permalink( $translator->get_translated_post_id( $custom_login_page_id ) ) );
@@ -429,7 +429,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_login_page_exists() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     if( ! isset( $options['custom_pages']['login'] ) ) return false;
 
@@ -450,7 +450,7 @@ class Humble_LMS_Admin {
     }
 
     $translator = new Humble_LMS_Translator;
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     $custom_registration_page_id = $options['custom_pages']['registration'];
 
     return esc_url( get_permalink( $translator->get_translated_post_id( $custom_registration_page_id ) ) );
@@ -462,7 +462,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_registration_page_exists() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     if( ! isset( $options['custom_pages']['registration'] ) ) return false;
 
     $custom_page_registration = get_post( $options['custom_pages']['registration'] );
@@ -481,7 +481,7 @@ class Humble_LMS_Admin {
     }
 
     $translator = new Humble_LMS_Translator;
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     $custom_lost_password_page_id = $options['custom_pages']['lost_password'];
 
     return esc_url( get_permalink( $translator->get_translated_post_id( $custom_lost_password_page_id ) ) );
@@ -493,7 +493,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_lost_password_page_exists() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     if( ! isset( $options['custom_pages']['lost_password'] ) ) return false;
 
     $custom_page_lost_password = get_post( $options['custom_pages']['lost_password'] );
@@ -512,7 +512,7 @@ class Humble_LMS_Admin {
     }
 
     $translator = new Humble_LMS_Translator;
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     $custom_reset_password_page_id = $options['custom_pages']['reset_password'];
 
     return esc_url( get_permalink( $translator->get_translated_post_id( $custom_reset_password_page_id ) ) );
@@ -524,7 +524,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_reset_password_page_exists() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     if( ! isset( $options['custom_pages']['reset_password'] ) ) return false;
 
     $custom_page_reset_password = get_post( $options['custom_pages']['reset_password'] );
@@ -537,7 +537,7 @@ class Humble_LMS_Admin {
    * @since   0.0.1
    */
   public function humble_lms_user_profile_page_exists() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     if( ! isset( $options['custom_pages']['user_profile'] ) ) return false;
 
     $custom_page_user_profile = get_post( $options['custom_pages']['user_profile'] );
@@ -581,7 +581,7 @@ class Humble_LMS_Admin {
   public function humble_lms_register_user() {
     global $wp;
 
-    if( ! get_option( 'users_can_register' ) )
+    if( ! Humble_LMS_Admin_Options_Manager::hlms_get_option( 'users_can_register' ) )
       return;
 
     if( ! isset( $_POST['humble-lms-form'] ) || $_POST['humble-lms-form'] !== 'humble-lms-registration' )
@@ -1056,7 +1056,7 @@ class Humble_LMS_Admin {
       $message = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $message );
       $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
       $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
-      $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
+      $message = str_replace( 'ADMIN_EMAIL', Humble_LMS_Admin_Options_Manager::hlms_get_option('admin_email'), $message );
       $message = str_replace( 'RESET_PASSWORD_URL', esc_url_raw( site_url( 'wp-login.php?action=rp&key=' . $key . '&login=' . rawurlencode( $user_login ), 'login' ) ), $message );
     }
 
@@ -1078,12 +1078,12 @@ class Humble_LMS_Admin {
 
     if( ! isset( $options['email_welcome'] ) || empty( $options['email_welcome'] ) || ! $options['email_welcome'] ) {
       $message = __( 'Hi there,' ) . "\r\n\r\n";
-      $message .= sprintf( __( 'welcome to %s! Here\'s how to log in:' ), get_option('blogname') ) . "\r\n\r\n";
+      $message .= sprintf( __( 'welcome to %s! Here\'s how to log in:' ), Humble_LMS_Admin_Options_Manager::hlms_get_option('blogname') ) . "\r\n\r\n";
       $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
       $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
       $message .= sprintf( __('Website: %s'), wp_login_url() ) . "\r\n\r\n";
       $message .= __( 'Please use the password you entered in the registration form.' ) . "\r\n\r\n";
-      $message .= sprintf( __('If you have any problems, please contact us via email to %s.'), get_option('admin_email') ) . "\r\n\r\n";
+      $message .= sprintf( __('If you have any problems, please contact us via email to %s.'), Humble_LMS_Admin_Options_Manager::hlms_get_option('admin_email') ) . "\r\n\r\n";
     } else {
       $date_format = 'F j, Y';
       $date = current_time( $date_format );
@@ -1094,11 +1094,11 @@ class Humble_LMS_Admin {
       $message = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $message );
       $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
       $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
-      $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
+      $message = str_replace( 'ADMIN_EMAIL', Humble_LMS_Admin_Options_Manager::hlms_get_option('admin_email'), $message );
     }
 
     $msg['subject'] = __('Your credentials', 'humble-lms');
-    $msg['headers'] = array('From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>', 'Content-Type: text/plain; charset=UTF-8');
+    $msg['headers'] = array('From: ' . get_bloginfo('name') . ' <' . Humble_LMS_Admin_Options_Manager::hlms_get_option( 'admin_email' ) . '>', 'Content-Type: text/plain; charset=UTF-8');
       
     $msg['message'] = $message;
 
@@ -1516,6 +1516,7 @@ class Humble_LMS_Admin {
     require_once plugin_dir_path( __DIR__ ) . 'includes/class-humble-lms-activator.php';
     $activator = new Humble_LMS_Activator;
     $activator->add_custom_pages( $blog_id );
+    $activator->init_options( $blog_id );
   }
 
 }

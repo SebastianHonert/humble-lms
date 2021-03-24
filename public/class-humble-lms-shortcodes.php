@@ -1036,7 +1036,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return '<p>' . __('You are already signed in.', 'humble-lms') . '</p>';
       }
 
-      if( ! get_option( 'users_can_register' ) ) {
+      if( ! Humble_LMS_Admin_Options_Manager::hlms_get_option( 'users_can_register' ) ) {
         return '<div class="humble-lms-message humble-lms-message--error">' . __('This site is currently not open for registration.', 'humble-lms') . '</div>';
       }
 
@@ -1370,7 +1370,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $user_email = $userdata->user_email;
       $useremail_confirm = isset( $_POST['humble-lms-user-email'] ) ? sanitize_email( $_POST['humble-lms-user-email'] ) : '';
       $user_membership = get_user_meta( $user_id, 'humble_lms_membership', true );
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
       ?>
       
@@ -1824,7 +1824,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
         return;
       }
 
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
       $currency = $this->options_manager->get_currency();
 
       if( ! is_user_logged_in() ) {
@@ -2020,7 +2020,7 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       }
 
       if( ! is_user_logged_in() ) {
-        $options = get_option('humble_lms_options');
+        $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
         $login_url = esc_url( get_permalink( $options['custom_pages']['login'] ) );
         $registration_url = esc_url( get_permalink( $options['custom_pages']['registration'] ) );
 

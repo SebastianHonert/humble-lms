@@ -77,7 +77,7 @@ class Humble_LMS_Public {
      * class.
      */
 
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     $tippy_theme = isset( $options['tippy_theme'] ) ? sanitize_text_field( $options['tippy_theme'] ) : 'default';
 
@@ -115,7 +115,7 @@ class Humble_LMS_Public {
 
     global $post;
     
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     // PayPal
     if( Humble_LMS_Admin_Options_Manager::has_sales() ) {
@@ -274,7 +274,7 @@ class Humble_LMS_Public {
     global $post;
 
     $html = '';
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     $content_manager = new Humble_LMS_Content_Manager;
 
     if( ! is_admin() ) {
@@ -465,7 +465,7 @@ class Humble_LMS_Public {
    * @since 0.0.2
    */
   public function html_premium_membership_required() {
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     $html = '<div class="humble-lms-message humble-lms-message--error">';
     $html .= '<span class="humble-lms-message-title">' . __('Access denied', 'humble-lms') . '</span>';

@@ -1595,7 +1595,7 @@ class PDFLib implements Canvas
     protected function getPDFLibParameter($keyword, $optlist = "")
     {
         if ($this->getPDFLibMajorVersion() >= 9) {
-            return $this->_pdf->get_option($keyword, "");
+            return $this->_pdf->Humble_LMS_Admin_Options_Manager::hlms_get_option($keyword, "");
         }
 
         return $this->_pdf->get_parameter($keyword, $optlist);
@@ -1650,7 +1650,7 @@ class PDFLib implements Canvas
     {
         if (is_null(self::$MAJOR_VERSION)) {
             if (method_exists($this->_pdf, "get_option")) {
-                self::$MAJOR_VERSION = abs(intval($this->_pdf->get_option("major", "")));
+                self::$MAJOR_VERSION = abs(intval($this->_pdf->Humble_LMS_Admin_Options_Manager::hlms_get_option("major", "")));
             } else {
                 self::$MAJOR_VERSION = abs(intval($this->_pdf->get_value("major", "")));
             }

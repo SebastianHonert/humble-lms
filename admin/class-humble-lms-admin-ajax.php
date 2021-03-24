@@ -36,7 +36,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $to = sanitize_email( $_POST['recipient'] );
       $subject = htmlspecialchars( $_POST['subject'] );
       $headers[] = 'Content-Type: ' . $format . '; charset=UTF-8';
-      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
+      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . Humble_LMS_Admin_Options_Manager::hlms_get_option( 'admin_email' ) . '>';
       $user = wp_get_current_user();
       $date_format = 'F j, Y';
       $date = current_time( $date_format );
@@ -46,7 +46,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
       $message = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $message );
       $message = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $message );
       $message = str_replace( 'LOGIN_URL', wp_login_url(), $message );
-      $message = str_replace( 'ADMIN_EMAIL', get_option('admin_email'), $message );
+      $message = str_replace( 'ADMIN_EMAIL', Humble_LMS_Admin_Options_Manager::hlms_get_option('admin_email'), $message );
       $message = wpautop($message);
 
       if( wp_mail( $to, $subject, $message, $headers ) ) {

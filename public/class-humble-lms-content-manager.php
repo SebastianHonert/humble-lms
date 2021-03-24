@@ -688,7 +688,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         setlocale(LC_ALL, $locale, 'en_GB', 'en_US');
       }
 
-      $date_format = get_option('date_format');
+      $date_format = Humble_LMS_Admin_Options_Manager::hlms_get_option('date_format');
       $date_format = self::dateFormatToStrftime( $date_format );
       
       $timestamps = get_post_meta( $course_id, 'humble_lms_course_timestamps', false );
@@ -941,7 +941,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
      * @since 0.0.3
      */
     public function invoice_template_data() {
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
       $template_data = array(
         'seller_info' => $options['seller_info'],
@@ -1026,7 +1026,7 @@ if( ! class_exists( 'Humble_LMS_Content_Manager' ) ) {
         return;
       }
 
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
       $user_manager = new Humble_LMS_Public_User;
       $transaction = $this->transaction_details( $transaction_id );
 

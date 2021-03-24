@@ -121,7 +121,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
       $evaluation = $_POST['evaluation'];
       $tryAgain = (int)$evaluation['tryAgain'];
       $completed = (int)$evaluation['completed'];
@@ -273,11 +273,11 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         die;
       }
 
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
       $invoice_prefix = isset( $options['invoice_prefix'] ) ? sanitize_text_field( $options['invoice_prefix'] ) : '';
 
       // Update invoice counter
-      $invoice_counter = get_option('humble_lms_invoice_counter');
+      $invoice_counter = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_invoice_counter');
 
       if( ! isset( $invoice_counter ) ) {
         $invoice_counter = 1;
@@ -285,7 +285,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $invoice_counter = absint( $invoice_counter ) + 1;
       }
 
-      update_option('humble_lms_invoice_counter', $invoice_counter);
+      Humble_LMS_Admin_Options_Manager::hlms_update_option('humble_lms_invoice_counter', $invoice_counter);
 
       // Coupon discount
       $coupon_details = array(
@@ -418,14 +418,14 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
      * @return   void
      */
     public function send_checkout_email( $order_details, $context, $txn_id ) {
-      $options = get_option('humble_lms_options');
+      $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
       $user_info = get_userdata( $order_details['user_id'] );
 
       $to = $user_info->user_email;
-      $subject = __('Order details', 'humble-lms') . ' (' . get_option( 'blogname' ) . ')';
+      $subject = __('Order details', 'humble-lms') . ' (' . Humble_LMS_Admin_Options_Manager::hlms_get_option( 'blogname' ) . ')';
       $headers[] = 'Content-Type: text/html; charset=UTF-8';
-      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
-      $headers[] = 'Cc: ' . get_bloginfo('name') . ' <' . get_option( 'admin_email' ) . '>';
+      $headers[] = 'From: ' . get_bloginfo('name') . ' <' . Humble_LMS_Admin_Options_Manager::hlms_get_option( 'admin_email' ) . '>';
+      $headers[] = 'Cc: ' . get_bloginfo('name') . ' <' . Humble_LMS_Admin_Options_Manager::hlms_get_option( 'admin_email' ) . '>';
 
       // Order details
       $order_html = '<p><strong>' . __('Account information', 'humble-lms') . '</strong></p>';
@@ -494,7 +494,7 @@ if( ! class_exists( 'Humble_LMS_Public_Ajax' ) ) {
         $body = wp_kses( $options['email_checkout'], $allowed_html );
         $body = str_replace( 'ORDER_DETAILS', $order_html, $body );
         $body = str_replace( 'USER_NAME', $user_info->display_name, $body );
-        $body = str_replace( 'ADMIN_EMAIL', get_option( 'admin_email' ), $body );
+        $body = str_replace( 'ADMIN_EMAIL', Humble_LMS_Admin_Options_Manager::hlms_get_option( 'admin_email' ), $body );
         $body = str_replace( 'CURRENT_DATE', $date, $body );
         $body = str_replace( 'WEBSITE_NAME', get_bloginfo('name'), $body );
         $body = str_replace( 'WEBSITE_URL', get_bloginfo('url'), $body );

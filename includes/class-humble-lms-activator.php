@@ -141,7 +141,12 @@ class Humble_LMS_Activator {
    * 
    * @since   0.0.1
    */
-  public function init_options() {
+  public function init_options( $blog_id = null ) {
+    if( is_multisite() && $blog_id ) {
+      $current_blog_id = get_current_blog_id();
+      switch_to_blog( $blog_id );
+    }
+
     $custom_page_login = get_page_by_title('Humble LMS Login', OBJECT, 'page');
     $custom_page_registration = get_page_by_title('Humble LMS Registration', OBJECT, 'page');
     $custom_page_lost_password = get_page_by_title('Humble LMS Lost Password', OBJECT, 'page');
@@ -149,17 +154,17 @@ class Humble_LMS_Activator {
     $custom_page_user_profile = get_page_by_title('Humble LMS User Profile', OBJECT, 'page');
 
     // Set invoice counter
-    $invoice_counter = get_option('humble_lms_invoice_counter');
+    $invoice_counter = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_invoice_counter');
 
     if( ! isset( $invoice_counter ) || ! $invoice_counter ) {
-      update_option('humble_lms_invoice_counter', 0);
+      Humble_LMS_Admin_Options_Manager::hlms_update_option('humble_lms_invoice_counter', 0);
     }
 
     // Set default plugin options
-    $options = get_option('humble_lms_options');
+    $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 
     if( ! isset( $options ) || ! is_array( $options ) ) {
-      update_option('humble_lms_options', array(
+      Humble_LMS_Admin_Options_Manager::hlms_update_option('humble_lms_options', array(
         'secret_key' => '5fba5d909a6c83.38241175',
         'item_reference' => 'Humble LMS',
         'delete_plugin_data_on_uninstall' => 0,
@@ -204,6 +209,10 @@ class Humble_LMS_Activator {
 
   Thank you!"
       ) );
+    }
+
+    if( is_multisite() && $blog_id ) {
+      switch_to_blog( $current_blog_id );
     }
  
   }

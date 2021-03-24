@@ -20,7 +20,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $this->user = new Humble_LMS_Public_User;
       $this->content_manager = new Humble_LMS_Content_Manager;
       $this->translator = new Humble_LMS_Translator;
-      $this->options = get_option('humble_lms_options');
+      $this->options = self::hlms_get_option('humble_lms_options');
       $this->active = 'reporting-users';
       $this->page_sections = array();
       $this->login_url = wp_login_url();
@@ -388,7 +388,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since    0.0.1
      */
     public function tippy_theme() {
-      $options = get_option('humble_lms_options');
+      $options = self::hlms_get_option('humble_lms_options');
 
       $tippy_theme = isset( $options['tippy_theme'] ) ? sanitize_text_field( $options['tippy_theme'] ) : 'default';
 
@@ -742,7 +742,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      */
     function invoice_prefix()
     {
-      $invoice_counter = get_option('humble_lms_invoice_counter');
+      $invoice_counter = self::hlms_get_option('humble_lms_invoice_counter');
       $invoice_counter = isset( $invoice_counter ) ? absint( $invoice_counter ) : 0;
       $invoice_prefix = isset( $this->options['invoice_prefix'] ) ? sanitize_text_field( $this->options['invoice_prefix'] ) : '';
 
@@ -957,7 +957,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
         $options['invoice_text_after'] =  wp_kses( $input['invoice_text_after'], $allowed_tags );
         $options['invoice_text_footer'] =  wp_kses( $input['invoice_text_footer'], $allowed_tags );
 
-        update_option( 'humble_lms_invoice_counter', absint( $input['invoice_counter'] ) );
+        self::hlms_update_option( 'humble_lms_invoice_counter', absint( $input['invoice_counter'] ) );
       }
 
       return $options;
@@ -1357,7 +1357,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public static function has_recaptcha() {
-      $options = get_option('humble_lms_options');
+      $options = self::hlms_get_option('humble_lms_options');
       return ( isset( $options['recaptcha_enabled'] ) && $options['recaptcha_enabled'] === 1 && ! empty( $options['recaptcha_website_key'] ) && ! empty( $options['recaptcha_secret_key'] ) );
     }
 
@@ -1368,7 +1368,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public static function has_paypal() {
-      $options = get_option('humble_lms_options');
+      $options = self::hlms_get_option('humble_lms_options');
       return ( ! empty( $options['paypal_client_id'] ) );
     }
 
@@ -1379,7 +1379,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.5
      */
     public static function has_sales() {
-      $options = get_option('humble_lms_options');
+      $options = self::hlms_get_option('humble_lms_options');
       return ( self::has_paypal() && ( isset( $options['has_sales'] ) && 1 === $options['has_sales'] ) );
     }
 
@@ -1390,8 +1390,42 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
      * @since   0.0.1
      */
     public function get_currency() {
-      $options = get_option('humble_lms_options');
+      $options = self::hlms_get_option('humble_lms_options');
       return isset( $options['currency'] ) && in_array( $options['currency'], $this->allowed_currencies ) ? $options['currency'] : 'USD';
+    }
+
+    /**
+     * Get options for single install and multisite.
+     * 
+     * @since 0.1.7
+     */
+    public static function hlms_get_option( $option = null ) {
+      if( ! $option ) {
+        return;
+      }
+
+      if( is_multisite() ) {
+        return get_blog_option( get_current_blog_id(), $option );
+      } else {
+        return get_option( $option );
+      }
+    }
+
+    /**
+     * Update options for single install and multisite.
+     * 
+     * @since 0.1.7
+     */
+    public static function hlms_update_option( $option = null, $value = null ) {
+      if( ! $option ) {
+        return;
+      }
+
+      if( is_multisite() ) {
+        return update_blog_option( get_current_blog_id(), $option, $value );
+      } else {
+        return update_option( $option, $value );
+      }
     }
     
   }

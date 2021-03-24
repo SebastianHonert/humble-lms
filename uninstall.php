@@ -15,7 +15,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 global $wpdb;
 
 // Check if data should be deleted
-$options = get_option('humble_lms_options');
+$options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
 $delete_plugin_data_on_uninstall = isset( $options['delete_plugin_data_on_uninstall'] ) && ( 1 === $options['delete_plugin_data_on_uninstall'] ) ? true : false;
 
 // Only delete data if option is checked

@@ -17,7 +17,7 @@ if( ! class_exists( 'Humble_LMS_Coupon' ) ) {
      * @since 0.0.7
      */
     public function __construct() {
-      $this->options = get_option('humble_lms_options');
+      $this->options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
     }
 
     /**

@@ -41,7 +41,12 @@ class Humble_LMS_Activator {
    * 
    * @since   0.0.1
    */
-  public function add_custom_pages() {
+  public function add_custom_pages( $blog_id = null ) {
+    if( is_multisite() && $blog_id ) {
+      $current_blog_id = get_current_blog_id();
+      switch_to_blog( $blog_id );
+    }
+
     $custom_page_course_archive = array(
       'post_title' => 'Humble LMS Course Archive',
       'post_name' => __('courses', 'humble-lms'),
@@ -125,6 +130,10 @@ class Humble_LMS_Activator {
 
     if( ! get_page_by_title('Humble LMS User Profile', OBJECT, 'page') )
       wp_insert_post( $custom_page_user_profile );
+
+    if( is_multisite() && $blog_id ) {
+      switch_to_blog( $current_blog_id );
+    }
   }
 
   /**

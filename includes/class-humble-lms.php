@@ -328,7 +328,10 @@ class Humble_LMS {
     // Retrieve password custom email
     $this->loader->add_action( 'retrieve_password_message', $plugin_admin, 'replace_retrieve_password_message', 10, 4 );
     $this->loader->add_action( 'wp_new_user_notification_email', $plugin_admin, 'custom_new_user_notification_email', 10, 3 );
-  
+
+    // Multisite
+    $this->loader->add_action( 'wpmu_new_blog', $plugin_admin, 'new_blog', 10, 6 );
+
   }
 
   /**

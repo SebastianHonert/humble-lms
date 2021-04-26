@@ -1397,7 +1397,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     /**
      * Get options for single install and multisite.
      * 
-     * @since 0.1.7
+     * @since 0.1.6
      */
     public static function hlms_get_option( $option = null ) {
       if( ! $option ) {
@@ -1414,7 +1414,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
     /**
      * Update options for single install and multisite.
      * 
-     * @since 0.1.7
+     * @since 0.1.6
      */
     public static function hlms_update_option( $option = null, $value = null ) {
       if( ! $option ) {

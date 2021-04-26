@@ -154,7 +154,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
     /**
      * Set role access level for all lessons in a course.
      * 
-     * @since 0.1.8
+     * @since 0.1.6
      */
     public function set_lesson_access_level() {
       if( ! isset( $_POST['course_id'] ) ) {

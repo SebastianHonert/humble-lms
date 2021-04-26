@@ -1515,7 +1515,7 @@ class Humble_LMS_Admin {
   /**
    * Multisite: add new blog
    * 
-   * @since 0.1.7
+   * @since 0.1.6
    */
   function new_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
     require_once plugin_dir_path( __DIR__ ) . 'includes/class-humble-lms-activator.php';

@@ -287,6 +287,8 @@ class Humble_LMS {
     $this->loader->add_action( 'wp_ajax_add_content', $admin_ajax, 'add_content' );
     $this->loader->add_action( 'wp_ajax_nopriv_set_lesson_membership_level', $admin_ajax, 'set_lesson_membership_level' );
     $this->loader->add_action( 'wp_ajax_set_lesson_membership_level', $admin_ajax, 'set_lesson_membership_level' );
+    $this->loader->add_action( 'wp_ajax_nopriv_set_lesson_access_level', $admin_ajax, 'set_lesson_access_level' );
+    $this->loader->add_action( 'wp_ajax_set_lesson_access_level', $admin_ajax, 'set_lesson_access_level' );
     $this->loader->add_action( 'wp_ajax_nopriv_toggle_user_award_certificate', $admin_ajax, 'toggle_user_award_certificate' );
     $this->loader->add_action( 'wp_ajax_toggle_user_award_certificate', $admin_ajax, 'toggle_user_award_certificate' );
     $this->loader->add_action( 'wp_ajax_nopriv_create_invoice', $admin_ajax, 'create_invoice' );

@@ -678,6 +678,44 @@ jQuery(document).ready(function($) {
     })
   })
 
+  // Set lesson user access level from course
+  $('#humble-lms-set-lessons-access-level').on('click', function() {
+    let course_id = $(this).data('id')
+    let roles = []
+
+    $('input[name="humble_lms_lesson_access_levels[]"]').each(function (role) {
+      if ($(this).is(':checked')) {
+        roles.push($(this).val())
+      }
+    })
+
+    if (typeof course_id === 'undefined' || !course_id) {
+      console.log('Post ID not set.')
+    }
+
+    loadingLayer(true)
+
+    $.ajax({
+      url: humble_lms.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'set_lesson_access_level',
+        course_id: course_id,
+        roles: roles
+      },
+      dataType: 'json',
+      error: function(MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown)
+        loadingLayer(false)
+      },
+      success: function(response, textStatus, XMLHttpRequest) {
+        loadingLayer(false, function() {
+          $('#humble-lms-set-lessons-access-level-response').text(response).css('display', 'block')
+        })
+      },
+    })
+  })
+
   // Toggle award/certificate for user in options view
   $('.humble-lms-toggle-award-certificate').on('click', function() {
     let post_id = $(this).parent().parent().data('id')

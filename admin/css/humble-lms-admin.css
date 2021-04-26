@@ -333,7 +333,8 @@ p.humble-lms-add-course-to-section {
   margin-bottom: 9px
 }
 
-#humble-lms-set-lessons-membership-level-response {
+#humble-lms-set-lessons-membership-level-response,
+#humble-lms-set-lessons-access-level-response {
   display: none;
   color: #06211a;
   border: 1px solid #bcd0ca;

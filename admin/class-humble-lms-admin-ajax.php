@@ -152,6 +152,44 @@ if( ! class_exists( 'Humble_LMS_Admin_Ajax' ) ) {
     }
 
     /**
+     * Set role access level for all lessons in a course.
+     * 
+     * @since 0.1.8
+     */
+    public function set_lesson_access_level() {
+      if( ! isset( $_POST['course_id'] ) ) {
+        echo json_encode( __('Course ID or roles not set.', 'humble-lms' ) );
+        die;
+      }
+
+      $course_id = (int)$_POST['course_id'];
+      $roles = array_map( 'esc_attr', $_POST['roles'] );
+
+      if( 'humble_lms_course' !== get_post_type( $course_id ) ) {
+        echo json_encode( __('Course ID not found.', 'humble-lms' ) );
+        die;
+      }
+
+      $lessons = Humble_LMS_Content_Manager::get_course_lessons( $course_id );
+
+      if( empty( $lessons ) ) {
+        echo json_encode( __('This course does not include any lessons.', 'humble-lms' ) );
+        die;
+      }
+
+      foreach( $lessons as $lesson ) {
+        update_post_meta( $lesson, 'humble_lms_lesson_access_levels', $roles );
+      }
+
+      if( empty( $roles ) ) {
+        $roles = ['administrator'];
+      }
+      $response_text = sprintf( __('Access level for all lessons in this course set to %s', 'humble-lms'), implode( ', ', $roles ) ) . '.';
+      echo json_encode( $response_text );
+      die;
+    }
+
+    /**
      * Toggle user award/certificate by post ID.
      * 
      * @since 0.0.2

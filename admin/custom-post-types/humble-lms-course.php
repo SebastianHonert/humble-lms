@@ -64,7 +64,8 @@ register_post_type( 'humble_lms_course', $args );
 
 function humble_lms_course_add_meta_boxes()
 {
-  add_meta_box( 'humble_lms_course_membership_mb', __('Access level', 'humble-lms'), 'humble_lms_course_membership_mb', 'humble_lms_course', 'side', 'default' );
+  add_meta_box( 'humble_lms_course_membership_mb', __('Membership level', 'humble-lms'), 'humble_lms_course_membership_mb', 'humble_lms_course', 'side', 'default' );
+  add_meta_box( 'humble_lms_course_lesson_access_level_mb', __('Lesson access', 'humble-lms'), 'humble_lms_course_lesson_access_level_mb', 'humble_lms_course', 'side', 'default' );
   add_meta_box( 'humble_lms_course_timestamps_mb', __('Timeframe', 'humble-lms'), 'humble_lms_course_timestamps_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_duration_mb', __('Duration (approximately, e.g. 8 hours)', 'humble-lms'), 'humble_lms_course_duration_mb', 'humble_lms_course', 'normal', 'default' );
   add_meta_box( 'humble_lms_course_sections_mb', __('Lesson(s) in this course', 'humble-lms'), 'humble_lms_course_sections_mb', 'humble_lms_course', 'normal', 'default' );
@@ -78,7 +79,7 @@ function humble_lms_course_add_meta_boxes()
 
 add_action( 'add_meta_boxes', 'humble_lms_course_add_meta_boxes' );
 
-// Access levels meta box
+// Membership access level meta box
 
 function humble_lms_course_membership_mb()
 {
@@ -91,7 +92,7 @@ function humble_lms_course_membership_mb()
     $membership = 'free';
   }
 
-  echo '<p class="description">' . __('Set the access level for all lessons included in this course to the selected value.', 'humble-lms') . '</p>';
+  echo '<p class="description">' . __('Set the membership access level for all lessons included in this course to the selected value.', 'humble-lms') . '</p>';
 
   echo '<select name="humble_lms_membership" id="humble_lms_membership" class="humble_lms_widefat">';
     $selected = 'free' === $membership ? 'selected' : '';
@@ -105,6 +106,30 @@ function humble_lms_course_membership_mb()
 
   echo '<p><a class="button-primary" id="humble-lms-set-lessons-membership-level" data-id="' . $post->ID . '">' . __('Apply now', 'humble-lms') . '</a></p>';
   echo '<p id="humble-lms-set-lessons-membership-level-response"></p>';
+}
+
+// Lesson access level meta box
+
+function humble_lms_course_lesson_access_level_mb()
+{
+  global $post;
+  global $wp_roles;
+
+  $roles = $wp_roles->roles;
+  $levels = get_post_meta( $post->ID, 'humble_lms_lesson_access_levels', false );
+  $levels = isset( $levels[0] ) && ! empty( $levels[0] ) ? $levels[0] : [];
+
+  echo '<p class="description">' . __('Set the user role access level for all lessons included in this course to the selected value.', 'humble-lms') . '</p>';
+
+  echo '<input type="checkbox" checked disabled>Administrator<br>';
+  foreach( $roles as $key => $role ) {
+    if( $key === 'administrator' ) continue;
+    $checked = in_array( $key, $levels ) ? 'checked' : '';
+    echo '<input type="checkbox" name="humble_lms_lesson_access_levels[]" value="' . $key . '" ' . $checked . '> ' . $role['name'] . '<br>';
+  }
+  echo '<p style="margin-top:.5em"><a class="button humble-lms-access-levels-check-all">' . __('Select/deselect all', 'humble-lms') . '</a></p>';
+  echo '<p><a class="button-primary" id="humble-lms-set-lessons-access-level" data-id="' . $post->ID . '">' . __('Apply now', 'humble-lms') . '</a></p>';
+  echo '<p id="humble-lms-set-lessons-access-level-response"></p>';
 }
 
 // Timeframe meta box

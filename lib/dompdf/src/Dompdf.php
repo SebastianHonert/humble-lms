@@ -962,7 +962,7 @@ class Dompdf
      * @return mixed
      * @deprecated
      */
-    public function Humble_LMS_Admin_Options_Manager::hlms_get_option($key)
+    public function get_option($key)
     {
         return $this->options->get($key);
     }

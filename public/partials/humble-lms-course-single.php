@@ -23,7 +23,7 @@ if (have_posts()):
       $parent_track = $content_manager->get_parent_track( $post->ID, true );
 
       if( $parent_track ) {
-        echo '<p>' . __('Track', 'humble-lms') . ': ' . '<a class="humble-lms-course-single-parent-track" href="' . esc_html( get_permalink( $parent_track->ID ) ) . '">' . $parent_track->post_title . '</a></p>'; 
+        echo '<p><a class="humble-lms-course-single-parent-track" href="' . esc_html( get_permalink( $parent_track->ID ) ) . '"><small><span class="ti-arrow-left"></span></small> ' . $parent_track->post_title . '</a></p>'; 
       }
 
       the_content();

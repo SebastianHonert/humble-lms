@@ -22,6 +22,8 @@ if (have_posts()):
     }
   }
 
+  do_action( 'humble_lms_before_lesson_title' );
+
   ?>
 
   <h1 class="humble-lms-lesson-single-title"><?php echo get_the_title(); ?></h1>

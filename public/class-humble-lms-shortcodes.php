@@ -2179,6 +2179,47 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
     public function label_new_html() {
       return '<div class="humble-lms-label-new">' . __('New', 'humble-lms') . '</div>';
     }
+
+    /**
+     * New content info on course/track tiles.
+     * 
+     * @return String
+     * @since 0.1.8
+     */
+    public function lesson_breadcrumbs() {
+      global $post;
+
+      if( ! isset( $post ) ) {
+        return;
+      }
+
+      if( $this->options_manager->options['has_lesson_breadcrumbs'] !== 1 ) {
+        return;
+      }
+
+      $current_post_type = get_post_type( $post->ID );
+
+      if( 'humble_lms_lesson' !== $current_post_type ) {
+        return;
+      }
+
+      $content_manager = new Humble_LMS_Content_Manager;
+
+      $lesson_title = $post->post_title;
+      $lesson_url = esc_url( get_permalink( $post->ID ) );
+      
+      $parent_course = $content_manager->get_parent_course( $post->ID );
+      $course_title = $parent_course->post_title;
+      $course_url = esc_url( get_permalink( $parent_course->ID ) );
+
+      $parent_track = $content_manager->get_parent_track( $parent_course->ID );
+      $track_title = $parent_track->post_title;
+      $track_url = esc_url( get_permalink( $parent_track->ID ) );
+
+      $separator = '<span class="fa fa-angle-right humble-lms-breadcrumb-separator"></span>';
+
+      return '<div class="humble-lms-breadcrumbs"><a href="' . $track_url . '">' . $track_title . '</a>' . $separator . '<a href="' . $course_url . '">' . $course_title . '</a>' . $separator . '<a href="' . $lesson_url . '">' . $lesson_title . '</a></div>';
+    }
     
   }
   

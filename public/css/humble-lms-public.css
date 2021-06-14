@@ -289,6 +289,16 @@ li.humble-lms-syllabus-lesson span {
 .humble-lms-page-links-separator {
   opacity: .25; }
 
+/* Lesson breadcrumbs */
+.humble-lms-breadcrumbs {
+  font-size: .875em;
+  position: relative;
+  top: -1.25em; }
+
+.humble-lms-breadcrumb-separator {
+  display: inline-block;
+  margin: 0 .25em; }
+
 /* Sidebar */
 .humble-lms-sidebar {
   margin-bottom: 2em; }

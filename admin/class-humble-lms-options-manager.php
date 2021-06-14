@@ -174,6 +174,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       add_settings_field( 'sort_tracks_by_category', __('Sort tracks by category?', 'humble-lms'), array( $this, 'sort_tracks_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'sort_courses_by_category', __('Sort courses by category?', 'humble-lms'), array( $this, 'sort_courses_by_category' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'has_lesson_progress_bar', __('Display progress bar above lesson content?', 'humble-lms'), array( $this, 'has_lesson_progress_bar' ), 'humble_lms_options', 'humble_lms_options_section_options');
+      add_settings_field( 'has_lesson_breadcrumbs', __('Display breadcrumb navigation in single lessons?', 'humble-lms'), array( $this, 'has_lesson_breadcrumbs' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'messages', __('Which messages should be shown when students complete a lesson?', 'humble-lms'), array( $this, 'messages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'custom_pages', __('Custom page IDs', 'humble-lms'), array( $this, 'custom_pages' ), 'humble_lms_options', 'humble_lms_options_section_options');
       add_settings_field( 'max_evaluations', __('Max. number of logged quiz evaluations', 'humble-lms'), array( $this, 'max_evaluations' ), 'humble_lms_options', 'humble_lms_options_section_options');
@@ -333,6 +334,18 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
       $checked = $has_lesson_progress_bar === 1 ? 'checked' : '';
   
       echo '<p><input id="has_lesson_progress_bar" name="humble_lms_options[has_lesson_progress_bar]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, show the progress bar.', 'humble-lms') . '</p>';
+    }
+
+    /**
+     * Option for displaying the progress bar above lessons.
+     *
+     * @since 0.1.8
+     */
+    public function has_lesson_breadcrumbs() {
+      $has_lesson_breadcrumbs = isset( $this->options['has_lesson_breadcrumbs'] ) ? (int)$this->options['has_lesson_breadcrumbs'] : 0;
+      $checked = $has_lesson_breadcrumbs === 1 ? 'checked' : '';
+  
+      echo '<p><input id="has_lesson_breadcrumbs" name="humble_lms_options[has_lesson_breadcrumbs]" type="checkbox" value="1" ' . $checked . '>' . __('Yes, show the breadcrumb navigation.', 'humble-lms') . '</p>';
     }
 
     /**
@@ -865,6 +878,7 @@ if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
           $options['tile_width_track'] = sanitize_text_field( $input['tile_width_track'] );
         
         $options['has_lesson_progress_bar'] = isset( $input['has_lesson_progress_bar'] ) ? 1 : 0;
+        $options['has_lesson_breadcrumbs'] = isset( $input['has_lesson_breadcrumbs'] ) ? 1 : 0;
 
         if( isset( $input['messages'] ) )
           $options['messages'] = $input['messages'];

@@ -384,6 +384,8 @@ class Humble_LMS {
     $this->loader->add_shortcode( 'humble_lms_quiz', $plugin_shortcodes, 'humble_lms_quiz' );
     $this->loader->add_shortcode( 'humble_lms_paypal_buttons', $plugin_shortcodes, 'humble_lms_paypal_buttons' );
     $this->loader->add_shortcode( 'humble_lms_paypal_buttons_single_item', $plugin_shortcodes, 'humble_lms_paypal_buttons_single_item' );
+    $this->loader->add_shortcode( 'humble_lms_lesson_breadcrumbs', $plugin_shortcodes, 'lesson_breadcrumbs' );
+
 
     // AJAX
     $plugin_ajax = new Humble_LMS_Public_Ajax( $plugin_public );

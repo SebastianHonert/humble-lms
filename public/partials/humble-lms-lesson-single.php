@@ -12,13 +12,21 @@ if (have_posts()):
   while (have_posts()): the_post();
   
   $options = Humble_LMS_Admin_Options_Manager::hlms_get_option('humble_lms_options');
-  if( isset( $options['has_lesson_progress_bar'] ) && $options['has_lesson_progress_bar'] === 1 ) {
+  $humble_lms_has_lesson_progress_bar = isset( $options['has_lesson_progress_bar'] ) && $options['has_lesson_progress_bar'] === 1;
+  $humble_lms_has_lesson_breadcrumbs = isset( $options['has_lesson_breadcrumbs'] ) && $options['has_lesson_breadcrumbs'] === 1;
+  if( $humble_lms_has_lesson_progress_bar || $humble_lms_has_lesson_breadcrumbs ) {
     $content_manager = new Humble_LMS_Content_Manager;
     $course_id = isset( $_POST['course_id'] ) ? (int)$_POST['course_id'] : null;
     $parent_course = $course_id ? get_post( $course_id ) : $content_manager->get_parent_course( get_the_ID() );
 
     if( isset( $parent_course->ID ) ) { 
-      echo do_shortcode('[humble_lms_progress_bar is_before_lesson="1" course_id="' . $parent_course->ID . '" show_label="1"]');
+      if( $humble_lms_has_lesson_progress_bar ) {
+        echo do_shortcode('[humble_lms_progress_bar is_before_lesson="1" course_id="' . $parent_course->ID . '" show_label="1"]');
+      }
+
+      if( $humble_lms_has_lesson_breadcrumbs ) {
+        echo do_shortcode('[humble_lms_lesson_breadcrumbs]');
+      }
     }
   }
 

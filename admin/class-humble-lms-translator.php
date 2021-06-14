@@ -14,15 +14,6 @@ if( ! class_exists( 'Humble_LMS_Translator' ) ) {
   class Humble_LMS_Translator {
 
     /**
-     * Initialize the class and set its properties.
-     *
-     * @since    0.0.1
-     */
-    public function __construct() {
-      // ...
-    }
-
-    /**
      * Check if Polylang plugin is installed and active.
      * 
      * @since    0.0.1

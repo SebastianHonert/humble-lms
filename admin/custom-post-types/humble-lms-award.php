@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Award', 'humble-lms' ),
   'description'           => __( 'Award', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'thumbnail', 'revisions' ),
+  'supports'              => array( 'title', 'thumbnail', 'revisions', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array(),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => true,
   'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_award', $args );

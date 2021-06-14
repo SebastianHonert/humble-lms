@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Course', 'humble-lms' ),
   'description'           => __( 'Course', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'post-formats' ),
+  'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'post-formats', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array( 'category', 'post_tag' ),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => false,
   'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_course', $args );
@@ -228,6 +228,7 @@ function humble_lms_course_sections_mb()
         'order' => 'ASC',
         'exclude' => $section_lessons,
         'lang' => $translator->current_language(),
+        'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
       );
     
       $lessons = get_posts( $args );

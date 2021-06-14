@@ -2213,6 +2213,11 @@ if( ! class_exists( 'Humble_LMS_Public_Shortcodes' ) ) {
       $course_url = esc_url( get_permalink( $parent_course->ID ) );
 
       $parent_track = $content_manager->get_parent_track( $parent_course->ID );
+
+      if( ! $parent_track ) {
+        return;
+      }
+
       $track_title = $parent_track->post_title;
       $track_url = esc_url( get_permalink( $parent_track->ID ) );
 

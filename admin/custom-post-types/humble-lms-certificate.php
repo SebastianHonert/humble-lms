@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Certificate', 'humble-lms' ),
   'description'           => __( 'Certificate', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'thumbnail', 'revisions' ),
+  'supports'              => array( 'title', 'thumbnail', 'revisions', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array(),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => true,
   'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 // "humble_lms_certificate" exceeds 20 bytes limit

@@ -240,6 +240,7 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_admin, 'register_custom_taxonomies' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'add_user_roles' );
+    $this->loader->add_action( 'admin_menu', $plugin_admin, 'remove_admin_menu_items' );
     $this->loader->add_action( 'widgets_init', $plugin_admin, 'register_sidebars' );
     $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );
     $this->loader->add_action( 'edit_user_profile', $plugin_admin, 'add_user_profile_fields' );
@@ -271,6 +272,10 @@ class Humble_LMS {
       $this->loader->add_action( 'manage_humble_lms_question_posts_columns', $plugin_admin, 'add_humble_lms_question_column_quizzes' );
       $this->loader->add_action( 'manage_humble_lms_question_posts_custom_column', $plugin_admin, 'humble_lms_question_sortable_column_quizzes', 10, 2 );
       $this->loader->add_action( 'manage_edit-humble_lms_question_sortable_columns', $plugin_admin, 'humble_lms_question_quizzes_sort' );
+    }
+
+    if( is_admin() ) {
+      $this->loader->add_action( 'ajax_query_attachments_args', $plugin_admin, 'restrict_user_attachments' );
     }
 
     // Remote update

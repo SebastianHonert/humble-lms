@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Quiz', 'humble-lms' ),
   'description'           => __( 'Quiz', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'revisions'),
+  'supports'              => array( 'title', 'revisions', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array( 'category', 'post_tag' ),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => true,
   'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_quiz', $args );

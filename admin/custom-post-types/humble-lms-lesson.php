@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Lesson', 'humble-lms' ),
   'description'           => __( 'Lesson', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'editor', 'revisions', 'post-formats' ),
+  'supports'              => array( 'title', 'editor', 'revisions', 'post-formats', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array( 'category', 'post_tag' ),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => false,
   'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_lesson', $args );

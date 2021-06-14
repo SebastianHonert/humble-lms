@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Activity', 'humble-lms' ),
   'description'           => __( 'Activity', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title' ),
+  'supports'              => array( 'title', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array(),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => false,
   'publicly_queryable'    => false,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_activity', $args );
@@ -95,6 +95,7 @@ function humble_lms_activity_trigger_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   $courses = get_posts( array(
@@ -104,6 +105,7 @@ function humble_lms_activity_trigger_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   $lessons = get_posts( array(
@@ -113,6 +115,7 @@ function humble_lms_activity_trigger_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   $quizzes = get_posts( array(
@@ -122,6 +125,7 @@ function humble_lms_activity_trigger_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   echo '<select class="widefat" name="humble_lms_activity_trigger" id="humble_lms_activity_trigger">';
@@ -250,6 +254,7 @@ function humble_lms_activity_action_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   $emails = get_posts( array(
@@ -259,6 +264,7 @@ function humble_lms_activity_action_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   $certificates = get_posts( array(
@@ -268,6 +274,7 @@ function humble_lms_activity_action_mb()
     'orderby' => 'title',
     'order' => 'ASC',
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   ) );
 
   echo '<select class="widefat humble-lms-activity-action-select" name="humble_lms_activity_action_award" id="humble_lms_activity_action_award">';

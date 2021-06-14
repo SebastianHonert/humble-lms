@@ -39,7 +39,7 @@ $args = array(
   'label'                 => __( 'Track', 'humble-lms' ),
   'description'           => __( 'Track', 'humble-lms' ),
   'labels'                => $labels,
-  'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions' ),
+  'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'author' ),
   'show_in_rest'          => true,
   'taxonomies'            => array( 'category', 'post_tag' ),
   'hierarchical'          => false,
@@ -55,7 +55,7 @@ $args = array(
   'exclude_from_search'   => false,
   'publicly_queryable'    => true,
   'rewrite'               => $rewrite,
-  'capability_type'       => 'page',
+  'capability_type'       => 'post',
 );
 
 register_post_type( 'humble_lms_track', $args );
@@ -93,6 +93,7 @@ function humble_lms_track_courses_mb()
     'order' => 'ASC',
     'exclude' => $track_courses,
     'lang' => $translator->current_language(),
+    'author' => current_user_can( 'edit_others_posts' ) ? false : get_current_user_id(),
   );
 
   $courses = get_posts( $args );

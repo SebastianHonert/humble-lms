@@ -31,15 +31,28 @@ if( ! class_exists( 'Humble_LMS_Public_Access_Handler' ) ) {
      */
     public function can_access_lesson( $lesson_id = null, $course_id = null, $track_id = null ) {
       // Administrators can access all content
-      if( current_user_can('edit_others_pages') )
+      if( current_user_can('edit_others_posts') ) {
         return 'allowed';
+      }
 
-      if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' )
+      if( get_post_type( $lesson_id ) !== 'humble_lms_lesson' && get_post_type( $course_id ) !== 'humble_lms_course' ) {
         return 'allowed';
+      }
 
       // Try to get parrent course if course ID is not set
       if( get_post_type( $course_id ) !== 'humble_lms_course' ) {
         $course_id = $this->content_manager->get_parent_course( $lesson_id );
+      }
+
+      // Allow post authors to access 
+      $user_id = get_current_user_id();
+      $lesson_author_id = (int) get_post_field( 'post_author', $lesson_id );
+      $course_author_id = (int) get_post_field( 'post_author', $course_id );
+      $track_author_id = (int) get_post_field( 'post_author', $track_id );
+
+
+      if( $user_id === $lesson_author_id || $user_id === $course_author_id || $user_id === $track_author_id ) {
+        return 'allowed';
       }
 
       // Check if track/course is sold for a fixed price and user has bought the item

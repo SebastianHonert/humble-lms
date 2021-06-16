@@ -239,7 +239,6 @@ class Humble_LMS {
     $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
     $this->loader->add_action( 'init', $plugin_admin, 'register_custom_taxonomies' );
     $this->loader->add_action( 'admin_init', $plugin_admin, 'block_dashboard_access' );
-    $this->loader->add_action( 'admin_init', $plugin_admin, 'add_user_roles' );
     $this->loader->add_action( 'admin_menu', $plugin_admin, 'remove_admin_menu_items' );
     $this->loader->add_action( 'widgets_init', $plugin_admin, 'register_sidebars' );
     $this->loader->add_action( 'trashed_post', $plugin_admin, 'remove_meta' );

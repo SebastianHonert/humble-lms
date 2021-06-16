@@ -21,6 +21,9 @@ $delete_plugin_data_on_uninstall = isset( $options['delete_plugin_data_on_uninst
 // Only delete data if option is checked
 if( $delete_plugin_data_on_uninstall ) {
 
+  // Delete user roles
+  remove_role( 'humble_lms_student' );
+
   // Options to delete
   $delete_options = array(
     'humble_lms_options',

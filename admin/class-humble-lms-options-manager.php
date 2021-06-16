@@ -6,6 +6,7 @@
  * @subpackage Humble_LMS/admin
  * @author     Sebastian Honert <hello@sebastianhonert.com>
  */
+
 if( ! class_exists( 'Humble_LMS_Admin_Options_Manager' ) ) {
 
   class Humble_LMS_Admin_Options_Manager {

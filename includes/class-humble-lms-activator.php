@@ -32,8 +32,24 @@ class Humble_LMS_Activator {
   public function activate() {
     flush_rewrite_rules();
 
+    $this->add_user_roles();
     $this->add_custom_pages();
     $this->init_options();
+  }
+
+  /**
+   * Add user roles.
+   * 
+   * @since 0.1.9
+   */
+  private function add_user_roles() {
+    add_role(
+      'humble_lms_student',
+      'Humble LMS Student',
+      array(
+        'read' => true,
+      )
+    );
   }
 
   /**

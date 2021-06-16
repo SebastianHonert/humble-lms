@@ -201,21 +201,6 @@ class Humble_LMS_Admin {
   }
 
   /**
-   * Add Humble LMS user roles.
-   *
-   * @since    0.0.1
-   */
-  function add_user_roles() {  
-    add_role(
-      'humble_lms_student',
-      'Humble LMS Student',
-      array(
-        'read' => true,
-      )
-    );
-  }
-
-  /**
    * Add user meta field for course instructors
    *
    * @since    0.0.1
